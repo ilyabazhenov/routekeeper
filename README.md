@@ -7,7 +7,7 @@ Routekeeper — файрвол и маршрутизация через прок
 отправить через прокси, сбросить или спросить вас. Telegram — через SOCKS5,
 рабочий Slack — напрямую, незнакомый бинарник — в тупик.
 
-**[Страница проекта](https://ilyabazhenov.github.io/routekeeper/)** ·
+**[Страница проекта](https://getroutekeeper.app/)** ·
 [Установка](docs/install.md) ·
 [Вопросы и ответы](docs/faq.md) ·
 [Конфиденциальность](docs/privacy.md)
