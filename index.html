@@ -283,6 +283,7 @@ section { padding-top: 128px; }
 .faq summary::after { content: "+"; flex: none; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 8px; background: rgba(255, 181, 71, .1); color: var(--amber); font-size: 18px; transition: rotate .25s; }
 .faq details[open] summary::after { rotate: 45deg; }
 .faq details p { padding: 0 22px 20px; color: var(--muted); font-size: 16px; max-width: 64ch; }
+.faq details p code { font: .92em var(--mono); color: var(--text); }
 
 .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; counter-reset: s; }
 @media (max-width: 860px) { .steps { grid-template-columns: minmax(0, 1fr); } }
@@ -517,12 +518,12 @@ section { padding-top: 128px; }
     <div class="wrap">
       <span class="pill rv"><b>Скоро</b>Публичная бета для macOS 14 и новее</span>
       <h1 class="rv">Каждому приложению<br><span class="warm">свой путь</span></h1>
-      <p class="sub rv"><b>Routekeeper</b> — смотритель путей на вашем Mac. Он решает, куда идёт трафик каждого приложения: через прокси, напрямую или никуда, и присматривает, чтобы ничего не просочилось мимо.</p>
+      <p class="sub rv"><b>Routekeeper</b> ведёт выбранные приложения через ваш прокси-сервер, а остальные оставляет как есть. И следит, чтобы ничего не протекло: если прокси упал, трафик не уйдёт напрямую, а всё, что прошло мимо, сразу видно.</p>
       <div class="hero-cta rv">
         <a class="btn btn-primary" href="#beta">Узнать о бете</a>
         <a class="btn btn-ghost" href="#how">Как это работает</a>
       </div>
-      <p class="meta rv"><b>Бета</b> · macOS 14 Sonoma и новее · нужен свой прокси-сервер · без аккаунтов</p>
+      <p class="meta rv"><b>Бета</b> · macOS 14 Sonoma и новее · свой сервер: SOCKS5, HTTP или HTTPS · без аккаунтов</p>
 
       <div class="stage rv">
         <div class="window" id="window" role="group" aria-label="Интерфейс Routekeeper: список приложений и их пути">
@@ -550,10 +551,10 @@ section { padding-top: 128px; }
       </div>
 
       <div class="strip rv">
-        <span><svg><use href="#i-laptop"/></svg>Системное расширение Apple</span>
-        <span><svg><use href="#i-cpu"/></svg>Без драйверов ядра</span>
-        <span><svg><use href="#i-shield"/></svg>Без своих серверов</span>
-        <span><svg><use href="#i-zap"/></svg>Нативное приложение на Swift</span>
+        <span><svg><use href="#i-shield"/></svg>Не протекает, если прокси упал</span>
+        <span><svg><use href="#i-warn"/></svg>Видно всё, что ушло мимо</span>
+        <span><svg><use href="#i-laptop"/></svg>Приложения по подписи, а не по имени</span>
+        <span><svg><use href="#i-zap"/></svg>Без аккаунтов и телеметрии</span>
       </div>
     </div>
   </section>
@@ -759,7 +760,7 @@ section { padding-top: 128px; }
           <span class="eyebrow">Что нужно</span>
           <h2>Назначьте первый путь за пять минут</h2>
           <p>При первом запуске Routekeeper проведёт по шагам: установит расширение, попросит разрешения у macOS и поможет добавить прокси.</p>
-          <div class="req-btns"><span class="btn btn-primary" aria-disabled="true" style="cursor:default">Скоро в бете</span></div>
+          <div class="req-btns"><a class="btn btn-primary" href="#beta">Узнать о бете</a></div>
         </div>
         <ul class="req-list">
           <li><b>Mac с macOS 14 Sonoma или новее</b><span>Routekeeper использует системные сетевые расширения Apple, без драйверов ядра.</span></li>
@@ -780,7 +781,19 @@ section { padding-top: 128px; }
       <div class="faq rv">
         <details open>
           <summary>Чем это отличается от VPN?</summary>
-          <p>VPN заворачивает весь трафик Mac в один туннель. Routekeeper решает по приложениям и адресам: Telegram через прокси, банк и Zoom напрямую, назойливый апдейтер никуда. Остальное работает так, как будто Routekeeper нет.</p>
+          <p>VPN заворачивает в туннель весь Mac, и тогда банк, Госуслуги или маркетплейс видят чужой адрес и могут не пустить. Routekeeper решает по приложениям и адресам: Telegram через ваш сервер, банк и Zoom напрямую, назойливый апдейтер никуда. Остальное работает так, как будто Routekeeper нет.</p>
+        </details>
+        <details>
+          <summary>У меня VLESS или Shadowsocks. Подойдёт?</summary>
+          <p>Напрямую нет: с сервером Routekeeper говорит по SOCKS5, HTTP CONNECT или HTTPS. Но клиент для VLESS или Shadowsocks (sing-box, Xray, Clash и другие) обычно открывает на Mac локальный SOCKS5-порт, например <code>127.0.0.1:1080</code>. Добавьте его в Routekeeper как прокси: протокол до сервера останется за клиентом, а какие приложения туда идут и чтобы ничего не протекло — за Routekeeper. Системный прокси и TUN-режим в клиенте при этом лучше выключить, чтобы маршрутами управлял кто-то один.</p>
+        </details>
+        <details>
+          <summary>Чем отличается от Proxifier?</summary>
+          <p>Proxifier тоже отправляет приложения через прокси по правилам. Routekeeper добавляет к этому файрвол с окном-вопросом, узнаёт приложения по подписи разработчика, а не по имени файла, и показывает утечки: DNS к провайдеру, UDP и всё, что ушло мимо прокси. Цепочек прокси, как в Proxifier, пока нет.</p>
+        </details>
+        <details>
+          <summary>А от Clash Verge, Hiddify и похожих клиентов?</summary>
+          <p>Они сами говорят с сервером по VLESS, Shadowsocks, Trojan и другим протоколам и умеют подписки. Правила по приложениям в них, если есть, пишут в конфиге по имени процесса. В Routekeeper путь приложению назначают кликом, приложение узнаётся по подписи вместе с helper-процессами, а монитор и детектор утечек показывают, что куда ушло. Протоколов меньше, зато одно другому не мешает: Routekeeper можно поставить поверх такого клиента, как в ответе выше.</p>
         </details>
         <details>
           <summary>Чем отличается от Little Snitch и LuLu?</summary>
@@ -788,11 +801,11 @@ section { padding-top: 128px; }
         </details>
         <details>
           <summary>Нужен ли свой сервер?</summary>
-          <p>Для путей «через прокси» нужен: Routekeeper не продаёт прокси и не держит своих серверов. Подойдёт любой SOCKS5, HTTP или HTTPS: свой VPS, прокси на работе, купленный прокси. Если нужен только файрвол, сервер не нужен вовсе.</p>
+          <p>Для путей «через прокси» нужен: Routekeeper не продаёт прокси и не держит своих серверов. Подойдёт любой SOCKS5, HTTP или HTTPS: VPS в другой стране с HTTPS-прокси (например, Caddy с forwardproxy), прокси на работе, купленный прокси или локальный порт клиента VLESS. Если нужен только файрвол, сервер не нужен вовсе.</p>
         </details>
         <details>
-          <summary>Видит ли Routekeeper мой трафик?</summary>
-          <p>Трафик проходит через сетевое расширение на вашем Mac и уходит туда, куда вы его направили. Routekeeper не расшифровывает соединения и ничего не отправляет разработчику: ни статистики, ни списка сайтов.</p>
+          <summary>Как проверить, что ничего не протекает?</summary>
+          <p>В меню-баре виден внешний IP, с которым приложения выходят через прокси. Монитор показывает каждое соединение и его путь, а детектор утечек отмечает, что ушло мимо у приложений с прокси: DNS-запросы к провайдеру, UDP и QUIC, процессы без правила. Рядом с каждой утечкой есть подсказка, как её закрыть.</p>
         </details>
         <details>
           <summary>Что будет, если прокси-сервер недоступен?</summary>
@@ -801,6 +814,10 @@ section { padding-top: 128px; }
         <details>
           <summary>Работают ли звонки и UDP?</summary>
           <p>Через прокси Routekeeper ведёт TCP. UDP и QUIC для приложений с прокси закрыты, чтобы трафик не ушёл мимо: браузеры при этом сами переходят на TCP. Звонкам UDP нужен, поэтому приложения для звонков лучше оставить на пути «напрямую».</p>
+        </details>
+        <details>
+          <summary>Видит ли Routekeeper мой трафик?</summary>
+          <p>Трафик проходит через сетевое расширение на вашем Mac и уходит туда, куда вы его направили. Routekeeper не расшифровывает соединения и ничего не отправляет разработчику: ни статистики, ни списка сайтов. Сам он ходит в сеть только за двумя вещами: проверяет обновления на getroutekeeper.app и, чтобы показать внешний IP, спрашивает его у ipinfo.io через ваш прокси.</p>
         </details>
         <details>
           <summary>Почему macOS просит что-то разрешить?</summary>
@@ -818,8 +835,8 @@ section { padding-top: 128px; }
     <div class="wrap">
       <div class="lamp rv" id="lamp" aria-hidden="true"><svg viewBox="280 95 464 770"><defs><linearGradient id="ln-brass" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5C3410"/><stop offset="0.22" stop-color="#B9792A"/><stop offset="0.4" stop-color="#FFE4A0"/><stop offset="0.55" stop-color="#E2A64A"/><stop offset="1" stop-color="#4A290B"/></linearGradient><linearGradient id="ln-brassDark" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3E2208"/><stop offset="0.4" stop-color="#C98A36"/><stop offset="1" stop-color="#3A1F07"/></linearGradient><linearGradient id="ln-hood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F6CF7E"/><stop offset="1" stop-color="#8A5419"/></linearGradient></defs><g transform="scale(1.24272) translate(-100 -100)"><path d="M388 336 C382 140 642 140 636 336" fill="none" stroke="#2A1606" stroke-width="32" stroke-linecap="round"/><path d="M388 336 C382 140 642 140 636 336" fill="none" stroke="url(#ln-brass)" stroke-width="22" stroke-linecap="round"/><rect x="464" y="222" width="96" height="66" rx="10" fill="url(#ln-brass)"/><ellipse cx="512" cy="222" rx="48" ry="12" fill="#F3D08A"/><ellipse cx="512" cy="222" rx="32" ry="7" fill="#2A1606"/><path d="M428 282 H596 L678 344 H346 Z" fill="url(#ln-hood)"/><path d="M428 282 H596 L678 344 H346 Z" fill="url(#ln-brass)" opacity="0.55"/><g fill="#2A1606"><circle cx="468" cy="318" r="9"/><circle cx="512" cy="318" r="9"/><circle cx="556" cy="318" r="9"/></g><rect x="338" y="338" width="348" height="28" rx="11" fill="url(#ln-brassDark)"/><rect x="338" y="666" width="348" height="28" rx="11" fill="url(#ln-brassDark)"/><path d="M370 694 H654 L642 758 Q638 782 612 782 H412 Q386 782 382 758 Z" fill="url(#ln-brass)"/></g><defs><radialGradient id="ln-glass" cx="512" cy="480" r="300" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFFBEA"/><stop offset="0.3" stop-color="#FFDD86"/><stop offset="0.75" stop-color="#F29A33"/><stop offset="1" stop-color="#B4561A"/></radialGradient></defs><g transform="scale(1.24272) translate(-100 -100)"><path d="M372 362 C340 450 340 590 372 672 H652 C684 590 684 450 652 362 Z" fill="url(#ln-glass)"/><path class="lamp-unlit" d="M372 362 C340 450 340 590 372 672 H652 C684 590 684 450 652 362 Z" fill="url(#ln-cold)"/></g><defs><radialGradient id="ln-halo" cx="512" cy="470" r="130" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFF7D8" stop-opacity="0.95"/><stop offset="1" stop-color="#FFF7D8" stop-opacity="0"/></radialGradient><linearGradient id="ln-flame" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FFFFFF"/><stop offset="0.5" stop-color="#FFF4B8"/><stop offset="1" stop-color="#FFB547"/></linearGradient></defs><g transform="scale(1.24272) translate(-100 -100)"><g class="lamp-light"><circle cx="512" cy="470" r="130" fill="url(#ln-halo)"/><g class="lamp-flame"><path d="M512 388 C566 450 574 500 512 546 C450 500 458 450 512 388 Z" fill="url(#ln-flame)"/><path d="M512 448 C536 480 538 506 512 532 C486 506 488 480 512 448 Z" fill="#FFFFFF"/></g></g></g><defs><linearGradient id="ln-cold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a4363"/><stop offset=".55" stop-color="#1f2640"/><stop offset="1" stop-color="#141a2e"/></linearGradient></defs><g transform="scale(1.24272) translate(-100 -100)"><g fill="none" stroke-linecap="round"><path d="M400 366 C380 450 380 590 400 668" stroke="#3A1F07" stroke-width="10"/><path d="M624 366 C644 450 644 590 624 668" stroke="#3A1F07" stroke-width="10"/><path d="M512 668 V560" stroke="#2A1606" stroke-width="30"/><path d="M512 640 C512 600 548 572 596 556" stroke="#2A1606" stroke-width="30"/><path d="M512 668 V560" stroke="#7A4A16" stroke-width="12"/><path d="M512 640 C512 600 548 572 596 556" stroke="#7A4A16" stroke-width="12"/></g></g></svg></div>
       <h2 class="rv">Фонарь уже <span class="warm">зажигают</span></h2>
-      <p class="rv">Routekeeper готовится к первой публичной бете. Понадобится Mac с macOS 14 Sonoma или новее.</p>
-      <div class="hero-cta rv"><span class="btn btn-primary" aria-disabled="true" style="cursor:default">Скоро в бете</span></div>
+      <p class="rv">Routekeeper готовится к первой публичной бете для macOS 14 Sonoma и новее. Чтобы узнать о ней первым, откройте страницу проекта на GitHub и нажмите Watch → Custom → Releases.</p>
+      <div class="hero-cta rv"><a class="btn btn-primary" href="https://github.com/ilyabazhenov/routekeeper">Следить на GitHub</a></div>
     </div>
   </section>
 </main>
