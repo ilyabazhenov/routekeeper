@@ -1,0 +1,938 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Routekeeper — every app gets its own route</title>
+<meta name="description" content="Routekeeper is a per-app firewall and proxy router for macOS: choose which apps go through a proxy, which go direct and which go nowhere.">
+<meta property="og:title" content="Routekeeper">
+<meta property="og:description" content="Every app gets its own route. A per-app firewall and proxy router for macOS.">
+<meta property="og:image" content="../icon.png">
+<meta name="theme-color" content="#110c08">
+<link rel="icon" href="../icon.png">
+<link rel="alternate" hreflang="ru" href="https://ilyabazhenov.github.io/routekeeper/">
+<link rel="alternate" hreflang="en" href="https://ilyabazhenov.github.io/routekeeper/en/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root {
+  --bg: #110c08;
+  --surface: rgba(255, 236, 210, 0.035);
+  --surface-2: rgba(255, 236, 210, 0.06);
+  --line: rgba(255, 226, 188, 0.09);
+  --line-2: rgba(255, 226, 188, 0.16);
+  --text: #f7ecdc;
+  --muted: #b7a58d;
+  --faint: #7d6d5b;
+  --amber: #ffb547;
+  --amber-2: #ff8a3d;
+  --glow: rgba(255, 168, 76, 0.5);
+  --direct: #9cc0ff;
+  --stop: #ff7a66;
+  --ask: #c9a7ff;
+  --ok: #7fd8a4;
+  --radius: 20px;
+  --font: "Onest", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; overflow-x: clip; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font: 400 17px/1.6 var(--font); -webkit-font-smoothing: antialiased; overflow-x: clip;
+}
+body::before { /* fine grain */
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 100; opacity: 0.05; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+h1, h2, h3, h4, p { margin: 0; }
+h1, h2, h3 { font-weight: 600; letter-spacing: -0.025em; text-wrap: balance; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; border-radius: 8px; }
+.wrap { width: min(1180px, 100% - 32px); margin-inline: auto; }
+.warm {
+  background: linear-gradient(100deg, #ffd58a 0%, var(--amber) 40%, var(--amber-2) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.eyebrow { display: inline-flex; align-items: center; gap: 8px; font: 500 13px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber); }
+.eyebrow::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 12px var(--amber); }
+
+/* ---------- nav ---------- */
+.nav {
+  position: sticky; top: 12px; z-index: 50; margin-top: 12px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 8px 8px 8px 14px; border-radius: 16px;
+  background: rgba(23, 17, 12, 0.6); border: 1px solid var(--line);
+  backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4);
+}
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 17px; letter-spacing: -0.01em; }
+.brand img { width: 28px; height: 28px; border-radius: 7px; }
+.nav-links { display: flex; gap: 4px; }
+.nav-links a { padding: 8px 14px; border-radius: 10px; color: var(--muted); font-size: 15px; transition: color .2s, background .2s; }
+.nav-links a:hover { color: var(--text); background: var(--surface-2); }
+@media (max-width: 760px) { .nav-links { display: none; } }
+.nav-end { display: flex; align-items: center; gap: 6px; }
+.lang { padding: 8px 10px; border-radius: 10px; color: var(--muted); font: 500 13px/1 var(--mono); letter-spacing: .06em; }
+.lang:hover { color: var(--text); background: var(--surface-2); }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; padding: 13px 20px; border-radius: 12px; border: 0;
+  font: 600 15px/1 var(--font); cursor: pointer; transition: transform .2s, box-shadow .2s, background .2s;
+}
+.btn-primary {
+  color: #2a1606; background: linear-gradient(180deg, #ffd27e, var(--amber) 55%, #f39a3a);
+  box-shadow: inset 0 1px 0 rgba(255, 248, 225, .7), 0 8px 28px -8px var(--glow);
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: inset 0 1px 0 rgba(255, 248, 225, .7), 0 14px 36px -8px var(--glow); }
+.btn-ghost { color: var(--text); background: var(--surface-2); border: 1px solid var(--line); }
+.btn-ghost:hover { background: rgba(255, 236, 210, 0.1); }
+.btn-sm { padding: 10px 14px; font-size: 14px; border-radius: 10px; }
+
+/* ---------- hero ---------- */
+.hero { position: relative; padding-top: 84px; text-align: center; }
+.hero::before { /* lantern light from above */
+  content: ""; position: absolute; left: 50%; top: -260px; width: min(1300px, 160vw); aspect-ratio: 1.5; translate: -50% 0; z-index: -1; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(255, 170, 80, 0.26), rgba(255, 130, 50, 0.08) 45%, transparent 72%);
+  animation: breathe 6s ease-in-out infinite;
+}
+@keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: .78; } }
+.pill {
+  display: inline-flex; align-items: center; gap: 10px; padding: 6px 14px 6px 6px; border-radius: 999px;
+  background: var(--surface-2); border: 1px solid var(--line); color: var(--muted); font-size: 14px;
+}
+.pill b { padding: 4px 10px; border-radius: 999px; background: rgba(255, 181, 71, 0.14); color: var(--amber); font-weight: 600; font-size: 13px; }
+.hero h1 { margin-top: 28px; font-size: clamp(44px, 7.4vw, 92px); line-height: 1; letter-spacing: -0.045em; }
+.hero h1 .warm { filter: drop-shadow(0 0 32px rgba(255, 150, 60, 0.35)); padding-bottom: .08em; }
+.hero .sub { margin: 26px auto 0; max-width: 620px; color: var(--muted); font-size: clamp(17px, 1.6vw, 20px); line-height: 1.55; }
+.hero .sub b { color: var(--text); font-weight: 500; }
+.hero-cta { margin-top: 36px; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+
+/* ---------- product window ---------- */
+.stage { position: relative; margin-top: 72px; perspective: 1800px; }
+.stage::before { /* glow pool under the window */
+  content: ""; position: absolute; inset: 6% 8% -10%; z-index: -1; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 150, 60, 0.32), transparent 75%); filter: blur(30px);
+}
+.window {
+  text-align: left; border-radius: 18px; overflow: hidden;
+  background: linear-gradient(180deg, #221912, #1a130e);
+  border: 1px solid var(--line-2);
+  box-shadow: 0 1px 0 rgba(255, 240, 220, .08) inset, 0 50px 120px -40px rgba(0, 0, 0, .9), 0 0 0 1px rgba(0, 0, 0, .4);
+  transform: rotateX(10deg) scale(.96); transform-origin: 50% 0; transition: transform 1.4s cubic-bezier(.2, .8, .2, 1);
+}
+.window.in { transform: none; }
+.titlebar { display: flex; align-items: center; gap: 8px; height: 42px; padding: 0 16px; border-bottom: 1px solid var(--line); background: rgba(255, 236, 210, .02); }
+.titlebar i { width: 12px; height: 12px; border-radius: 50%; }
+.titlebar i:nth-child(1) { background: #ff6157; } .titlebar i:nth-child(2) { background: #ffbd2e; } .titlebar i:nth-child(3) { background: #28c840; }
+.titlebar span { margin-inline: auto; padding-right: 52px; color: var(--muted); font-size: 13px; font-weight: 500; }
+.app { display: grid; grid-template-columns: 190px minmax(0, 1.25fr) minmax(0, 1fr); min-height: 440px; }
+.side { padding: 14px 10px; border-right: 1px solid var(--line); background: rgba(0, 0, 0, .14); display: grid; align-content: start; gap: 2px; }
+.side div { display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 8px; font-size: 14px; color: var(--muted); }
+.side svg, .strip svg, .leak svg, .priv svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.side div svg { width: 16px; height: 16px; flex: none; }
+.side div.on { background: rgba(255, 181, 71, .13); color: var(--text); }
+.side div.on svg { color: var(--amber); }
+.side .badge { margin-left: auto; font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 99px; background: rgba(255, 138, 61, .2); color: var(--amber-2); }
+.list { padding: 18px 18px 14px; display: grid; align-content: start; gap: 4px; }
+.list-head { display: flex; justify-content: space-between; align-items: baseline; padding: 0 6px 10px; }
+.list-head h4 { font-size: 15px; font-weight: 600; }
+.list-head span { font-size: 12px; color: var(--faint); }
+.row { display: flex; align-items: center; gap: 12px; padding: 9px 8px; border-radius: 12px; transition: background .25s; }
+.row:hover { background: var(--surface); }
+.ico { width: 34px; height: 34px; border-radius: 9px; flex: none; display: grid; place-items: center; font-weight: 700; font-size: 15px; color: #fff; box-shadow: inset 0 1px 0 rgba(255,255,255,.3), 0 4px 10px -4px rgba(0,0,0,.6); }
+.row .nm { min-width: 0; flex: 1; }
+.row .nm b { display: block; font-size: 14px; font-weight: 500; }
+.row .nm small { display: block; font: 11px/1.3 var(--mono); color: var(--faint); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.seg { display: flex; padding: 3px; border-radius: 9px; background: rgba(0, 0, 0, .3); border: 1px solid var(--line); flex: none; }
+.seg button {
+  all: unset; cursor: pointer; padding: 4px 9px; border-radius: 6px; font-size: 12px; font-weight: 500; color: var(--faint);
+  transition: background .2s, color .2s, box-shadow .2s;
+}
+.seg button:focus-visible { outline: 2px solid var(--amber); }
+.seg button:hover { color: var(--text); }
+.seg button[aria-pressed="true"][data-r="proxy"] { background: rgba(255, 181, 71, .18); color: var(--amber); box-shadow: 0 0 14px -4px var(--glow); }
+.seg button[aria-pressed="true"][data-r="direct"] { background: rgba(156, 192, 255, .15); color: var(--direct); }
+.seg button[aria-pressed="true"][data-r="stop"] { background: rgba(255, 122, 102, .16); color: var(--stop); }
+.map { position: relative; border-left: 1px solid var(--line); overflow: hidden; background:
+  radial-gradient(circle at 16% 50%, rgba(255, 170, 80, .16), transparent 45%),
+  radial-gradient(rgba(255, 226, 188, .07) 1px, transparent 1.4px) 0 0 / 18px 18px; }
+.map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.dest { position: absolute; right: 18px; translate: 0 -50%; display: flex; align-items: center; gap: 9px; padding: 8px 12px 8px 10px; border-radius: 12px; background: rgba(23, 17, 12, .85); border: 1px solid var(--line-2); font-size: 13px; font-weight: 500; white-space: nowrap; backdrop-filter: blur(6px); transition: box-shadow .4s; }
+.dest small { display: block; font: 11px/1.2 var(--mono); color: var(--faint); font-weight: 400; }
+.dest i { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+.dest.proxy { top: 22%; } .dest.proxy i { background: var(--amber); box-shadow: 0 0 12px var(--amber); }
+.dest.direct { top: 52%; } .dest.direct i { background: var(--direct); box-shadow: 0 0 12px var(--direct); }
+.dest.stop { top: 82%; } .dest.stop i { background: var(--stop); box-shadow: 0 0 12px var(--stop); }
+@media (max-width: 980px) {
+  .app { grid-template-columns: minmax(0, 1fr); }
+  .side { display: none; }
+  .map { min-height: 260px; border-left: 0; border-top: 1px solid var(--line); }
+}
+@media (max-width: 480px) {
+  .list { padding: 12px 8px; }
+  .row { gap: 10px; padding: 8px 4px; }
+  .row .nm small { display: none; }
+  .seg button { padding: 4px 7px; font-size: 11px; }
+}
+
+/* ---------- trust strip ---------- */
+.strip { margin-top: 56px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 28px; color: var(--faint); font-size: 14px; }
+.strip span { display: inline-flex; align-items: center; gap: 8px; }
+.strip svg { width: 16px; height: 16px; color: var(--amber); }
+
+/* ---------- sections ---------- */
+section { padding-top: 128px; }
+.head { max-width: 720px; display: grid; gap: 18px; margin-bottom: 52px; }
+.head.center { margin-inline: auto; text-align: center; justify-items: center; }
+.head h2 { font-size: clamp(34px, 4.6vw, 56px); line-height: 1.05; }
+.head p { color: var(--muted); font-size: 19px; line-height: 1.55; }
+
+/* scheme */
+.scheme {
+  position: relative; display: grid; gap: 0 0; align-items: center;
+  grid-template-columns: minmax(0, 1fr) 96px minmax(0, 1.25fr) minmax(0, 1.55fr);
+  grid-template-areas: "lm lm lm lo" "apps lin core outs";
+  padding: 28px; border-radius: 24px; background: var(--surface); border: 1px solid var(--line);
+}
+.zone-label { font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--faint); padding: 0 4px 18px; }
+.z-mac { grid-area: lm; } .z-out { grid-area: lo; padding-left: 140px; }
+.mac-zone { /* the Mac's boundary */
+  grid-area: 2 / 1 / 3 / 4; align-self: stretch; margin: -14px -2px -14px -14px; pointer-events: none;
+  border: 1px dashed rgba(255, 181, 71, .28); border-radius: 18px; background: radial-gradient(circle at 75% 50%, rgba(255, 170, 80, .08), transparent 60%);
+}
+.scheme > .node, .scheme > .link { z-index: 1; }
+.node { position: relative; padding: 16px 18px; border-radius: 16px; background: #1d150f; border: 1px solid var(--line-2); }
+.node-h { display: flex; align-items: center; gap: 10px; }
+.node-h b { font-size: 16px; font-weight: 600; }
+.node-h svg { width: 18px; height: 18px; color: var(--amber); fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.node-h img { border-radius: 6px; }
+.node small { display: block; margin-top: 6px; color: var(--muted); font-size: 13px; line-height: 1.45; }
+.n-apps { grid-area: apps; }
+.mini { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 8px; font-size: 14px; color: var(--muted); }
+.mini li { display: flex; align-items: center; gap: 10px; }
+.mini .ico { width: 24px; height: 24px; border-radius: 7px; font-size: 11px; }
+.n-core { grid-area: core; padding: 20px; border-color: rgba(255, 181, 71, .45); background: linear-gradient(180deg, #2a1d12, #1e160f); box-shadow: 0 0 60px -20px var(--glow); }
+.n-core .mono-note { font: 11.5px var(--mono); color: var(--faint); margin-top: 6px; }
+.core-steps { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 10px; font-size: 14px; color: var(--muted); line-height: 1.4; }
+.core-steps li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 8px; }
+.core-steps em { font: normal 500 12px/1.6 var(--mono); color: var(--amber); }
+.link { --c: var(--line-2); position: relative; height: 2px; margin-inline: 8px; background: var(--c); }
+.link::after { content: ""; position: absolute; right: -2px; top: 50%; width: 8px; height: 8px; border-top: 2px solid var(--c); border-right: 2px solid var(--c); translate: 0 -50%; rotate: 45deg; }
+.link span { position: absolute; left: 50%; bottom: 8px; translate: -50% 0; font: 11px/1.3 var(--mono); color: var(--faint); text-align: center; white-space: nowrap; }
+.l-in { grid-area: lin; --c: rgba(255, 226, 188, .3); }
+.outs { grid-area: outs; display: grid; gap: 12px; }
+.out { display: grid; grid-template-columns: 140px minmax(0, 1fr); align-items: center; }
+.out .link { margin: 0 8px 0 24px; }
+.o-proxy .link { --c: var(--amber); box-shadow: 0 0 10px var(--glow); }
+.o-proxy .node { border-color: rgba(255, 181, 71, .4); }
+.o-proxy .node-h svg { color: var(--amber); }
+.o-direct .link { --c: var(--direct); opacity: .8; }
+.o-direct .node-h svg { color: var(--direct); }
+.o-stop .link { --c: var(--stop); background: repeating-linear-gradient(90deg, var(--stop) 0 5px, transparent 5px 9px); opacity: .85; }
+.o-stop .link::after { right: -6px; width: 2px; height: 14px; border: 0; background: var(--stop); rotate: none; }
+.o-stop .node-h svg { color: var(--stop); }
+.scheme-note { margin-top: 18px; color: var(--faint); font-size: 14px; text-align: center; }
+.scheme + .scheme-note + .steps { margin-top: 48px; }
+@media (max-width: 960px) {
+  .scheme { grid-template-columns: minmax(0, 1fr); grid-template-areas: "lm" "apps" "lin" "core" "lo" "outs"; padding: 20px; }
+  .mac-zone { display: none; }
+  .z-out { padding: 28px 4px 14px; }
+  .link.l-in { width: 2px; height: 56px; margin: 6px auto 10px; }
+  .l-in::after { right: 50%; top: auto; bottom: -2px; translate: 50% 0; rotate: 135deg; }
+  .l-in span { left: 14px; bottom: auto; top: 50%; translate: 0 -50%; text-align: left; }
+  .out { grid-template-columns: 56px minmax(0, 1fr); }
+  .out .link { margin: 0 8px 0 4px; }
+  .out .link span { display: none; }
+}
+
+/* hero meta line */
+.meta { margin-top: 20px; font: 13px/1.6 var(--mono); color: var(--faint); }
+.meta b { color: var(--amber); font-weight: 500; }
+
+/* requirements */
+.req { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 56px; padding: 56px; border-radius: 28px; background: linear-gradient(180deg, rgba(255, 236, 210, .05), rgba(255, 236, 210, .02)); border: 1px solid var(--line); }
+@media (max-width: 900px) { .req { grid-template-columns: minmax(0, 1fr); padding: 32px 22px; gap: 36px; } }
+.req-cta { display: grid; gap: 18px; align-content: start; }
+.req-cta h2 { font-size: clamp(30px, 3.6vw, 44px); line-height: 1.08; }
+.req-cta p { color: var(--muted); font-size: 17px; }
+.req-btns { margin-top: 8px; }
+.req-list { list-style: none; margin: 0; padding: 0; display: grid; }
+.req-list li { display: grid; gap: 4px; padding: 18px 0 18px 34px; border-top: 1px solid var(--line); position: relative; }
+.req-list li:first-child { border-top: 0; padding-top: 0; }
+.req-list li::before { content: ""; position: absolute; left: 4px; top: 24px; width: 14px; height: 8px; border-left: 2px solid var(--amber); border-bottom: 2px solid var(--amber); rotate: -45deg; }
+.req-list li:first-child::before { top: 6px; }
+.req-list b { font-weight: 600; font-size: 16px; }
+.req-list span { color: var(--muted); font-size: 15px; }
+
+/* faq */
+.faq-wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 48px; align-items: start; }
+@media (max-width: 900px) { .faq-wrap { grid-template-columns: minmax(0, 1fr); gap: 0; } }
+.faq-wrap .head { position: sticky; top: 100px; }
+.faq { display: grid; gap: 8px; }
+.faq details { border-radius: 16px; background: var(--surface); border: 1px solid var(--line); transition: background .25s, border-color .25s; }
+.faq details[open] { background: var(--surface-2); border-color: var(--line-2); }
+.faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 22px; font-weight: 500; font-size: 17px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; flex: none; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 8px; background: rgba(255, 181, 71, .1); color: var(--amber); font-size: 18px; transition: rotate .25s; }
+.faq details[open] summary::after { rotate: 45deg; }
+.faq details p { padding: 0 22px 20px; color: var(--muted); font-size: 16px; max-width: 64ch; }
+
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; counter-reset: s; }
+@media (max-width: 860px) { .steps { grid-template-columns: minmax(0, 1fr); } }
+.step { padding: 28px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); }
+.step::before { counter-increment: s; content: "0" counter(s); font: 500 13px/1 var(--mono); color: var(--amber); }
+.step h3 { margin-top: 18px; font-size: 21px; }
+.step p { margin-top: 8px; color: var(--muted); font-size: 16px; }
+
+/* bento */
+.bento { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; }
+.card {
+  position: relative; overflow: hidden; border-radius: var(--radius); padding: 28px;
+  background: linear-gradient(180deg, rgba(255, 236, 210, .05), rgba(255, 236, 210, .02)); border: 1px solid var(--line);
+  display: flex; flex-direction: column; gap: 10px; isolation: isolate;
+}
+.card::after { /* the lantern follows the cursor */
+  content: ""; position: absolute; inset: 0; z-index: -1; opacity: 0; transition: opacity .3s; pointer-events: none;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 170, 80, .12), transparent 60%);
+}
+.card:hover::after { opacity: 1; }
+.card h3 { font-size: 22px; }
+.card > p { color: var(--muted); font-size: 16px; max-width: 46ch; }
+.c-3 { grid-column: span 3; } .c-2 { grid-column: span 2; } .c-4 { grid-column: span 4; }
+@media (max-width: 960px) { .c-3, .c-2, .c-4 { grid-column: span 6; } }
+.viz { margin-top: auto; padding-top: 22px; }
+
+.rules { display: grid; gap: 8px; }
+.rule { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px; background: rgba(0, 0, 0, .22); border: 1px solid var(--line); font: 13px/1.3 var(--mono); }
+.rule .ico { width: 26px; height: 26px; border-radius: 7px; font: 700 12px/1 var(--font); }
+.rule span:not(.ico) { color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tag { font: normal 600 12px/1 var(--font); padding: 5px 9px; border-radius: 7px; white-space: nowrap; }
+.tag.proxy { background: rgba(255, 181, 71, .15); color: var(--amber); }
+.tag.direct { background: rgba(156, 192, 255, .14); color: var(--direct); }
+.tag.stop { background: rgba(255, 122, 102, .15); color: var(--stop); }
+.tag.ask { background: rgba(201, 167, 255, .15); color: var(--ask); }
+
+.alert { border-radius: 16px; padding: 16px; background: #231a13; border: 1px solid var(--line-2); box-shadow: 0 24px 50px -24px #000; }
+.alert-top { display: flex; align-items: center; gap: 12px; }
+.alert-top b { font-size: 15px; font-weight: 600; display: block; }
+.alert-top small { font: 12px var(--mono); color: var(--faint); }
+.timer { margin-left: auto; font: 12px var(--mono); color: var(--muted); display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.timer svg { width: 18px; height: 18px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.chip { font-size: 12px; padding: 5px 10px; border-radius: 8px; background: rgba(0,0,0,.25); border: 1px solid var(--line); color: var(--muted); }
+.chip.on { border-color: rgba(255, 181, 71, .45); color: var(--amber); background: rgba(255, 181, 71, .08); }
+.alert-btns { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
+.alert-btns span { text-align: center; padding: 9px 4px; border-radius: 9px; font-size: 13px; font-weight: 600; background: rgba(255, 236, 210, .06); border: 1px solid var(--line); }
+.alert-btns span:nth-child(1) { color: var(--stop); }
+.alert-btns span:nth-child(2) { color: var(--amber); }
+.alert-btns span:nth-child(3) { background: linear-gradient(180deg, #ffd27e, var(--amber)); color: #2a1606; border-color: transparent; }
+.kbd { margin-top: 10px; font: 11px var(--mono); color: var(--faint); text-align: center; }
+
+.feed { display: grid; align-content: start; gap: 6px; font: 12.5px/1.3 var(--mono); height: 220px; overflow: hidden; -webkit-mask-image: linear-gradient(#000 70%, transparent); mask-image: linear-gradient(#000 70%, transparent); }
+.feed div { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 7px 10px; border-radius: 9px; background: rgba(0, 0, 0, .2); animation: slide .5s cubic-bezier(.2, .8, .2, 1); }
+.feed time { color: var(--faint); }
+.feed span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); }
+.feed span b { color: var(--text); font-weight: 500; }
+@keyframes slide { from { opacity: 0; transform: translateY(-10px); } }
+
+.leak { display: grid; gap: 8px; }
+.leak > div { display: flex; gap: 12px; align-items: flex-start; padding: 12px; border-radius: 12px; background: rgba(255, 122, 102, .07); border: 1px solid rgba(255, 122, 102, .2); font-size: 14px; }
+.leak svg { width: 18px; height: 18px; flex: none; margin-top: 2px; color: var(--stop); }
+.leak small { display: block; font: 12px var(--mono); color: var(--faint); margin-top: 2px; }
+
+.sig { display: grid; gap: 8px; font: 12.5px/1.4 var(--mono); }
+.sig div { display: flex; justify-content: space-between; gap: 12px; padding: 9px 12px; border-radius: 10px; background: rgba(0,0,0,.2); }
+.sig div span:first-child { color: var(--faint); }
+.sig .ok { color: var(--ok); }
+.sig .bad { color: var(--stop); }
+
+.protos { display: flex; flex-wrap: wrap; gap: 8px; }
+.protos span { padding: 10px 14px; border-radius: 12px; background: rgba(0,0,0,.22); border: 1px solid var(--line); font: 500 14px var(--mono); }
+.protos span:first-child { border-color: rgba(255, 181, 71, .4); color: var(--amber); }
+
+/* modes */
+.modes { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 16px; }
+@media (max-width: 900px) { .modes { grid-template-columns: minmax(0, 1fr); } }
+.mode-list { display: grid; gap: 8px; align-content: start; }
+.mode {
+  all: unset; cursor: pointer; display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 14px; align-items: center;
+  padding: 16px 18px; border-radius: 16px; border: 1px solid transparent; transition: background .25s, border-color .25s;
+}
+.mode:hover { background: var(--surface); }
+.mode[aria-selected="true"] { background: var(--surface-2); border-color: var(--line-2); }
+.mode:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+.mode .n { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; font: 500 14px var(--mono); color: var(--faint); background: var(--surface); border: 1px solid var(--line); transition: all .25s; }
+.mode[aria-selected="true"] .n { color: #2a1606; background: var(--amber); border-color: transparent; box-shadow: 0 0 22px -4px var(--glow); }
+.mode b { display: block; font-size: 17px; font-weight: 600; }
+.mode small { display: block; color: var(--faint); font-size: 14px; }
+.mode-panel { position: relative; overflow: hidden; border-radius: var(--radius); padding: 36px; background: var(--surface); border: 1px solid var(--line); display: grid; align-content: space-between; gap: 32px; min-height: 340px; isolation: isolate; }
+.mode-panel::before { content: ""; position: absolute; right: -120px; top: -120px; width: 360px; aspect-ratio: 1; border-radius: 50%; z-index: -1; background: radial-gradient(closest-side, rgba(255, 170, 80, .22), transparent); }
+.mode-panel h3 { font-size: 30px; }
+.mode-panel p { margin-top: 12px; color: var(--muted); font-size: 17px; max-width: 46ch; }
+.flow { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; font: 14px var(--mono); }
+.flow .from { padding: 9px 13px; border-radius: 10px; background: rgba(0,0,0,.25); border: 1px dashed var(--line-2); color: var(--muted); }
+.flow svg { width: 40px; height: 12px; }
+.flow .tag { font-size: 14px; padding: 9px 13px; border-radius: 10px; }
+.fade { animation: fade .45s ease; }
+@keyframes fade { from { opacity: 0; transform: translateY(6px); } }
+
+/* privacy */
+.privacy { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 960px) { .privacy { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 540px) { .privacy { grid-template-columns: minmax(0, 1fr); } }
+.priv { padding: 26px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); display: grid; gap: 10px; align-content: start; }
+.priv .ic { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: rgba(255, 181, 71, .1); border: 1px solid rgba(255, 181, 71, .2); margin-bottom: 8px; color: var(--amber); }
+.priv .ic svg { width: 22px; height: 22px; }
+.priv h3 { font-size: 18px; }
+.priv p { color: var(--muted); font-size: 15px; }
+
+/* story */
+.story { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 64px; align-items: center; padding: 64px; border-radius: 28px; overflow: hidden;
+  background: radial-gradient(circle at 22% 50%, rgba(255, 160, 70, .2), transparent 50%), linear-gradient(180deg, #1d150f, #150f0b); border: 1px solid var(--line); }
+@media (max-width: 860px) { .story { grid-template-columns: minmax(0, 1fr); padding: 40px 24px; gap: 36px; } }
+.story-icon { position: relative; justify-self: center; width: min(280px, 70%); animation: float 7s ease-in-out infinite; }
+.story-icon::before { content: ""; position: absolute; inset: -35%; background: radial-gradient(closest-side, rgba(255, 180, 90, .45), transparent); animation: breathe 3.6s ease-in-out infinite; }
+.story-icon img { position: relative; display: block; width: 100%; height: auto; filter: drop-shadow(0 30px 40px rgba(0,0,0,.5)); }
+@keyframes float { 0%, 100% { transform: translateY(0) rotate(-1.5deg); } 50% { transform: translateY(-10px) rotate(1.5deg); } }
+.story-text { display: grid; gap: 18px; }
+.story-text h2 { font-size: clamp(30px, 3.6vw, 44px); line-height: 1.1; }
+.story-text p { color: var(--muted); font-size: 18px; line-height: 1.65; }
+.story-text p.em { color: var(--text); font-weight: 500; }
+
+/* final */
+.final { position: relative; text-align: center; padding-block: 160px 140px; isolation: isolate; }
+.final::before { content: ""; position: absolute; left: 50%; top: 50%; width: min(900px, 140vw); aspect-ratio: 1; translate: -50% -50%; z-index: -1; background: radial-gradient(closest-side, rgba(255, 160, 70, .22), transparent 70%); animation: breathe 6s ease-in-out infinite; }
+.final img { width: 88px; height: 88px; border-radius: 22px; box-shadow: 0 20px 60px -10px var(--glow); }
+.final h2 { margin-top: 32px; font-size: clamp(40px, 6vw, 76px); line-height: 1.02; letter-spacing: -0.04em; }
+.final p { margin: 22px auto 0; max-width: 520px; color: var(--muted); font-size: 19px; }
+
+.footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; padding-block: 28px 44px; border-top: 1px solid var(--line); color: var(--faint); font-size: 14px; }
+
+/* reveal on scroll */
+.rv { opacity: 0; transform: translateY(24px); transition: opacity .9s cubic-bezier(.2, .8, .2, 1), transform .9s cubic-bezier(.2, .8, .2, 1); }
+.rv.in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .rv, .window { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+  <symbol id="i-server" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/></symbol>
+  <symbol id="i-pulse" viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0zM12 9v4M12 17h.01"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></symbol>
+  <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M9 1v4M15 1v4M9 19v4M15 19v4M1 9h4M1 15h4M19 9h4M19 15h4"/></symbol>
+  <symbol id="i-laptop" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="11" rx="2"/><path d="M2 19h20"/></symbol>
+</svg>
+
+<div class="wrap">
+  <header class="nav">
+    <a class="brand" href="#top"><img src="../icon.png" alt="" width="28" height="28">Routekeeper</a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#how">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#modes">Modes</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-end"><a class="lang" href="../" hreflang="ru" lang="ru">RU</a><a class="btn btn-primary btn-sm" href="#beta">Beta coming soon</a></div>
+  </header>
+</div>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <span class="pill rv"><b>Soon</b>Public beta for macOS 14 and later</span>
+      <h1 class="rv">Every app gets<br><span class="warm">its own route</span></h1>
+      <p class="sub rv"><b>Routekeeper</b> decides where each app on your Mac sends its traffic: through a proxy, straight out, or nowhere at all. And it keeps watch so nothing slips past.</p>
+      <div class="hero-cta rv">
+        <a class="btn btn-primary" href="#beta">Join the beta</a>
+        <a class="btn btn-ghost" href="#how">How it works</a>
+      </div>
+      <p class="meta rv"><b>Beta</b> · macOS 14 Sonoma or later · bring your own proxy · no accounts</p>
+
+      <div class="stage rv">
+        <div class="window" id="window" role="group" aria-label="Routekeeper interface: apps and their routes">
+          <div class="titlebar" aria-hidden="true"><i></i><i></i><i></i><span>Routekeeper</span></div>
+          <div class="app">
+            <div class="side" aria-hidden="true">
+              <div class="on"><svg><use href="#i-grid"/></svg>Apps</div>
+              <div><svg><use href="#i-list"/></svg>Rules</div>
+              <div><svg><use href="#i-server"/></svg>Proxies</div>
+              <div><svg><use href="#i-pulse"/></svg>Monitor</div>
+              <div><svg><use href="#i-warn"/></svg>Leaks<span class="badge">2</span></div>
+              <div><svg><use href="#i-gear"/></svg>Settings</div>
+            </div>
+            <div class="list" id="apps">
+              <div class="list-head"><h4>Apps</h4><span>try switching a route</span></div>
+            </div>
+            <div class="map" id="map" aria-hidden="true">
+              <svg id="routes"></svg>
+              <div class="dest proxy"><i></i><div>Proxy<small>Amsterdam · SOCKS5</small></div></div>
+              <div class="dest direct"><i></i><div>Direct<small>your ISP</small></div></div>
+              <div class="dest stop"><i></i><div>Dead end<small>blocked</small></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="strip rv">
+        <span><svg><use href="#i-laptop"/></svg>Apple system extension</span>
+        <span><svg><use href="#i-cpu"/></svg>No kernel extensions</span>
+        <span><svg><use href="#i-shield"/></svg>No servers of ours</span>
+        <span><svg><use href="#i-zap"/></svg>Native Swift app</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="wrap">
+      <div class="head rv">
+        <span class="eyebrow">How it works</span>
+        <h2>From app to website, and not a step off the route</h2>
+        <p>No need to push everything through a VPN. Pick where each app goes, and let the rest work as usual.</p>
+      </div>
+
+      <div class="scheme rv" role="img" aria-label="Diagram: apps on your Mac, Routekeeper applies your rules, then traffic goes through your proxy server, direct, or to a dead end.">
+        <div class="zone-label z-mac">On your Mac</div>
+        <div class="zone-label z-out">Out there</div>
+        <div class="mac-zone" aria-hidden="true"></div>
+
+        <div class="node n-apps">
+          <div class="node-h"><svg><use href="#i-grid"/></svg><b>Apps</b></div>
+          <ul class="mini">
+            <li><span class="ico" style="background:linear-gradient(135deg,#47b4f0,#2283cf)">T</span>Telegram</li>
+            <li><span class="ico" style="background:linear-gradient(135deg,#5fb3ff,#2a6fe0)">S</span>Safari</li>
+            <li><span class="ico" style="background:linear-gradient(135deg,#6a7280,#3c424c)">›_</span>curl, git, node</li>
+            <li><span class="ico" style="background:linear-gradient(135deg,#ff6a5a,#c8322a)">A</span>Adobe Updater</li>
+          </ul>
+        </div>
+
+        <div class="link l-in"><span>every<br>connection</span></div>
+
+        <div class="node n-core">
+          <div class="node-h"><img src="../icon.png" alt="" width="22" height="22"><b>Routekeeper</b></div>
+          <small class="mono-note">system extension · everything stays here</small>
+          <ol class="core-steps">
+            <li><em>01</em>Identifies the app by its developer signature</li>
+            <li><em>02</em>Finds a rule, or asks you</li>
+            <li><em>03</em>Sends TCP through the proxy, lets the proxy resolve names</li>
+            <li><em>04</em>Logs to the monitor and spots leaks</li>
+          </ol>
+        </div>
+
+        <div class="outs">
+          <div class="out o-proxy">
+            <div class="link"><span>TLS · TCP only</span></div>
+            <div class="node"><div class="node-h"><svg><use href="#i-server"/></svg><b>Your proxy server</b></div><small>SOCKS5, HTTP or HTTPS: your own VPS, a work proxy</small></div>
+          </div>
+          <div class="out o-direct">
+            <div class="link"><span>as usual</span></div>
+            <div class="node"><div class="node-h"><svg><use href="#i-globe"/></svg><b>Direct</b></div><small>through your ISP</small></div>
+          </div>
+          <div class="out o-stop">
+            <div class="link"><span>nowhere</span></div>
+            <div class="node"><div class="node-h"><svg><use href="#i-shield"/></svg><b>Dead end</b></div><small>the connection never leaves your Mac</small></div>
+          </div>
+        </div>
+      </div>
+      <p class="scheme-note rv">No accounts and no Routekeeper servers. Traffic goes only along the routes you set, and nowhere else.</p>
+
+      <div class="steps">
+        <div class="step rv"><h3>Add a proxy</h3><p>SOCKS5, HTTP or HTTPS, with or without a password. Add several: work, home, another country.</p></div>
+        <div class="step rv"><h3>Set the routes</h3><p>Telegram via Amsterdam, Safari direct, that pushy updater to a dead end. One click per app.</p></div>
+        <div class="step rv"><h3>The keeper keeps watch</h3><p>The monitor shows every connection, and the leak detector flags anything that strayed from its route.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <div class="head rv">
+        <span class="eyebrow">Features</span>
+        <h2>As precise as a switchman at the junction</h2>
+        <p>A firewall and a router in one window. No config files in the terminal, no noise.</p>
+      </div>
+      <div class="bento">
+        <article class="card c-3 rv">
+          <h3>Rules by destination</h3>
+          <p>A wildcard domain, an IP, a subnet or a port. One route per app, plus exceptions where you need them.</p>
+          <div class="viz rules">
+            <div class="rule"><span class="ico" style="background:linear-gradient(135deg,#47b4f0,#2283cf)">T</span><span>*.telegram.org</span><em class="tag proxy">proxy</em></div>
+            <div class="rule"><span class="ico" style="background:linear-gradient(135deg,#e05a8a,#7b2d6b)">S</span><span>*.corp.example</span><em class="tag proxy">office</em></div>
+            <div class="rule"><span class="ico" style="background:linear-gradient(135deg,#6a7280,#3c424c)">›_</span><span>10.0.0.0/8</span><em class="tag direct">direct</em></div>
+            <div class="rule"><span class="ico" style="background:linear-gradient(135deg,#ff6a5a,#c8322a)">A</span><span>any address</span><em class="tag stop">dead end</em></div>
+          </div>
+        </article>
+
+        <article class="card c-3 rv">
+          <h3>Asks before letting anything out</h3>
+          <p>An unknown connection waits for your answer, and the answer becomes a rule: just once, while the app runs, or forever.</p>
+          <div class="viz">
+            <div class="alert" aria-hidden="true">
+              <div class="alert-top">
+                <span class="ico" style="background:linear-gradient(135deg,#7cc35a,#3f8a2c)">n</span>
+                <div><b>node wants to connect</b><small>api.stripe.com:443 · TCP</small></div>
+                <span class="timer"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="rgba(255,226,188,.15)" stroke-width="2"/><circle id="tm" cx="10" cy="10" r="8" fill="none" stroke="#ffb547" stroke-width="2" stroke-linecap="round" stroke-dasharray="50.3" stroke-dashoffset="0" transform="rotate(-90 10 10)"/></svg><span id="tmt">30 s</span></span>
+              </div>
+              <div class="chips"><span class="chip">Once</span><span class="chip on">While node runs</span><span class="chip">Forever</span></div>
+              <div class="alert-btns"><span>Block</span><span>Via proxy</span><span>Allow</span></div>
+              <div class="kbd">⌘B · ⌘P · ↩</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card c-4 rv">
+          <h3>Live connection monitor</h3>
+          <p>App, destination, matching rule, route and traffic. Turn any odd-looking line into a rule with one click.</p>
+          <div class="viz feed" id="feed" aria-hidden="true"></div>
+        </article>
+
+        <article class="card c-2 rv">
+          <h3>Leak detector</h3>
+          <p>Catches anything that went around the proxy, including DNS queries to your ISP.</p>
+          <div class="viz leak">
+            <div><svg><use href="#i-warn"/></svg><div>Zoom bypassed the proxy<small>52.84.12.7:443</small></div></div>
+            <div><svg><use href="#i-warn"/></svg><div>DNS sent to your ISP<small>Chrome · example.org</small></div></div>
+          </div>
+        </article>
+
+        <article class="card c-2 rv">
+          <h3>By signature, not by name</h3>
+          <p>A renamed copy will not inherit someone else’s route.</p>
+          <div class="viz sig">
+            <div><span>Telegram.app</span><span class="ok">✓ signed</span></div>
+            <div><span>Telegram copy</span><span class="bad">✕ mismatch</span></div>
+            <div><span>+ helpers</span><span class="ok">same route</span></div>
+          </div>
+        </article>
+
+        <article class="card c-4 rv">
+          <h3>Any proxy, even for stubborn apps</h3>
+          <p>Works with apps that have no proxy settings of their own: command-line tools, Electron apps, messengers. UDP and QUIC are closed for them, so traffic can’t sneak around.</p>
+          <div class="viz protos"><span>SOCKS5</span><span>HTTP CONNECT</span><span>HTTPS</span><span>username &amp; password</span><span>curl · git · node</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="modes">
+    <div class="wrap">
+      <div class="head rv">
+        <span class="eyebrow">Modes</span>
+        <h2>And when there’s no rule?</h2>
+        <p>Then the mode decides. Start gentle and tighten things up whenever you like.</p>
+      </div>
+      <div class="modes rv">
+        <div class="mode-list" role="tablist" aria-label="Modes">
+          <button class="mode" role="tab" aria-selected="true" data-m="0"><span class="n">01</span><span><b>Proxy only</b><small>Your routes apply, everything else as usual</small></span></button>
+          <button class="mode" role="tab" aria-selected="false" tabindex="-1"><span class="n">02</span><span><b>Ask</b><small>A new connection waits for your decision</small></span></button>
+          <button class="mode" role="tab" aria-selected="false" tabindex="-1"><span class="n">03</span><span><b>Silent</b><small>No pop-ups, follows a preset default</small></span></button>
+          <button class="mode" role="tab" aria-selected="false" tabindex="-1"><span class="n">04</span><span><b>Block all</b><small>Only what you explicitly allowed gets out</small></span></button>
+        </div>
+        <div class="mode-panel" role="tabpanel" aria-live="polite">
+          <div id="modeBody"></div>
+          <div class="flow" id="modeFlow"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="privacy">
+    <div class="wrap">
+      <div class="head center rv">
+        <span class="eyebrow">Privacy</span>
+        <h2>Traffic goes only where you told it to</h2>
+      </div>
+      <div class="privacy">
+        <div class="priv rv"><span class="ic"><svg><use href="#i-shield"/></svg></span><h3>No servers of ours</h3><p>Routekeeper sends nothing to its developer. No analytics, no accounts.</p></div>
+        <div class="priv rv"><span class="ic"><svg><use href="#i-lock"/></svg></span><h3>Passwords under lock</h3><p>Proxies and passwords live in a config only root can read. Even the app’s own window can’t see them.</p></div>
+        <div class="priv rv"><span class="ic"><svg><use href="#i-globe"/></svg></span><h3>Names resolved by the proxy</h3><p>When the hostname is known, the proxy server resolves it, not your ISP’s DNS.</p></div>
+        <div class="priv rv"><span class="ic"><svg><use href="#i-laptop"/></svg></span><h3>Built the Apple way</h3><p>A system network extension with no kernel extensions. macOS itself asks for your permission.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="requirements">
+    <div class="wrap">
+      <div class="req rv">
+        <div class="req-cta">
+          <span class="eyebrow">What you need</span>
+          <h2>Set your first route in five minutes</h2>
+          <p>On first launch Routekeeper walks you through it: installs the extension, asks macOS for permission and helps you add a proxy.</p>
+          <div class="req-btns"><span class="btn btn-primary" aria-disabled="true" style="cursor:default">Beta coming soon</span></div>
+        </div>
+        <ul class="req-list">
+          <li><b>A Mac with macOS 14 Sonoma or later</b><span>Routekeeper uses Apple’s system network extensions, no kernel extensions.</span></li>
+          <li><b>Admin rights, once</b><span>macOS will ask you to allow the extension in System Settings → General → Login Items &amp; Extensions.</span></li>
+          <li><b>Your own proxy server</b><span>SOCKS5, HTTP CONNECT or HTTPS, with or without a password. Only for proxy routes: the firewall needs no server.</span></li>
+          <li><b>That’s it</b><span>No account, no subscription to someone else’s servers, no second client running alongside.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap faq-wrap">
+      <div class="head rv">
+        <span class="eyebrow">FAQ</span>
+        <h2>Frequently asked questions</h2>
+      </div>
+      <div class="faq rv">
+        <details open>
+          <summary>How is this different from a VPN?</summary>
+          <p>A VPN wraps all of your Mac’s traffic in one tunnel. Routekeeper decides per app and per destination: Telegram through a proxy, your bank and Zoom direct, the pushy updater nowhere. Everything else works as if Routekeeper weren’t there.</p>
+        </details>
+        <details>
+          <summary>How is it different from Little Snitch or LuLu?</summary>
+          <p>They are firewalls: they answer “allow or not”. Routekeeper also answers “where to”: one rule can send an app through a specific proxy. Firewall, router and monitor in one window.</p>
+        </details>
+        <details>
+          <summary>Do I need my own server?</summary>
+          <p>For proxy routes, yes: Routekeeper doesn’t sell proxies and runs no servers. Any SOCKS5, HTTP or HTTPS proxy will do: your own VPS, a work proxy, one you pay for. If you only need the firewall, you need no server at all.</p>
+        </details>
+        <details>
+          <summary>Can Routekeeper see my traffic?</summary>
+          <p>Traffic passes through the network extension on your Mac and goes where you sent it. Routekeeper doesn’t decrypt connections and sends nothing to its developer: no analytics, no list of sites.</p>
+        </details>
+        <details>
+          <summary>What if the proxy server is down?</summary>
+          <p>By default that app’s connections don’t go around the proxy; they fail with an error you can see in the monitor. That way nothing leaks silently. If you prefer, you can let them go direct in Settings.</p>
+        </details>
+        <details>
+          <summary>Do calls and UDP work?</summary>
+          <p>Routekeeper carries TCP through the proxy. UDP and QUIC are closed for proxied apps so traffic can’t slip past; browsers simply fall back to TCP. Calls need UDP, so keep calling apps on a direct route.</p>
+        </details>
+        <details>
+          <summary>Why does macOS ask me to allow something?</summary>
+          <p>Routekeeper runs as an Apple system network extension. macOS only turns those on with the owner’s explicit consent, once, in System Settings → General → Login Items &amp; Extensions.</p>
+        </details>
+        <details>
+          <summary>What if I close the Routekeeper window?</summary>
+          <p>Your rules keep working: the extension enforces them, and the window is only for editing rules and watching the monitor.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section id="story">
+    <div class="wrap">
+      <div class="story rv">
+        <div class="story-icon"><img src="../icon.png" alt="Routekeeper icon: a brass lantern with a railway switch on its glass" width="512" height="512"></div>
+        <div class="story-text">
+          <span class="eyebrow">Why the name</span>
+          <h2>The keeper of the routes</h2>
+          <p>Old railway junctions had one person nothing worked without. They stood at the fork, knew every route and threw the switches: this train to the right, that one to the left, the suspicious one onto a siding.</p>
+          <p>And at night they walked the tracks with a lantern, looking for anything that had slipped through.</p>
+          <p class="em">Routekeeper does the same for your Mac.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="final" id="beta">
+    <div class="wrap">
+      <img src="../icon.png" alt="" width="88" height="88" class="rv">
+      <h2 class="rv">The lantern is <span class="warm">being lit</span></h2>
+      <p class="rv">Routekeeper is getting ready for its first public beta. You’ll need a Mac with macOS 14 Sonoma or later.</p>
+      <div class="hero-cta rv"><span class="btn btn-primary" aria-disabled="true" style="cursor:default">Beta coming soon</span></div>
+    </div>
+  </section>
+</main>
+
+<div class="wrap">
+  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span>Routekeeper for macOS · getroutekeeper.app</span></footer>
+</div>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const COLORS = { proxy: '#ffb547', direct: '#9cc0ff', stop: '#ff7a66' };
+
+  // Reveal on scroll.
+  const io = new IntersectionObserver((es) => es.forEach((e) => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }), { rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('.hero .rv').forEach((el, i) => { el.style.transitionDelay = i * 90 + 'ms'; });
+  document.querySelectorAll('.rv').forEach((el) => io.observe(el));
+  const win = document.getElementById('window');
+  new IntersectionObserver(([e], o) => { if (e.isIntersecting) { win.classList.add('in'); o.disconnect(); } }, { threshold: 0.3 }).observe(win);
+
+  // Lantern spotlight on cards.
+  document.querySelectorAll('.card').forEach((c) => c.addEventListener('pointermove', (e) => {
+    const r = c.getBoundingClientRect();
+    c.style.setProperty('--mx', e.clientX - r.left + 'px');
+    c.style.setProperty('--my', e.clientY - r.top + 'px');
+  }));
+
+  // Hero: apps and their routes.
+  const APPS = [
+    ['Telegram', 'org.telegram.desktop', 'T', '#47b4f0', '#2283cf', 'proxy'],
+    ['Slack', 'com.tinyspeck.slackmacgap', 'S', '#e05a8a', '#7b2d6b', 'proxy'],
+    ['Safari', 'com.apple.Safari', 'S', '#5fb3ff', '#2a6fe0', 'direct'],
+    ['Zoom', 'us.zoom.xos', 'Z', '#5aa0ff', '#2a5fd6', 'direct'],
+    ['Adobe Updater', 'com.adobe.acc.installer', 'A', '#ff6a5a', '#c8322a', 'stop'],
+    ['curl', '/usr/bin/curl', '›_', '#6a7280', '#3c424c', 'proxy'],
+  ];
+  const LABEL = { proxy: 'Proxy', direct: 'Direct', stop: 'Block' };
+  const list = document.getElementById('apps');
+  const state = APPS.map((a) => a[5]);
+  const rowEls = APPS.map((a, i) => {
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.innerHTML = `<span class="ico" style="background:linear-gradient(135deg,${a[3]},${a[4]})">${a[2]}</span>
+      <span class="nm"><b>${a[0]}</b><small>${a[1]}</small></span>
+      <span class="seg" role="group" aria-label="Route for ${a[0]}">${Object.keys(LABEL).map((r) =>
+        `<button data-r="${r}" aria-pressed="${r === a[5]}">${LABEL[r]}</button>`).join('')}</span>`;
+    row.querySelectorAll('button').forEach((b) => b.addEventListener('click', () => {
+      state[i] = b.dataset.r;
+      row.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      draw();
+    }));
+    list.appendChild(row);
+    return row;
+  });
+
+  const map = document.getElementById('map');
+  const svg = document.getElementById('routes');
+  const NS = 'http://www.w3.org/2000/svg';
+  const el = (tag, attrs) => { const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); return n; };
+  let dots = [];
+
+  function draw() {
+    const mr = map.getBoundingClientRect();
+    const W = mr.width, H = mr.height;
+    if (!W) return;
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    svg.innerHTML = '<defs><radialGradient id="hubGlow"><stop offset="0" stop-color="#ffc56b" stop-opacity=".8"/><stop offset="1" stop-color="#ff8a3d" stop-opacity="0"/></radialGradient></defs>';
+    const stacked = getComputedStyle(map).borderTopWidth !== '0px';
+    const dests = {};
+    map.querySelectorAll('.dest').forEach((d) => {
+      const r = d.getBoundingClientRect();
+      dests[d.classList[1]] = { x: r.left - mr.left - 8, y: r.top - mr.top + r.height / 2 };
+    });
+    // Every route passes through the keeper's lantern.
+    const hub = { x: Math.min(W * 0.2, 86), y: H / 2 };
+    const paths = rowEls.map((row, i) => {
+      let sy;
+      if (stacked) sy = H * (0.1 + 0.8 * i / (rowEls.length - 1));
+      else { const rr = row.getBoundingClientRect(); sy = rr.top - mr.top + rr.height / 2; }
+      const r = state[i], stop = r === 'stop';
+      const d = dests[r];
+      const end = stop ? { x: hub.x + (d.x - hub.x) * 0.72, y: d.y } : d;
+      const p = el('path', {
+        d: `M0 ${sy} C ${hub.x * .6} ${sy}, ${hub.x * .4} ${hub.y}, ${hub.x} ${hub.y}` +
+           ` C ${hub.x + (end.x - hub.x) * .45} ${hub.y}, ${hub.x + (end.x - hub.x) * .5} ${end.y}, ${end.x} ${end.y}`,
+        fill: 'none', stroke: COLORS[r], 'stroke-width': 1.6, 'stroke-opacity': .4,
+      });
+      if (stop) p.setAttribute('stroke-dasharray', '4 5');
+      svg.appendChild(p);
+      if (stop) svg.appendChild(el('path', { d: `M${end.x + 6} ${end.y - 9} V ${end.y + 9}`, stroke: COLORS.stop, 'stroke-width': 3, 'stroke-linecap': 'round' }));
+      return { el: p, len: p.getTotalLength(), color: COLORS[r], stop };
+    });
+    svg.appendChild(el('circle', { cx: hub.x, cy: hub.y, r: 36, fill: 'url(#hubGlow)' }));
+    svg.appendChild(el('circle', { cx: hub.x, cy: hub.y, r: 5.5, fill: '#ffe2a8' }));
+    dots = [];
+    paths.forEach((p, i) => {
+      for (let k = 0; k < 3; k++) {
+        const c = el('circle', { r: 2.6, fill: p.color });
+        c.style.filter = `drop-shadow(0 0 4px ${p.color})`;
+        svg.appendChild(c);
+        const d = { el: c, p, t: (k / 3 + i * 0.13) % 1, speed: 0.0016 + Math.random() * 0.0012 };
+        dots.push(d); place(d);
+      }
+    });
+  }
+  function place(d) {
+    const pt = d.p.el.getPointAtLength(d.t * d.p.len);
+    d.el.setAttribute('cx', pt.x); d.el.setAttribute('cy', pt.y);
+    // Blocked traffic fades out at the barrier.
+    d.el.setAttribute('opacity', d.p.stop ? Math.max(0, 1 - Math.max(0, d.t - .7) * 3.4) : 1);
+  }
+  function tick() {
+    if (!document.hidden) dots.forEach((d) => { d.t = (d.t + d.speed) % 1; place(d); });
+    requestAnimationFrame(tick);
+  }
+  draw();
+  new ResizeObserver(() => requestAnimationFrame(draw)).observe(map);
+  if (!reduce) requestAnimationFrame(tick);
+
+  // Live monitor feed.
+  const FEED = [
+    ['Telegram', '149.154.167.50:443', 'proxy', 'AMS'],
+    ['Safari', 'apple.com:443', 'direct', 'direct'],
+    ['Slack', 'wss-primary.slack.com', 'proxy', 'office'],
+    ['curl', 'github.com:443', 'proxy', 'AMS'],
+    ['Adobe Updater', 'ims-na1.adobelogin.com', 'stop', 'blocked'],
+    ['Zoom', 'zoom.us:443', 'direct', 'direct'],
+    ['node', 'registry.npmjs.org', 'proxy', 'AMS'],
+    ['Spotify', 'spclient.wg.spotify.com', 'direct', 'direct'],
+  ];
+  const feed = document.getElementById('feed');
+  const pad = (n) => String(n).padStart(2, '0');
+  let fi = 0;
+  function addFeed() {
+    const f = FEED[fi++ % FEED.length];
+    const d = new Date();
+    const row = document.createElement('div');
+    row.innerHTML = `<time>${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}</time><span><b>${f[0]}</b> → ${f[1]}</span><em class="tag ${f[2]}">${f[3]}</em>`;
+    feed.prepend(row);
+    while (feed.children.length > 7) feed.lastChild.remove();
+  }
+  for (let i = 0; i < 6; i++) addFeed();
+  if (!reduce) setInterval(() => { if (!document.hidden) addFeed(); }, 1800);
+
+  // Alert countdown.
+  const tm = document.getElementById('tm'), tmt = document.getElementById('tmt');
+  let left = 30;
+  if (!reduce) setInterval(() => {
+    left = left <= 1 ? 30 : left - 1;
+    tmt.textContent = left + ' s';
+    tm.setAttribute('stroke-dashoffset', String(50.3 * (1 - left / 30)));
+  }, 1000);
+
+  // Modes.
+  const MODES = [
+    ['Proxy only', 'Only your routes apply. Everything else goes direct, no questions asked. A good place to start.', 'direct', 'direct'],
+    ['Ask', 'A new connection pauses and waits for your answer. The answer is saved as a rule right away: once, while the app runs, forever, or until a date.', 'ask', 'pause and ask'],
+    ['Silent', 'No pop-ups. Connections without a rule are allowed or blocked, whichever you set in advance.', 'proxy', 'your preset default'],
+    ['Block all', 'Only what you explicitly allowed gets online. Everything else waits at a dead end.', 'stop', 'dead end'],
+  ];
+  const tabs = [...document.querySelectorAll('.mode')];
+  const body = document.getElementById('modeBody'), flow = document.getElementById('modeFlow');
+  const arrow = '<svg viewBox="0 0 40 12" aria-hidden="true"><path d="M0 6h36m-5-5 5 5-5 5" fill="none" stroke="#7d6d5b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  function setMode(i, focus) {
+    tabs.forEach((t, k) => { t.setAttribute('aria-selected', String(k === i)); t.tabIndex = k === i ? 0 : -1; });
+    if (focus) tabs[i].focus();
+    const m = MODES[i];
+    body.innerHTML = `<h3>${m[0]}</h3><p>${m[1]}</p>`;
+    flow.innerHTML = `<span class="from">connection with no rule</span>${arrow}<em class="tag ${m[2]}">${m[3]}</em>`;
+    [body, flow].forEach((n) => { n.classList.remove('fade'); void n.offsetWidth; n.classList.add('fade'); });
+  }
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => setMode(i));
+    t.addEventListener('keydown', (e) => {
+      const k = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+      if (!k) return;
+      e.preventDefault();
+      setMode((i + k + tabs.length) % tabs.length, true);
+    });
+  });
+  setMode(0);
+})();
+</script>
+</body>
+</html>
