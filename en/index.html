@@ -677,7 +677,7 @@ section { padding-top: 128px; }
         </div>
         <ul class="req-list">
           <li><b>A Mac with macOS 14 Sonoma or later</b><span>Routekeeper uses Apple’s system network extensions, no kernel extensions.</span></li>
-          <li><b>Admin rights, once</b><span>macOS will ask you to allow the extension in System Settings → General → Login Items &amp; Extensions.</span></li>
+          <li><b>Three permissions on first launch</b><span>Turn on the extension in System Settings → General → Login Items &amp; Extensions, then click Allow in two macOS prompts: network content filtering and the proxy configuration. Routekeeper walks you through it.</span></li>
           <li><b>Your own proxy server</b><span>SOCKS5, HTTP CONNECT or HTTPS, with or without a password. Only for proxy routes: the firewall needs no server.</span></li>
           <li><b>That’s it</b><span>No account, no subscription to someone else’s servers, no second client running alongside.</span></li>
         </ul>
@@ -718,7 +718,7 @@ section { padding-top: 128px; }
         </details>
         <details>
           <summary>Why does macOS ask me to allow something?</summary>
-          <p>Routekeeper runs as an Apple system network extension. macOS only turns those on with the owner’s explicit consent, once, in System Settings → General → Login Items &amp; Extensions.</p>
+          <p>Routekeeper runs as an Apple system network extension. macOS only turns those on with the owner’s explicit consent, so on first launch it asks three times: turn on the extension in System Settings → General → Login Items &amp; Extensions, allow network content filtering, and allow the proxy configuration. You only do this once.</p>
         </details>
         <details>
           <summary>What if I close the Routekeeper window?</summary>
