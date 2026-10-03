@@ -451,6 +451,12 @@ section { padding-top: 128px; }
 .final h2 { margin-top: 32px; font-size: clamp(40px, 6vw, 76px); line-height: 1.02; letter-spacing: -0.04em; }
 .final p { margin: 22px auto 0; max-width: 520px; color: var(--muted); font-size: 19px; }
 
+.final .hero-cta { margin-top: 32px; }
+.final .fine { margin-top: 18px; font-size: 14px; color: var(--faint); }
+.final .fine a, .privacy-more a, .footer a { transition: color .2s; }
+.final .fine a:hover, .privacy-more a:hover, .footer a:hover { color: var(--text); }
+.privacy-more { margin-top: 28px; text-align: center; color: var(--muted); font-size: 15px; }
+.privacy-more a { color: var(--amber); }
 .footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; padding-block: 28px 44px; border-top: 1px solid var(--line); color: var(--faint); font-size: 14px; }
 
 /* the main line down the page margin, drawn by script */
@@ -509,18 +515,18 @@ section { padding-top: 128px; }
       <a href="#privacy">Privacy</a>
       <a href="#faq">FAQ</a>
     </nav>
-    <div class="nav-end"><a class="lang" href="../" hreflang="ru" lang="ru">RU</a><a class="btn btn-primary btn-sm" href="#beta">Beta coming soon</a></div>
+    <div class="nav-end"><a class="lang" href="../" hreflang="ru" lang="ru">RU</a><a class="btn btn-primary btn-sm" href="#download">Download</a></div>
   </header>
 </div>
 
 <main id="top">
   <section class="hero">
     <div class="wrap">
-      <span class="pill rv"><b>Soon</b>Public beta for macOS 14 and later</span>
+      <span class="pill rv"><b>Beta</b>First public release for macOS 14 and later</span>
       <h1 class="rv">Every app gets<br><span class="warm">its own route</span></h1>
       <p class="sub rv"><b>Routekeeper</b> sends the apps you choose through your proxy server and leaves the rest alone. And it makes sure nothing leaks: if the proxy goes down, traffic won’t go direct, and anything that slips past shows up.</p>
       <div class="hero-cta rv">
-        <a class="btn btn-primary" href="#beta">Join the beta</a>
+        <a class="btn btn-primary" href="https://github.com/ilyabazhenov/routekeeper/releases/latest/download/Routekeeper.dmg">Download for Mac</a>
         <a class="btn btn-ghost" href="#how">How it works</a>
       </div>
       <p class="meta rv"><b>Beta</b> · macOS 14 Sonoma or later · your own SOCKS5, HTTP or HTTPS proxy · no accounts</p>
@@ -750,6 +756,7 @@ section { padding-top: 128px; }
         <div class="priv rv"><span class="ic"><svg><use href="#i-globe"/></svg></span><h3>Names resolved by the proxy</h3><p>When the hostname is known, the proxy server resolves it, not your ISP’s DNS.</p></div>
         <div class="priv rv"><span class="ic"><svg><use href="#i-laptop"/></svg></span><h3>Built the Apple way</h3><p>A system network extension with no kernel extensions. macOS itself asks for your permission.</p></div>
       </div>
+      <p class="privacy-more rv">What Routekeeper sees and what it connects to on its own — <a href="privacy/">in the privacy policy</a>.</p>
     </div>
   </section>
 
@@ -760,7 +767,7 @@ section { padding-top: 128px; }
           <span class="eyebrow">What you need</span>
           <h2>Set your first route in five minutes</h2>
           <p>On first launch Routekeeper walks you through it: installs the extension, asks macOS for permission and helps you add a proxy.</p>
-          <div class="req-btns"><a class="btn btn-primary" href="#beta">Join the beta</a></div>
+          <div class="req-btns"><a class="btn btn-primary" href="#download">Download</a></div>
         </div>
         <ul class="req-list">
           <li><b>A Mac with macOS 14 Sonoma or later</b><span>Routekeeper uses Apple’s system network extensions, no kernel extensions.</span></li>
@@ -831,18 +838,19 @@ section { padding-top: 128px; }
     </div>
   </section>
 
-  <section class="final" id="beta">
+  <section class="final" id="download">
     <div class="wrap">
       <div class="lamp rv" id="lamp" aria-hidden="true"><svg viewBox="280 95 464 770"><defs><linearGradient id="ln-brass" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5C3410"/><stop offset="0.22" stop-color="#B9792A"/><stop offset="0.4" stop-color="#FFE4A0"/><stop offset="0.55" stop-color="#E2A64A"/><stop offset="1" stop-color="#4A290B"/></linearGradient><linearGradient id="ln-brassDark" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3E2208"/><stop offset="0.4" stop-color="#C98A36"/><stop offset="1" stop-color="#3A1F07"/></linearGradient><linearGradient id="ln-hood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F6CF7E"/><stop offset="1" stop-color="#8A5419"/></linearGradient></defs><g transform="scale(1.24272) translate(-100 -100)"><path d="M388 336 C382 140 642 140 636 336" fill="none" stroke="#2A1606" stroke-width="32" stroke-linecap="round"/><path d="M388 336 C382 140 642 140 636 336" fill="none" stroke="url(#ln-brass)" stroke-width="22" stroke-linecap="round"/><rect x="464" y="222" width="96" height="66" rx="10" fill="url(#ln-brass)"/><ellipse cx="512" cy="222" rx="48" ry="12" fill="#F3D08A"/><ellipse cx="512" cy="222" rx="32" ry="7" fill="#2A1606"/><path d="M428 282 H596 L678 344 H346 Z" fill="url(#ln-hood)"/><path d="M428 282 H596 L678 344 H346 Z" fill="url(#ln-brass)" opacity="0.55"/><g fill="#2A1606"><circle cx="468" cy="318" r="9"/><circle cx="512" cy="318" r="9"/><circle cx="556" cy="318" r="9"/></g><rect x="338" y="338" width="348" height="28" rx="11" fill="url(#ln-brassDark)"/><rect x="338" y="666" width="348" height="28" rx="11" fill="url(#ln-brassDark)"/><path d="M370 694 H654 L642 758 Q638 782 612 782 H412 Q386 782 382 758 Z" fill="url(#ln-brass)"/></g><defs><radialGradient id="ln-glass" cx="512" cy="480" r="300" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFFBEA"/><stop offset="0.3" stop-color="#FFDD86"/><stop offset="0.75" stop-color="#F29A33"/><stop offset="1" stop-color="#B4561A"/></radialGradient></defs><g transform="scale(1.24272) translate(-100 -100)"><path d="M372 362 C340 450 340 590 372 672 H652 C684 590 684 450 652 362 Z" fill="url(#ln-glass)"/><path class="lamp-unlit" d="M372 362 C340 450 340 590 372 672 H652 C684 590 684 450 652 362 Z" fill="url(#ln-cold)"/></g><defs><radialGradient id="ln-halo" cx="512" cy="470" r="130" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFF7D8" stop-opacity="0.95"/><stop offset="1" stop-color="#FFF7D8" stop-opacity="0"/></radialGradient><linearGradient id="ln-flame" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FFFFFF"/><stop offset="0.5" stop-color="#FFF4B8"/><stop offset="1" stop-color="#FFB547"/></linearGradient></defs><g transform="scale(1.24272) translate(-100 -100)"><g class="lamp-light"><circle cx="512" cy="470" r="130" fill="url(#ln-halo)"/><g class="lamp-flame"><path d="M512 388 C566 450 574 500 512 546 C450 500 458 450 512 388 Z" fill="url(#ln-flame)"/><path d="M512 448 C536 480 538 506 512 532 C486 506 488 480 512 448 Z" fill="#FFFFFF"/></g></g></g><defs><linearGradient id="ln-cold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a4363"/><stop offset=".55" stop-color="#1f2640"/><stop offset="1" stop-color="#141a2e"/></linearGradient></defs><g transform="scale(1.24272) translate(-100 -100)"><g fill="none" stroke-linecap="round"><path d="M400 366 C380 450 380 590 400 668" stroke="#3A1F07" stroke-width="10"/><path d="M624 366 C644 450 644 590 624 668" stroke="#3A1F07" stroke-width="10"/><path d="M512 668 V560" stroke="#2A1606" stroke-width="30"/><path d="M512 640 C512 600 548 572 596 556" stroke="#2A1606" stroke-width="30"/><path d="M512 668 V560" stroke="#7A4A16" stroke-width="12"/><path d="M512 640 C512 600 548 572 596 556" stroke="#7A4A16" stroke-width="12"/></g></g></svg></div>
-      <h2 class="rv">The lantern is <span class="warm">being lit</span></h2>
-      <p class="rv">Routekeeper is getting ready for its first public beta for macOS 14 Sonoma and later. To hear first, open the project on GitHub and click Watch → Custom → Releases.</p>
-      <div class="hero-cta rv"><a class="btn btn-primary" href="https://github.com/ilyabazhenov/routekeeper">Follow on GitHub</a></div>
+      <h2 class="rv">The lantern <span class="warm">is lit</span></h2>
+      <p class="rv">Public beta for macOS 14 Sonoma and later. Open the DMG and drag Routekeeper to Applications: the build is signed with Developer ID and notarized by Apple, and it keeps itself up to date.</p>
+      <div class="hero-cta rv"><a class="btn btn-primary" href="https://github.com/ilyabazhenov/routekeeper/releases/latest/download/Routekeeper.dmg">Download Routekeeper</a><a class="btn btn-ghost" href="https://github.com/ilyabazhenov/routekeeper/releases">All versions</a></div>
+      <p class="fine rv"><a href="https://github.com/ilyabazhenov/routekeeper/blob/main/docs/install.md">Installation and first run</a> · <a href="privacy/">Privacy</a></p>
     </div>
   </section>
 </main>
 
 <div class="wrap">
-  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span>Routekeeper for macOS · getroutekeeper.app</span></footer>
+  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span><a href="privacy/">Privacy</a> · <a href="https://github.com/ilyabazhenov/routekeeper">GitHub</a> · Routekeeper for macOS</span></footer>
 </div>
 
 <script>
@@ -1037,7 +1045,7 @@ section { padding-top: 128px; }
     if (wrapX < 60) return; // no room in the margin
     const x = wrapX - Math.min(56, wrapX / 2);
     const top = pageXY(document.getElementById('story')).y - 40;
-    const end = pageXY(document.getElementById('beta')).y + 120;
+    const end = pageXY(document.getElementById('download')).y + 120;
     const d = [`M${x} ${top} V ${end}`];
     document.querySelectorAll('main > section:not(.hero):not(.final)').forEach((s) => {
       const eb = s.querySelector('.eyebrow');
@@ -1177,7 +1185,7 @@ section { padding-top: 128px; }
   }
 
   // Final: the lantern is lit once it comes into view.
-  const fin = document.getElementById('beta');
+  const fin = document.getElementById('download');
   if (reduce) fin.classList.add('lit');
   else new IntersectionObserver(([e], o) => {
     if (e.isIntersecting) { setTimeout(() => fin.classList.add('lit'), 350); o.disconnect(); }

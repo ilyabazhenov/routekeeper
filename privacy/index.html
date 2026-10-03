@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Конфиденциальность — Routekeeper</title>
+<meta name="description" content="Политика конфиденциальности Routekeeper: что приложение видит, где это хранится и куда оно ходит в сеть само.">
+<meta name="theme-color" content="#0a0f1f">
+<link rel="icon" href="../mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../icon.png">
+<link rel="alternate" hreflang="ru" href="https://getroutekeeper.app/privacy/">
+<link rel="alternate" hreflang="en" href="https://getroutekeeper.app/en/privacy/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root {
+  --bg: #0a0f1f;
+  --surface: rgba(170, 190, 255, 0.035);
+  --surface-2: rgba(170, 190, 255, 0.06);
+  --line: rgba(170, 190, 255, 0.09);
+  --line-2: rgba(170, 190, 255, 0.16);
+  --text: #f3ecdf;
+  --muted: #a3abc4;
+  --faint: #6b7493;
+  --amber: #ffb547;
+  --amber-2: #ff8a3d;
+  --glow: rgba(255, 168, 76, 0.5);
+  --font: "Onest", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { overflow-x: clip; }
+body {
+  margin: 0; color: var(--text);
+  background: radial-gradient(1500px 1000px at 50% -160px, #18234b, transparent 70%) no-repeat, var(--bg);
+  font: 400 17px/1.65 var(--font); -webkit-font-smoothing: antialiased; overflow-x: clip;
+}
+h1, h2, p, ul, table { margin: 0; }
+h1, h2 { font-weight: 600; letter-spacing: -0.025em; text-wrap: balance; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; border-radius: 8px; }
+.wrap { width: min(1180px, 100% - 32px); margin-inline: auto; }
+.warm { background: linear-gradient(100deg, #ffd58a 0%, var(--amber) 40%, var(--amber-2) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+.nav-wrap { position: sticky; top: 12px; z-index: 50; margin-top: 12px; }
+.nav {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 8px 8px 8px 14px; border-radius: 16px;
+  background: rgba(12, 18, 38, 0.6); border: 1px solid var(--line);
+  backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4);
+}
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 17px; letter-spacing: -0.01em; }
+.brand img { width: 28px; height: 28px; }
+.nav-end { display: flex; align-items: center; gap: 6px; }
+.lang { padding: 8px 10px; border-radius: 10px; color: var(--muted); font: 500 13px/1 var(--mono); letter-spacing: .06em; }
+.lang:hover { color: var(--text); background: var(--surface-2); }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 10px; font: 600 14px/1 var(--font); }
+.btn-primary { color: #2a1606; background: linear-gradient(180deg, #ffd27e, var(--amber) 55%, #f39a3a); box-shadow: inset 0 1px 0 rgba(255, 248, 225, .7), 0 8px 28px -8px var(--glow); }
+
+.doc { max-width: 720px; margin-inline: auto; padding-block: 88px 96px; }
+.eyebrow { font: 500 13px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber); }
+.doc h1 { margin-top: 18px; font-size: clamp(38px, 6vw, 60px); line-height: 1.05; letter-spacing: -0.04em; }
+.lede { margin-top: 24px; font-size: 20px; color: var(--text); }
+.lede b { color: var(--amber); font-weight: 600; }
+.dated { margin-top: 14px; color: var(--faint); font-size: 14px; }
+.doc h2 { margin-top: 56px; font-size: 26px; }
+.doc p, .doc ul, .doc table { margin-top: 16px; color: var(--muted); }
+.doc p b, .doc li b { color: var(--text); font-weight: 600; }
+.doc ul { padding-left: 22px; }
+.doc li + li { margin-top: 10px; }
+.doc li::marker { color: var(--amber); }
+.doc code { font: 500 0.88em/1 var(--mono); color: var(--text); background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px; padding: 2px 6px; }
+.doc a:not(.btn) { color: var(--amber); text-decoration: underline; text-decoration-color: rgba(255, 181, 71, .4); text-underline-offset: 3px; }
+.doc a:not(.btn):hover { text-decoration-color: var(--amber); }
+.table { overflow-x: auto; margin-top: 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+.doc table { margin: 0; width: 100%; border-collapse: collapse; font-size: 15px; }
+.doc th, .doc td { padding: 12px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+.doc tr:last-child td { border-bottom: 0; }
+.doc th { color: var(--text); font-weight: 600; font-size: 14px; background: var(--surface-2); }
+.doc td:first-child { color: var(--text); }
+.footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; padding-block: 28px 44px; border-top: 1px solid var(--line); color: var(--faint); font-size: 14px; }
+.footer a:hover { color: var(--text); }
+@media (max-width: 600px) { .doc { padding-block: 56px 72px; } .lede { font-size: 18px; } .doc table { min-width: 560px; } }
+</style>
+</head>
+<body>
+
+<div class="wrap nav-wrap">
+  <header class="nav">
+    <a class="brand" href="../"><img src="../mark.svg" alt="" width="28" height="28">Routekeeper</a>
+    <div class="nav-end"><a class="lang" href="../en/privacy/" hreflang="en" lang="en">EN</a><a class="btn btn-primary" href="../#download">Скачать</a></div>
+  </header>
+</div>
+
+<main class="wrap">
+  <article class="doc">
+    <span class="eyebrow">Конфиденциальность</span>
+    <h1>Что Routekeeper знает <span class="warm">и куда это не уходит</span></h1>
+    <p class="lede"><b>Routekeeper не собирает данные о вас и вашем трафике и никуда их не отправляет.</b> Всё, что он знает о ваших соединениях, остаётся на вашем Mac.</p>
+    <p class="dated">Действует с первой публичной версии Routekeeper. Редакция от 3 октября 2026 года.</p>
+
+    <h2>Что Routekeeper видит</h2>
+    <p>Чтобы решать, куда направить соединение, системное расширение Routekeeper видит о каждом исходящем соединении:</p>
+    <ul>
+      <li>какой процесс его открыл: путь, подпись, родительские процессы;</li>
+      <li>куда: адрес, порт, протокол и имя хоста, если приложение его передало;</li>
+      <li>сколько данных прошло, сколько это заняло и чем закончилось.</li>
+    </ul>
+    <p>Содержимое соединений Routekeeper не читает. Трафик, который идёт через прокси, он передаёт как есть, не расшифровывая.</p>
+
+    <h2>Где это хранится</h2>
+    <div class="table"><table>
+      <thead><tr><th>Что</th><th>Где</th><th>Сколько</th></tr></thead>
+      <tbody>
+        <tr><td>Журнал соединений для монитора</td><td>В памяти системного расширения, последние несколько тысяч записей</td><td>До перезапуска расширения. На диск не пишется.</td></tr>
+        <tr><td>Правила, список прокси, настройки, пароли прокси</td><td>Файл конфигурации системного расширения, доступен только root</td><td>Пока вы их не удалите. Остаётся после удаления приложения, чтобы правила вернулись при повторной установке.</td></tr>
+        <tr><td>Служебные логи</td><td>Системный журнал macOS (unified logging)</td><td>Сколько их хранит macOS, обычно несколько дней.</td></tr>
+      </tbody>
+    </table></div>
+    <p>Окно Routekeeper получает настройки <b>без паролей прокси</b>.</p>
+    <p>Служебные логи содержат технические события: включение, ошибки, решения по соединениям. В них могут попасть адреса, к которым обращались приложения. Логи не покидают Mac, пока вы сами не приложите их к сообщению об ошибке. Кнопка «Собрать диагностику» в настройках кладёт архив на рабочий стол и никуда его не отправляет.</p>
+    <p>Карта трафика определяет страну и сеть по базе, встроенной в приложение (DB-IP Lite), без запросов в интернет.</p>
+
+    <h2>Куда Routekeeper ходит в сеть сам</h2>
+    <ul>
+      <li><b>На ваши прокси</b> — передавать трафик приложений, которым вы назначили маршрут через прокси.</li>
+      <li><b>На ipinfo.io через ваш прокси</b> — чтобы показать задержку, адрес и страну, которые видят сайты. Это происходит, когда вы нажимаете «Проверить», сохраняете прокси или открываете список прокси. Для основного прокси — ещё когда вы открываете меню-бар или окно Routekeeper, не чаще раза в минуту, и через несколько секунд после смены сети, если прокси уже проверялся. Запрос идёт через прокси, поэтому ipinfo.io видит адрес прокси, а не ваш.</li>
+      <li><b>За обновлениями</b> — раз в сутки и когда вы нажимаете «Проверить обновления…». Routekeeper скачивает список версий (<code>appcast.xml</code>) с getroutekeeper.app, а если вы согласились обновиться, то и саму сборку со страницы релизов на GitHub. В запросе только версия Routekeeper и macOS. Сайт и сборки размещены на GitHub, поэтому адрес вашего Mac видит GitHub, как и при открытии любой страницы сайта. Автоматическую проверку можно выключить в настройках: «Проверять обновления автоматически».</li>
+    </ul>
+    <p>Больше никуда. Никакой аналитики, телеметрии, отчётов о сбоях, рекламных идентификаторов.</p>
+
+    <h2>Ваши прокси</h2>
+    <p>Трафик, который вы направили через прокси, видит владелец прокси-сервера. Routekeeper за него не отвечает: выбирайте прокси, которым доверяете.</p>
+
+    <h2>Если вы пишете нам</h2>
+    <p>Сообщение об ошибке в <a href="https://github.com/ilyabazhenov/routekeeper/issues">GitHub Issues</a> публично. Перед тем как приложить лог или архив диагностики, просмотрите его и уберите то, что не хотите показывать.</p>
+
+    <h2>Изменения</h2>
+    <p>Если политика изменится, новая редакция появится на этой странице, а история изменений — в <a href="https://github.com/ilyabazhenov/routekeeper/commits/main/privacy/index.html">истории репозитория</a>.</p>
+  </article>
+</main>
+
+<div class="wrap">
+  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span><a href="../">Routekeeper для macOS</a> · <a href="https://github.com/ilyabazhenov/routekeeper">GitHub</a></span></footer>
+</div>
+
+</body>
+</html>

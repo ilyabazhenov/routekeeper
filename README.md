@@ -17,11 +17,12 @@ Routekeeper ведёт выбранные приложения на Mac чере
 
 ## Скачать
 
-Первая публичная сборка готовится. Чтобы узнать о ней первым, нажмите
-**Watch → Custom → Releases** вверху этой страницы.
+**[Скачать Routekeeper.dmg](../../releases/latest/download/Routekeeper.dmg)** —
+последняя версия, публичная бета. Все версии и что в них нового — в **[Releases](../../releases)**.
 
-Сборки будут появляться в **[Releases](../../releases)**: DMG, подписанный
-Developer ID и нотаризованный Apple, — Gatekeeper откроет его без обходных путей.
+DMG подписан Developer ID и нотаризован Apple: Gatekeeper откроет его без обходных
+путей. Дальше Routekeeper обновляется сам. Чтобы узнавать о новых версиях, нажмите
+**Watch → Custom → Releases** вверху этой страницы.
 
 Требования: **macOS 14 Sonoma и новее**.
 
