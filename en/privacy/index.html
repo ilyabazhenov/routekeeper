@@ -90,7 +90,7 @@ a { color: inherit; text-decoration: none; }
 <div class="wrap nav-wrap">
   <header class="nav">
     <a class="brand" href="../"><img src="../../mark.svg" alt="" width="28" height="28">Routekeeper</a>
-    <div class="nav-end"><a class="lang" href="../../privacy/" hreflang="ru" lang="ru">RU</a><a class="btn btn-primary" href="../#download">Download</a></div>
+    <div class="nav-end"><a class="lang" href="../../privacy/" hreflang="ru" lang="ru">RU</a><a class="btn" href="../docs/">Docs</a><a class="btn btn-primary" href="../#download">Download</a></div>
   </header>
 </div>
 
@@ -126,7 +126,7 @@ a { color: inherit; text-decoration: none; }
     <h2>What Routekeeper connects to on its own</h2>
     <ul>
       <li><b>Your proxies</b> — to carry the traffic of apps you routed through a proxy.</li>
-      <li><b>ipinfo.io, through your proxy</b> — to show the latency, address and country that websites see. This happens when you click “Check”, save a proxy or open the proxy list. For the primary proxy, also when you open the menu bar or the Routekeeper window, at most once a minute, and a few seconds after the network changes if the proxy was checked before. The request goes through the proxy, so ipinfo.io sees the proxy’s address, not yours.</li>
+      <li><b>ipinfo.io, through your proxy</b> — to show the latency, address and country that websites see. This happens when you click “Check”, save a proxy or open the proxy list. For the primary proxy, also when you open the menu bar or the Routekeeper window, at most once a minute, a few seconds after the network changes if the proxy was checked before, and once a minute while the check keeps failing. The request goes through the proxy, so ipinfo.io sees the proxy’s address, not yours.</li>
       <li><b>Updates</b> — once a day and when you click “Check for Updates…”. Routekeeper downloads the version list (<code>appcast.xml</code>) from getroutekeeper.app and, if you agree to update, the build itself from the GitHub releases page. The request carries only the Routekeeper and macOS versions. The site and the builds are hosted on GitHub, so GitHub sees your Mac’s address, as with any page of the site. You can turn automatic checks off in Settings: “Check for updates automatically”.</li>
     </ul>
     <p>Nothing else. No analytics, telemetry, crash reports or advertising identifiers.</p>
@@ -143,7 +143,7 @@ a { color: inherit; text-decoration: none; }
 </main>
 
 <div class="wrap">
-  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span><a href="../">Routekeeper for macOS</a> · <a href="https://github.com/ilyabazhenov/routekeeper">GitHub</a></span></footer>
+  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span><a href="../">Routekeeper for macOS</a> · <a href="../docs/">Docs</a> · <a href="https://github.com/ilyabazhenov/routekeeper">GitHub</a></span></footer>
 </div>
 
 </body>

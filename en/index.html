@@ -409,6 +409,7 @@ section { padding-top: 128px; }
 .priv .ic svg { width: 22px; height: 22px; }
 .priv h3 { font-size: 18px; }
 .priv p { color: var(--muted); font-size: 15px; }
+.head p code, .priv p code { font: .92em var(--mono); color: var(--text); }
 
 /* story */
 .story { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 64px; align-items: center; padding: 64px; border-radius: 28px; overflow: hidden;
@@ -503,6 +504,7 @@ section { padding-top: 128px; }
   <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></symbol>
   <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M9 1v4M15 1v4M9 19v4M15 19v4M1 9h4M1 15h4M19 9h4M19 15h4"/></symbol>
   <symbol id="i-laptop" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="11" rx="2"/><path d="M2 19h20"/></symbol>
+  <symbol id="i-term" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m7 9 3 3-3 3M13 15h4"/></symbol>
 </svg>
 
 <div class="wrap nav-wrap">
@@ -512,6 +514,7 @@ section { padding-top: 128px; }
       <a href="#how">How it works</a>
       <a href="#features">Features</a>
       <a href="#modes">Modes</a>
+      <a href="docs/">Docs</a>
       <a href="#privacy">Privacy</a>
       <a href="#faq">FAQ</a>
     </nav>
@@ -722,6 +725,22 @@ section { padding-top: 128px; }
     </div>
   </section>
 
+  <section id="dev">
+    <div class="wrap">
+      <div class="head rv">
+        <span class="eyebrow">For developers</span>
+        <h2>AI assistants and the terminal, through your server</h2>
+        <p>ChatGPT, Claude, Cursor and Copilot aren’t available everywhere. Routekeeper sends just them through your proxy and leaves everything else direct. No <code>HTTP_PROXY</code>, no VPN for the whole Mac.</p>
+      </div>
+      <div class="privacy">
+        <div class="priv rv"><span class="ic"><svg><use href="#i-zap"/></svg></span><h3>Desktop AI apps</h3><p>ChatGPT, Claude, Codex and other Electron apps go through the proxy together with all their helper processes.</p></div>
+        <div class="priv rv"><span class="ic"><svg><use href="#i-term"/></svg></span><h3>A terminal without env vars</h3><p>A rule for Terminal or iTerm with its child processes covers curl, git, npm, pip and brew, even when they know nothing about proxies.</p></div>
+        <div class="priv rv"><span class="ic"><svg><use href="#i-grid"/></svg></span><h3>The editor and its extensions</h3><p>A rule for VS Code or Cursor applies to extensions too: Copilot and other assistants run inside the editor’s processes.</p></div>
+        <div class="priv rv"><span class="ic"><svg><use href="#i-list"/></svg></span><h3>Only the addresses you need</h3><p>You don’t have to route the whole app: send just the API, say <code>*.openai.com</code>, through the proxy and keep the rest direct.</p></div>
+      </div>
+    </div>
+  </section>
+
   <section id="modes">
     <div class="wrap">
       <div class="head rv">
@@ -811,6 +830,10 @@ section { padding-top: 128px; }
           <p>For proxy routes, yes: Routekeeper doesn’t sell proxies and runs no servers. Any SOCKS5, HTTP or HTTPS proxy will do: a VPS abroad with an HTTPS proxy (Caddy with forwardproxy, for example), a work proxy, one you pay for, or the local port of a VLESS client. If you only need the firewall, you need no server at all.</p>
         </details>
         <details>
+          <summary>Can I route an app through Tor?</summary>
+          <p>Yes. While it’s running, Tor Browser opens a local SOCKS5 port, <code>127.0.0.1:9150</code>; the tor service from Homebrew uses <code>127.0.0.1:9050</code>. Add it to Routekeeper as a SOCKS5 proxy, and the apps you choose will go through Tor, with Tor resolving site names. Keep in mind that Tor is much slower than a regular proxy, and many sites greet its addresses with a CAPTCHA.</p>
+        </details>
+        <details>
           <summary>How do I check that nothing leaks?</summary>
           <p>The menu bar shows the external IP your apps use through the proxy. The monitor shows every connection and its route, and the leak detector flags what went around the proxy for proxied apps: DNS queries to your ISP, UDP and QUIC, processes with no rule. Each leak comes with a hint on how to close it.</p>
         </details>
@@ -844,13 +867,13 @@ section { padding-top: 128px; }
       <h2 class="rv">The lantern <span class="warm">is lit</span></h2>
       <p class="rv">Public beta for macOS 14 Sonoma and later. Open the DMG and drag Routekeeper to Applications: the build is signed with Developer ID and notarized by Apple, and it keeps itself up to date.</p>
       <div class="hero-cta rv"><a class="btn btn-primary" href="https://github.com/ilyabazhenov/routekeeper/releases/latest/download/Routekeeper.dmg">Download Routekeeper</a><a class="btn btn-ghost" href="https://github.com/ilyabazhenov/routekeeper/releases">All versions</a></div>
-      <p class="fine rv"><a href="https://github.com/ilyabazhenov/routekeeper/blob/main/docs/install.md">Installation and first run</a> · <a href="privacy/">Privacy</a></p>
+      <p class="fine rv"><a href="docs/">Documentation and first run</a> · <a href="privacy/">Privacy</a></p>
     </div>
   </section>
 </main>
 
 <div class="wrap">
-  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span><a href="privacy/">Privacy</a> · <a href="https://github.com/ilyabazhenov/routekeeper">GitHub</a> · Routekeeper for macOS</span></footer>
+  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span><a href="docs/">Docs</a> · <a href="privacy/">Privacy</a> · <a href="https://github.com/ilyabazhenov/routekeeper">GitHub</a> · Routekeeper for macOS</span></footer>
 </div>
 
 <script>
