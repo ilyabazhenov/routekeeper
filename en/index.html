@@ -282,6 +282,7 @@ section { padding-top: 128px; }
 .faq summary::-webkit-details-marker { display: none; }
 .faq summary::after { content: "+"; flex: none; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 8px; background: rgba(255, 181, 71, .1); color: var(--amber); font-size: 18px; transition: rotate .25s; }
 .faq details[open] summary::after { rotate: 45deg; }
+.faq p a { color: var(--amber); text-decoration: underline; text-decoration-color: rgba(255, 181, 71, .4); text-underline-offset: 3px; }
 .faq details p { padding: 0 22px 20px; color: var(--muted); font-size: 16px; max-width: 64ch; }
 .faq details p code { font: .92em var(--mono); color: var(--text); }
 
@@ -492,6 +493,7 @@ section { padding-top: 128px; }
 <body>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M3.5 17a8.5 8.5 0 1 1 17 0M12 17l4.5-5.5"/><circle cx="12" cy="17" r="1"/></symbol>
   <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
   <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
   <symbol id="i-server" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/></symbol>
@@ -539,6 +541,7 @@ section { padding-top: 128px; }
           <div class="titlebar" aria-hidden="true"><i></i><i></i><i></i><span>Routekeeper</span></div>
           <div class="app">
             <div class="side" aria-hidden="true">
+              <div><svg><use href="#i-gauge"/></svg>Overview</div>
               <div class="on"><svg><use href="#i-grid"/></svg>Apps</div>
               <div><svg><use href="#i-list"/></svg>Rules</div>
               <div><svg><use href="#i-server"/></svg>Proxies</div>
@@ -641,7 +644,7 @@ section { padding-top: 128px; }
       <p class="scheme-note rv">No accounts and no Routekeeper servers. Traffic goes only along the routes you set, and nowhere else.</p>
 
       <div class="steps">
-        <div class="step rv"><h3>Add a proxy</h3><p>SOCKS5, HTTP or HTTPS, with or without a password. Add several: work, home, another country.</p></div>
+        <div class="step rv"><h3>Add a proxy</h3><p>SOCKS5, HTTP or HTTPS, with or without a password. Add several: work, home, another country. If one goes down, move your apps to another with one click from the menu bar.</p></div>
         <div class="step rv"><h3>Set the routes</h3><p>Telegram via Amsterdam, Safari direct, that pushy updater to a dead end. One click per app.</p></div>
         <div class="step rv"><h3>The keeper keeps watch</h3><p>The monitor shows every connection, and the leak detector flags anything that strayed from its route.</p></div>
       </div>
@@ -827,7 +830,7 @@ section { padding-top: 128px; }
         </details>
         <details>
           <summary>Do I need my own server?</summary>
-          <p>For proxy routes, yes: Routekeeper doesn’t sell proxies and runs no servers. Any SOCKS5, HTTP or HTTPS proxy will do: a VPS abroad with an HTTPS proxy (Caddy with forwardproxy, for example), a work proxy, one you pay for, or the local port of a VLESS client. If you only need the firewall, you need no server at all.</p>
+          <p>For proxy routes, yes: Routekeeper doesn’t sell proxies and runs no servers. Any SOCKS5, HTTP or HTTPS proxy will do: a VPS abroad with an HTTPS proxy (Caddy with forwardproxy, for example), a work proxy, one you pay for, or the local port of a VLESS client. If you only need the firewall, you need no server at all. To set up your own HTTPS proxy on a VPS, follow the <a href="docs/server/">15-minute guide</a>.</p>
         </details>
         <details>
           <summary>Can I route an app through Tor?</summary>
@@ -835,11 +838,11 @@ section { padding-top: 128px; }
         </details>
         <details>
           <summary>How do I check that nothing leaks?</summary>
-          <p>The menu bar shows the external IP your apps use through the proxy. The monitor shows every connection and its route, and the leak detector flags what went around the proxy for proxied apps: DNS queries to your ISP, UDP and QUIC, processes with no rule. Each leak comes with a hint on how to close it.</p>
+          <p>The menu bar shows the external IP your apps use through the proxy. The monitor shows every connection and its route, and the leak detector flags what went around the proxy for proxied apps: DNS queries to your ISP, UDP and QUIC, processes with no rule. Each leak comes with a hint on how to close it: for browsers, for example, turning on DNS over HTTPS. The Overview screen brings it together: the most serious problem first, each proxy’s health and what is going through the proxy right now.</p>
         </details>
         <details>
           <summary>What if the proxy server is down?</summary>
-          <p>By default that app’s connections don’t go around the proxy; they fail with an error you can see in the monitor. That way nothing leaks silently. If you prefer, you can let them go direct in Settings.</p>
+          <p>By default that app’s connections don’t go around the proxy; they fail with an error you can see in the monitor. That way nothing leaks silently. If you prefer, you can let them go direct in Settings. Overview and the menu bar show right away which proxy isn’t answering, and from there you can move every route to another proxy, with undo if you change your mind.</p>
         </details>
         <details>
           <summary>Do calls and UDP work?</summary>

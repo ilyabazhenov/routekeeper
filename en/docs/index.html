@@ -129,7 +129,7 @@ a { color: inherit; text-decoration: none; }
     <span class="eyebrow">Documentation</span>
     <h1>Set up Routekeeper <span class="warm">for your route</span></h1>
     <p class="lede"><b>Routekeeper sends traffic from selected apps through a proxy, direct, or nowhere.</b> This page covers first run, common recipes and the product’s honest limits.</p>
-    <p class="dated">Revised October 3, 2026.</p>
+    <p class="dated">Revised October 4, 2026.</p>
     <div class="hero-actions"><a class="btn btn-primary" href="#quick-start">Start setup</a><a class="btn btn-ghost" href="#recipes">Browse recipes</a></div>
   </div>
   <div class="lantern-scene" aria-hidden="true"><img src="../../lantern.svg" alt=""></div>
@@ -160,11 +160,11 @@ a { color: inherit; text-decoration: none; }
     <h2 id="quick-start">Quick start</h2>
     <ol>
       <li><b>Install Routekeeper</b> and complete the macOS onboarding: allow the system extension, network filter and proxy configuration.</li>
-      <li><b>Add a proxy</b> in Proxies. For a personal server, HTTPS on port 443 or a local SOCKS5 port from sing-box, Xray or Clash are the most common choices.</li>
+      <li><b>Add a proxy</b> in Proxies. For a personal server, HTTPS on port 443 or a local SOCKS5 port from sing-box, Xray or Clash are the most common choices. No server yet? <a href="server/">Set one up in 15 minutes</a>.</li>
       <li><b>Enable DNS through proxy</b> when the proxy supports it, so names are resolved away from your ISP.</li>
       <li><b>Enable UDP and QUIC blocking</b> for browsers and messengers when you need a no-leak setup.</li>
       <li><b>Create a rule</b>: app → proxy, direct or block. Routekeeper recognizes apps by signature and follows helper processes.</li>
-      <li><b>Check Monitor and Leaks</b>: they show what went through the proxy, what went direct and what looks suspicious.</li>
+      <li><b>Look at Overview</b>: it is the main screen. The most serious problem and its fix come first, then every route with its proxy’s health and rate, the apps going through the proxy right now, and leaks. Per-connection details are in Monitor and Leaks.</li>
     </ol>
 
     <div class="callout">
@@ -183,9 +183,10 @@ a { color: inherit; text-decoration: none; }
 
     <h2 id="proxy">Your proxy</h2>
     <p>Routekeeper supports SOCKS5, HTTP CONNECT and HTTPS proxies. For the public internet, an HTTPS proxy on your own VPS is usually the practical option: from the outside it looks like a normal TLS site on port 443.</p>
-    <p>One simple server setup is Caddy with <code>forwardproxy@naive</code>. In Routekeeper, add it as type “HTTPS”: domain, port <code>443</code>, username and password.</p>
-    <pre><code>Scripts/deploy-proxy-server.sh -H root@&lt;IP&gt; -d &lt;domain&gt; -i ~/.ssh/&lt;key&gt;</code></pre>
+    <p>Such a server takes one command to set up: Caddy with <code>forwardproxy@naive</code>, a Let's Encrypt certificate and SSH protection against password guessing. At the end the script prints a line you simply paste into Proxy with ⌘V.</p>
+    <div class="callout"><b>No server yet?</b> <a href="server/">Step-by-step guide: your own proxy server in 15 minutes</a> — from the domain to your first rule.</div>
     <p>If HTTPS proxying is unstable on your network, use sing-box or Xray on the server and a local SOCKS5 client on the Mac. In Routekeeper you only change the proxy; app rules stay as they are.</p>
+    <p><b>Several proxies.</b> If a proxy goes down or gets slow, Overview shows it first and the sidebar badge counts proxies that are down. Move every route to another proxy from Overview or the menu bar: Routekeeper asks for confirmation, says what moves and from where, and lets you undo for a few seconds. You can also move only one proxy’s rules.</p>
     <div class="tagline">
       <span class="tag">HTTPS 443</span>
       <span class="tag">SOCKS5 local</span>
@@ -198,10 +199,11 @@ a { color: inherit; text-decoration: none; }
     <ol>
       <li>Open the app that has a proxy rule.</li>
       <li>In Routekeeper Monitor, make sure connections are marked with the expected proxy, not “direct”.</li>
-      <li>Open Leaks: direct DNS, rule bypasses and UDP are shown separately.</li>
+      <li>Open Overview or Leaks: direct DNS, rule bypasses and UDP are shown separately, each with a hint on how to close it.</li>
       <li>On your server, check active proxy connections and make sure they come from your Mac.</li>
     </ol>
     <p>Apple push notifications may go through the system <code>apsd</code> process rather than through the app’s rule. That is normal: it is not the app’s own traffic.</p>
+    <p><b>DNS from a browser.</b> If a browser resolves names directly through your ISP’s DNS, turn on DNS over HTTPS in its settings (Chrome, Edge, Firefox, Brave) so name lookups go through the proxy with the rest of its traffic. Don’t block port 53 for the browser: without DoH it stops opening sites. macOS service lookups such as <code>ipv4only.arpa</code> are not counted as leaks.</p>
 
     <h2 id="limits">Limits</h2>
     <div class="table"><table>
@@ -219,7 +221,8 @@ a { color: inherit; text-decoration: none; }
     <ul>
       <li><b>Proxy check fails:</b> verify domain, port, username, password and certificate. For HTTPS, use a domain, not an IP address.</li>
       <li><b>The app goes direct:</b> make sure the rule targets the right app and helper processes are included.</li>
-      <li><b>The browser bypasses the proxy:</b> enable UDP and QUIC blocking, then restart the tab or browser.</li>
+      <li><b>The proxy is down or slow:</b> move routes to another proxy from Overview or the menu bar, and move them back once the server recovers.</li>
+      <li><b>The browser bypasses the proxy:</b> enable UDP and QUIC blocking, then restart the tab or browser. If Leaks shows DNS from the browser, turn on DNS over HTTPS in it.</li>
       <li><b>Monitor is empty:</b> make sure the system extension and network filter are allowed in macOS Settings.</li>
       <li><b>You need to attach diagnostics:</b> collect the archive in Routekeeper Settings, inspect it and only then attach it to a public issue.</li>
     </ul>

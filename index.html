@@ -282,6 +282,7 @@ section { padding-top: 128px; }
 .faq summary::-webkit-details-marker { display: none; }
 .faq summary::after { content: "+"; flex: none; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 8px; background: rgba(255, 181, 71, .1); color: var(--amber); font-size: 18px; transition: rotate .25s; }
 .faq details[open] summary::after { rotate: 45deg; }
+.faq p a { color: var(--amber); text-decoration: underline; text-decoration-color: rgba(255, 181, 71, .4); text-underline-offset: 3px; }
 .faq details p { padding: 0 22px 20px; color: var(--muted); font-size: 16px; max-width: 64ch; }
 .faq details p code { font: .92em var(--mono); color: var(--text); }
 
@@ -492,6 +493,7 @@ section { padding-top: 128px; }
 <body>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M3.5 17a8.5 8.5 0 1 1 17 0M12 17l4.5-5.5"/><circle cx="12" cy="17" r="1"/></symbol>
   <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
   <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
   <symbol id="i-server" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/></symbol>
@@ -539,6 +541,7 @@ section { padding-top: 128px; }
           <div class="titlebar" aria-hidden="true"><i></i><i></i><i></i><span>Routekeeper</span></div>
           <div class="app">
             <div class="side" aria-hidden="true">
+              <div><svg><use href="#i-gauge"/></svg>Обзор</div>
               <div class="on"><svg><use href="#i-grid"/></svg>Приложения</div>
               <div><svg><use href="#i-list"/></svg>Правила</div>
               <div><svg><use href="#i-server"/></svg>Прокси</div>
@@ -641,7 +644,7 @@ section { padding-top: 128px; }
       <p class="scheme-note rv">Никаких аккаунтов и серверов Routekeeper. Трафик идёт только по путям, которые вы назначили, и никуда больше.</p>
 
       <div class="steps">
-        <div class="step rv"><h3>Добавьте прокси</h3><p>SOCKS5, HTTP или HTTPS, с паролем или без. Можно несколько: рабочий, домашний, в другой стране.</p></div>
+        <div class="step rv"><h3>Добавьте прокси</h3><p>SOCKS5, HTTP или HTTPS, с паролем или без. Можно несколько: рабочий, домашний, в другой стране. Если один упал, приложения переезжают на другой в один клик из меню-бара.</p></div>
         <div class="step rv"><h3>Назначьте пути</h3><p>Telegram через Амстердам, Safari напрямую, назойливый апдейтер в тупик. Один клик на приложение.</p></div>
         <div class="step rv"><h3>Смотритель следит</h3><p>Монитор показывает каждое соединение, а детектор утечек отмечает всё, что прошло мимо назначенного пути.</p></div>
       </div>
@@ -827,7 +830,7 @@ section { padding-top: 128px; }
         </details>
         <details>
           <summary>Нужен ли свой сервер?</summary>
-          <p>Для путей «через прокси» нужен: Routekeeper не продаёт прокси и не держит своих серверов. Подойдёт любой SOCKS5, HTTP или HTTPS: VPS в другой стране с HTTPS-прокси (например, Caddy с forwardproxy), прокси на работе, купленный прокси или локальный порт клиента VLESS. Если нужен только файрвол, сервер не нужен вовсе.</p>
+          <p>Для путей «через прокси» нужен: Routekeeper не продаёт прокси и не держит своих серверов. Подойдёт любой SOCKS5, HTTP или HTTPS: VPS в другой стране с HTTPS-прокси (например, Caddy с forwardproxy), прокси на работе, купленный прокси или локальный порт клиента VLESS. Если нужен только файрвол, сервер не нужен вовсе. Поднять свой HTTPS-прокси на VPS поможет <a href="docs/server/">инструкция на 15 минут</a>.</p>
         </details>
         <details>
           <summary>Можно ли пустить приложение через Tor?</summary>
@@ -835,11 +838,11 @@ section { padding-top: 128px; }
         </details>
         <details>
           <summary>Как проверить, что ничего не протекает?</summary>
-          <p>В меню-баре виден внешний IP, с которым приложения выходят через прокси. Монитор показывает каждое соединение и его путь, а детектор утечек отмечает, что ушло мимо у приложений с прокси: DNS-запросы к провайдеру, UDP и QUIC, процессы без правила. Рядом с каждой утечкой есть подсказка, как её закрыть.</p>
+          <p>В меню-баре виден внешний IP, с которым приложения выходят через прокси. Монитор показывает каждое соединение и его путь, а детектор утечек отмечает, что ушло мимо у приложений с прокси: DNS-запросы к провайдеру, UDP и QUIC, процессы без правила. Рядом с каждой утечкой есть подсказка, как её закрыть: например, браузерам — включить «DNS через HTTPS». А экран «Обзор» собирает всё вместе: самую серьёзную проблему, состояние каждого прокси и что сейчас идёт через прокси.</p>
         </details>
         <details>
           <summary>Что будет, если прокси-сервер недоступен?</summary>
-          <p>По умолчанию соединения этого приложения не уходят в обход прокси, а падают с ошибкой, которую видно в мониторе. Так ничего не утечёт втихую. Если удобнее, в настройках можно разрешить идти напрямую.</p>
+          <p>По умолчанию соединения этого приложения не уходят в обход прокси, а падают с ошибкой, которую видно в мониторе. Так ничего не утечёт втихую. Если удобнее, в настройках можно разрешить идти напрямую. «Обзор» и меню-бар сразу покажут, какой прокси не отвечает, а оттуда же можно перевести все маршруты на другой прокси и при необходимости отменить перевод.</p>
         </details>
         <details>
           <summary>Работают ли звонки и UDP?</summary>

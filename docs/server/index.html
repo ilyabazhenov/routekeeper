@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Свой прокси-сервер — Routekeeper</title>
+<meta name="description" content="Как за 15 минут поднять на своём VPS HTTPS-прокси для Routekeeper одной командой: домен, установка, подключение, защита сервера.">
+<meta name="theme-color" content="#0a0f1f">
+<link rel="icon" href="../../mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../../icon.png">
+<link rel="alternate" hreflang="ru" href="https://getroutekeeper.app/docs/server/">
+<link rel="alternate" hreflang="en" href="https://getroutekeeper.app/en/docs/server/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root {
+  --bg: #0a0f1f;
+  --surface: rgba(170, 190, 255, 0.035);
+  --surface-2: rgba(170, 190, 255, 0.06);
+  --line: rgba(170, 190, 255, 0.09);
+  --line-2: rgba(170, 190, 255, 0.16);
+  --text: #f3ecdf;
+  --muted: #a3abc4;
+  --faint: #6b7493;
+  --amber: #ffb547;
+  --amber-2: #ff8a3d;
+  --glow: rgba(255, 168, 76, 0.5);
+  --direct: #9cc0ff;
+  --stop: #ff7a66;
+  --ok: #7fd8a4;
+  --font: "Onest", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; overflow-x: clip; }
+body {
+  margin: 0; color: var(--text);
+  background: radial-gradient(1500px 1000px at 50% -160px, #18234b, transparent 70%) no-repeat, var(--bg);
+  font: 400 17px/1.65 var(--font); -webkit-font-smoothing: antialiased; overflow-x: clip;
+}
+h1, h2, h3, p, ul, ol, table { margin: 0; }
+h1, h2, h3 { font-weight: 600; letter-spacing: -0.025em; text-wrap: balance; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; border-radius: 8px; }
+.wrap { width: min(1180px, 100% - 32px); margin-inline: auto; }
+.warm { background: linear-gradient(100deg, #ffd58a 0%, var(--amber) 40%, var(--amber-2) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+.nav-wrap { position: sticky; top: 12px; z-index: 50; margin-top: 12px; }
+.nav {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 8px 8px 8px 14px; border-radius: 16px;
+  background: rgba(12, 18, 38, 0.6); border: 1px solid var(--line);
+  backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4);
+}
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 17px; letter-spacing: -0.01em; }
+.brand img { width: 28px; height: 28px; }
+.nav-end { display: flex; align-items: center; gap: 6px; }
+.lang { padding: 8px 10px; border-radius: 10px; color: var(--muted); font: 500 13px/1 var(--mono); letter-spacing: .06em; }
+.lang:hover { color: var(--text); background: var(--surface-2); }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 10px; font: 600 14px/1 var(--font); }
+.btn-primary { color: #2a1606; background: linear-gradient(180deg, #ffd27e, var(--amber) 55%, #f39a3a); box-shadow: inset 0 1px 0 rgba(255, 248, 225, .7), 0 8px 28px -8px var(--glow); }
+.btn-ghost { color: var(--text); background: var(--surface-2); border: 1px solid var(--line); }
+
+.docs-hero {
+  display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 48px; align-items: center;
+  min-height: 330px; padding-block: 34px 28px;
+}
+.hero-copy h1 { margin-top: 18px; max-width: 760px; font-size: clamp(42px, 6.2vw, 78px); line-height: 1.02; letter-spacing: -0.045em; }
+.hero-copy .lede { margin-top: 24px; max-width: 720px; font-size: 20px; color: var(--text); }
+.hero-copy .lede b { color: var(--amber); font-weight: 600; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+.lantern-scene {
+  position: relative; min-height: 260px; display: grid; place-items: center; overflow: hidden;
+  border: 1px solid var(--line); border-radius: 20px;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(255, 181, 71, .24), rgba(255, 138, 61, .08) 35%, transparent 62%),
+    linear-gradient(180deg, rgba(170, 190, 255, .06), rgba(170, 190, 255, .02));
+}
+.lantern-scene::before {
+  content: ""; position: absolute; inset: 18px; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 181, 71, .28), transparent 72%);
+  filter: blur(16px);
+}
+.lantern-scene::after {
+  content: ""; position: absolute; inset: auto 12% 34px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 181, 71, .55), transparent);
+  box-shadow: 0 0 34px 10px rgba(255, 181, 71, .18);
+}
+.lantern-scene img {
+  position: relative; z-index: 1; width: min(164px, 44vw); height: auto;
+  filter: drop-shadow(0 0 28px rgba(255, 181, 71, .42));
+}
+
+.docs-layout { display: grid; grid-template-columns: 220px minmax(0, 860px); gap: 52px; align-items: start; padding-block: 32px 96px; }
+.side-nav {
+  position: sticky; top: 96px; display: grid; gap: 6px; padding: 14px;
+  border: 1px solid var(--line); border-radius: 16px; background: rgba(12, 18, 38, 0.42);
+}
+.side-nav b { padding: 4px 8px 10px; color: var(--text); font-size: 14px; font-weight: 600; }
+.side-nav a { padding: 8px; border-radius: 9px; color: var(--muted); font-size: 14px; line-height: 1.25; transition: color .2s, background .2s; }
+.side-nav a:hover { color: var(--text); background: var(--surface-2); }
+.side-nav .side-action { margin-top: 8px; border-top: 1px solid var(--line); padding-top: 14px; color: var(--amber); }
+.doc { max-width: 860px; min-width: 0; }
+.eyebrow { font: 500 13px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber); }
+.lede { margin-top: 24px; max-width: 760px; font-size: 20px; color: var(--text); }
+.lede b { color: var(--amber); font-weight: 600; }
+.dated { margin-top: 14px; color: var(--faint); font-size: 14px; }
+.toc {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;
+  margin-top: 36px;
+}
+.toc a, .card {
+  display: block; min-width: 0; padding: 16px 18px; border-radius: 16px;
+  background: var(--surface); border: 1px solid var(--line);
+}
+.toc a { color: var(--muted); transition: color .2s, background .2s, border-color .2s; }
+.toc a:hover { color: var(--text); background: var(--surface-2); border-color: var(--line-2); }
+.toc b, .card b { display: block; color: var(--text); font-weight: 600; }
+.toc span { display: block; margin-top: 4px; font-size: 14px; line-height: 1.45; }
+.doc h2 { margin-top: 64px; font-size: 30px; }
+.doc h3 { margin-top: 28px; font-size: 20px; }
+.doc p, .doc ul, .doc ol, .doc table { margin-top: 16px; color: var(--muted); }
+.doc p b, .doc li b { color: var(--text); font-weight: 600; }
+.doc ul, .doc ol { padding-left: 22px; }
+.doc li + li { margin-top: 10px; }
+.doc li::marker { color: var(--amber); }
+.doc code {
+  font: 500 0.88em/1 var(--mono); color: var(--text);
+  background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px; padding: 2px 6px;
+}
+.doc pre {
+  overflow-x: auto; margin: 16px 0 0; padding: 16px; border-radius: 14px;
+  background: rgba(0, 0, 0, .22); border: 1px solid var(--line);
+  color: var(--text); font: 500 14px/1.6 var(--mono);
+}
+.doc a:not(.btn):not(.card) { color: var(--amber); text-decoration: underline; text-decoration-color: rgba(255, 181, 71, .4); text-underline-offset: 3px; }
+.doc a:not(.btn):hover { text-decoration-color: var(--amber); }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
+.card p { margin-top: 8px; font-size: 15px; line-height: 1.55; }
+.tagline { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.tag {
+  display: inline-flex; align-items: center; min-height: 30px; padding: 5px 10px; border-radius: 999px;
+  background: var(--surface-2); border: 1px solid var(--line); color: var(--muted); font: 500 13px/1.2 var(--mono);
+}
+.callout {
+  margin-top: 18px; padding: 18px 20px; border-radius: 16px;
+  background: rgba(255, 181, 71, .08); border: 1px solid rgba(255, 181, 71, .22); color: var(--text);
+}
+.table { overflow-x: auto; margin-top: 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+.doc table { margin: 0; width: 100%; border-collapse: collapse; font-size: 15px; min-width: 640px; }
+.doc th, .doc td { padding: 12px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+.doc tr:last-child td { border-bottom: 0; }
+.doc th { color: var(--text); font-weight: 600; font-size: 14px; background: var(--surface-2); }
+.doc td:first-child { color: var(--text); }
+.footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; padding-block: 28px 44px; border-top: 1px solid var(--line); color: var(--faint); font-size: 14px; }
+.footer a:hover { color: var(--text); }
+@media (max-width: 980px) {
+  .docs-hero { grid-template-columns: minmax(0, 1fr); gap: 24px; padding-block: 34px 14px; }
+  .lantern-scene { min-height: 220px; }
+  .docs-layout { display: block; padding-block: 56px 72px; }
+  .side-nav { display: none; }
+}
+@media (max-width: 760px) {
+  .docs-hero { min-height: 0; }
+  .hero-copy h1 { font-size: clamp(38px, 12vw, 56px); }
+  .lede { font-size: 18px; }
+  .toc, .grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+.step { display: inline-grid; place-items: center; width: 34px; height: 34px; margin-right: 12px; border-radius: 10px; background: rgba(255, 181, 71, .12); color: var(--amber); font: 600 17px/1 var(--mono); vertical-align: 4px; }
+.ph { color: var(--amber); }
+.cmd { position: relative; }
+.cmd pre { padding-right: 104px; }
+.copy {
+  position: absolute; top: 10px; right: 10px; padding: 7px 10px; border-radius: 9px; cursor: pointer;
+  border: 1px solid var(--line-2); background: var(--surface-2); color: var(--muted); font: 500 13px/1 var(--font);
+}
+.copy:hover { color: var(--text); }
+.callout.warn { background: rgba(255, 122, 102, .08); border-color: rgba(255, 122, 102, .26); }
+.callout p:first-child, .callout code { margin-top: 0; }
+.flow { color: var(--muted); }
+.flow b { color: var(--amber); font-weight: 500; }
+@media (max-width: 760px) { .cmd pre { padding-right: 16px; padding-top: 52px; } }
+</style>
+</head>
+<body>
+
+<div class="wrap nav-wrap">
+  <header class="nav">
+    <a class="brand" href="../../"><img src="../../mark.svg" alt="" width="28" height="28">Routekeeper</a>
+    <div class="nav-end"><a class="lang" href="../../en/docs/server/" hreflang="en" lang="en">EN</a><a class="btn btn-primary" href="../../#download">Скачать</a></div>
+  </header>
+</div>
+
+<section class="wrap docs-hero">
+  <div class="hero-copy">
+    <span class="eyebrow">Документация · свой сервер</span>
+    <h1>Свой прокси-сервер <span class="warm">за 15 минут</span></h1>
+    <p class="lede"><b>Одна команда превращает арендованный VPS в HTTPS-прокси для Routekeeper.</b> Снаружи сервер выглядит как обычный сайт, а ключ от прокси есть только у вас.</p>
+    <p class="dated">Редакция от 4 октября 2026 года.</p>
+    <div class="hero-actions"><a class="btn btn-primary" href="#need">Начать</a><a class="btn btn-ghost" href="../../server.sh">Посмотреть скрипт</a></div>
+  </div>
+  <div class="lantern-scene" aria-hidden="true"><img src="../../lantern.svg" alt=""></div>
+</section>
+
+<main class="wrap docs-layout">
+  <aside class="side-nav" aria-label="Навигация по инструкции">
+    <b>На этой странице</b>
+    <a href="#result">Что получится</a>
+    <a href="#need">Что понадобится</a>
+    <a href="#domain">1. Домен</a>
+    <a href="#login">2. Вход на сервер</a>
+    <a href="#install">3. Установка</a>
+    <a href="#app">4. Routekeeper</a>
+    <a href="#security">Защита сервера</a>
+    <a href="#maintenance">Обслуживание</a>
+    <a href="#troubleshooting">Если не получилось</a>
+    <a class="side-action" href="../">Вся документация</a>
+    <a href="https://github.com/ilyabazhenov/routekeeper/issues">GitHub Issues</a>
+  </aside>
+  <article class="doc">
+    <h2 id="result" style="margin-top:0">Что получится</h2>
+    <pre class="flow"><code>Приложение → Routekeeper → <b>TLS</b> → ваш сервер :443 → интернет</code></pre>
+    <ul>
+      <li><b>HTTPS-прокси</b>: HTTP CONNECT внутри TLS на Caddy с <a href="https://github.com/klzgrad/forwardproxy">forwardproxy@naive</a>. На Mac, кроме Routekeeper, ничего ставить не нужно.</li>
+      <li><b>Сертификат Let's Encrypt.</b> Без пароля сервер отвечает как обычный сайт-заглушка и не выдаёт, что он прокси.</li>
+      <li><b>Сервер ваш.</b> Скрипт ничего никуда не отправляет: ни трафик, ни пароль не проходят через Routekeeper или его автора.</li>
+      <li><b>Только TCP.</b> Звонки и голос через такой прокси не пойдут, подробнее — в <a href="../#limits">ограничениях</a>.</li>
+    </ul>
+
+    <h2 id="need">Что понадобится</h2>
+    <ul>
+      <li><b>VPS</b> с Debian 12 или 13 либо Ubuntu 24.04, процессор x86_64 (amd64), от 1 ГБ памяти, публичный IPv4 и доступ root по SSH. Подойдёт самый простой тариф.</li>
+      <li><b>Ближе — быстрее.</b> Каждое новое соединение занимает примерно три пинга до сервера, поэтому выбирайте ближайшую страну, где работают нужные вам сервисы.</li>
+      <li><b>Свободные порты 80 и 443.</b> Если на сервере уже работает сайт или VPN-панель (nginx, Xray, 3x-ui, Marzban), скрипт его не тронет — возьмите отдельный сервер.</li>
+      <li><b>Домен.</b> Свой или бесплатный на DuckDNS: по нему Let's Encrypt выдаёт сертификат.</li>
+    </ul>
+
+    <h2 id="domain"><span class="step">1</span>Домен</h2>
+    <p>Для бесплатного домена на DuckDNS:</p>
+    <ol>
+      <li>Войдите на <a href="https://www.duckdns.org">duckdns.org</a> через GitHub или Google.</li>
+      <li>Создайте поддомен. Лучше нейтральное имя, без «proxy» и «vpn».</li>
+      <li>В поле <code>current ip</code> впишите IP сервера и нажмите <code>update ip</code>.</li>
+    </ol>
+    <p>Токен DuckDNS не понадобится: IP сервера постоянный. Для своего домена создайте у регистратора A-запись с IP сервера. Запись начинает работать через пару минут.</p>
+
+    <h2 id="login"><span class="step">2</span>Вход на сервер</h2>
+    <p>Откройте Терминал (Программы → Утилиты) и подключитесь, подставив IP из письма хостера:</p>
+    <div class="cmd" data-copy="Копировать" data-done="Скопировано"><pre><code>ssh root@<span class="ph">IP</span></code></pre></div>
+    <p>На вопрос о «fingerprint» ответьте <code>yes</code>, затем введите пароль root. Символы пароля при вводе не отображаются — так и должно быть.</p>
+
+    <h2 id="install"><span class="step">3</span>Установка</h2>
+    <p>На сервере выполните одну команду, подставив свой домен:</p>
+    <div class="cmd" data-copy="Копировать" data-done="Скопировано"><pre><code>curl -fsSL https://getroutekeeper.app/server.sh | bash -s -- --domain <span class="ph">имя.duckdns.org</span></code></pre></div>
+    <p>Если хостер выдал не root, а пользователя с sudo, пишите <code>| sudo bash -s --</code>. Установка занимает минуту-две. Скрипт:</p>
+    <ol>
+      <li>проверяет, что домен указывает на этот сервер, а порты 80 и 443 свободны;</li>
+      <li>ставит Caddy с <code>forwardproxy@naive</code> и сверяет контрольную сумму сборки;</li>
+      <li>создаёт логин и длинный случайный пароль;</li>
+      <li>получает сертификат Let's Encrypt и ставит сайт-заглушку для всех, кто приходит без пароля;</li>
+      <li>включает BBR — он заметно ускоряет соединения на дальних маршрутах;</li>
+      <li>ставит fail2ban, который блокирует подбор паролей к SSH;</li>
+      <li>включает автоматические обновления безопасности (сервер при этом сам не перезагружается);</li>
+      <li>проверяет, что прокси работает, и печатает строку для Routekeeper.</li>
+    </ol>
+    <div class="callout">
+      <p>Скрипт из интернета разумно прочитать перед запуском. Тогда так:</p>
+      <div class="cmd" data-copy="Копировать" data-done="Скопировано"><pre><code>curl -fsSLO https://getroutekeeper.app/server.sh
+less server.sh
+bash server.sh --domain <span class="ph">имя.duckdns.org</span></code></pre></div>
+    </div>
+    <div class="table"><table>
+      <thead><tr><th>Флаг</th><th>Что делает</th></tr></thead>
+      <tbody>
+        <tr><td><code>--new-password</code></td><td>Создаёт новые логин и пароль.</td></tr>
+        <tr><td><code>--no-bbr</code></td><td>Оставляет настройки TCP как есть.</td></tr>
+        <tr><td><code>--no-fail2ban</code></td><td>Не ставит fail2ban.</td></tr>
+        <tr><td><code>--no-auto-updates</code></td><td>Не включает автоматические обновления.</td></tr>
+        <tr><td><code>--uninstall</code></td><td>Удаляет прокси. BBR, fail2ban и обновления остаются.</td></tr>
+        <tr><td><code>--lang ru</code></td><td>Сообщения на русском, если скрипт заговорил по-английски.</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="app"><span class="step">4</span>Routekeeper</h2>
+    <p>В конце скрипт печатает строку вида <code>https://u1a2b3c…:…@имя.duckdns.org:443</code>.</p>
+    <ol>
+      <li>Выделите строку в Терминале и скопируйте её (⌘C).</li>
+      <li>В Routekeeper откройте «Прокси» и нажмите ⌘V или кнопку «Вставить» под списком. Откроется новый прокси с заполненными полями.</li>
+      <li>«DNS через прокси» и «Блокировать UDP и QUIC» уже включены — оставьте их и нажмите «Добавить».</li>
+      <li>«Проверить» должен показать IP вашего сервера.</li>
+      <li>В «Правилах» отправьте нужные приложения через этот прокси.</li>
+    </ol>
+    <div class="callout">Строка — это ключ от прокси: не публикуйте её и не пересылайте в чаты. Увидеть её снова можно, запустив команду установки ещё раз, а логин и пароль лежат на сервере в <code>/etc/caddy/proxy-credentials</code>.</div>
+
+    <h2 id="security">Защита сервера</h2>
+    <p>Боты круглосуточно подбирают пароли root: на нашем тестовом сервере набиралось около 11 тысяч попыток в сутки. fail2ban блокирует каждый такой адрес после пяти ошибок, но надёжнее совсем отключить вход по паролю и входить по ключу. На Mac:</p>
+    <div class="cmd" data-copy="Копировать" data-done="Скопировано"><pre><code>ssh-keygen -t ed25519 -f ~/.ssh/my_server
+ssh-copy-id -i ~/.ssh/my_server.pub root@<span class="ph">IP</span>
+ssh -i ~/.ssh/my_server root@<span class="ph">IP</span></code></pre></div>
+    <p>Если последняя команда пустила на сервер без пароля root, в этой же сессии отключите пароли:</p>
+    <div class="cmd" data-copy="Копировать" data-done="Скопировано"><pre><code>printf 'PasswordAuthentication no\nPermitRootLogin prohibit-password\n' &gt; /etc/ssh/sshd_config.d/10-keys-only.conf
+systemctl reload ssh</code></pre></div>
+    <div class="callout warn">Не закрывайте эту сессию, пока не проверите вход по ключу в новом окне Терминала. Если сервером управляют другие приложения по паролю root (например, клиент Amnezia), им после этого тоже понадобится ключ.</div>
+
+    <h2 id="maintenance">Обслуживание</h2>
+    <div class="table"><table>
+      <thead><tr><th>Задача</th><th>Что сделать</th></tr></thead>
+      <tbody>
+        <tr><td>Обновить Caddy и настройки</td><td>Запустить команду установки ещё раз. Логин и пароль сохранятся, а Caddy перезапустится, только если что-то изменилось.</td></tr>
+        <tr><td>Сменить пароль</td><td>Та же команда с <code>--new-password</code>, затем вставить новую строку в Routekeeper и удалить старый прокси.</td></tr>
+        <tr><td>Состояние и журнал</td><td><code>systemctl status caddy</code>, <code>journalctl -u caddy -n 50</code></td></tr>
+        <tr><td>Кого заблокировал fail2ban</td><td><code>fail2ban-client status sshd</code></td></tr>
+        <tr><td>Удалить прокси</td><td>Команда установки с <code>--uninstall</code> вместо <code>--domain</code>.</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="troubleshooting">Если не получилось</h2>
+    <ul>
+      <li><b>«A-запись … должна указывать на …»</b> — домен ещё не обновился или указывает не туда. Проверьте IP в DuckDNS, подождите пару минут и запустите команду снова.</li>
+      <li><b>«Порты 80 и 443 заняты»</b> — на сервере уже работает сайт или VPN-панель. Возьмите отдельный сервер.</li>
+      <li><b>«Caddy не получил сертификат»</b> — чаще всего порты 80 и 443 закрыты в панели хостера (firewall, security group). Откройте их и запустите команду снова. Если переустанавливали много раз за неделю, Let's Encrypt может временно отказывать этому домену: возьмите другое имя на DuckDNS.</li>
+      <li><b>«Нужен сервер x86_64»</b> — серверы на ARM пока не поддерживаются.</li>
+      <li><b>Routekeeper не проверяет прокси</b> — в поле «Сервер» должен быть домен, а не IP, и строка должна быть вставлена целиком.</li>
+      <li><b>Медленно</b> — выберите сервер ближе. На маршруте с пингом около 200 мс одно соединение даёт примерно 3–4 МБ/с.</li>
+      <li><b>Прокси работал, а потом перестал</b> — в некоторых сетях TLS-прокси распознают по характеру трафика. Запасной путь — sing-box или Xray на том же сервере и их локальный SOCKS5 на Mac, см. <a href="../#proxy">«Свой прокси»</a>. Правила в Routekeeper менять не придётся.</li>
+    </ul>
+    <p>Если застряли, откройте issue на <a href="https://github.com/ilyabazhenov/routekeeper/issues">GitHub</a> и приложите вывод скрипта. Строку прокси и пароль из него удалите.</p>
+  </article>
+</main>
+
+<div class="wrap">
+  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span><a href="../../">Routekeeper для macOS</a> · <a href="../">Документация</a> · <a href="../../privacy/">Конфиденциальность</a> · <a href="https://github.com/ilyabazhenov/routekeeper">GitHub</a></span></footer>
+</div>
+
+<script>
+document.querySelectorAll('.cmd').forEach(function (box) {
+  var btn = document.createElement('button');
+  btn.className = 'copy'; btn.type = 'button'; btn.textContent = box.dataset.copy;
+  btn.addEventListener('click', function () {
+    navigator.clipboard.writeText(box.querySelector('pre').innerText.trim()).then(function () {
+      btn.textContent = box.dataset.done;
+      setTimeout(function () { btn.textContent = box.dataset.copy; }, 1600);
+    });
+  });
+  box.appendChild(btn);
+});
+</script>
+</body>
+</html>
