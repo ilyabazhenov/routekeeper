@@ -42,6 +42,9 @@ pick() { if [ "$RU" = 1 ]; then printf '%s' "$1"; else printf '%s' "$2"; fi; }
 say() { printf '%s\n' "$(pick "$1" "$2")" >&2; }
 step() { printf '\n==> %s\n' "$(pick "$1" "$2")" >&2; }
 die() { printf '\n✗ %s\n' "$(pick "$1" "$2")" >&2; exit 1; }
+# Extras (BBR, fail2ban, updates) never stop the install: they warn, and the warnings are repeated at the end.
+WARNINGS=()
+warn() { local m; m=$(pick "$1" "$2"); WARNINGS+=("$m"); printf '! %s\n' "$m" >&2; }
 
 usage() {
   echo "Usage: server.sh --domain NAME [--new-password] [--no-bbr] [--no-fail2ban] [--no-auto-updates] [--json] [--lang ru|en] [--uninstall]" >&2
@@ -49,6 +52,7 @@ usage() {
 }
 
 APT_UPDATED=0
+# Returns non-zero on failure; callers decide whether that's fatal.
 apt_install() {
   # Fresh servers often run apt on first boot, so wait for the lock instead of failing.
   # apt's chatter (debconf notes and the like) is shown only when it fails.
@@ -56,11 +60,11 @@ apt_install() {
   log=$(mktemp)
   if [ "$APT_UPDATED" = 0 ]; then
     DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=300 update -qq </dev/null >"$log" 2>&1 \
-      || { cat "$log" >&2; rm -f "$log"; die "apt-get update не сработал." "apt-get update failed."; }
+      || { cat "$log" >&2; rm -f "$log"; return 1; }
     APT_UPDATED=1
   fi
   DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=300 install -y -qq "$@" </dev/null >"$log" 2>&1 \
-    || { cat "$log" >&2; rm -f "$log"; die "Не удалось установить: $*" "Couldn't install: $*"; }
+    || { cat "$log" >&2; rm -f "$log"; return 1; }
   rm -f "$log"
 }
 
@@ -94,7 +98,8 @@ preflight() {
   command -v openssl >/dev/null || missing+=(openssl)
   command -v ss >/dev/null || missing+=(iproute2)
   [ -f /etc/ssl/certs/ca-certificates.crt ] || missing+=(ca-certificates)
-  [ ${#missing[@]} = 0 ] || apt_install "${missing[@]}"
+  [ ${#missing[@]} = 0 ] || apt_install "${missing[@]}" \
+    || die "Не удалось установить: ${missing[*]}" "Couldn't install: ${missing[*]}"
 }
 
 check_dns() {
@@ -158,6 +163,7 @@ install_caddy() {
     p="$(openssl rand -base64 48 | tr -d '/+=\n' | cut -c1-40)"
     ( umask 077; printf 'PROXY_USER=%s\nPROXY_PASS=%s\n' "$u" "$p" > "$CREDS" )
   fi
+  # shellcheck source=/dev/null
   . "$CREDS"
 
   # Decoy page: what anyone without the password sees.
@@ -193,8 +199,13 @@ HTML
 	}
 }
 EOF
-  /usr/local/bin/caddy validate --adapter caddyfile --config "$tmp_conf" >/dev/null 2>&1 \
-    || { rm -f "$tmp_conf"; die "Caddy не принял конфигурацию." "Caddy rejected the configuration."; }
+  local verdict
+  if ! verdict=$(/usr/local/bin/caddy validate --adapter caddyfile --config "$tmp_conf" 2>&1); then
+    rm -f "$tmp_conf"
+    printf '%s\n' "$verdict" | grep -v '^{' | tail -3 >&2
+    printf '%s\n' "$verdict" | grep -o '"error":"[^"]*"' | tail -1 >&2 || true
+    die "Caddy не принял конфигурацию." "Caddy rejected the configuration."
+  fi
   put "$tmp_conf" /etc/caddy/Caddyfile 0640 caddy && CADDY_CHANGED=1
 
   local tmp_unit
@@ -226,7 +237,10 @@ EOF
   fi
   systemctl enable -q caddy
   if [ "$CADDY_CHANGED" = 1 ] || ! systemctl is-active -q caddy; then
-    systemctl restart caddy
+    if ! systemctl restart caddy 2>/dev/null; then
+      journalctl -u caddy -n 20 -o cat --no-pager 2>/dev/null | grep -v '^{' | tail -5 >&2
+      die "Caddy не запустился, подробности: journalctl -u caddy -n 50" "Caddy didn't start, details: journalctl -u caddy -n 50"
+    fi
     say "Caddy перезапущен" "Caddy restarted"
   else
     say "Caddy уже настроен, перезапуск не нужен" "Caddy is already set up, no restart needed"
@@ -237,17 +251,25 @@ setup_bbr() {
   [ "$BBR" = 1 ] || return 0
   step "BBR" "BBR"
   # On a ~200 ms route BBR raised single-stream speed from ~0.5 to ~3 MB/s.
-  # 99-zz makes the file apply last, after any hosting provider's tuning.
+  # Container-based VPS (OpenVZ, LXC) can't change it: then the proxy simply goes without.
   modprobe tcp_bbr 2>/dev/null || true
+  # Check the value, not the exit code: procps 3.3 (Ubuntu 22.04) reports success even when it fails.
+  sysctl -q -w net.ipv4.tcp_congestion_control=bbr >/dev/null 2>&1 || true
+  if [ "$(sysctl -n net.ipv4.tcp_congestion_control 2>/dev/null)" != bbr ]; then
+    warn "BBR на этом сервере недоступен (так бывает на VPS с контейнерной виртуализацией). Прокси работает и без него." \
+         "BBR isn't available on this server (common on container-based VPS). The proxy works without it."
+    return 0
+  fi
+  sysctl -q -w net.core.default_qdisc=fq >/dev/null 2>&1 || true
+  # 99-zz makes the file apply last at boot, after any hosting provider's tuning.
   local tmp
   tmp=$(mktemp); echo tcp_bbr > "$tmp"; put "$tmp" /etc/modules-load.d/bbr.conf 0644 || true
   tmp=$(mktemp); printf 'net.core.default_qdisc = fq\nnet.ipv4.tcp_congestion_control = bbr\n' > "$tmp"
   put "$tmp" /etc/sysctl.d/99-zz-bbr.conf 0644 || true
-  sysctl -q -p /etc/sysctl.d/99-zz-bbr.conf
   local dev
   dev=$(ip route show default | awk '{print $5; exit}')
   if [ -n "$dev" ] && ! tc qdisc show dev "$dev" | grep '^qdisc fq ' >/dev/null; then
-    tc qdisc replace dev "$dev" root fq
+    tc qdisc replace dev "$dev" root fq 2>/dev/null || true
   fi
   say "TCP: $(sysctl -n net.ipv4.tcp_congestion_control)" "TCP: $(sysctl -n net.ipv4.tcp_congestion_control)"
 }
@@ -259,7 +281,10 @@ setup_fail2ban() {
   command -v fail2ban-client >/dev/null || pkgs+=(fail2ban)
   python3 -c 'import systemd.journal' 2>/dev/null || pkgs+=(python3-systemd)
   command -v nft >/dev/null || pkgs+=(nftables)
-  [ ${#pkgs[@]} = 0 ] || apt_install "${pkgs[@]}"
+  if [ ${#pkgs[@]} != 0 ] && ! apt_install "${pkgs[@]}"; then
+    warn "fail2ban не установился, SSH остался без защиты от подбора пароля." "fail2ban didn't install, SSH is left without password-guessing protection."
+    return 0
+  fi
 
   # Never ban the server itself or the address this script runs from.
   local client_ip=${SSH_CLIENT:-}
@@ -291,19 +316,29 @@ EOF
   tmp=$(mktemp)
   printf '[Definition]\ndbpurgeage = 30d\n' > "$tmp"
   put "$tmp" /etc/fail2ban/fail2ban.d/zz-routekeeper.local 0644 && changed=1
-  fail2ban-client -t >/dev/null 2>&1 || die "fail2ban не принял конфигурацию." "fail2ban rejected the configuration."
-  systemctl enable -q fail2ban
-  if [ "$changed" = 1 ] || ! systemctl is-active -q fail2ban; then systemctl restart fail2ban; fi
-  local i
-  for i in $(seq 1 10); do fail2ban-client status sshd >/dev/null 2>&1 && break; sleep 1; done
-  fail2ban-client status sshd >/dev/null 2>&1 || die "fail2ban не запустил защиту SSH." "fail2ban didn't start the SSH jail."
+  if ! fail2ban-client -t >/dev/null 2>&1; then
+    # Don't leave a config that keeps fail2ban from starting.
+    rm -f /etc/fail2ban/jail.d/zz-routekeeper.local /etc/fail2ban/fail2ban.d/zz-routekeeper.local
+    warn "fail2ban не принял конфигурацию, SSH остался без защиты от подбора пароля." "fail2ban rejected the configuration, SSH is left without password-guessing protection."
+    return 0
+  fi
+  systemctl enable -q fail2ban 2>/dev/null || true
+  if [ "$changed" = 1 ] || ! systemctl is-active -q fail2ban; then systemctl restart fail2ban 2>/dev/null || true; fi
+  for _ in $(seq 1 15); do fail2ban-client status sshd >/dev/null 2>&1 && break; sleep 1; done
+  if ! fail2ban-client status sshd >/dev/null 2>&1; then
+    warn "fail2ban не запустил защиту SSH (journalctl -u fail2ban покажет почему)." "fail2ban didn't start the SSH jail (journalctl -u fail2ban shows why)."
+    return 0
+  fi
   say "5 неудачных входов за час → бан на сутки, повторно дольше" "5 failed logins in an hour → banned for a day, longer for repeat offenders"
 }
 
 setup_auto_updates() {
   [ "$AUTO_UPDATES" = 1 ] || return 0
   step "Автоматические обновления безопасности" "Automatic security updates"
-  dpkg -s unattended-upgrades >/dev/null 2>&1 || apt_install unattended-upgrades
+  if ! dpkg -s unattended-upgrades >/dev/null 2>&1 && ! apt_install unattended-upgrades; then
+    warn "unattended-upgrades не установился, обновления безопасности придётся ставить вручную." "unattended-upgrades didn't install, security updates have to be applied by hand."
+    return 0
+  fi
   local tmp
   tmp=$(mktemp)
   printf 'APT::Periodic::Update-Package-Lists "1";\nAPT::Periodic::Unattended-Upgrade "1";\n' > "$tmp"
@@ -315,8 +350,8 @@ verify() {
   step "Проверки" "Checks"
   # Talk to Caddy on this machine, so the checks don't depend on hairpin routing.
   local resolve=(--resolve "$DOMAIN:443:127.0.0.1")
-  local ok=0 i
-  for i in $(seq 1 45); do
+  local ok=0
+  for _ in $(seq 1 45); do
     curl -fsS -o /dev/null --max-time 5 "${resolve[@]}" "https://$DOMAIN/" 2>/dev/null && { ok=1; break; }
     sleep 2
   done
@@ -343,10 +378,19 @@ verify() {
 }
 
 report() {
-  local url="https://$PROXY_USER:$PROXY_PASS@$DOMAIN:443"
+  local url="https://$PROXY_USER:$PROXY_PASS@$DOMAIN:443" w
+  if [ ${#WARNINGS[@]} != 0 ]; then
+    say "" ""
+    for w in "${WARNINGS[@]}"; do printf '! %s\n' "$w" >&2; done
+  fi
   if [ "$JSON" = 1 ]; then
-    printf '{"type":"https","host":"%s","port":443,"username":"%s","password":"%s","url":"%s","serverIP":"%s","caddy":"%s"}\n' \
-      "$DOMAIN" "$PROXY_USER" "$PROXY_PASS" "$url" "$SERVER_IP" "${CADDY_VERSION%-naive}"
+    local warnings="" sep=""
+    for w in ${WARNINGS[@]+"${WARNINGS[@]}"}; do
+      warnings+="$sep\"$(printf '%s' "$w" | sed 's/\\/\\\\/g; s/"/\\"/g')\""
+      sep=","
+    done
+    printf '{"type":"https","host":"%s","port":443,"username":"%s","password":"%s","url":"%s","serverIP":"%s","caddy":"%s","warnings":[%s]}\n' \
+      "$DOMAIN" "$PROXY_USER" "$PROXY_PASS" "$url" "$SERVER_IP" "${CADDY_VERSION%-naive}" "$warnings"
     return
   fi
   if [ "$RU" = 1 ]; then
