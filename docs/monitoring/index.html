@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="../../docs/assets/docs.css?v=891e2023">
+<link rel="stylesheet" href="../../docs/assets/docs.css?v=904b8bd7">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/ru/monitoring.html. Edit the fragment, not this file. -->
@@ -111,6 +111,99 @@
 
     <h2 id="overview">Обзор</h2>
     <p>Главный экран окна Routekeeper, <kbd>⌘1</kbd>. Сверху одна строка о самом важном. Ниже — что ждёт вашего ответа, маршруты, счётчики и что идёт через прокси прямо сейчас.</p>
+    <figure class="mock-fig">
+  <div class="mock-scroll"><div class="mock mock-win" aria-hidden="true" style="min-width: 720px">
+    <div class="mock-titlebar"><i></i><i></i><i></i><span>Обзор</span><div class="mock-btn">Проверить все</div><div class="mock-btn">+ ⌄</div></div>
+    <div class="mock-split" style="grid-template-columns: 184px minmax(0, 1fr)">
+      <div class="mock-side" style="display: flex; flex-direction: column; align-items: stretch">
+        <div class="on">Обзор</div>
+        <div class="mock-cap" style="margin-top: 6px">Маршрутизация</div>
+        <div>Приложения</div>
+        <div>Правила</div>
+        <div>Прокси</div>
+        <div class="mock-cap" style="margin-top: 6px">Наблюдение</div>
+        <div>Монитор</div>
+        <div>Мимо прокси</div>
+        <div class="mock-group" style="display: grid; gap: 6px; margin-top: auto; padding: 8px">
+          <div style="gap: 6px; padding: 0"><span class="mock-dot"></span><b class="grow">Работает</b><span class="mock-toggle on"></span></div>
+          <div class="muted" style="padding: 0 0 0 14px">3 приложения через прокси</div>
+          <div style="display: grid; gap: 2px; padding: 0"><span class="muted">Режим</span><span class="mock-select">Только прокси</span></div>
+          <div class="mock-sep" style="margin: 2px 0; padding: 0"></div>
+          <div style="display: grid; gap: 2px; padding: 0">
+            <div style="padding: 0"><span class="muted grow">Прокси</span><span class="muted">48 мс · NL</span></div>
+            <div style="gap: 6px; padding: 0"><span class="mock-dot"></span>Амстердам<span class="muted">+1 ⇕</span></div>
+          </div>
+          <div class="mock-sep" style="margin: 2px 0; padding: 0"></div>
+          <div style="gap: 4px; padding: 0"><span class="muted grow">Трафик</span><span>1,3 МБ/с</span><span class="muted">›</span></div>
+        </div>
+      </div>
+      <div class="mock-main" style="gap: 14px">
+        <div class="mock-group" style="display: flex; align-items: center; gap: 14px; padding: 14px 16px">
+          <span class="mock-check" style="width: 30px; height: 30px"></span>
+          <div class="grow" style="display: grid; gap: 3px">
+            <div class="mock-h">Всё работает<b class="mk">1</b></div>
+            <div class="mock-sub">Маршрутов через прокси: 3, прокси: 2. Утечек не было с 09:14.</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: baseline; gap: 8px"><b>Маршруты</b><span class="right mock-link">Все прокси</span></div>
+        <div class="mock-group">
+          <div class="mock-row" style="gap: 10px; padding: 9px 12px">
+            <span class="mock-dot"></span>
+            <div style="display: grid; flex: none; width: 150px"><b>Амстердам<b class="mk">2</b></b><span class="muted">Нидерланды · 203.0.113.7</span></div>
+            <span style="flex: none; width: 44px">48 мс</span>
+            <div class="grow" style="display: flex; align-items: center; gap: 4px"><span class="mock-ico">S</span><span class="mock-ico g">C</span><span class="muted" style="margin-left: 4px">Slack, Chrome ⌄</span></div>
+            <div style="display: grid; justify-items: end; gap: 4px; flex: none; width: 62px"><span>1,2 МБ/с</span><svg viewBox="0 0 56 4" style="display: block; width: 56px; height: 4px"><rect width="56" height="4" rx="2" fill="currentColor" opacity=".18"/><rect width="52" height="4" rx="2" fill="var(--m-accent)"/></svg></div>
+            <div class="mock-popup" style="display: flex; align-items: center"><span class="mock-btn" style="width: 22px; height: 22px; padding: 0; justify-content: center; border-radius: 50%">⋯</span><b class="mk">3</b>
+              <div class="mock-menu" style="top: 28px; right: 0">
+                <div class="mi">Проверить снова</div>
+                <div class="mi">Перевести маршруты на<span class="sc">›</span></div>
+                <div class="mock-sep"></div>
+                <div class="mi">Все прокси…</div>
+              </div>
+            </div>
+          </div>
+          <div class="mock-row" style="gap: 10px; padding: 9px 12px">
+            <span class="mock-dot"></span>
+            <div style="display: grid; flex: none; width: 150px"><b>Франкфурт</b><span class="muted">Германия · 203.0.113.20</span></div>
+            <span style="flex: none; width: 44px">61 мс</span>
+            <div class="grow" style="display: flex; align-items: center; gap: 4px"><span class="mock-ico s">T</span><span class="muted" style="margin-left: 4px">Терминал ⌄</span></div>
+            <div style="display: grid; justify-items: end; gap: 4px; flex: none; width: 62px"><span>86 КБ/с</span><svg viewBox="0 0 56 4" style="display: block; width: 56px; height: 4px"><rect width="56" height="4" rx="2" fill="currentColor" opacity=".18"/><rect width="4" height="4" rx="2" fill="var(--m-accent)"/></svg></div>
+            <span class="mock-btn" style="width: 22px; height: 22px; padding: 0; justify-content: center; border-radius: 50%; margin-right: 24px">⋯</span>
+          </div>
+          <div class="mock-row" style="gap: 10px; padding: 9px 12px"><span class="muted">→</span><div style="display: grid"><b class="muted">Напрямую</b><span class="muted">Всё остальное идёт через ваше обычное подключение</span></div></div>
+        </div>
+        <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px">
+          <div class="mock-group" style="display: grid; align-content: start; gap: 6px; padding: 12px">
+            <div style="display: flex; gap: 8px"><span class="muted grow">Мимо прокси<b class="mk">4</b></span><span class="mock-link">Подробнее</span></div>
+            <div><b class="mock-h">Нет</b> <span class="muted">с 09:14</span></div>
+            <div class="muted">Соединений мимо прокси не было.</div>
+          </div>
+          <div class="mock-group" style="display: grid; align-content: start; gap: 6px; padding: 12px">
+            <div style="display: flex; gap: 8px"><span class="muted grow">Трафик через прокси · 3 мин</span><span class="mock-link">Монитор</span></div>
+            <div><b class="mock-h">1,3 МБ/с</b> <span class="muted">2,4 ГБ с 09:14</span></div>
+            <div class="mock-ok"><svg viewBox="0 0 120 30" preserveAspectRatio="none" style="display: block; width: 100%; height: 30px"><polygon points="0,22 6,20 12,21 18,18 24,19 30,15 36,17 42,12 48,14 54,10 60,13 66,11 72,8 78,12 84,9 90,14 96,10 102,7 108,11 114,9 120,8 120,30 0,30" fill="currentColor" opacity=".15"/><polyline points="0,22 6,20 12,21 18,18 24,19 30,15 36,17 42,12 48,14 54,10 60,13 66,11 72,8 78,12 84,9 90,14 96,10 102,7 108,11 114,9 120,8" fill="none" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg></div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: baseline; gap: 8px"><b>Сейчас через прокси<b class="mk">5</b></b><span class="right mock-link">Все соединения</span></div>
+        <div class="mock-group">
+          <div class="mock-row"><span class="mock-ico g">C</span><div class="grow" style="display: grid"><b>Chrome</b><span class="muted">Амстердам · соединений: 14</span></div><span>870 КБ/с</span></div>
+          <div class="mock-row"><span class="mock-ico">S</span><div class="grow" style="display: grid"><b>Slack</b><span class="muted">Амстердам · соединений: 6</span></div><span>330 КБ/с</span></div>
+          <div class="mock-row"><span class="mock-ico s">T</span><div class="grow" style="display: grid"><b>Терминал</b><span class="muted">Франкфурт · соединений: 2</span></div><span>86 КБ/с</span></div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <figcaption>
+    <ol class="mk-legend">
+      <li>Заголовок: самое важное одной строкой. «Всё работает» — маршруты работают, ниже — сколько маршрутов через сколько прокси и с какого времени не было соединений мимо прокси. Если что-то не так, здесь будет проблема (см. таблицу ниже).</li>
+      <li>Строка прокси, через который идут маршруты: точка (зелёная — отвечает), страна и внешний IP, задержка, что идёт по маршруту (щелчок раскрывает список), скорость и доля трафика. Последняя строка, <span class="ui">Напрямую</span>, — всё остальное.</li>
+      <li>Меню «⋯» у каждого прокси: <span class="ui">Проверить снова</span>, <span class="ui">Перевести маршруты на</span> (только маршруты этого прокси) и <span class="ui">Все прокси…</span>.</li>
+      <li>Счётчики: сколько было соединений мимо прокси и сколько трафика прошло через прокси, с графиком за 3 минуты.</li>
+      <li>Приложения, которые передавали данные через прокси за последнюю минуту: через какой прокси, сколько соединений, скорость.</li>
+    </ol>
+    Схема раздела <span class="ui">Обзор</span> с двумя прокси, оба отвечают. Данные выдуманные.
+  </figcaption>
+</figure>
 
     <h3>Заголовок: что случилось и что делать</h3>
     <p>Заголовок всегда показывает самую серьёзную проблему. В таблице состояния идут от более серьёзных к менее серьёзным.</p>
@@ -125,7 +218,7 @@
         <tr><td><span class="ui">Есть соединения мимо прокси</span></td><td>За последний час приложение, которое должно идти через прокси, отправило <a class="term" href="../../docs/glossary/#udp">UDP</a> напрямую, или его процесс прошёл мимо правила.</td><td>Нажмите <span class="ui">Подробнее</span> в строке под заголовком и примените исправление. Подробно — <a href="#leaks">«Мимо прокси»</a>.</td></tr>
         <tr><td><span class="ui">Работает частично</span></td><td>Из нескольких прокси не отвечает часть. Что идёт через них, ждёт; остальные маршруты работают.</td><td>В строке этого прокси нажмите <span class="ui">Перевести на «…»</span> или <span class="ui">Проверить снова</span>.</td></tr>
         <tr><td><span class="ui">DNS-запросы идут напрямую</span></td><td>Основной трафик идёт через прокси, но за последний час приложение отправило запросы <a class="term" href="../../docs/glossary/#dns">DNS</a> напрямую. Провайдер DNS может видеть ваш IP и имена сайтов.</td><td>В <a href="#leaks">«Мимо прокси»</a>: для приложения — <span class="ui">Блокировать DNS</span>, для браузера — DNS через HTTPS.</td></tr>
-        <tr><td><span class="ui">Всё работает</span></td><td>Маршруты работают. Ниже написано, что через какой прокси идёт и с какого времени не было соединений мимо прокси.</td><td>Ничего.</td></tr>
+        <tr><td><span class="ui">Всё работает</span></td><td>Маршруты работают. Ниже — сводка: при одном прокси — какие приложения идут через него, при нескольких — сколько маршрутов и прокси, и с какого времени не было соединений мимо прокси.</td><td>Ничего.</td></tr>
       </tbody>
     </table></div>
     <p>Исключение: если включено <span class="ui">Настройки → Сеть → Если прокси недоступен — пускать напрямую</span>, при недоступном прокси соединения уходят напрямую, хотя заголовок об этом не скажет.</p>
@@ -148,7 +241,7 @@
       <li><b>Скорость</b> сейчас, а если прокси несколько — и доля каждого.</li>
       <li><b>Меню «…»:</b> <span class="ui">Проверить снова</span>, <span class="ui">Перевести маршруты на</span> (переводит маршруты только этого прокси), <span class="ui">Все прокси…</span>.</li>
     </ul>
-    <p>Если прокси не отвечает, его строка подсвечена, и под ней две кнопки: <span class="ui">Перевести на «…»</span> (на другой прокси, по возможности на тот, что ответил на проверку) и <span class="ui">Проверить снова</span>. Над списком есть <span class="ui">Проверить все</span> и <span class="ui">Все прокси</span>. Пока <span class="ui">Обзор</span> открыт, Routekeeper перепроверяет прокси из маршрутов, но каждый не чаще раза в минуту.</p>
+    <p>Если прокси не отвечает, его строка подсвечена, и под ней две кнопки: <span class="ui">Перевести на «…»</span> (на другой прокси, по возможности на тот, что ответил на проверку) и <span class="ui">Проверить снова</span>. Кнопка <span class="ui">Проверить все</span> — на панели инструментов окна, ссылка <span class="ui">Все прокси</span> — рядом с заголовком <span class="ui">Маршруты</span>. Пока <span class="ui">Обзор</span> открыт, Routekeeper перепроверяет прокси из маршрутов, но каждый не чаще раза в минуту.</p>
     <p>Перевести все приложения на другой прокси одним движением можно с панели внизу боковой колонки или из меню значка в строке меню (там — если прокси два и больше). Подробно — <a href="../../docs/proxies/#switch">«Перевод на другой прокси»</a>.</p>
 
     <h3>Счётчики и «Сейчас через прокси»</h3>
@@ -211,7 +304,77 @@
 
     <h2 id="leaks">Мимо прокси</h2>
     <p>Раздел <span class="ui">Мимо прокси</span> (в версии 0.2.1 — <span class="ui">Утечки</span>; так же назывались счётчик в мониторе и карточка в разделе <span class="ui">Обзор</span>), <kbd>⌘6</kbd>. Здесь соединения приложений, которые должны идти через прокси, но пошли напрямую. Если таких нет, раздел пуст: <span class="ui">Соединений мимо прокси не видно</span>.</p>
-    <p>Строки сгруппированы по приложению и виду. В строке — приложение, вид, сколько раз (× N), до четырёх адресов, совет и кнопка исправления. Сверху самые серьёзные.</p>
+    <p>Строки сгруппированы по процессу и виду, поэтому два помощника одного приложения дают две строки с одним названием. В строке — приложение, вид, сколько раз (× N), до четырёх адресов, совет и кнопка исправления. Сверху самые серьёзные.</p>
+    <figure class="mock-fig">
+  <div class="mock-scroll"><div class="mock mock-win" aria-hidden="true" style="min-width: 720px">
+    <div class="mock-titlebar"><i></i><i></i><i></i><span>Мимо прокси</span></div>
+    <div class="mock-split" style="grid-template-columns: 184px minmax(0, 1fr)">
+      <div class="mock-side" style="display: flex; flex-direction: column; align-items: stretch">
+        <div>Обзор</div>
+        <div class="mock-cap" style="margin-top: 6px">Маршрутизация</div>
+        <div>Приложения</div>
+        <div>Правила</div>
+        <div>Прокси</div>
+        <div class="mock-cap" style="margin-top: 6px">Наблюдение</div>
+        <div>Монитор</div>
+        <div class="on">Мимо прокси<b class="mk">1</b><span class="badge">44</span></div>
+        <div class="mock-group" style="display: grid; gap: 6px; margin-top: auto; padding: 8px">
+          <div style="gap: 6px; padding: 0"><span class="mock-dot"></span><b class="grow">Работает</b><span class="mock-toggle on"></span></div>
+          <div class="muted" style="padding: 0 0 0 14px">3 приложения через прокси</div>
+          <div style="display: grid; gap: 2px; padding: 0"><span class="muted">Режим</span><span class="mock-select">Только прокси</span></div>
+          <div class="mock-sep" style="margin: 2px 0; padding: 0"></div>
+          <div style="display: grid; gap: 2px; padding: 0">
+            <div style="padding: 0"><span class="muted grow">Прокси</span><span class="muted">48 мс · NL</span></div>
+            <div style="gap: 6px; padding: 0"><span class="mock-dot"></span>Амстердам<span class="muted">+1 ⇕</span></div>
+          </div>
+          <div class="mock-sep" style="margin: 2px 0; padding: 0"></div>
+          <div style="gap: 4px; padding: 0"><span class="muted grow">Трафик</span><span>1,3 МБ/с</span><span class="muted">›</span></div>
+        </div>
+      </div>
+      <div class="mock-main" style="gap: 12px">
+        <div class="mock-sub">Соединения приложений, которые должны идти через прокси, но пошли мимо него.</div>
+        <div class="mock-group">
+          <div class="mock-row" style="align-items: flex-start; gap: 10px; padding: 10px 12px">
+            <span class="mock-ico" style="width: 26px; height: 26px">S</span>
+            <div class="grow" style="display: grid; gap: 3px">
+              <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px"><b>Slack</b><span class="mock-pill block">Процесс мимо правила</span><span class="muted">× 3</span><b class="mk">2</b></div>
+              <div class="muted">files.example.com:443, api.example.com:443<b class="mk">3</b></div>
+              <div>Добавьте этот процесс в правило приложения или включите «вместе с дочерними процессами».</div>
+            </div>
+            <span class="mock-btn">Через «Амстердам»</span><b class="mk">4</b>
+          </div>
+          <div class="mock-row" style="align-items: flex-start; gap: 10px; padding: 10px 12px">
+            <span class="mock-ico g" style="width: 26px; height: 26px">C</span>
+            <div class="grow" style="display: grid; gap: 3px">
+              <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px"><b>Chrome</b><span class="mock-pill ask">UDP мимо прокси</span><span class="muted">× 14</span></div>
+              <div class="muted">video.example.com:443, www.example.com:443</div>
+              <div>Включите «Блокировать UDP/QUIC» в настройках прокси, тогда приложение перейдёт на TCP.</div>
+            </div>
+            <span class="mock-btn" style="margin-right: 24px">Блокировать UDP</span>
+          </div>
+          <div class="mock-row" style="align-items: flex-start; gap: 10px; padding: 10px 12px">
+            <span class="mock-ico g" style="width: 26px; height: 26px">C</span>
+            <div class="grow" style="display: grid; gap: 3px">
+              <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px"><b>Chrome</b><span class="mock-pill low">DNS мимо прокси</span><span class="muted">× 27</span><b class="mk">5</b></div>
+              <div class="muted">192.168.1.1:53</div>
+              <div>Включите в браузере «DNS через HTTPS»: запросы имён пойдут через прокси. Порт 53 не блокируйте, без DoH браузер перестанет открывать сайты.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <figcaption>
+    <ol class="mk-legend">
+      <li>Раздел <span class="ui">Мимо прокси</span>. Число рядом — сколько таких соединений было с начала счёта.</li>
+      <li>Приложение, вид и сколько раз. Цвет говорит о серьёзности: красный — <span class="ui">Процесс мимо правила</span>, оранжевый — <span class="ui">UDP мимо прокси</span>, жёлтый — <span class="ui">DNS мимо прокси</span>. Самые серьёзные сверху.</li>
+      <li>До четырёх адресов, куда ушли соединения, и совет, что сделать.</li>
+      <li>Кнопка исправления. <span class="ui">Через «Амстердам»</span> добавляет правило: этот процесс через основной прокси. <span class="ui">Блокировать UDP</span> включает <span class="ui">Блокировать UDP и QUIC</span> у прокси, через который идёт приложение.</li>
+      <li>У браузера кнопки <span class="ui">Блокировать DNS</span> нет: вместо неё включите в браузере DNS через HTTPS, см. рецепт <a href="../../docs/recipes/#browser-dns">«DNS через HTTPS в браузере»</a>. У других приложений эта кнопка есть.</li>
+    </ol>
+    Схема раздела <span class="ui">Мимо прокси</span> с тремя видами таких соединений. Данные выдуманные.
+  </figcaption>
+</figure>
     <div class="table"><table>
       <thead><tr><th>Вид</th><th>Что случилось</th><th>Кнопка исправления</th></tr></thead>
       <tbody>

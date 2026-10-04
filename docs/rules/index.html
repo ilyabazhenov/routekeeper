@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="../../docs/assets/docs.css?v=891e2023">
+<link rel="stylesheet" href="../../docs/assets/docs.css?v=904b8bd7">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/ru/rules.html. Edit the fragment, not this file. -->
@@ -119,6 +119,33 @@
   </tbody>
 </table></div>
 <p>Кнопки: <span class="ui">Сохранить</span>, <span class="ui">Отмена</span> и, у существующего правила, <span class="ui">Удалить</span>. Срока действия в окне нет: правило из него действует, пока вы его не выключите или не удалите.</p>
+<figure class="mock-fig">
+  <div class="mock-scroll"><div class="mock mock-win" aria-hidden="true" style="min-width: 0; width: 520px">
+    <div class="mock-main" style="gap: 14px; padding: 20px">
+      <div class="mock-h">Новое правило</div>
+      <div class="mock-group">
+        <div class="mock-row"><span style="flex: none; width: 116px">Приложение<b class="mk">1</b></span><span class="mock-ico g">C</span><span class="grow">Chrome</span><span class="mock-btn mock-select">Изменить</span></div>
+        <div class="mock-row"><span class="grow">Вместе с дочерними процессами</span><span class="mock-toggle on"></span></div>
+        <div class="mock-row"><span style="flex: none; width: 116px">Назначение<b class="mk">2</b></span><span class="mock-input grow">*.corp.example</span><span class="mock-btn mock-select">Сервис</span></div>
+        <div class="mock-row"><span style="flex: none; width: 116px">Порт<b class="mk">3</b></span><span class="mock-input dim" style="width: 90px">Любой</span><span style="margin-left: 14px">Протокол</span><span class="mock-btn mock-select">TCP и UDP</span></div>
+        <div class="mock-row"><span class="grow">Действие<b class="mk">4</b></span><span class="mock-select">Напрямую</span></div>
+        <div class="mock-row"><span style="flex: none; width: 116px">Заметка</span><span class="mock-input grow">Сайты компании — напрямую</span></div>
+      </div>
+      <div class="mock-note" style="display: flex; gap: 6px"><span>ⓘ</span><span>Конкретный домен важнее шаблона, шаблон важнее «любого адреса». При равенстве правило приложения важнее глобального. Сервис сравнивается по своему домену, но свой домен в правиле важнее сервиса.<b class="mk">5</b></span></div>
+      <div class="mock-btns end"><span class="mock-btn">Отмена</span><span class="mock-btn primary">Сохранить</span></div>
+    </div>
+  </div></div>
+  <figcaption>
+    <ol class="mk-legend">
+      <li><span class="ui">Любое приложение</span> или конкретное, выбор — в меню <span class="ui">Изменить</span>. Для конкретного приложения ниже появляется <span class="ui">Вместе с дочерними процессами</span>.</li>
+      <li>Куда идёт соединение: имя (<code>files.example.com</code>), шаблон (<code>*.corp.example</code> — сам домен и все его поддомены), IP, подсеть или <code>@сервис</code>. Пустое поле — любой адрес, в нём видна подсказка «Любой адрес · *.example.com · 10.0.0.0/8 · @youtube». Меню <span class="ui">Сервис</span> вписывает сервис. Как записать адрес — <a href="#destination">в таблице ниже</a>.</li>
+      <li><span class="ui">Порт</span> — одно число, пусто — любой порт. <span class="ui">Протокол</span> — меню: <span class="ui">TCP и UDP</span>, <span class="ui">TCP</span> или <span class="ui">UDP</span>.</li>
+      <li>Что делать с соединением: прокси, <span class="ui">Напрямую</span>, <span class="ui">Блокировать</span> или <span class="ui">Спрашивать</span>.</li>
+      <li>Короткая памятка о том, какое правило важнее. Подробно — <a href="#priority">«Какое правило важнее»</a>.</li>
+    </ol>
+    Схема окна нового правила: Chrome идёт через прокси, а сайты компании — напрямую. Данные выдуманные.
+  </figcaption>
+</figure>
 
 <h3 id="destination">Как записать адрес</h3>
 <div class="table"><table>

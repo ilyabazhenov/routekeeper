@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="../../../docs/assets/docs.css?v=891e2023">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=904b8bd7">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/en/apps.html. Edit the fragment, not this file. -->
@@ -87,7 +87,7 @@
 <h2 id="add-app">How to add an app</h2>
 <ol class="steps">
   <li>Open the <span class="ui">Apps</span> section.</li>
-  <li>Click <span class="ui">Add</span> in the toolbar. The <span class="ui">Installed Apps</span> window opens. It lists the apps from the Applications and Utilities folders, system apps, and apps from the Applications folder in your home folder.</li>
+  <li>Click the <span class="ui">+</span> (<span class="ui">Add</span>) button in the toolbar: it shows only an icon, and the name appears as a tooltip. The <span class="ui">Installed Apps</span> window opens. It lists the apps from the Applications and Utilities folders, system apps, and apps from the Applications folder in your home folder.</li>
   <li>Find the apps you need with the search, select one or more and click <span class="ui">Add</span>.</li>
 </ol>
 <p>Other ways to add an app:</p>
@@ -132,6 +132,90 @@
 <p>For more about actions, see <a href="../../../en/docs/concepts/#actions">How it works</a>.</p>
 <p>Rows are grouped by route: <span class="ui">Through Proxy</span>, <span class="ui">Blocked</span>, <span class="ui">Ask</span>, <span class="ui">Direct</span>. Above them is the <span class="ui">Services</span> section. If an app is sending data through the proxy right now, its row shows the speed “↕ …”.</p>
 <p>At the bottom is the collapsed <span class="ui">Allowed Automatically</span> group, with the number of rows in it. It holds Apple programs and apps installed before Routekeeper that <span class="ui">Ask</span> mode allowed to go online without asking. If you choose a route for such an app, it moves to a regular group.</p>
+<figure class="mock-fig">
+  <div class="mock-scroll"><div class="mock mock-win" aria-hidden="true" style="min-width: 660px">
+    <div class="mock-titlebar"><i></i><i></i><i></i><span>Routekeeper</span></div>
+    <div class="mock-split" style="grid-template-columns: 140px minmax(0, 1fr)">
+      <div class="mock-side">
+        <div>Overview</div>
+        <div class="mock-cap" style="margin-top: 6px">Routing</div>
+        <div class="on">Apps</div>
+        <div>Rules</div>
+        <div>Proxy</div>
+        <div class="mock-cap" style="margin-top: 6px">Observing</div>
+        <div>Monitor</div>
+        <div>Leaks</div>
+      </div>
+      <div class="mock-main">
+        <div class="mock-btns">
+          <div class="grow"><span class="mock-h">Apps</span> <span class="mock-sub">2 through proxy</span></div>
+          <span class="mock-input dim" style="width: 170px">⌕ Search Apps</span>
+          <span class="mock-btn">+ <span class="muted">⌄</span></span><b class="mk">1</b>
+        </div>
+        <div class="mock-cap">Services<b class="mk">2</b></div>
+        <div class="mock-group" style="min-width: 0">
+          <div class="mock-row">
+            <span class="mock-ico">&lt;/&gt;</span>
+            <div class="grow"><div>GitHub</div><div class="muted" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">github.com, githubusercontent.com and 57 more · in every app</div></div>
+            <span class="muted">ⓘ</span>
+            <span class="mock-pill mock-select mock-ok">Proxy: Amsterdam</span>
+            <span class="mock-toggle on"></span>
+          </div>
+          <div class="mock-row"><div class="mock-btns" style="gap: 6px"><span class="mock-btn">▶︎ YouTube</span><span class="mock-btn">✈︎ Telegram</span><span class="mock-btn">✦ ChatGPT</span><span class="mock-btn">✦ Claude</span><span class="mock-btn">All Services…</span></div></div>
+        </div>
+        <div class="mock-note">A service takes this route in every app. A rule for a specific domain in Rules beats the service.</div>
+        <div class="mock-cap">Through Proxy<b class="mk">3</b></div>
+        <div class="mock-group" style="min-width: 0">
+          <div class="mock-row">
+            <span class="mock-ico o">S</span>
+            <div class="grow"><div>Slack</div><div class="muted" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">com.tinyspeck.slackmacgap · + child processes</div></div>
+            <span class="muted">↕ 340 KB/s</span>
+            <div class="mock-popup">
+              <span class="mock-pill mock-select mock-ok">Proxy: Amsterdam</span>
+              <div class="mock-menu" style="top: calc(100% + 4px); right: 0">
+                <div class="lbl">Through Proxy</div>
+                <div class="mi"><span class="tick">✓</span>Amsterdam</div>
+                <div class="mi hl"><span class="tick"></span>Frankfurt</div>
+                <div class="mock-sep"></div>
+                <div class="mi"><span class="tick"></span>Direct</div>
+                <div class="mi"><span class="tick"></span>Block</div>
+                <div class="mi"><span class="tick"></span>Ask</div>
+              </div>
+            </div>
+            <b class="mk">4</b>
+            <span class="mock-toggle on"></span>
+          </div>
+          <div class="mock-row">
+            <span class="mock-ico g">C</span>
+            <div class="grow"><div>Chrome</div><div class="muted" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">com.google.Chrome · + child processes</div></div>
+            <span class="mock-pill mock-select mock-ok">Proxy: Amsterdam</span>
+            <span class="mock-toggle on"></span>
+          </div>
+        </div>
+        <div class="mock-cap">Direct</div>
+        <div class="mock-group" style="min-width: 0">
+          <div class="mock-row">
+            <span class="mock-ico">Z</span>
+            <div class="grow"><div>Zoom</div><div class="muted" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">us.zoom.xos · + child processes</div></div>
+            <span class="mock-pill mock-select">Direct</span>
+            <span class="mock-toggle on"></span>
+          </div>
+        </div>
+        <div class="mock-note">This sets where all of an app’s traffic goes. Per-domain exceptions live in Rules.</div>
+        <div class="mock-cap">› Allowed Automatically <span class="muted">143</span></div>
+      </div>
+    </div>
+  </div></div>
+  <figcaption>
+    <ol class="mk-legend">
+      <li>The <span class="ui">Add</span> button, with a “+” icon. A click opens the list of installed apps; the arrow next to it opens a menu with other ways to add an app, and with services.</li>
+      <li><span class="ui">Services</span>: a route for a service’s addresses in every app. <span class="ui">ⓘ</span> opens the service card. The buttons below add popular services in one click.</li>
+      <li>Apps are grouped by route: <span class="ui">Through Proxy</span>, <span class="ui">Blocked</span>, <span class="ui">Ask</span>, <span class="ui">Direct</span>. A group with no rows isn’t shown.</li>
+      <li>The route menu: proxies by name, then <span class="ui">Direct</span>, <span class="ui">Block</span> and <span class="ui">Ask</span>. A checkmark marks the current route. A service’s menu has no <span class="ui">Ask</span>.</li>
+    </ol>
+    A sketch of the <span class="ui">Apps</span> section with Slack’s route menu open. The data is made up.
+  </figcaption>
+</figure>
 
 <h3 id="manage">Enable, disable, delete</h3>
 <ul>
@@ -243,16 +327,62 @@
 <h3 id="service-card">The service card</h3>
 <p>The <span class="ui">ⓘ</span> button in a service’s row opens its card. A double-click on the row and the <span class="ui">More Info…</span> item in the context menu open it too. The card has:</p>
 <ul>
-  <li><b>at the top</b>: the name, the group, the number of addresses in the set, and a toggle;</li>
+  <li><b>at the top</b>: the name, the number of addresses in the set, and a toggle; the group is shown only for sets in the Meta, AI assistants and Russian services groups;</li>
   <li><b><span class="ui">What the rule does</span></b>: the <span class="ui">Route</span> menu, the rule in words, and caveats. For example, for messengers: “Calls use UDP and don’t work through a proxy”. Below that, <span class="ui">These rules come first:</span> lists your rules that take part of the service’s traffic before the service does;</li>
   <li><b><span class="ui">What went through the rule</span></b>: apps and addresses from recent connections in <a href="../../../en/docs/monitoring/#monitor"><span class="ui">Monitor</span></a> that this service decided on;</li>
-  <li><b><span class="ui">What’s included</span></b>: all names and subnets in the set. In the <span class="ui">Check an address or search the list</span> field, type a name, for example <code>i.ytimg.com</code>, and the card tells you whether it’s part of the service;</li>
+  <li><b><span class="ui">What’s included</span></b>: all names and subnets in the set. In the <span class="ui">Check an address or search the list</span> field, type a name, for example <code>i.ytimg.com</code>, and the card tells you whether it’s part of the service. The answer appears once the text contains a dot. The list below shows only entries that contain what you typed, so for a subdomain it may go empty: look at the answer line instead;</li>
   <li>the <span class="ui">Remove Service</span> and <span class="ui">Done</span> buttons.</li>
 </ul>
+<figure class="mock-fig">
+  <div class="mock-scroll"><div class="mock mock-win narrow" aria-hidden="true" style="width: 520px">
+    <div class="mock-row" style="gap: 12px; padding: 18px 18px 4px">
+      <span class="mock-ico" style="width: 36px; height: 36px; border-radius: 9px">&lt;/&gt;</span>
+      <div class="grow"><div class="mock-h">GitHub</div><div class="mock-sub">Addresses in the list: 59</div></div>
+      <span class="mock-toggle on"></span>
+    </div>
+    <div class="mock-main">
+      <div class="mock-cap">What the rule does</div>
+      <div class="mock-group" style="min-width: 0">
+        <div class="mock-row"><span class="grow">Route</span><span class="mock-pill mock-select mock-ok">Proxy: Amsterdam</span></div>
+        <div class="mock-row"><div class="grow">Any app that connects to the GitHub addresses listed below goes through the proxy “Amsterdam”. The app’s own route doesn’t apply here.</div><b class="mk">1</b></div>
+        <div class="mock-row">
+          <div class="grow"><div>These rules come first:</div><div class="muted" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">All Apps · objects.githubusercontent.com → Proxy: Frankfurt</div></div>
+          <b class="mk">2</b>
+        </div>
+      </div>
+      <div class="mock-cap">What went through the rule<b class="mk">3</b></div>
+      <div class="mock-group">
+        <div class="mock-row"><span class="mock-ico g">C</span><span class="grow">Chrome</span><span class="muted">38</span></div>
+        <div class="mock-row"><span class="mock-ico s">&gt;_</span><span class="grow">git</span><span class="muted">14</span></div>
+        <div class="mock-row"><span class="muted">github.com, api.github.com, avatars.githubusercontent.com, codeload.github.com, raw.githubusercontent.com</span></div>
+      </div>
+      <div class="mock-note">From the monitor’s recent connections: 52.</div>
+      <div class="mock-cap">What’s included</div>
+      <div class="mock-group">
+        <div class="mock-row" style="flex-wrap: wrap"><span class="grow" style="min-width: 160px">Check an address or search the list</span><span class="mock-input" style="width: 190px">githubusercontent.com</span><b class="mk">4</b></div>
+        <div class="mock-row mock-ok">✓ githubusercontent.com is in GitHub</div>
+        <div class="mock-row"><span class="grow">githubusercontent.com</span><span class="muted">and subdomains</span></div>
+      </div>
+      <div class="mock-note">List from v2fly/domain-list-community, October 1, 2026, updated automatically.</div>
+    </div>
+    <div class="mock-row" style="padding: 10px 16px"><span class="mock-btn danger">Remove Service</span><b class="mk">5</b><span class="mock-btn primary right">Done</span></div>
+  </div></div>
+  <figcaption>
+    <ol class="mk-legend">
+      <li>The rule in words. The <span class="ui">Route</span> menu above it changes the service’s route. Some services have an orange caveat below it, for example messengers: “Calls use UDP and don’t work through a proxy”. GitHub has none.</li>
+      <li><span class="ui">These rules come first:</span> your rules that take some of the service’s addresses before it does. That’s a rule for a domain from the service’s list, or a rule for the same service with a specific app, port or protocol. When there are none, a note here says which rule would come first.</li>
+      <li>Apps and addresses from recent connections in <span class="ui">Monitor</span> that this service decided on. Until there are any, it says “Nothing yet”.</li>
+      <li>The address check. Type a name with a dot, for example <code>raw.githubusercontent.com</code>, and the card tells you whether it’s part of the service. Below are the list entries that contain what you typed: a name “and subdomains”, “this name only”, or a subnet. While the field is empty, the whole list is shown.</li>
+      <li><span class="ui">Remove Service</span> deletes the service’s row and closes the card. App rows added along with the service stay.</li>
+    </ol>
+    A sketch of the card of the GitHub service, which goes through the Amsterdam proxy. The data is made up.
+  </figcaption>
+</figure>
 
-<h3 id="service-updates">List updates</h3>
-<p>Service addresses come from the open v2fly/domain-list-community project, and Telegram’s subnets come from the list that Telegram publishes. Every 12 hours, Routekeeper checks getroutekeeper.app for newer lists and installs them without an app update. The file with the lists is signed, and the network extension checks the signature. An update changes addresses; new services appear only with a new version of the app.</p>
-<p>The date of the lists and a manual check are in <span class="ui">Settings</span> → <span class="ui">General</span> → <span class="ui">Service Addresses</span>: the <span class="ui">Lists from</span> line and the <span class="ui">Check Lists</span> button. What Routekeeper sends over the network for this is described on the <a href="../../../en/privacy/">Privacy</a> page.</p>
+<h3 id="service-updates">Service updates</h3>
+<p>Routekeeper takes the list of services, their addresses and the apps added along with them from its service catalog. The addresses come from the open v2fly/domain-list-community project, and Telegram’s subnets come from the list that Telegram publishes.</p>
+<p>Every 6 hours, Routekeeper checks getroutekeeper.app for a newer catalog and installs it without an app update. This is how new services appear, addresses change and new apps of a service are added. The catalog file is signed, and the network extension checks the signature. If a check fails, for example with no network, Routekeeper tries again within the hour.</p>
+<p>The date of the catalog and a manual check are in <span class="ui">Settings</span> → <span class="ui">General</span> → <span class="ui">Service Catalog</span> (<span class="ui">Service Addresses</span> in version 0.2.1): the <span class="ui">Lists from</span> and <span class="ui">Last check</span> lines and the <span class="ui">Check Lists</span> button. What Routekeeper sends over the network for this is described on the <a href="../../../en/privacy/">Privacy</a> page.</p>
     <p class="checked">Checked against the Routekeeper code (version 0.2.1 and the one after it) on October 4, 2026.</p>
     <nav class="pager"><a class="prev" href="../../../en/docs/proxies/"><span>Previous</span>Proxies</a><a class="next" href="../../../en/docs/rules/"><span>Next</span>Rules</a></nav>
   </article>

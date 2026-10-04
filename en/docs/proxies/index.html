@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="../../../docs/assets/docs.css?v=891e2023">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=904b8bd7">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/en/proxies.html. Edit the fragment, not this file. -->
@@ -117,11 +117,73 @@
 <p>The quickest way is to <a href="#paste">paste a proxy line</a>. If you don’t have a line, fill in the fields by hand.</p>
 <ol class="steps">
   <li>In the Routekeeper window, open the <span class="ui">Proxy</span> section (<kbd>⌘4</kbd>).</li>
-  <li>Click <span class="ui">+</span> below the list of proxies or <span class="ui">Add Proxy</span> in the toolbar. <kbd>⌥⌘N</kbd> does the same from any section. Empty fields open on the right.</li>
+  <li>Click <span class="ui">+</span> below the list of proxies or the <span class="ui">+</span> (<span class="ui">Add Proxy</span>) button in the toolbar, which shows only an icon. <kbd>⌥⌘N</kbd> does the same from any section. Empty fields open on the right.</li>
   <li>Fill in the fields as shown in the table below.</li>
   <li>Click <span class="ui">Check</span>. You can check before you save: Routekeeper uses what’s in the fields. What the result means is explained in <a href="#check">Checking</a>.</li>
   <li>Click <span class="ui">Add</span>. The proxy appears in the list on the left, and Routekeeper checks it again right away.</li>
 </ol>
+<figure class="mock-fig">
+  <div class="mock-scroll"><div class="mock mock-win" aria-hidden="true" style="min-width: 660px">
+    <div class="mock-titlebar"><i></i><i></i><i></i><span>Routekeeper</span></div>
+    <div class="mock-split" style="grid-template-columns: 140px minmax(0, 1fr)">
+      <div class="mock-side">
+        <div>Overview</div>
+        <div class="mock-cap" style="margin-top: 6px">Routing</div>
+        <div>Apps</div>
+        <div>Rules</div>
+        <div class="on">Proxy</div>
+        <div class="mock-cap" style="margin-top: 6px">Observing</div>
+        <div>Monitor</div>
+        <div>Leaks</div>
+      </div>
+      <div class="mock-main">
+        <div class="mock-btns">
+          <div class="grow"><span class="mock-h">Proxy</span> <span class="mock-sub">2 proxies</span></div>
+          <span class="mock-btn">ϟ</span><span class="mock-btn">+</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 12px; align-items: stretch">
+          <div class="mock-group" style="display: flex; flex-direction: column">
+            <div class="mock-row sel"><span class="mock-dot"></span><div class="grow"><div>Amsterdam</div><div class="muted">HTTPS · 48 ms · NL</div></div></div>
+            <div class="mock-row"><span class="mock-dot"></span><div class="grow"><div>Frankfurt</div><div class="muted">HTTPS · 61 ms · DE</div></div></div>
+            <div class="grow"></div>
+            <div class="mock-row" style="gap: 12px"><span>+</span><span class="muted">−</span><span class="right">Paste</span><b class="mk">1</b></div>
+          </div>
+          <div style="display: grid; align-content: start; gap: 10px; min-width: 0">
+            <div class="mock-group">
+              <div class="mock-row"><div class="mock-field grow" style="grid-template-columns: 72px minmax(0, 1fr)"><span>Name</span><span class="mock-input">Amsterdam</span></div></div>
+              <div class="mock-row"><div class="mock-field grow" style="grid-template-columns: 72px minmax(0, 1fr)"><span>Type</span><span><span class="mock-seg"><span>SOCKS5</span><span>HTTP</span><span class="on">HTTPS</span></span></span></div></div>
+              <div class="mock-row"><div class="mock-field grow" style="grid-template-columns: 72px minmax(0, 1fr)"><span>Server</span><span style="display: flex; align-items: center; gap: 8px; min-width: 0"><span class="mock-input grow">nl.example.net</span><span class="muted">Port</span><span class="mock-input" style="width: 52px">443</span></span></div></div>
+              <div class="mock-row"><div class="mock-field grow" style="grid-template-columns: 72px minmax(0, 1fr)"><span>Login</span><span class="mock-input">user</span></div></div>
+              <div class="mock-row"><div class="mock-field grow" style="grid-template-columns: 72px minmax(0, 1fr)"><span>Password</span><span class="mock-input">••••••••</span></div></div>
+              <div class="mock-row"><b class="mk">2</b><div class="mock-note grow">The connection to the proxy is encrypted with TLS: the login, password and site addresses aren’t visible on the way. Enter the server’s domain name; the certificate is checked against it.</div></div>
+            </div>
+            <div class="mock-group">
+              <div class="mock-row"><span class="grow">DNS through proxy</span><b class="mk">3</b><span class="mock-toggle on"></span></div>
+              <div class="mock-row"><div class="mock-note">The site name goes to the proxy, which looks up the address itself, so your ISP doesn’t see which sites apps open.</div></div>
+              <div class="mock-row"><span class="grow">Block UDP and QUIC</span><b class="mk">4</b><span class="mock-toggle on"></span></div>
+              <div class="mock-row"><div class="mock-note">SOCKS5, HTTP and HTTPS proxies carry TCP only. Unless UDP is blocked, UDP traffic (such as QUIC in browsers) bypasses the proxy.</div></div>
+            </div>
+            <div class="mock-group">
+              <div class="mock-row" style="flex-wrap: wrap"><span class="mock-btn">ϟ Check</span><b class="mk">5</b><span class="mock-ok">✓ Working · 48 ms · IP 203.0.113.7 (NL)</span></div>
+              <div class="mock-row"><span class="mock-note">Used in rules: 3</span></div>
+            </div>
+            <div class="mock-btns end"><span class="mock-btn">Revert Changes</span><span class="mock-btn primary">Save</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <figcaption>
+    <ol class="mk-legend">
+      <li><span class="ui">Paste</span> opens a new proxy from the line on the clipboard, for example <code>https://user:pass@nl.example.net:443</code>. <kbd>⌘V</kbd> in the list does the same. <span class="ui">+</span> opens empty fields; <span class="ui">−</span> deletes the selected proxy.</li>
+      <li>An HTTPS proxy needs a domain name in the <span class="ui">Server</span> field, not an IP address: the certificate is checked against it. The note under the password appears only for the HTTPS type.</li>
+      <li><span class="ui">DNS through proxy</span>: the proxy gets the site name and looks up its address itself. On by default.</li>
+      <li><span class="ui">Block UDP and QUIC</span>: UDP from this proxy’s apps is blocked instead of bypassing the proxy. On by default.</li>
+      <li><span class="ui">Check</span> opens a connection through the proxy and shows the time, the IP address websites see, and the country code. You can check before you save.</li>
+    </ol>
+    A sketch of the <span class="ui">Proxy</span> section of the Routekeeper window, with the Amsterdam proxy selected. The data is made up.
+  </figcaption>
+</figure>
 <p>On first launch, the same is on the <a href="../../../en/docs/start/#first-proxy">welcome screen</a>: the <span class="ui">Add a proxy server</span> step, with the <span class="ui">Paste from Clipboard</span> and <span class="ui">Enter Manually…</span> buttons.</p>
 <div class="table"><table>
   <thead><tr><th>Field</th><th>What to enter</th></tr></thead>

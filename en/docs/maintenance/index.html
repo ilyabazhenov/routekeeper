@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="../../../docs/assets/docs.css?v=891e2023">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=904b8bd7">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/en/maintenance.html. Edit the fragment, not this file. -->
@@ -181,7 +181,7 @@
   <thead><tr><th>Where</th><th>What</th></tr></thead>
   <tbody>
     <tr><td><code>/Library/Application Support/Routekeeper</code></td><td>Rules, proxies with passwords, settings, service lists for the extension, <code>config.broken-…json</code> backups. Only an administrator can open it. In versions 0.2.x: <code>/Library/Application Support/AppProxy</code>.</td></tr>
-    <tr><td><code>~/Library/Application Support/app.getroutekeeper.mac</code></td><td>Downloaded lists of service addresses.</td></tr>
+    <tr><td><code>~/Library/Application Support/app.getroutekeeper.mac</code></td><td>The downloaded service catalog.</td></tr>
     <tr><td><code>~/Library/Caches/app.getroutekeeper.mac</code></td><td>Traffic map data (about 55 MB; it appears after you first open the map) and the download cache.</td></tr>
     <tr><td><code>~/Library/HTTPStorages/app.getroutekeeper.mac</code></td><td>Internal storage for the app’s network requests. macOS creates it.</td></tr>
     <tr><td><code>~/Library/Preferences/app.getroutekeeper.mac.plist</code></td><td>Window settings: notifications, updates, whether you’ve finished the welcome screen.</td></tr>
@@ -217,20 +217,20 @@
 </ul>
 <h3>Opening at login</h3>
 <p><span class="ui">Open at login</span> (<span class="ui">Settings</span> → <span class="ui">General</span>) is off by default. When it’s on, Routekeeper is listed in System Settings → General → Login Items (Login Items &amp; Extensions on macOS 15 and later).</p>
-<p>Even without it, after a restart the extension, filter and proxy start by themselves, and the rules work. Until you open Routekeeper, there’s no menu bar icon, no notifications and no prompts in <span class="ui">Ask</span> mode, and Routekeeper doesn’t check for updates or new service lists.</p>
+<p>Even without it, after a restart the extension, filter and proxy start by themselves, and the rules work. Until you open Routekeeper, there’s no menu bar icon, no notifications and no prompts in <span class="ui">Ask</span> mode, and Routekeeper doesn’t check for updates or a newer service catalog.</p>
 <h3>Where Routekeeper connects on its own</h3>
 <ul>
   <li><b>To your proxies:</b> to pass on the traffic of the apps you sent there.</li>
   <li><b>To ipinfo.io through your proxy:</b> to find out the external IP, the country and the response time. This happens when you click <span class="ui">Check</span>, save a proxy or open the list of proxies. The main proxy is also checked when you open the menu or the window (no more than once a minute), a few seconds after the network changes, and once a minute while the check keeps failing. ipinfo.io sees the proxy’s address, not yours.</li>
   <li><b>To getroutekeeper.app for updates:</b> once a day and when you click <span class="ui">Check for Updates…</span>. If you agree to update, the build itself is downloaded from GitHub Releases.</li>
-  <li><b>To getroutekeeper.app for service lists:</b> every 12 hours and when you click <span class="ui">Check Lists</span> (<span class="ui">Settings</span> → <span class="ui">General</span> → <span class="ui">Service Addresses</span>).</li>
+  <li><b>To getroutekeeper.app for the service catalog:</b> every 6 hours (after a failed check, again within the hour) and when you click <span class="ui">Check Lists</span> (<span class="ui">Settings</span> → <span class="ui">General</span> → <span class="ui">Service Catalog</span>).</li>
 </ul>
 <p>Nowhere else: no analytics, no telemetry, no crash reports. Routekeeper finds the country and network for the traffic map in a built-in database, without going online. For details, see the <a href="../../../en/privacy/">privacy policy</a>.</p>
 <details class="deep"><summary>Details: addresses and signatures</summary>
   <ul>
     <li>The list of versions: <code>getroutekeeper.app/appcast.xml</code> over HTTPS.</li>
     <li>The builds themselves: <a href="https://github.com/ilyabazhenov/routekeeper/releases">GitHub Releases</a>. Each build is signed with the update key, and Routekeeper won’t install a file whose signature doesn’t match.</li>
-    <li>Service lists: the file <code>domainsets/v1.json</code> from getroutekeeper.app over HTTPS. The file is signed too, and both the app and the extension check its signature.</li>
+    <li>Service lists: the file <code>domainsets/v2.json</code> (<code>v1.json</code> in version 0.2.1) from getroutekeeper.app over HTTPS. The file is signed too, and both the app and the extension check its signature.</li>
     <li>External IP: a <code>GET /json</code> request to <code>ipinfo.io</code> on port 80, through the proxy being checked.</li>
   </ul>
   <p>Routekeeper’s own connections aren’t covered by your rules: the app itself has a built-in “direct” rule, and the extension runs the proxy check through the proxy itself.</p>

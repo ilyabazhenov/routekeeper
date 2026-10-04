@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="../../docs/assets/docs.css?v=891e2023">
+<link rel="stylesheet" href="../../docs/assets/docs.css?v=904b8bd7">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/ru/proxies.html. Edit the fragment, not this file. -->
@@ -117,11 +117,73 @@
 <p>Быстрее всего — <a href="#paste">вставить строку прокси</a>. Если строки нет, заполните поля вручную.</p>
 <ol class="steps">
   <li>В окне Routekeeper откройте раздел <span class="ui">Прокси</span> (<kbd>⌘4</kbd>).</li>
-  <li>Нажмите <span class="ui">+</span> под списком прокси или <span class="ui">Добавить прокси</span> на панели инструментов. Из любого раздела то же делает <kbd>⌥⌘N</kbd>. Справа откроются пустые поля.</li>
+  <li>Нажмите <span class="ui">+</span> под списком прокси или кнопку <span class="ui">+</span> (<span class="ui">Добавить прокси</span>) на панели инструментов — там только значок. Из любого раздела то же делает <kbd>⌥⌘N</kbd>. Справа откроются пустые поля.</li>
   <li>Заполните поля по таблице ниже.</li>
   <li>Нажмите <span class="ui">Проверить</span>. Проверять можно до сохранения: Routekeeper возьмёт то, что вписано в поля. Что означает результат, написано в разделе <a href="#check">Проверка</a>.</li>
   <li>Нажмите <span class="ui">Добавить</span>. Прокси появится в списке слева, и Routekeeper сразу проверит его ещё раз.</li>
 </ol>
+<figure class="mock-fig">
+  <div class="mock-scroll"><div class="mock mock-win" aria-hidden="true" style="min-width: 660px">
+    <div class="mock-titlebar"><i></i><i></i><i></i><span>Routekeeper</span></div>
+    <div class="mock-split" style="grid-template-columns: 140px minmax(0, 1fr)">
+      <div class="mock-side">
+        <div>Обзор</div>
+        <div class="mock-cap" style="margin-top: 6px">Маршрутизация</div>
+        <div>Приложения</div>
+        <div>Правила</div>
+        <div class="on">Прокси</div>
+        <div class="mock-cap" style="margin-top: 6px">Наблюдение</div>
+        <div>Монитор</div>
+        <div>Мимо прокси</div>
+      </div>
+      <div class="mock-main">
+        <div class="mock-btns">
+          <div class="grow"><span class="mock-h">Прокси</span> <span class="mock-sub">2 прокси</span></div>
+          <span class="mock-btn">ϟ</span><span class="mock-btn">+</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 12px; align-items: stretch">
+          <div class="mock-group" style="display: flex; flex-direction: column">
+            <div class="mock-row sel"><span class="mock-dot"></span><div class="grow"><div>Амстердам</div><div class="muted">HTTPS · 48 мс · NL</div></div></div>
+            <div class="mock-row"><span class="mock-dot"></span><div class="grow"><div>Франкфурт</div><div class="muted">HTTPS · 61 мс · DE</div></div></div>
+            <div class="grow"></div>
+            <div class="mock-row" style="gap: 12px"><span>+</span><span class="muted">−</span><span class="right">Вставить</span><b class="mk">1</b></div>
+          </div>
+          <div style="display: grid; align-content: start; gap: 10px; min-width: 0">
+            <div class="mock-group">
+              <div class="mock-row"><div class="mock-field grow" style="grid-template-columns: 72px minmax(0, 1fr)"><span>Название</span><span class="mock-input">Амстердам</span></div></div>
+              <div class="mock-row"><div class="mock-field grow" style="grid-template-columns: 72px minmax(0, 1fr)"><span>Тип</span><span><span class="mock-seg"><span>SOCKS5</span><span>HTTP</span><span class="on">HTTPS</span></span></span></div></div>
+              <div class="mock-row"><div class="mock-field grow" style="grid-template-columns: 72px minmax(0, 1fr)"><span>Сервер</span><span style="display: flex; align-items: center; gap: 8px; min-width: 0"><span class="mock-input grow">nl.example.net</span><span class="muted">Порт</span><span class="mock-input" style="width: 52px">443</span></span></div></div>
+              <div class="mock-row"><div class="mock-field grow" style="grid-template-columns: 72px minmax(0, 1fr)"><span>Логин</span><span class="mock-input">user</span></div></div>
+              <div class="mock-row"><div class="mock-field grow" style="grid-template-columns: 72px minmax(0, 1fr)"><span>Пароль</span><span class="mock-input">••••••••</span></div></div>
+              <div class="mock-row"><b class="mk">2</b><div class="mock-note grow">Соединение с прокси шифруется TLS: логин, пароль и адреса сайтов не видны по пути. Укажите доменное имя сервера, по нему проверяется сертификат.</div></div>
+            </div>
+            <div class="mock-group">
+              <div class="mock-row"><span class="grow">DNS через прокси</span><b class="mk">3</b><span class="mock-toggle on"></span></div>
+              <div class="mock-row"><div class="mock-note">Имя сайта передаётся прокси, и он сам узнаёт его адрес. Так провайдер не видит, какие сайты открывают приложения.</div></div>
+              <div class="mock-row"><span class="grow">Блокировать UDP и QUIC</span><b class="mk">4</b><span class="mock-toggle on"></span></div>
+              <div class="mock-row"><div class="mock-note">SOCKS5, HTTP и HTTPS-прокси передают только TCP. Без блокировки UDP-трафик (например, QUIC в браузерах) пойдёт мимо прокси.</div></div>
+            </div>
+            <div class="mock-group">
+              <div class="mock-row" style="flex-wrap: wrap"><span class="mock-btn">ϟ Проверить</span><b class="mk">5</b><span class="mock-ok">✓ Работает · 48 мс · IP 203.0.113.7 (NL)</span></div>
+              <div class="mock-row"><span class="mock-note">Используется в правилах: 3</span></div>
+            </div>
+            <div class="mock-btns end"><span class="mock-btn">Отменить изменения</span><span class="mock-btn primary">Сохранить</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <figcaption>
+    <ol class="mk-legend">
+      <li><span class="ui">Вставить</span> открывает новый прокси из строки в буфере обмена, например <code>https://user:pass@nl.example.net:443</code>. В списке то же делает <kbd>⌘V</kbd>. Кнопка <span class="ui">+</span> открывает пустые поля, <span class="ui">−</span> удаляет выбранный прокси.</li>
+      <li>У HTTPS-прокси в поле <span class="ui">Сервер</span> нужно доменное имя, а не IP-адрес: по нему проверяется сертификат. Подсказка под паролем появляется только у типа HTTPS.</li>
+      <li><span class="ui">DNS через прокси</span>: имя сайта получает прокси и сам узнаёт его адрес. Включено по умолчанию.</li>
+      <li><span class="ui">Блокировать UDP и QUIC</span>: UDP приложений этого прокси блокируется, а не уходит мимо прокси. Включено по умолчанию.</li>
+      <li><span class="ui">Проверить</span> открывает соединение через прокси и показывает время, IP-адрес, который видят сайты, и код страны. Проверять можно до сохранения.</li>
+    </ol>
+    Схема раздела <span class="ui">Прокси</span> в окне Routekeeper: выбран прокси «Амстердам». Данные выдуманные.
+  </figcaption>
+</figure>
 <p>При первом запуске то же самое есть на <a href="../../docs/start/#first-proxy">приветственном экране</a>: шаг <span class="ui">Добавить прокси-сервер</span>, кнопки <span class="ui">Вставить из буфера</span> и <span class="ui">Ввести вручную…</span>.</p>
 <div class="table"><table>
   <thead><tr><th>Поле</th><th>Что вписать</th></tr></thead>

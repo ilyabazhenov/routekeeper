@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="../../../docs/assets/docs.css?v=891e2023">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=904b8bd7">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/en/rules.html. Edit the fragment, not this file. -->
@@ -119,6 +119,33 @@
   </tbody>
 </table></div>
 <p>Buttons: <span class="ui">Save</span>, <span class="ui">Cancel</span> and, for an existing rule, <span class="ui">Delete</span>. The window has no duration setting: a rule made in it stays in effect until you turn it off or delete it.</p>
+<figure class="mock-fig">
+  <div class="mock-scroll"><div class="mock mock-win" aria-hidden="true" style="min-width: 0; width: 520px">
+    <div class="mock-main" style="gap: 14px; padding: 20px">
+      <div class="mock-h">New Rule</div>
+      <div class="mock-group">
+        <div class="mock-row"><span style="flex: none; width: 116px">App<b class="mk">1</b></span><span class="mock-ico g">C</span><span class="grow">Chrome</span><span class="mock-btn mock-select">Change</span></div>
+        <div class="mock-row"><span class="grow">Include Child Processes</span><span class="mock-toggle on"></span></div>
+        <div class="mock-row"><span style="flex: none; width: 116px">Destination<b class="mk">2</b></span><span class="mock-input grow">*.corp.example</span><span class="mock-btn mock-select">Service</span></div>
+        <div class="mock-row"><span style="flex: none; width: 116px">Port<b class="mk">3</b></span><span class="mock-input dim" style="width: 90px">Any</span><span style="margin-left: 14px">Protocol</span><span class="mock-btn mock-select">TCP and UDP</span></div>
+        <div class="mock-row"><span class="grow">Action<b class="mk">4</b></span><span class="mock-select">Direct</span></div>
+        <div class="mock-row"><span style="flex: none; width: 116px">Note</span><span class="mock-input grow">Company sites go direct</span></div>
+      </div>
+      <div class="mock-note" style="display: flex; gap: 6px"><span>ⓘ</span><span>An exact domain beats a wildcard, and a wildcard beats “any address”. On a tie, an app’s rule beats a global one. A service counts as the domain it matched, but your own domain in a rule beats the service.<b class="mk">5</b></span></div>
+      <div class="mock-btns end"><span class="mock-btn">Cancel</span><span class="mock-btn primary">Save</span></div>
+    </div>
+  </div></div>
+  <figcaption>
+    <ol class="mk-legend">
+      <li><span class="ui">Any App</span> or a specific one, picked from the <span class="ui">Change</span> menu. For a specific app, <span class="ui">Include Child Processes</span> appears below.</li>
+      <li>Where the connection goes: a name (<code>files.example.com</code>), a wildcard (<code>*.corp.example</code>: the domain itself and all its subdomains), an IP, a subnet or <code>@service</code>. An empty field means any address and shows the hint “Any address · *.example.com · 10.0.0.0/8 · @youtube”. The <span class="ui">Service</span> menu fills in a service. How to write an address is in <a href="#destination">the table below</a>.</li>
+      <li><span class="ui">Port</span> is a single number; empty means any port. <span class="ui">Protocol</span> is a menu: <span class="ui">TCP and UDP</span>, <span class="ui">TCP</span> or <span class="ui">UDP</span>.</li>
+      <li>What to do with the connection: a proxy, <span class="ui">Direct</span>, <span class="ui">Block</span> or <span class="ui">Ask</span>.</li>
+      <li>A short reminder of which rule wins. The details are in <a href="#priority">Which rule wins</a>.</li>
+    </ol>
+    A sketch of the new rule window: Chrome goes through the proxy, and the company’s sites go direct. The data is made up.
+  </figcaption>
+</figure>
 
 <h3 id="destination">How to write an address</h3>
 <div class="table"><table>

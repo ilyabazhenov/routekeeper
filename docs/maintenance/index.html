@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="../../docs/assets/docs.css?v=891e2023">
+<link rel="stylesheet" href="../../docs/assets/docs.css?v=904b8bd7">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/ru/maintenance.html. Edit the fragment, not this file. -->
@@ -181,7 +181,7 @@
   <thead><tr><th>Где</th><th>Что</th></tr></thead>
   <tbody>
     <tr><td><code>/Library/Application Support/Routekeeper</code></td><td>Правила, прокси с паролями, настройки, списки сервисов для расширения, резервные копии <code>config.broken-…json</code>. Доступно только администратору. В версиях 0.2.x — <code>/Library/Application Support/AppProxy</code>.</td></tr>
-    <tr><td><code>~/Library/Application Support/app.getroutekeeper.mac</code></td><td>Скачанные списки адресов сервисов.</td></tr>
+    <tr><td><code>~/Library/Application Support/app.getroutekeeper.mac</code></td><td>Скачанный каталог сервисов.</td></tr>
     <tr><td><code>~/Library/Caches/app.getroutekeeper.mac</code></td><td>Данные карты трафика (около 55 МБ, появляются после первого открытия карты) и кеш загрузок.</td></tr>
     <tr><td><code>~/Library/HTTPStorages/app.getroutekeeper.mac</code></td><td>Служебное хранилище сетевых запросов приложения, его создаёт macOS.</td></tr>
     <tr><td><code>~/Library/Preferences/app.getroutekeeper.mac.plist</code></td><td>Настройки окна: уведомления, обновления, пройден ли приветственный экран.</td></tr>
@@ -217,20 +217,20 @@
 </ul>
 <h3>Запуск при входе</h3>
 <p><span class="ui">Запускать при входе в систему</span> (<span class="ui">Настройки</span> → <span class="ui">Основные</span>) по умолчанию выключено. Когда включено, Routekeeper виден в Системных настройках → Основные → Объекты входа (в macOS 15 и новее — Объекты входа и расширения).</p>
-<p>Даже без этого после перезагрузки расширение, фильтр и прокси поднимаются сами, и правила работают. Пока вы не откроете Routekeeper, нет значка в строке меню, уведомлений и вопросов в режиме <span class="ui">Спрашивать</span>, а проверка обновлений и списков сервисов не выполняется.</p>
+<p>Даже без этого после перезагрузки расширение, фильтр и прокси поднимаются сами, и правила работают. Пока вы не откроете Routekeeper, нет значка в строке меню, уведомлений и вопросов в режиме <span class="ui">Спрашивать</span>, а проверка обновлений и каталога сервисов не выполняется.</p>
 <h3>Куда Routekeeper выходит в сеть сам</h3>
 <ul>
   <li><b>На ваши прокси</b> — передавать трафик приложений, которые вы туда направили.</li>
   <li><b>На ipinfo.io через ваш прокси</b> — узнать внешний IP, страну и время ответа. Это происходит, когда вы нажимаете <span class="ui">Проверить</span>, сохраняете прокси или открываете список прокси. Основной прокси проверяется ещё при открытии меню или окна (не чаще раза в минуту), через несколько секунд после смены сети и раз в минуту, пока проверка не проходит. ipinfo.io видит адрес прокси, а не ваш.</li>
   <li><b>На getroutekeeper.app за обновлениями</b> — раз в сутки и по кнопке <span class="ui">Проверить обновления…</span>. Если вы согласились обновиться, сама сборка скачивается из GitHub Releases.</li>
-  <li><b>На getroutekeeper.app за списками сервисов</b> — раз в 12 часов и по кнопке <span class="ui">Проверить списки</span> (<span class="ui">Настройки</span> → <span class="ui">Основные</span> → <span class="ui">Адреса сервисов</span>).</li>
+  <li><b>На getroutekeeper.app за каталогом сервисов</b> — раз в 6 часов (после неудачной проверки — повтор в течение часа) и по кнопке <span class="ui">Проверить списки</span> (<span class="ui">Настройки</span> → <span class="ui">Основные</span> → <span class="ui">Каталог сервисов</span>).</li>
 </ul>
 <p>Больше никуда: ни аналитики, ни телеметрии, ни отчётов о сбоях. Страну и сеть для карты трафика Routekeeper определяет по встроенной базе, без запросов в интернет. Подробно — в <a href="../../privacy/">политике конфиденциальности</a>.</p>
 <details class="deep"><summary>Подробнее: адреса и подписи</summary>
   <ul>
     <li>Список версий: <code>getroutekeeper.app/appcast.xml</code> по HTTPS.</li>
     <li>Сами сборки: <a href="https://github.com/ilyabazhenov/routekeeper/releases">GitHub Releases</a>. Каждая сборка подписана ключом обновлений, и Routekeeper не установит файл, подпись которого не сходится.</li>
-    <li>Списки сервисов: файл <code>domainsets/v1.json</code> с getroutekeeper.app по HTTPS. Файл тоже подписан, и его подпись проверяют и приложение, и расширение.</li>
+    <li>Списки сервисов: файл <code>domainsets/v2.json</code> (в версии 0.2.1 — <code>v1.json</code>) с getroutekeeper.app по HTTPS. Файл тоже подписан, и его подпись проверяют и приложение, и расширение.</li>
     <li>Внешний IP: запрос <code>GET /json</code> к <code>ipinfo.io</code> на порт 80 через проверяемый прокси.</li>
   </ul>
   <p>Собственные соединения Routekeeper не попадают под ваши правила: для самого приложения есть встроенное правило «напрямую», а проверку прокси расширение выполняет через сам прокси.</p>

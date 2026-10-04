@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="../../../docs/assets/docs.css?v=891e2023">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=904b8bd7">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/en/start.html. Edit the fragment, not this file. -->
@@ -126,6 +126,69 @@
   </tbody>
 </table></div>
 <p>Routekeeper looks at which app is connecting and where. It doesn’t read the content of pages or messages, and it sends traffic only to your proxies. For details, see the <a href="../../../en/privacy/">privacy policy</a>.</p>
+<figure class="mock-fig">
+  <div class="mock-scroll"><div class="mock mock-win" aria-hidden="true" style="min-width: 0">
+    <div class="mock-titlebar"><i></i><i></i><i></i><span>Routekeeper</span></div>
+    <div class="mock-main" style="gap: 12px; padding: 20px 22px 22px">
+      <div style="display: flex; align-items: center; gap: 14px">
+        <span class="mock-ico o" style="width: 52px; height: 52px; border-radius: 12px"></span>
+        <div class="grow" style="display: grid; gap: 4px">
+          <div class="mock-h">Welcome to Routekeeper</div>
+          <div class="mock-sub">To route app traffic through proxies and apply rules, macOS will ask for three permissions. You only do this once.</div>
+        </div>
+      </div>
+      <div class="mock-group" style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px">
+        <span class="mock-check" style="width: 20px; height: 20px"></span>
+        <div class="grow" style="display: grid; gap: 4px">
+          <b>Install the network extension<b class="mk">1</b></b>
+          <div class="mock-sub">The extension intercepts connections and decides where they go. Traffic goes nowhere except your proxies.</div>
+        </div>
+      </div>
+      <div class="mock-group" style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px">
+        <span class="mock-btn primary" style="width: 20px; height: 20px; padding: 0; justify-content: center; border-radius: 50%">2</span>
+        <div class="grow" style="display: grid; gap: 4px">
+          <b>Allow network content filtering</b>
+          <div class="mock-sub">macOS will ask whether “Routekeeper” may filter network content — click Allow. The firewall and monitor need it.</div>
+          <div class="mock-btns" style="margin-top: 4px"><span class="mock-btn primary">Turn On Filter</span><b class="mk">2</b></div>
+        </div>
+      </div>
+      <div class="mock-group" style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px">
+        <div class="grow" style="display: flex; align-items: flex-start; gap: 12px; opacity: .6">
+          <span class="mock-btn" style="width: 20px; height: 20px; padding: 0; justify-content: center; border-radius: 50%">3</span>
+          <div class="grow" style="display: grid; gap: 4px">
+            <b>Allow the proxy configuration</b>
+            <div class="mock-sub">macOS will ask whether “Routekeeper” may add proxy configurations — click Allow. That’s how the chosen apps’ traffic reaches the proxy.</div>
+          </div>
+        </div>
+        <b class="mk">3</b>
+      </div>
+      <div class="mock-group" style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; opacity: .6">
+        <span class="mock-btn" style="width: 20px; height: 20px; padding: 0; justify-content: center; border-radius: 50%">4</span>
+        <div class="grow" style="display: grid; gap: 4px">
+          <b>Add a proxy server</b>
+          <div class="mock-sub">SOCKS5, HTTP or HTTPS, with or without a login. If you’ve copied a proxy string (like socks5://user:pass@host:1080), paste it.</div>
+        </div>
+      </div>
+      <div class="mock-group" style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; opacity: .6">
+        <span class="mock-btn" style="width: 20px; height: 20px; padding: 0; justify-content: center; border-radius: 50%">5</span>
+        <div class="grow" style="display: grid; gap: 4px">
+          <b>What to send through the proxy</b>
+          <div class="mock-sub">A whole app, or a service: a site or a messenger in every app at once. Everything else works as usual. You can change the list at any time.</div>
+        </div>
+      </div>
+      <div class="mock-btns end"><b class="mk">4</b><span style="padding: 2px 8px; border: 1px dashed var(--m-line2); border-radius: 6px; color: var(--m-accent); opacity: .7">I’ll Do It Later</span></div>
+    </div>
+  </div></div>
+  <figcaption>
+    <ol class="mk-legend">
+      <li>A finished step: a green check mark instead of the number, and no more buttons.</li>
+      <li>The current step: a blue number and a button. Here it’s <span class="ui">Turn On Filter</span>; when you click it, macOS shows a window with a question.</li>
+      <li>The next steps are dimmed and have no buttons. They open one by one, once the previous step is done.</li>
+      <li><span class="ui">I’ll Do It Later</span> appears here once all three permissions are given (it has a dashed outline in this sketch). It skips the proxy and app steps.</li>
+    </ol>
+    A sketch of the welcome screen: the extension is installed, and the filter is next. The data is made up.
+  </figcaption>
+</figure>
 
 <h3>Step 1. Network extension</h3>
 <ol class="steps">
@@ -141,6 +204,57 @@
   <li><span class="ui">System Settings</span> → <span class="ui">General</span> → <span class="ui">Login Items &amp; Extensions</span> opens. Find <span class="ui">Network Extensions</span> there. If the general list of extensions opens instead, choose <span class="ui">By Category</span> → <span class="ui">Network Extensions</span>.</li>
   <li>Turn on the switch next to Routekeeper and confirm with your password.</li>
 </ol>
+<figure class="mock-fig">
+  <div class="mock-scroll"><div class="mock mock-win" aria-hidden="true">
+    <div class="mock-titlebar"><i></i><i></i><i></i><span>System Settings</span></div>
+    <div class="mock-split" style="grid-template-columns: 200px minmax(0, 1fr); min-height: 330px">
+      <div class="mock-side">
+        <span class="mock-input dim" style="display: block; margin-bottom: 6px">Search</span>
+        <div><span class="mock-ico" style="width: 18px; height: 18px; border-radius: 5px"></span>Wi‑Fi</div>
+        <div><span class="mock-ico" style="width: 18px; height: 18px; border-radius: 5px"></span>Bluetooth</div>
+        <div><span class="mock-ico" style="width: 18px; height: 18px; border-radius: 5px"></span>Network</div>
+        <div><span class="mock-ico o" style="width: 18px; height: 18px; border-radius: 5px"></span>Notifications</div>
+        <div class="on"><span class="mock-ico s" style="width: 18px; height: 18px; border-radius: 5px"></span>General<b class="mk">1</b></div>
+        <div><span class="mock-ico s" style="width: 18px; height: 18px; border-radius: 5px"></span>Appearance</div>
+        <div><span class="mock-ico" style="width: 18px; height: 18px; border-radius: 5px"></span>Privacy &amp; Security</div>
+      </div>
+      <div class="mock-main">
+        <div style="grid-area: 1 / 1; display: grid; gap: 10px; align-content: start; padding-bottom: 56px">
+          <div style="display: flex; align-items: center; gap: 10px"><span class="muted">‹&nbsp;&nbsp;›</span><span class="mock-h">Login Items &amp; Extensions</span><b class="mk">2</b></div>
+          <div class="mock-cap">Open at Login</div>
+          <div class="mock-group">
+            <div class="mock-row"><span class="mock-ico g">S</span>Slack</div>
+          </div>
+          <div class="mock-cap">Extensions</div>
+          <div class="mock-group">
+            <div class="mock-row"><span class="grow">Actions</span><span class="muted">ⓘ</span></div>
+            <div class="mock-row"><span class="grow">Finder</span><span class="muted">ⓘ</span></div>
+            <div class="mock-row"><span class="grow">Network Extensions</span><b class="mk">3</b><span>ⓘ</span></div>
+            <div class="mock-row"><span class="grow">Quick Look</span><span class="muted">ⓘ</span></div>
+            <div class="mock-row"><span class="grow">Sharing</span><span class="muted">ⓘ</span></div>
+            <div class="mock-row"><span class="grow">Spotlight</span><span class="muted">ⓘ</span></div>
+          </div>
+        </div>
+        <div class="mock-menu" style="grid-area: 1 / 1; align-self: end; justify-self: center; display: grid; gap: 10px; width: 320px; max-width: 100%; padding: 14px">
+          <div class="mock-h">Network Extensions</div>
+          <div class="mock-group">
+            <div class="mock-row"><span class="mock-ico o"></span><span class="grow">Routekeeper Extension</span><b class="mk">4</b><span class="mock-toggle on"></span></div>
+          </div>
+          <div class="mock-btns end"><span class="mock-btn primary">Done</span></div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <figcaption>
+    <ol class="mk-legend">
+      <li><span class="ui">General</span> in the System Settings sidebar.</li>
+      <li>The <span class="ui">Login Items &amp; Extensions</span> pane.</li>
+      <li>The <span class="ui">Network Extensions</span> row in the <span class="ui">Extensions</span> group. Click ⓘ on the right to open the list of network extensions.</li>
+      <li>The switch next to Routekeeper Extension. Turn it on, enter the administrator password and click <span class="ui">Done</span>.</li>
+    </ol>
+    A simplified sketch of System Settings in macOS 15. The data is made up.
+  </figcaption>
+</figure>
 
 <h4>macOS 14 Sonoma</h4>
 <ol>
@@ -148,6 +262,49 @@
   <li>Scroll down to the <span class="ui">Security</span> section. There you’ll see the message “System software from developer ‘Ilya Bazhenov’ was blocked from loading.”</li>
   <li>Click <span class="ui">Allow</span> next to this message and enter the administrator password. If several programs are blocked, macOS shows a button with a list instead: select Routekeeper in that list.</li>
 </ol>
+<figure class="mock-fig">
+  <div class="mock-scroll"><div class="mock mock-win" aria-hidden="true">
+    <div class="mock-titlebar"><i></i><i></i><i></i><span>System Settings</span></div>
+    <div class="mock-split" style="grid-template-columns: 200px minmax(0, 1fr); min-height: 300px">
+      <div class="mock-side">
+        <span class="mock-input dim" style="display: block; margin-bottom: 6px">Search</span>
+        <div><span class="mock-ico" style="width: 18px; height: 18px; border-radius: 5px"></span>Wi‑Fi</div>
+        <div><span class="mock-ico" style="width: 18px; height: 18px; border-radius: 5px"></span>Bluetooth</div>
+        <div><span class="mock-ico" style="width: 18px; height: 18px; border-radius: 5px"></span>Network</div>
+        <div><span class="mock-ico o" style="width: 18px; height: 18px; border-radius: 5px"></span>Notifications</div>
+        <div><span class="mock-ico s" style="width: 18px; height: 18px; border-radius: 5px"></span>General</div>
+        <div><span class="mock-ico s" style="width: 18px; height: 18px; border-radius: 5px"></span>Appearance</div>
+        <div class="on"><span class="mock-ico" style="width: 18px; height: 18px; border-radius: 5px"></span>Privacy &amp; Security<b class="mk">1</b></div>
+        <div><span class="mock-ico s" style="width: 18px; height: 18px; border-radius: 5px"></span>Desktop &amp; Dock</div>
+      </div>
+      <div class="mock-main">
+        <div style="display: flex; align-items: center; gap: 10px"><span class="muted">‹&nbsp;&nbsp;›</span><span class="mock-h">Privacy &amp; Security</span></div>
+        <div class="mock-group">
+          <div class="mock-row"><span class="mock-ico"></span><span class="grow">Location Services</span><span class="muted">›</span></div>
+          <div class="mock-row"><span class="mock-ico s"></span><span class="grow">Contacts</span><span class="muted">›</span></div>
+          <div class="mock-row"><span class="mock-ico o"></span><span class="grow">Calendars</span><span class="muted">›</span></div>
+          <div class="mock-row"><span class="grow muted">…</span></div>
+        </div>
+        <div class="mock-cap">Security<b class="mk">2</b></div>
+        <div class="mock-group">
+          <div class="mock-row" style="align-items: flex-start; padding-block: 10px">
+            <span class="grow">System software from developer “Ilya Bazhenov” was blocked from loading.</span>
+            <b class="mk">3</b><span class="mock-btn">Allow</span>
+          </div>
+          <div class="mock-row"><span class="grow">FileVault</span><span class="muted">›</span></div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <figcaption>
+    <ol class="mk-legend">
+      <li><span class="ui">Privacy &amp; Security</span> in the System Settings sidebar.</li>
+      <li>The <span class="ui">Security</span> section. Scroll down the list to get to it.</li>
+      <li><span class="ui">Allow</span> next to the message about system software from developer “Ilya Bazhenov”. When you click it, macOS asks for the administrator password.</li>
+    </ol>
+    A simplified sketch of System Settings in macOS 14. The data is made up.
+  </figcaption>
+</figure>
 <div class="callout">
   <p><b>On macOS 14, Routekeeper’s hints describe the macOS 15 path.</b> Sonoma has no “Login Items &amp; Extensions” item, so the <span class="ui">Open System Settings</span> and <span class="ui">Open Settings</span> buttons take you to the wrong place. Open “Privacy &amp; Security” yourself, as described above.</p>
 </div>
@@ -160,6 +317,30 @@
 <h3>Step 3. Proxy configuration</h3>
 <p>Click <span class="ui">Turn On Proxy</span>. macOS shows the window “‘Routekeeper’ Would Like to Add Proxy Configurations”. Click <span class="ui">Allow</span>.</p>
 <p>The steps become available one by one: the filter after the extension, the proxy after the filter.</p>
+<figure class="mock-fig">
+  <div class="mock-scroll"><div class="mock" aria-hidden="true" style="display: flex; flex-wrap: wrap; gap: 24px">
+    <div class="mock-alert">
+      <div class="appicon"></div>
+      <b>“Routekeeper” Would Like to Filter Network Content<b class="mk" style="display: inline-grid">1</b></b>
+      <div class="mock-note">The filter sees which app connects and where.</div>
+      <div class="mock-btns"><span class="mock-btn">Don’t Allow</span><span class="mock-btn primary">Allow<b class="mk" style="display: inline-grid">3</b></span></div>
+    </div>
+    <div class="mock-alert">
+      <div class="appicon"></div>
+      <b>“Routekeeper” Would Like to Add Proxy Configurations<b class="mk" style="display: inline-grid">2</b></b>
+      <div class="mock-note">Through it, the chosen apps’ traffic goes to the proxy.</div>
+      <div class="mock-btns"><span class="mock-btn">Don’t Allow</span><span class="mock-btn primary">Allow<b class="mk" style="display: inline-grid">3</b></span></div>
+    </div>
+  </div></div>
+  <figcaption>
+    <ol class="mk-legend">
+      <li>Appears after <span class="ui">Turn On Filter</span> (step 2).</li>
+      <li>Appears after <span class="ui">Turn On Proxy</span> (step 3).</li>
+      <li>Click <span class="ui">Allow</span> in both windows. After <span class="ui">Don’t Allow</span>, the step stays unfinished, and you can click the button on the welcome screen again.</li>
+    </ol>
+    A sketch of the two macOS windows that appear at steps 2 and 3. The text under the title is simplified. The data is made up.
+  </figcaption>
+</figure>
 
 <h3>If you clicked “Don’t Allow”</h3>
 <p>Nothing is broken: the step simply stays unfinished.</p>
@@ -258,6 +439,40 @@
   <li>Click the Routekeeper icon in the menu bar.</li>
   <li>Turn off the switch to the right of the Routekeeper name (<span class="ui">Routekeeper On</span>). The Routekeeper window has the same switch at the bottom of the sidebar, next to the status.</li>
 </ol>
+<figure class="mock-fig">
+  <div class="mock-scroll"><div class="mock mock-menu" aria-hidden="true">
+    <div class="head">
+      <div class="grow"><b>Routekeeper<b class="mk">1</b></b><div class="mock-ok">Running · 3 apps through proxy</div><div class="muted">IP 203.0.113.7 · NL · ↕ 1.2 MB/s</div></div>
+      <b class="mk">2</b><span class="mock-toggle on"></span>
+    </div>
+    <div class="mock-sep"></div>
+    <div class="lbl">Mode<b class="mk">3</b></div>
+    <div class="mi"><span class="ic on"></span>Proxy Only</div>
+    <div class="mi"><span class="ic"></span>Ask</div>
+    <div class="mi"><span class="ic"></span>Silent</div>
+    <div class="mi"><span class="ic"></span>Block All</div>
+    <div class="mock-sep"></div>
+    <div class="lbl">Proxy for all apps<b class="mk">4</b></div>
+    <div class="mi"><span class="ic on"></span>Amsterdam<span class="sc">48 ms</span></div>
+    <div class="mi"><span class="ic"></span>Frankfurt<span class="sc">61 ms</span></div>
+    <div class="mock-sep"></div>
+    <div class="mi hl"><span class="ic"></span>Open Routekeeper</div>
+    <div class="mi"><span class="ic"></span>Monitor</div>
+    <div class="mi"><span class="ic"></span>Rules</div>
+    <div class="mi"><span class="ic"></span>Settings…</div>
+    <div class="mock-sep"></div>
+    <div class="mi"><span class="ic"></span>Quit Routekeeper</div>
+  </div></div>
+  <figcaption>
+    <ol class="mk-legend">
+      <li>Status. A green line means everything works. Below it: the proxy’s external IP and country (what websites see) and the total speed.</li>
+      <li>The <span class="ui">Routekeeper On</span> switch. If something stops loading, turn it off: every connection goes direct.</li>
+      <li>The mode for connections that have no rule. More in <a href="../../../en/docs/firewall/">Firewall modes</a>.</li>
+      <li>Shown when you have two or more proxies. Clicking one moves every app to that proxy; Routekeeper asks you to confirm first.</li>
+    </ol>
+    A sketch of the menu that opens when you click the Routekeeper icon in the menu bar. The data is made up.
+  </figcaption>
+</figure>
 <p>Now all connections go direct, as they would without Routekeeper. Rules and the mode don’t apply, and the monitor doesn’t record connections. The lantern in the menu bar goes dark, and the <span class="ui">Overview</span> section shows “Routekeeper is off”.</p>
 <p>To turn it back on, use the same switch or the <span class="ui">Enable</span> button in the <span class="ui">Overview</span> section. Your proxies, apps and rules stay where they are.</p>
 <div class="callout warn">

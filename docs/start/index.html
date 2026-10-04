@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="../../docs/assets/docs.css?v=891e2023">
+<link rel="stylesheet" href="../../docs/assets/docs.css?v=904b8bd7">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/ru/start.html. Edit the fragment, not this file. -->
@@ -126,6 +126,69 @@
   </tbody>
 </table></div>
 <p>Routekeeper смотрит, какое приложение и куда подключается. Содержимое страниц и сообщений он не разбирает, а трафик отправляет только на ваши прокси. Подробно — в <a href="../../privacy/">политике конфиденциальности</a>.</p>
+<figure class="mock-fig">
+  <div class="mock-scroll"><div class="mock mock-win" aria-hidden="true" style="min-width: 0">
+    <div class="mock-titlebar"><i></i><i></i><i></i><span>Routekeeper</span></div>
+    <div class="mock-main" style="gap: 12px; padding: 20px 22px 22px">
+      <div style="display: flex; align-items: center; gap: 14px">
+        <span class="mock-ico o" style="width: 52px; height: 52px; border-radius: 12px"></span>
+        <div class="grow" style="display: grid; gap: 4px">
+          <div class="mock-h">Добро пожаловать в Routekeeper</div>
+          <div class="mock-sub">Чтобы направлять трафик приложений через прокси и применять правила, macOS попросит три разрешения. Это нужно сделать один раз.</div>
+        </div>
+      </div>
+      <div class="mock-group" style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px">
+        <span class="mock-check" style="width: 20px; height: 20px"></span>
+        <div class="grow" style="display: grid; gap: 4px">
+          <b>Установить сетевое расширение<b class="mk">1</b></b>
+          <div class="mock-sub">Расширение перехватывает соединения и решает, куда их направить. Трафик никуда не отправляется, кроме ваших прокси.</div>
+        </div>
+      </div>
+      <div class="mock-group" style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px">
+        <span class="mock-btn primary" style="width: 20px; height: 20px; padding: 0; justify-content: center; border-radius: 50%">2</span>
+        <div class="grow" style="display: grid; gap: 4px">
+          <b>Разрешить фильтрацию сетевого контента</b>
+          <div class="mock-sub">macOS покажет окно «Routekeeper хочет фильтровать сетевой контент» — нажмите «Разрешить». Это нужно для файрвола и монитора.</div>
+          <div class="mock-btns" style="margin-top: 4px"><span class="mock-btn primary">Включить фильтр</span><b class="mk">2</b></div>
+        </div>
+      </div>
+      <div class="mock-group" style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px">
+        <div class="grow" style="display: flex; align-items: flex-start; gap: 12px; opacity: .6">
+          <span class="mock-btn" style="width: 20px; height: 20px; padding: 0; justify-content: center; border-radius: 50%">3</span>
+          <div class="grow" style="display: grid; gap: 4px">
+            <b>Разрешить конфигурацию прокси</b>
+            <div class="mock-sub">macOS покажет окно «Routekeeper хочет добавить конфигурацию прокси» — нажмите «Разрешить». Через неё трафик выбранных приложений уходит на прокси.</div>
+          </div>
+        </div>
+        <b class="mk">3</b>
+      </div>
+      <div class="mock-group" style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; opacity: .6">
+        <span class="mock-btn" style="width: 20px; height: 20px; padding: 0; justify-content: center; border-radius: 50%">4</span>
+        <div class="grow" style="display: grid; gap: 4px">
+          <b>Добавить прокси-сервер</b>
+          <div class="mock-sub">SOCKS5, HTTP или HTTPS, с логином и паролем или без. Если строка прокси уже скопирована (например, socks5://user:pass@host:1080), её можно вставить.</div>
+        </div>
+      </div>
+      <div class="mock-group" style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; opacity: .6">
+        <span class="mock-btn" style="width: 20px; height: 20px; padding: 0; justify-content: center; border-radius: 50%">5</span>
+        <div class="grow" style="display: grid; gap: 4px">
+          <b>Что пустить через прокси</b>
+          <div class="mock-sub">Приложение целиком или сервис — сайт или мессенджер во всех приложениях сразу. Остальное будет работать как обычно. Список можно поменять в любой момент.</div>
+        </div>
+      </div>
+      <div class="mock-btns end"><b class="mk">4</b><span style="padding: 2px 8px; border: 1px dashed var(--m-line2); border-radius: 6px; color: var(--m-accent); opacity: .7">Настрою позже</span></div>
+    </div>
+  </div></div>
+  <figcaption>
+    <ol class="mk-legend">
+      <li>Пройденный шаг: зелёная галочка вместо номера, кнопок больше нет.</li>
+      <li>Текущий шаг: синий номер и кнопка. Здесь это <span class="ui">Включить фильтр</span>, после нажатия macOS покажет окно с вопросом.</li>
+      <li>Следующие шаги бледные и без кнопок. Они открываются по очереди, когда пройден предыдущий.</li>
+      <li><span class="ui">Настрою позже</span> появляется здесь, когда все три разрешения получены (на схеме обведена пунктиром). Кнопка пропускает шаги с прокси и приложениями.</li>
+    </ol>
+    Схема приветственного экрана: расширение установлено, следующий шаг — фильтр. Данные выдуманные.
+  </figcaption>
+</figure>
 
 <h3>Шаг 1. Сетевое расширение</h3>
 <ol class="steps">
@@ -141,6 +204,57 @@
   <li>Откроется раздел <span class="ui">Системные настройки</span> → <span class="ui">Основные</span> → <span class="ui">Объекты входа и расширения</span>. Найдите там <span class="ui">Сетевые расширения</span>. Если открылся общий список расширений, выберите <span class="ui">По категории</span> → <span class="ui">Сетевые расширения</span>.</li>
   <li>Включите переключатель у Routekeeper и подтвердите паролем.</li>
 </ol>
+<figure class="mock-fig">
+  <div class="mock-scroll"><div class="mock mock-win" aria-hidden="true">
+    <div class="mock-titlebar"><i></i><i></i><i></i><span>Системные настройки</span></div>
+    <div class="mock-split" style="grid-template-columns: 200px minmax(0, 1fr); min-height: 330px">
+      <div class="mock-side">
+        <span class="mock-input dim" style="display: block; margin-bottom: 6px">Поиск</span>
+        <div><span class="mock-ico" style="width: 18px; height: 18px; border-radius: 5px"></span>Wi‑Fi</div>
+        <div><span class="mock-ico" style="width: 18px; height: 18px; border-radius: 5px"></span>Bluetooth</div>
+        <div><span class="mock-ico" style="width: 18px; height: 18px; border-radius: 5px"></span>Сеть</div>
+        <div><span class="mock-ico o" style="width: 18px; height: 18px; border-radius: 5px"></span>Уведомления</div>
+        <div class="on"><span class="mock-ico s" style="width: 18px; height: 18px; border-radius: 5px"></span>Основные<b class="mk">1</b></div>
+        <div><span class="mock-ico s" style="width: 18px; height: 18px; border-radius: 5px"></span>Оформление</div>
+        <div><span class="mock-ico" style="width: 18px; height: 18px; border-radius: 5px"></span>Конфиденциальность и безопасность</div>
+      </div>
+      <div class="mock-main">
+        <div style="grid-area: 1 / 1; display: grid; gap: 10px; align-content: start; padding-bottom: 56px">
+          <div style="display: flex; align-items: center; gap: 10px"><span class="muted">‹&nbsp;&nbsp;›</span><span class="mock-h">Объекты входа и расширения</span><b class="mk">2</b></div>
+          <div class="mock-cap">Открывать при входе</div>
+          <div class="mock-group">
+            <div class="mock-row"><span class="mock-ico g">S</span>Slack</div>
+          </div>
+          <div class="mock-cap">Расширения</div>
+          <div class="mock-group">
+            <div class="mock-row"><span class="grow">Действия</span><span class="muted">ⓘ</span></div>
+            <div class="mock-row"><span class="grow">Finder</span><span class="muted">ⓘ</span></div>
+            <div class="mock-row"><span class="grow">Сетевые расширения</span><b class="mk">3</b><span>ⓘ</span></div>
+            <div class="mock-row"><span class="grow">Quick Look</span><span class="muted">ⓘ</span></div>
+            <div class="mock-row"><span class="grow">Общий доступ</span><span class="muted">ⓘ</span></div>
+            <div class="mock-row"><span class="grow">Spotlight</span><span class="muted">ⓘ</span></div>
+          </div>
+        </div>
+        <div class="mock-menu" style="grid-area: 1 / 1; align-self: end; justify-self: center; display: grid; gap: 10px; width: 320px; max-width: 100%; padding: 14px">
+          <div class="mock-h">Сетевые расширения</div>
+          <div class="mock-group">
+            <div class="mock-row"><span class="mock-ico o"></span><span class="grow">Routekeeper Extension</span><b class="mk">4</b><span class="mock-toggle on"></span></div>
+          </div>
+          <div class="mock-btns end"><span class="mock-btn primary">Готово</span></div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <figcaption>
+    <ol class="mk-legend">
+      <li><span class="ui">Основные</span> в боковой колонке Системных настроек.</li>
+      <li>Раздел <span class="ui">Объекты входа и расширения</span>.</li>
+      <li>Строка <span class="ui">Сетевые расширения</span> в группе <span class="ui">Расширения</span>. Нажмите ⓘ справа, откроется список сетевых расширений.</li>
+      <li>Переключатель у Routekeeper Extension. Включите его, введите пароль администратора и нажмите <span class="ui">Готово</span>.</li>
+    </ol>
+    Упрощённая схема Системных настроек macOS 15. Данные выдуманные.
+  </figcaption>
+</figure>
 
 <h4>macOS 14 Sonoma</h4>
 <ol>
@@ -148,6 +262,49 @@
   <li>Прокрутите до раздела <span class="ui">Безопасность</span>. Там будет сообщение о том, что загрузка системного ПО разработчика «Ilya Bazhenov» заблокирована.</li>
   <li>Нажмите <span class="ui">Разрешить</span> рядом с этим сообщением и введите пароль администратора. Если заблокированных программ несколько, macOS вместо этого покажет кнопку со списком: отметьте в нём Routekeeper.</li>
 </ol>
+<figure class="mock-fig">
+  <div class="mock-scroll"><div class="mock mock-win" aria-hidden="true">
+    <div class="mock-titlebar"><i></i><i></i><i></i><span>Системные настройки</span></div>
+    <div class="mock-split" style="grid-template-columns: 200px minmax(0, 1fr); min-height: 300px">
+      <div class="mock-side">
+        <span class="mock-input dim" style="display: block; margin-bottom: 6px">Поиск</span>
+        <div><span class="mock-ico" style="width: 18px; height: 18px; border-radius: 5px"></span>Wi‑Fi</div>
+        <div><span class="mock-ico" style="width: 18px; height: 18px; border-radius: 5px"></span>Bluetooth</div>
+        <div><span class="mock-ico" style="width: 18px; height: 18px; border-radius: 5px"></span>Сеть</div>
+        <div><span class="mock-ico o" style="width: 18px; height: 18px; border-radius: 5px"></span>Уведомления</div>
+        <div><span class="mock-ico s" style="width: 18px; height: 18px; border-radius: 5px"></span>Основные</div>
+        <div><span class="mock-ico s" style="width: 18px; height: 18px; border-radius: 5px"></span>Оформление</div>
+        <div class="on"><span class="mock-ico" style="width: 18px; height: 18px; border-radius: 5px"></span>Конфиденциальность и безопасность<b class="mk">1</b></div>
+        <div><span class="mock-ico s" style="width: 18px; height: 18px; border-radius: 5px"></span>Рабочий стол и Dock</div>
+      </div>
+      <div class="mock-main">
+        <div style="display: flex; align-items: center; gap: 10px"><span class="muted">‹&nbsp;&nbsp;›</span><span class="mock-h">Конфиденциальность и безопасность</span></div>
+        <div class="mock-group">
+          <div class="mock-row"><span class="mock-ico"></span><span class="grow">Службы геолокации</span><span class="muted">›</span></div>
+          <div class="mock-row"><span class="mock-ico s"></span><span class="grow">Контакты</span><span class="muted">›</span></div>
+          <div class="mock-row"><span class="mock-ico o"></span><span class="grow">Календари</span><span class="muted">›</span></div>
+          <div class="mock-row"><span class="grow muted">…</span></div>
+        </div>
+        <div class="mock-cap">Безопасность<b class="mk">2</b></div>
+        <div class="mock-group">
+          <div class="mock-row" style="align-items: flex-start; padding-block: 10px">
+            <span class="grow">Загрузка системного программного обеспечения разработчика «Ilya Bazhenov» заблокирована.</span>
+            <b class="mk">3</b><span class="mock-btn">Разрешить</span>
+          </div>
+          <div class="mock-row"><span class="grow">FileVault</span><span class="muted">›</span></div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <figcaption>
+    <ol class="mk-legend">
+      <li><span class="ui">Конфиденциальность и безопасность</span> в боковой колонке Системных настроек.</li>
+      <li>Раздел <span class="ui">Безопасность</span>. До него нужно прокрутить список вниз.</li>
+      <li><span class="ui">Разрешить</span> рядом с сообщением о системном ПО разработчика «Ilya Bazhenov». После нажатия macOS спросит пароль администратора.</li>
+    </ol>
+    Упрощённая схема Системных настроек macOS 14. Данные выдуманные.
+  </figcaption>
+</figure>
 <div class="callout">
   <p><b>На macOS 14 подсказки Routekeeper описывают путь из macOS 15.</b> Пункта «Объекты входа и расширения» в Sonoma нет, и кнопки <span class="ui">Открыть Системные настройки</span> и <span class="ui">Открыть настройки</span> ведут не туда. Откройте «Конфиденциальность и безопасность» вручную, как написано выше.</p>
 </div>
@@ -160,6 +317,30 @@
 <h3>Шаг 3. Конфигурация прокси</h3>
 <p>Нажмите <span class="ui">Включить прокси</span>. macOS покажет окно «Routekeeper хочет добавить конфигурацию прокси». Нажмите <span class="ui">Разрешить</span>.</p>
 <p>Шаги открываются по очереди: фильтр — после расширения, прокси — после фильтра.</p>
+<figure class="mock-fig">
+  <div class="mock-scroll"><div class="mock" aria-hidden="true" style="display: flex; flex-wrap: wrap; gap: 24px">
+    <div class="mock-alert">
+      <div class="appicon"></div>
+      <b>“Routekeeper” хочет фильтровать сетевой контент<b class="mk" style="display: inline-grid">1</b></b>
+      <div class="mock-note">Фильтр видит, какое приложение и куда подключается.</div>
+      <div class="mock-btns"><span class="mock-btn">Не разрешать</span><span class="mock-btn primary">Разрешить<b class="mk" style="display: inline-grid">3</b></span></div>
+    </div>
+    <div class="mock-alert">
+      <div class="appicon"></div>
+      <b>“Routekeeper” хочет добавить конфигурацию прокси<b class="mk" style="display: inline-grid">2</b></b>
+      <div class="mock-note">Через неё трафик выбранных приложений идёт на прокси.</div>
+      <div class="mock-btns"><span class="mock-btn">Не разрешать</span><span class="mock-btn primary">Разрешить<b class="mk" style="display: inline-grid">3</b></span></div>
+    </div>
+  </div></div>
+  <figcaption>
+    <ol class="mk-legend">
+      <li>Появляется после <span class="ui">Включить фильтр</span> (шаг 2).</li>
+      <li>Появляется после <span class="ui">Включить прокси</span> (шаг 3).</li>
+      <li>В обоих окнах нажмите <span class="ui">Разрешить</span>. После <span class="ui">Не разрешать</span> шаг останется невыполненным, и кнопку на приветственном экране можно нажать ещё раз.</li>
+    </ol>
+    Схема двух окон macOS, которые появляются на шагах 2 и 3. Текст под заголовком упрощён. Данные выдуманные.
+  </figcaption>
+</figure>
 
 <h3>Если нажали «Не разрешать»</h3>
 <p>Ничего не сломалось: шаг просто остался невыполненным.</p>
@@ -258,6 +439,40 @@
   <li>Щёлкните значок Routekeeper в строке меню.</li>
   <li>Выключите переключатель справа от названия Routekeeper (<span class="ui">Routekeeper включён</span>). В окне Routekeeper такой же переключатель есть внизу боковой колонки, рядом с состоянием.</li>
 </ol>
+<figure class="mock-fig">
+  <div class="mock-scroll"><div class="mock mock-menu" aria-hidden="true">
+    <div class="head">
+      <div class="grow"><b>Routekeeper<b class="mk">1</b></b><div class="mock-ok">Работает · 3 приложения через прокси</div><div class="muted">IP 203.0.113.7 · NL · ↕ 1,2 МБ/с</div></div>
+      <b class="mk">2</b><span class="mock-toggle on"></span>
+    </div>
+    <div class="mock-sep"></div>
+    <div class="lbl">Режим<b class="mk">3</b></div>
+    <div class="mi"><span class="ic on"></span>Только прокси</div>
+    <div class="mi"><span class="ic"></span>Спрашивать</div>
+    <div class="mi"><span class="ic"></span>Тихий</div>
+    <div class="mi"><span class="ic"></span>Блокировать всё</div>
+    <div class="mock-sep"></div>
+    <div class="lbl">Прокси для всех приложений<b class="mk">4</b></div>
+    <div class="mi"><span class="ic on"></span>Амстердам<span class="sc">48 мс</span></div>
+    <div class="mi"><span class="ic"></span>Франкфурт<span class="sc">61 мс</span></div>
+    <div class="mock-sep"></div>
+    <div class="mi hl"><span class="ic"></span>Открыть Routekeeper</div>
+    <div class="mi"><span class="ic"></span>Монитор</div>
+    <div class="mi"><span class="ic"></span>Правила</div>
+    <div class="mi"><span class="ic"></span>Настройки…</div>
+    <div class="mock-sep"></div>
+    <div class="mi"><span class="ic"></span>Завершить Routekeeper</div>
+  </div></div>
+  <figcaption>
+    <ol class="mk-legend">
+      <li>Состояние. Зелёная строка — всё работает. Ниже — внешний IP прокси и его страна (их видят сайты) и общая скорость.</li>
+      <li>Переключатель <span class="ui">Routekeeper включён</span>. Если что-то перестало открываться, выключите его: все соединения пойдут напрямую.</li>
+      <li>Режим для соединений, на которые нет правила. Подробнее — <a href="../../docs/firewall/">«Режимы файрвола»</a>.</li>
+      <li>Появляется, когда прокси два или больше. Щелчок переводит на этот прокси все приложения, Routekeeper сначала спросит подтверждение.</li>
+    </ol>
+    Схема меню, которое открывается щелчком по значку Routekeeper в строке меню. Данные выдуманные.
+  </figcaption>
+</figure>
 <p>Теперь все соединения идут напрямую, как без Routekeeper. Правила и режим не действуют, монитор не записывает соединения. Фонарь в строке меню гаснет, а в разделе <span class="ui">Обзор</span> появляется «Routekeeper выключен».</p>
 <p>Включить обратно можно тем же переключателем или кнопкой <span class="ui">Включить</span> в разделе <span class="ui">Обзор</span>. Прокси, приложения и правила никуда не деваются.</p>
 <div class="callout warn">

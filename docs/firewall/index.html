@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="../../docs/assets/docs.css?v=891e2023">
+<link rel="stylesheet" href="../../docs/assets/docs.css?v=904b8bd7">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/ru/firewall.html. Edit the fragment, not this file. -->
@@ -141,6 +141,51 @@
 
     <h2 id="ask">Спрашивать</h2>
     <p>Когда программа без правила пытается выйти в сеть, Routekeeper задерживает соединение и показывает окно вопроса. Программа ждёт, пока вы ответите. Ответ обычно сохраняется правилом, и в следующий раз Routekeeper не спрашивает.</p>
+    <figure class="mock-fig">
+  <div class="mock-scroll"><div class="mock mock-win" aria-hidden="true" style="min-width: 0; width: 520px">
+    <div class="mock-main" style="gap: 16px; padding: 20px">
+      <div style="display: flex; align-items: flex-start; gap: 12px">
+        <span class="mock-ico o" style="width: 48px; height: 48px; border-radius: 11px"></span>
+        <div class="grow" style="display: grid; gap: 3px">
+          <div class="mock-h">Updater Helper хочет подключиться<b class="mk">1</b></div>
+          <div class="muted">updates.example.com:443 · TCP</div>
+        </div>
+        <div style="display: grid; justify-items: end; gap: 6px"><span><b class="mk">2</b><span class="mock-pill">47 с</span></span><span class="mock-pill proxy">+2 ждут</span></div>
+      </div>
+      <div class="mock-group" style="display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 12px; padding: 12px">
+        <span class="muted">Путь</span><span>/Library/Application Support/Exa…/MacOS/Updater Helper</span>
+        <span class="muted">Подпись</span><span class="mock-ok">✓ Разработчик A1B2C3D4E5<b class="mk">3</b></span>
+        <span class="muted">Запущен из</span><span>Example › Updater Helper</span>
+        <span class="muted">IP</span><span>198.51.100.10</span>
+      </div>
+      <div style="display: grid; gap: 10px; justify-items: start">
+        <div style="display: grid; gap: 4px; justify-items: start"><span class="muted">Срок<b class="mk">4</b></span><span class="mock-seg"><span>Один раз</span><span>Пока работает Updater Helper</span><span class="on">Навсегда</span></span></div>
+        <div style="display: grid; gap: 4px; justify-items: start"><span class="muted">Куда<b class="mk">5</b></span><span class="mock-seg"><span>updates.example.com</span><span class="on">*.example.com</span><span>Любой хост :443</span><span>Куда угодно</span></span></div>
+        <div style="display: flex; align-items: center; gap: 8px"><span class="mock-btn primary" style="width: 16px; height: 16px; padding: 0; justify-content: center">✓</span>Включая дочерние процессы Updater Helper<b class="mk">6</b></div>
+        <div class="muted">☰ Правило: Updater Helper и его дочерние процессы к *.example.com, навсегда</div>
+      </div>
+      <div class="mock-sep" style="margin: 0"></div>
+      <div class="mock-btns">
+        <span class="mock-btn danger" style="padding: 5px 12px">Заблокировать <span class="muted">⌘B</span></span>
+        <span class="grow"></span>
+        <span class="mock-btn" style="padding: 5px 12px">Через прокси <span class="muted">⌘P</span> <span class="muted">⌄</span></span>
+        <span class="mock-btn primary" style="padding: 5px 12px">Разрешить <span class="muted">↩</span></span><b class="mk">7</b>
+      </div>
+    </div>
+  </div></div>
+  <figcaption>
+    <ol class="mk-legend">
+      <li>Какая программа и куда подключается: адрес, порт и протокол.</li>
+      <li>Сколько секунд осталось до ответа по умолчанию. За 10 секунд до конца таймер становится оранжевым. «+2 ждут» — ещё два соединения этой программы ждут вместе с этим.</li>
+      <li>Сведения о программе: путь к файлу, подпись, кто её запустил и IP сервера. У программ сторонних разработчиков в подписи виден Team ID разработчика, а не название компании.</li>
+      <li>На сколько сохранить ответ. <span class="ui">Один раз</span> — без правила, <span class="ui">Пока работает …</span> — до завершения программы, <span class="ui">Навсегда</span> — постоянное правило, выбрано по умолчанию.</li>
+      <li>Для каких адресов правило: точный адрес, весь домен (выбран по умолчанию), любой адрес на этом порту или <span class="ui">Куда угодно</span>. Если имя сервера длиннее 26 символов, вместо кнопок будет меню.</li>
+      <li>Покрывать ли программы, которые эта программа запускает. Строкой ниже — какое правило получится.</li>
+      <li>Ответ: <span class="ui">Заблокировать</span> <kbd>⌘B</kbd>, <span class="ui">Через прокси</span> <kbd>⌘P</kbd> (стрелка выбирает другой прокси, если их несколько), <span class="ui">Разрешить</span> <kbd>↩</kbd> — напрямую.</li>
+    </ol>
+    Схема окна вопроса в режиме <span class="ui">Спрашивать</span>: программа обновлений хочет подключиться к своему серверу. Данные выдуманные.
+  </figcaption>
+</figure>
 
     <h3>Окно вопроса</h3>
     <p>Окно появляется поверх всех окон и на всех рабочих столах, но главное окно Routekeeper не выводит. В нём:</p>

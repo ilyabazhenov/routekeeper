@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="../../../docs/assets/docs.css?v=891e2023">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=904b8bd7">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/en/firewall.html. Edit the fragment, not this file. -->
@@ -141,6 +141,51 @@
 
     <h2 id="ask">Ask</h2>
     <p>When a program without a rule tries to go online, Routekeeper holds the connection and shows a prompt. The program waits until you answer. Your answer is usually saved as a rule, and next time Routekeeper doesn’t ask.</p>
+    <figure class="mock-fig">
+  <div class="mock-scroll"><div class="mock mock-win" aria-hidden="true" style="min-width: 0; width: 520px">
+    <div class="mock-main" style="gap: 16px; padding: 20px">
+      <div style="display: flex; align-items: flex-start; gap: 12px">
+        <span class="mock-ico o" style="width: 48px; height: 48px; border-radius: 11px"></span>
+        <div class="grow" style="display: grid; gap: 3px">
+          <div class="mock-h">Updater Helper wants to connect<b class="mk">1</b></div>
+          <div class="muted">updates.example.com:443 · TCP</div>
+        </div>
+        <div style="display: grid; justify-items: end; gap: 6px"><span><b class="mk">2</b><span class="mock-pill">47 s</span></span><span class="mock-pill proxy">+2 waiting</span></div>
+      </div>
+      <div class="mock-group" style="display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 12px; padding: 12px">
+        <span class="muted">Path</span><span>/Library/Application Support/Exa…/MacOS/Updater Helper</span>
+        <span class="muted">Signature</span><span class="mock-ok">✓ Developer A1B2C3D4E5<b class="mk">3</b></span>
+        <span class="muted">Launched by</span><span>Example › Updater Helper</span>
+        <span class="muted">IP</span><span>198.51.100.10</span>
+      </div>
+      <div style="display: grid; gap: 10px; justify-items: start">
+        <div style="display: grid; gap: 4px; justify-items: start"><span class="muted">Duration<b class="mk">4</b></span><span class="mock-seg"><span>Once</span><span>While Updater Helper is running</span><span class="on">Forever</span></span></div>
+        <div style="display: grid; gap: 4px; justify-items: start"><span class="muted">Where<b class="mk">5</b></span><span class="mock-seg"><span>updates.example.com</span><span class="on">*.example.com</span><span>Any host :443</span><span>Anywhere</span></span></div>
+        <div style="display: flex; align-items: center; gap: 8px"><span class="mock-btn primary" style="width: 16px; height: 16px; padding: 0; justify-content: center">✓</span>Including child processes of Updater Helper<b class="mk">6</b></div>
+        <div class="muted">☰ Rule: Updater Helper and its child processes to *.example.com, forever</div>
+      </div>
+      <div class="mock-sep" style="margin: 0"></div>
+      <div class="mock-btns">
+        <span class="mock-btn danger" style="padding: 5px 12px">Block <span class="muted">⌘B</span></span>
+        <span class="grow"></span>
+        <span class="mock-btn" style="padding: 5px 12px">Through Proxy <span class="muted">⌘P</span> <span class="muted">⌄</span></span>
+        <span class="mock-btn primary" style="padding: 5px 12px">Allow <span class="muted">↩</span></span><b class="mk">7</b>
+      </div>
+    </div>
+  </div></div>
+  <figcaption>
+    <ol class="mk-legend">
+      <li>Which program is connecting and where: the address, port and protocol.</li>
+      <li>How many seconds are left before the default answer. The timer turns orange 10 seconds before the end. “+2 waiting” means two more connections from this program are waiting along with this one.</li>
+      <li>About the program: the path to the file, the signature, what launched it and the server’s IP. For third-party programs, the signature shows the developer’s Team ID, not the company name.</li>
+      <li>How long to keep the answer. <span class="ui">Once</span> makes no rule, <span class="ui">While … is running</span> lasts until the program quits, <span class="ui">Forever</span> is a permanent rule and is selected by default.</li>
+      <li>Which addresses the rule covers: the exact address, the whole domain (selected by default), any address on this port, or <span class="ui">Anywhere</span>. If the server name is longer than 26 characters, a menu replaces the buttons.</li>
+      <li>Whether to cover the programs this program launches. The line below spells out the rule you’ll get.</li>
+      <li>The answer: <span class="ui">Block</span> <kbd>⌘B</kbd>, <span class="ui">Through Proxy</span> <kbd>⌘P</kbd> (the arrow picks another proxy when you have several), <span class="ui">Allow</span> <kbd>↩</kbd> goes direct.</li>
+    </ol>
+    A sketch of the prompt in <span class="ui">Ask</span> mode: an updater wants to connect to its server. The data is made up.
+  </figcaption>
+</figure>
 
     <h3>The prompt</h3>
     <p>The prompt appears on top of all windows and on all desktops, but it doesn’t bring the main Routekeeper window forward. It shows:</p>

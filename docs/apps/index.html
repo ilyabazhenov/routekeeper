@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="../../docs/assets/docs.css?v=891e2023">
+<link rel="stylesheet" href="../../docs/assets/docs.css?v=904b8bd7">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/ru/apps.html. Edit the fragment, not this file. -->
@@ -87,7 +87,7 @@
 <h2 id="add-app">Как добавить приложение</h2>
 <ol class="steps">
   <li>Откройте раздел <span class="ui">Приложения</span>.</li>
-  <li>Нажмите <span class="ui">Добавить</span> на панели инструментов. Откроется окно <span class="ui">Установленные приложения</span>: приложения из папок «Программы» и «Утилиты», системные и из папки «Программы» в вашей домашней папке.</li>
+  <li>Нажмите кнопку <span class="ui">+</span> (<span class="ui">Добавить</span>) на панели инструментов: на ней только значок, название видно в подсказке. Откроется окно <span class="ui">Установленные приложения</span>: приложения из папок «Программы» и «Утилиты», системные и из папки «Программы» в вашей домашней папке.</li>
   <li>Найдите нужные приложения поиском, выберите одно или несколько и нажмите <span class="ui">Добавить</span>.</li>
 </ol>
 <p>Другие способы добавить приложение:</p>
@@ -132,6 +132,90 @@
 <p>Подробнее о действиях — в разделе <a href="../../docs/concepts/#actions">Как это работает</a>.</p>
 <p>Строки собраны в группы по маршруту: <span class="ui">Через прокси</span>, <span class="ui">Блокируются</span>, <span class="ui">Спрашивать</span>, <span class="ui">Напрямую</span>. Над ними раздел <span class="ui">Сервисы</span>. Если приложение сейчас передаёт данные через прокси, в его строке видна скорость «↕ …».</p>
 <p>Внизу свёрнута группа <span class="ui">Разрешены автоматически</span> с числом строк. В ней программы Apple и приложения, установленные до Routekeeper, которым режим <span class="ui">Спрашивать</span> разрешил выход в сеть без вопроса. Если выбрать такому приложению маршрут, оно перейдёт в обычную группу.</p>
+<figure class="mock-fig">
+  <div class="mock-scroll"><div class="mock mock-win" aria-hidden="true" style="min-width: 660px">
+    <div class="mock-titlebar"><i></i><i></i><i></i><span>Routekeeper</span></div>
+    <div class="mock-split" style="grid-template-columns: 140px minmax(0, 1fr)">
+      <div class="mock-side">
+        <div>Обзор</div>
+        <div class="mock-cap" style="margin-top: 6px">Маршрутизация</div>
+        <div class="on">Приложения</div>
+        <div>Правила</div>
+        <div>Прокси</div>
+        <div class="mock-cap" style="margin-top: 6px">Наблюдение</div>
+        <div>Монитор</div>
+        <div>Мимо прокси</div>
+      </div>
+      <div class="mock-main">
+        <div class="mock-btns">
+          <div class="grow"><span class="mock-h">Приложения</span> <span class="mock-sub">2 через прокси</span></div>
+          <span class="mock-input dim" style="width: 170px">⌕ Поиск приложений</span>
+          <span class="mock-btn">+ <span class="muted">⌄</span></span><b class="mk">1</b>
+        </div>
+        <div class="mock-cap">Сервисы<b class="mk">2</b></div>
+        <div class="mock-group" style="min-width: 0">
+          <div class="mock-row">
+            <span class="mock-ico">&lt;/&gt;</span>
+            <div class="grow"><div>GitHub</div><div class="muted" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">github.com, githubusercontent.com и ещё 57 · во всех приложениях</div></div>
+            <span class="muted">ⓘ</span>
+            <span class="mock-pill mock-select mock-ok">Прокси: Амстердам</span>
+            <span class="mock-toggle on"></span>
+          </div>
+          <div class="mock-row"><div class="mock-btns" style="gap: 6px"><span class="mock-btn">▶︎ YouTube</span><span class="mock-btn">✈︎ Telegram</span><span class="mock-btn">✦ ChatGPT</span><span class="mock-btn">✦ Claude</span><span class="mock-btn">Все сервисы…</span></div></div>
+        </div>
+        <div class="mock-note">Сервис идёт этим путём во всех приложениях. Правило для конкретного домена в разделе «Правила» важнее сервиса.</div>
+        <div class="mock-cap">Через прокси<b class="mk">3</b></div>
+        <div class="mock-group" style="min-width: 0">
+          <div class="mock-row">
+            <span class="mock-ico o">S</span>
+            <div class="grow"><div>Slack</div><div class="muted" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">com.tinyspeck.slackmacgap · + дочерние процессы</div></div>
+            <span class="muted">↕ 340 КБ/с</span>
+            <div class="mock-popup">
+              <span class="mock-pill mock-select mock-ok">Прокси: Амстердам</span>
+              <div class="mock-menu" style="top: calc(100% + 4px); right: 0">
+                <div class="lbl">Через прокси</div>
+                <div class="mi"><span class="tick">✓</span>Амстердам</div>
+                <div class="mi hl"><span class="tick"></span>Франкфурт</div>
+                <div class="mock-sep"></div>
+                <div class="mi"><span class="tick"></span>Напрямую</div>
+                <div class="mi"><span class="tick"></span>Блокировать</div>
+                <div class="mi"><span class="tick"></span>Спрашивать</div>
+              </div>
+            </div>
+            <b class="mk">4</b>
+            <span class="mock-toggle on"></span>
+          </div>
+          <div class="mock-row">
+            <span class="mock-ico g">C</span>
+            <div class="grow"><div>Chrome</div><div class="muted" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">com.google.Chrome · + дочерние процессы</div></div>
+            <span class="mock-pill mock-select mock-ok">Прокси: Амстердам</span>
+            <span class="mock-toggle on"></span>
+          </div>
+        </div>
+        <div class="mock-cap">Напрямую</div>
+        <div class="mock-group" style="min-width: 0">
+          <div class="mock-row">
+            <span class="mock-ico">Z</span>
+            <div class="grow"><div>Zoom</div><div class="muted" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">us.zoom.xos · + дочерние процессы</div></div>
+            <span class="mock-pill mock-select">Напрямую</span>
+            <span class="mock-toggle on"></span>
+          </div>
+        </div>
+        <div class="mock-note">Здесь задаётся, куда идёт весь трафик приложения. Исключения по доменам — в разделе «Правила».</div>
+        <div class="mock-cap">› Разрешены автоматически <span class="muted">143</span></div>
+      </div>
+    </div>
+  </div></div>
+  <figcaption>
+    <ol class="mk-legend">
+      <li>Кнопка <span class="ui">Добавить</span> со значком «+». Щелчок открывает список установленных приложений, стрелка рядом — меню с другими способами добавить приложение и с сервисами.</li>
+      <li><span class="ui">Сервисы</span>: маршрут для адресов сервиса во всех приложениях. <span class="ui">ⓘ</span> открывает карточку сервиса. Кнопки ниже добавляют популярные сервисы одним щелчком.</li>
+      <li>Приложения собраны в группы по маршруту: <span class="ui">Через прокси</span>, <span class="ui">Блокируются</span>, <span class="ui">Спрашивать</span>, <span class="ui">Напрямую</span>. Группа без строк не показывается.</li>
+      <li>Меню маршрута: прокси по названиям, затем <span class="ui">Напрямую</span>, <span class="ui">Блокировать</span> и <span class="ui">Спрашивать</span>. Галочка отмечает текущий маршрут. У сервиса в этом меню нет <span class="ui">Спрашивать</span>.</li>
+    </ol>
+    Схема раздела <span class="ui">Приложения</span> с открытым меню маршрута у Slack. Данные выдуманные.
+  </figcaption>
+</figure>
 
 <h3 id="manage">Включить, выключить, удалить</h3>
 <ul>
@@ -243,16 +327,62 @@
 <h3 id="service-card">Карточка сервиса</h3>
 <p>Кнопка <span class="ui">ⓘ</span> в строке сервиса открывает его карточку. Её же открывают двойной щелчок по строке и пункт <span class="ui">Подробнее…</span> в контекстном меню. В карточке:</p>
 <ul>
-  <li><b>вверху</b> — название, группа, число адресов в наборе и переключатель;</li>
+  <li><b>вверху</b> — название, число адресов в наборе и переключатель; группа подписана только у наборов из групп Meta, AI-ассистенты и Российские сервисы;</li>
   <li><b><span class="ui">Что делает правило</span></b> — меню <span class="ui">Маршрут</span>, правило словами и оговорки. Например, у мессенджеров: «Звонки идут по UDP и через прокси не работают». Ниже — <span class="ui">Важнее этого правила:</span> ваши правила, которые забирают часть трафика сервиса раньше него;</li>
   <li><b><span class="ui">Что попало под правило</span></b> — приложения и адреса из последних соединений в <a href="../../docs/monitoring/#monitor"><span class="ui">Мониторе</span></a>, которые решил этот сервис;</li>
-  <li><b><span class="ui">Что входит</span></b> — все имена и подсети набора. В поле <span class="ui">Проверить адрес или найти в списке</span> впишите имя, например <code>i.ytimg.com</code>, и карточка скажет, входит ли оно в сервис;</li>
+  <li><b><span class="ui">Что входит</span></b> — все имена и подсети набора. В поле <span class="ui">Проверить адрес или найти в списке</span> впишите имя, например <code>i.ytimg.com</code>, и карточка скажет, входит ли оно в сервис. Ответ появляется, когда в тексте есть точка, а список ниже показывает только записи, содержащие введённый текст, поэтому для поддомена он может опустеть — смотрите на строку с ответом;</li>
   <li>кнопки <span class="ui">Удалить сервис</span> и <span class="ui">Готово</span>.</li>
 </ul>
+<figure class="mock-fig">
+  <div class="mock-scroll"><div class="mock mock-win narrow" aria-hidden="true" style="width: 520px">
+    <div class="mock-row" style="gap: 12px; padding: 18px 18px 4px">
+      <span class="mock-ico" style="width: 36px; height: 36px; border-radius: 9px">&lt;/&gt;</span>
+      <div class="grow"><div class="mock-h">GitHub</div><div class="mock-sub">Адресов в наборе: 59</div></div>
+      <span class="mock-toggle on"></span>
+    </div>
+    <div class="mock-main">
+      <div class="mock-cap">Что делает правило</div>
+      <div class="mock-group" style="min-width: 0">
+        <div class="mock-row"><span class="grow">Маршрут</span><span class="mock-pill mock-select mock-ok">Прокси: Амстердам</span></div>
+        <div class="mock-row"><div class="grow">Любое приложение, которое обращается к адресам GitHub из списка ниже, идёт через прокси «Амстердам». Маршрут самого приложения здесь не действует.</div><b class="mk">1</b></div>
+        <div class="mock-row">
+          <div class="grow"><div>Важнее этого правила:</div><div class="muted" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Все приложения · objects.githubusercontent.com → Прокси: Франкфурт</div></div>
+          <b class="mk">2</b>
+        </div>
+      </div>
+      <div class="mock-cap">Что попало под правило<b class="mk">3</b></div>
+      <div class="mock-group">
+        <div class="mock-row"><span class="mock-ico g">C</span><span class="grow">Chrome</span><span class="muted">38</span></div>
+        <div class="mock-row"><span class="mock-ico s">&gt;_</span><span class="grow">git</span><span class="muted">14</span></div>
+        <div class="mock-row"><span class="muted">github.com, api.github.com, avatars.githubusercontent.com, codeload.github.com, raw.githubusercontent.com</span></div>
+      </div>
+      <div class="mock-note">По последним соединениям в мониторе: 52.</div>
+      <div class="mock-cap">Что входит</div>
+      <div class="mock-group">
+        <div class="mock-row" style="flex-wrap: wrap"><span class="grow" style="min-width: 160px">Проверить адрес или найти в списке</span><span class="mock-input" style="width: 190px">githubusercontent.com</span><b class="mk">4</b></div>
+        <div class="mock-row mock-ok">✓ githubusercontent.com входит в GitHub</div>
+        <div class="mock-row"><span class="grow">githubusercontent.com</span><span class="muted">и поддомены</span></div>
+      </div>
+      <div class="mock-note">Список из v2fly/domain-list-community от 1 октября 2026 г., обновляется автоматически.</div>
+    </div>
+    <div class="mock-row" style="padding: 10px 16px"><span class="mock-btn danger">Удалить сервис</span><b class="mk">5</b><span class="mock-btn primary right">Готово</span></div>
+  </div></div>
+  <figcaption>
+    <ol class="mk-legend">
+      <li>Правило словами. Меню <span class="ui">Маршрут</span> над ним меняет маршрут сервиса. У некоторых сервисов ниже есть оранжевая оговорка, например у мессенджеров: «Звонки идут по UDP и через прокси не работают». У GitHub оговорки нет.</li>
+      <li><span class="ui">Важнее этого правила:</span> ваши правила, которые забирают часть адресов сервиса раньше него. Это правило для домена из списка сервиса или правило для этого же сервиса с конкретным приложением, портом или протоколом. Если таких правил нет, здесь написано, какое правило было бы важнее.</li>
+      <li>Приложения и адреса из последних соединений в <span class="ui">Мониторе</span>, которые решил этот сервис. Пока таких соединений не было, здесь написано «Пока ничего».</li>
+      <li>Проверка адреса. Впишите имя с точкой, например <code>raw.githubusercontent.com</code>, и карточка скажет, входит ли оно в сервис. Ниже — строки списка, в которых есть вписанный текст: имя «и поддомены», «только это имя» или подсеть. Пока поле пустое, там весь список.</li>
+      <li><span class="ui">Удалить сервис</span> удаляет строку сервиса и закрывает карточку. Строки приложений, добавленные вместе с сервисом, остаются.</li>
+    </ol>
+    Схема карточки сервиса GitHub, который идёт через прокси «Амстердам». Данные выдуманные.
+  </figcaption>
+</figure>
 
-<h3 id="service-updates">Обновление списков</h3>
-<p>Адреса сервисов берутся из открытого проекта v2fly/domain-list-community, подсети Telegram — из списка, который публикует Telegram. Раз в 12 часов Routekeeper проверяет на getroutekeeper.app, нет ли новых списков, и ставит их без обновления приложения. Файл со списками подписан, сетевое расширение проверяет подпись. Обновление меняет адреса, а новые сервисы появляются только с новой версией приложения.</p>
-<p>Дата списков и ручная проверка: <span class="ui">Настройки</span> → <span class="ui">Основные</span> → <span class="ui">Адреса сервисов</span>, строка <span class="ui">Списки от</span> и кнопка <span class="ui">Проверить списки</span>. Что Routekeeper при этом отправляет в сеть, описано на странице <a href="../../privacy/">Конфиденциальность</a>.</p>
+<h3 id="service-updates">Обновление сервисов</h3>
+<p>Список сервисов, их адреса и приложения, которые добавляются вместе с ними, Routekeeper берёт из каталога сервисов. Адреса в нём — из открытого проекта v2fly/domain-list-community, подсети Telegram — из списка, который публикует Telegram.</p>
+<p>Раз в 6 часов Routekeeper проверяет на getroutekeeper.app, нет ли каталога новее, и ставит его без обновления приложения. Так появляются новые сервисы, меняются адреса и добавляются новые приложения сервисов. Файл каталога подписан, сетевое расширение проверяет подпись. Если проверка не удалась, например нет сети, Routekeeper повторит её в течение часа.</p>
+<p>Дата каталога и ручная проверка: <span class="ui">Настройки</span> → <span class="ui">Основные</span> → <span class="ui">Каталог сервисов</span> (в версии 0.2.1 — <span class="ui">Адреса сервисов</span>), строки <span class="ui">Списки от</span> и <span class="ui">Последняя проверка</span> и кнопка <span class="ui">Проверить списки</span>. Что Routekeeper при этом отправляет в сеть, описано на странице <a href="../../privacy/">Конфиденциальность</a>.</p>
     <p class="checked">Сверено с кодом Routekeeper (версия 0.2.1 и следующая за ней) 4 октября 2026 года.</p>
     <nav class="pager"><a class="prev" href="../../docs/proxies/"><span>Назад</span>Прокси</a><a class="next" href="../../docs/rules/"><span>Дальше</span>Правила</a></nav>
   </article>
