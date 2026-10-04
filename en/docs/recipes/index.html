@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Recipes — Routekeeper</title>
+<meta name="description" content="Step-by-step Routekeeper recipes: a messenger through a proxy, one video service in the browser, DNS over HTTPS, the terminal and AI apps, working on top of a local client, a work proxy for internal addresses, and what to do if the proxy stops answering.">
+<meta name="theme-color" content="#0a0f1f">
+<link rel="canonical" href="https://getroutekeeper.app/en/docs/recipes/">
+<link rel="alternate" hreflang="ru" href="https://getroutekeeper.app/docs/recipes/">
+<link rel="alternate" hreflang="en" href="https://getroutekeeper.app/en/docs/recipes/">
+<link rel="alternate" hreflang="x-default" href="https://getroutekeeper.app/en/docs/recipes/">
+<link rel="icon" href="../../../mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../../../icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=891e2023">
+</head>
+<body>
+<!-- Built by Scripts/build-docs.py from site-src/docs/en/recipes.html. Edit the fragment, not this file. -->
+
+<div class="wrap nav-wrap">
+  <header class="nav">
+    <a class="brand" href="../../../en/"><img src="../../../mark.svg" alt="" width="28" height="28">Routekeeper</a>
+    <div class="nav-end"><a class="lang" href="../../../docs/recipes/" hreflang="ru" lang="ru">RU</a><a class="btn btn-primary" href="../../../en/#download">Download</a></div>
+  </header>
+</div>
+
+<section class="wrap docs-hero compact">
+  <div class="hero-copy">
+    <span class="crumbs"><a href="../../../en/docs/">Docs</a> · In practice</span>
+    <h1>Recipes: <span class="warm">ready-made setups</span></h1>
+    <p class="lede"><b>Seven common tasks, step by step.</b> Each recipe says who it’s for, what to click, how to check the result and where you might trip up.</p>
+  </div>
+</section>
+
+<main class="wrap docs-layout">
+  <aside class="side-nav" aria-label="Docs sections">
+    <span class="group">Getting started</span>
+    <a href="../../../en/docs/">Docs overview</a>
+    <a href="../../../en/docs/start/">Quick start</a>
+    <a href="../../../en/docs/concepts/">How it works</a>
+    <span class="group">Setup</span>
+    <a href="../../../en/docs/proxies/">Proxies</a>
+    <a href="../../../en/docs/apps/">Apps and services</a>
+    <a href="../../../en/docs/rules/">Rules</a>
+    <a href="../../../en/docs/firewall/">Firewall modes</a>
+    <a href="../../../en/docs/server/">Your own proxy server</a>
+    <span class="group">In practice</span>
+    <a href="../../../en/docs/recipes/" aria-current="page">Recipes</a>
+    <a href="../../../en/docs/monitoring/">Checking and monitoring</a>
+    <span class="group">Reference</span>
+    <a href="../../../en/docs/troubleshooting/">Troubleshooting</a>
+    <a href="../../../en/docs/maintenance/">Updates and removal</a>
+    <a href="../../../en/docs/limits/">Limitations</a>
+    <a href="../../../en/docs/glossary/">Glossary</a>
+    <a href="../../../en/docs/changelog/">What's new</a>
+    <a class="side-action" href="../../../en/privacy/">Privacy</a>
+    <a href="https://github.com/ilyabazhenov/routekeeper/issues">Report a problem</a>
+  </aside>
+  <article class="doc">
+    <details class="mobile-nav"><summary>All docs sections</summary><nav>
+    <span class="group">Getting started</span>
+    <a href="../../../en/docs/">Docs overview</a>
+    <a href="../../../en/docs/start/">Quick start</a>
+    <a href="../../../en/docs/concepts/">How it works</a>
+    <span class="group">Setup</span>
+    <a href="../../../en/docs/proxies/">Proxies</a>
+    <a href="../../../en/docs/apps/">Apps and services</a>
+    <a href="../../../en/docs/rules/">Rules</a>
+    <a href="../../../en/docs/firewall/">Firewall modes</a>
+    <a href="../../../en/docs/server/">Your own proxy server</a>
+    <span class="group">In practice</span>
+    <a href="../../../en/docs/recipes/" aria-current="page">Recipes</a>
+    <a href="../../../en/docs/monitoring/">Checking and monitoring</a>
+    <span class="group">Reference</span>
+    <a href="../../../en/docs/troubleshooting/">Troubleshooting</a>
+    <a href="../../../en/docs/maintenance/">Updates and removal</a>
+    <a href="../../../en/docs/limits/">Limitations</a>
+    <a href="../../../en/docs/glossary/">Glossary</a>
+    <a href="../../../en/docs/changelog/">What's new</a>
+    </nav></details>
+<p class="lead-in">The recipes assume that Routekeeper is already installed, the macOS permissions are given and at least one <a class="term" href="../../../en/docs/glossary/#proxy">proxy</a> is added. If not, start with the <a href="../../../en/docs/start/">Quick start</a>.</p>
+<div class="grid">
+  <a class="card" href="#messenger"><b>A messenger through a proxy</b><p>The whole app, and how to make sure it really goes through the proxy.</p></a>
+  <a class="card" href="#browser-video"><b>One video service in the browser</b><p>The service through a proxy, other sites direct.</p></a>
+  <a class="card" href="#browser-dns"><b>DNS over HTTPS in the browser</b><p>So that the browser doesn’t look up site addresses around the proxy.</p></a>
+  <a class="card" href="#developer"><b>Terminal and AI apps</b><p>git, npm, pip, brew, curl and Mac apps.</p></a>
+  <a class="card" href="#local-client"><b>On top of sing-box, Xray or Clash</b><p>Routekeeper sends apps to the client’s local port.</p></a>
+  <a class="card" href="#work-proxy"><b>A work proxy</b><p>Only for your company’s internal addresses.</p></a>
+  <a class="card" href="#proxy-down"><b>The proxy stopped answering</b><p>What happens and how to move the routes.</p></a>
+</div>
+<div class="callout tip"><p><span class="ui">Proxy Only</span> mode suits all the recipes: only your rules apply, and everything else goes direct. You choose the mode in the panel at the bottom of the window’s sidebar or in the menu of the menu bar icon. The stricter modes are described in <a href="../../../en/docs/firewall/#modes">Firewall modes</a>.</p></div>
+
+<h2 id="messenger">A whole messenger through a proxy</h2>
+<p><b>Who it’s for:</b> you want a messenger on your Mac (for example, a work Slack) to go online only through your proxy, while other programs work as usual.</p>
+<p>Here it’s better to send the <b>whole app</b> through the proxy, not separate sites. Messengers often connect to their servers by <a class="term" href="../../../en/docs/glossary/#ip">IP address</a>, without a site name. A domain rule won’t recognize such a connection, but an app’s route applies to all of its connections.</p>
+<h3>Steps</h3>
+<ol class="steps">
+  <li>Open the Routekeeper window (menu bar icon → <span class="ui">Open Routekeeper</span>) and go to <span class="ui">Proxy</span>. Make sure the proxy has a green dot. If the dot is gray or red, select the proxy and click <span class="ui">Check</span>. Next to the button, you’ll see “Working”, the response time and the external IP, or an error message.</li>
+  <li>Go to <span class="ui">Apps</span>, click <span class="ui">Add</span> → <span class="ui">From Installed Apps…</span>, select the messenger and click <span class="ui">Add</span>. You can also simply drag the app from Finder into the list.</li>
+  <li>Look at the messenger’s row. Its route is on the right, for example <span class="ui">Proxy: Amsterdam</span>. A new app gets the main proxy right away: the one that most rules go through. If there are no proxies yet, the route is <span class="ui">Direct</span>. To choose another proxy, click the route and pick one in the menu.</li>
+  <li>Right-click the row and check that <span class="ui">Include Child Processes</span> is selected. It is by default. Then the messenger’s helper processes follow the route too, and they usually carry almost all of its traffic.</li>
+  <li>Quit the messenger completely (<kbd>⌘Q</kbd>) and open it again. Connections that are already open don’t move to the new route, and messengers keep a connection open for hours.</li>
+</ol>
+<h3>How to check</h3>
+<ul>
+  <li>On the <span class="ui">Overview</span> screen, the <span class="ui">Through Proxies Now</span> block shows the messenger and the proxy it goes through.</li>
+  <li>In <span class="ui">Monitor</span>, type the messenger’s name in the search field. In the <span class="ui">Route</span> column, its connections should show the proxy’s name, not <span class="ui">Direct</span>. If you select a row, the <span class="ui">Decision</span> field at the bottom shows which rule applied.</li>
+  <li>The <span class="ui">Leaks</span> section should stay empty for the messenger. What shows up there and what doesn’t is described in <a href="../../../en/docs/monitoring/#what-is-detected">What Routekeeper notices and what it doesn’t</a>.</li>
+</ul>
+<h3>Pitfalls</h3>
+<ul>
+  <li><b>Calls.</b> Voice and video usually go over <a class="term" href="../../../en/docs/glossary/#udp">UDP</a>, but a proxy carries only <a class="term" href="../../../en/docs/glossary/#tcp">TCP</a>. By default, Routekeeper blocks UDP for apps on a proxy, so calls through the proxy most likely won’t work. For details, see <a href="../../../en/docs/limits/#udp">Limitations</a>.</li>
+  <li><b>If the proxy goes down,</b> the messenger won’t switch to a direct connection. It will show “Connecting…”. This is by design. What to do in this case is described in the recipe <a href="#proxy-down">The proxy stopped answering</a>.</li>
+  <li><b>Push notifications</b> are delivered by macOS directly, through its own system process <code>apsd</code>. This isn’t the messenger’s traffic, and Routekeeper doesn’t count it as a connection around the proxy.</li>
+  <li><b>Another build of the same messenger</b> (a beta, a copy from another store) is a different app for Routekeeper if it has a different <a class="term" href="../../../en/docs/glossary/#code-signature">signature</a>. Add it separately.</li>
+</ul>
+<details class="deep"><summary>Details: a service instead of an app</summary>
+  <p>If the messenger is in the <span class="ui">Services</span> list, you can add the service too: <span class="ui">Apps</span> → <span class="ui">Add</span> → <span class="ui">Service</span>. A service rule sends this service’s addresses through the proxy in any app, including the web version in a browser. Starting with the next version, Routekeeper also adds the service’s Mac app along with the service, if the app is installed now or gets installed later. In 0.2.1, you need to add the app yourself, as in the steps above.</p>
+  <p>A service rule recognizes connections by site name, and for some services (for example, Telegram) also by subnet. A route for the whole app is more reliable: it doesn’t depend on whether Routekeeper knows the name. For more about services, see <a href="../../../en/docs/apps/#services">Services</a>.</p>
+</details>
+
+<h2 id="browser-video">One video service in the browser through a proxy</h2>
+<p><b>Who it’s for:</b> you want only one service to go through the proxy, for example YouTube from the <span class="ui">Services</span> list. Your bank, the work portal and other sites in the same browser should open directly.</p>
+<h3>Steps</h3>
+<ol class="steps">
+  <li>Open <span class="ui">Apps</span> and click <span class="ui">Add</span> → <span class="ui">Service</span> → YouTube. If the service you need isn’t in the short menu, choose <span class="ui">All Services…</span>, select it and click <span class="ui">Add</span>. The service appears in the <span class="ui">Services</span> group with a route through the main proxy.</li>
+  <li>Don’t add the browser itself to the list of apps. If it’s already there with a route through a proxy, the whole browser already goes through the proxy, and you don’t need this recipe.</li>
+  <li>Go to <span class="ui">Rules</span> and click <span class="ui">New Rule</span> (<kbd>⌘N</kbd>). Fill in the window like this:
+    <ul>
+      <li><span class="ui">App</span>: click <span class="ui">Change</span> → <span class="ui">Choose…</span> and select the browser. Leave <span class="ui">Include Child Processes</span> on.</li>
+      <li><span class="ui">Destination</span>: leave it empty. This means any address.</li>
+      <li><span class="ui">Port</span>: <code>443</code>.</li>
+      <li><span class="ui">Protocol</span>: <span class="ui">UDP</span>.</li>
+      <li><span class="ui">Action</span>: <span class="ui">Block</span>.</li>
+      <li><span class="ui">Note</span>: for example, “Browser QUIC”.</li>
+    </ul>
+    Click <span class="ui">Save</span>.</li>
+  <li>Quit the browser completely and open it again, so that old connections don’t stay on the previous route.</li>
+</ol>
+<h3>Why the UDP rule</h3>
+<p>Browsers often open video over <a class="term" href="../../../en/docs/glossary/#quic">QUIC</a>, a protocol on top of UDP. A service rule recognizes a connection by site name, but Routekeeper doesn’t always see that name in QUIC connections. Without the name, the service rule doesn’t apply, and the connection follows the browser’s route, that is, goes direct.</p>
+<p>The rule “browser · 443 · UDP → <span class="ui">Block</span>” closes QUIC for the browser. The browser then switches by itself to ordinary HTTPS over TCP, where the site name is known, and the service rule applies. Other sites won’t notice a difference: they also open over TCP.</p>
+<h3>How to check</h3>
+<ul>
+  <li>Open a video. In <span class="ui">Monitor</span>, type <code>googlevideo</code> in the search field: these connections should show the proxy’s name in the <span class="ui">Route</span> column.</li>
+  <li>The browser’s UDP connections to port 443 are marked <span class="ui">Blocked</span> in the monitor. That’s expected.</li>
+  <li>Open the service card: in <span class="ui">Apps</span>, right-click the YouTube row → <span class="ui">More Info…</span>. It shows what the rule matched, and in the <span class="ui">Check an address or search the list</span> field you can check any site name.</li>
+</ul>
+<h3>Pitfalls</h3>
+<ul>
+  <li><b>A service includes only the addresses on its list.</b> For example, signing in to a Google account isn’t on the YouTube list, so it follows the browser’s route. Check the address you need in the service card.</li>
+  <li><b>Connections around the proxy aren’t tracked for such a browser.</b> Routekeeper checks this only for apps that go through the proxy as a whole. For details, see <a href="../../../en/docs/monitoring/#what-is-detected">What Routekeeper notices and what it doesn’t</a>.</li>
+  <li><b>The rule applies to one app.</b> If you watch video in two browsers, create a UDP rule for each. You can’t send two profiles of one browser different ways: see <a href="../../../en/docs/limits/#browser-profiles">Limitations</a>.</li>
+  <li><b>Don’t turn off <span class="ui">Block UDP and QUIC</span> for the proxy.</b> With this switch on, UDP connections that still fall under the service rule are blocked instead of going direct.</li>
+</ul>
+<details class="deep"><summary>Details: why the right rule wins</summary>
+  <p>Routekeeper picks one rule, the most specific one. The order in the list doesn’t matter. The address is compared first. The service rule matches by site name, so for connections to YouTube it wins over the browser’s route, whose address is “any”. The UDP rule’s address is also “any”, but it has a port and a protocol, so for UDP connections to port 443 it wins over the browser’s route.</p>
+  <p>If a UDP connection still arrives with a site name from the list, the service rule applies, and its route goes through the proxy. But UDP isn’t carried through a proxy, so the <span class="ui">Block UDP and QUIC</span> switch blocks it. The full order is described in <a href="../../../en/docs/rules/#priority">Which rule wins</a>, and site names in <a href="../../../en/docs/rules/#hostnames">Rules by site name</a>.</p>
+</details>
+
+<h2 id="browser-dns">DNS over HTTPS in the browser</h2>
+<p><b>Who it’s for:</b> the whole browser goes through the proxy, but <span class="ui">DNS around the proxy</span> entries from the browser appear in the <span class="ui">Leaks</span> section, or <span class="ui">Overview</span> says “DNS queries go direct” (in version 0.2.1, “Leaks detected”).</p>
+<p>To open a site, the browser first looks up its address on a <a class="term" href="../../../en/docs/glossary/#dns">DNS</a> server. Some browsers do this themselves, with an ordinary query to <a class="term" href="../../../en/docs/glossary/#port">port</a> 53 on your internet provider’s DNS server, and such a query goes around the proxy. The main traffic still goes through the proxy, but the DNS provider sees your IP and the names of sites.</p>
+<p>The fix is to turn on <a class="term" href="../../../en/docs/glossary/#doh">DNS over HTTPS</a> (DoH) in the browser. Then the browser looks up addresses over an encrypted HTTPS connection, and that connection goes through the proxy with the rest of the browser’s traffic.</p>
+<h3>Steps</h3>
+<p>The names of the settings depend on the browser’s version and language. If you can’t find the setting, type <code>DNS</code> in the search field of the browser’s settings.</p>
+<ol class="steps">
+  <li><b>Chrome.</b> Open <code>chrome://settings/security</code> in the address bar. Turn on “Use secure DNS” and choose a specific provider from the list, for example Cloudflare or Google.</li>
+  <li><b>Edge.</b> Open <code>edge://settings</code> and search for “DNS”. Turn on “Use secure DNS” and choose a provider from the list.</li>
+  <li><b>Firefox.</b> Open <code>about:preferences#privacy</code>, scroll to the “DNS over HTTPS” section and choose “Max Protection” with any provider.</li>
+  <li><b>Brave.</b> Open <code>brave://settings/security</code>. Turn on “Use secure DNS” and choose a provider from the list.</li>
+  <li>Restart the browser.</li>
+</ol>
+<div class="callout warn"><p><b>Don’t block port 53 for the browser.</b> For browsers, Routekeeper deliberately doesn’t show the <span class="ui">Block DNS</span> button. Without DoH, a browser with port 53 closed stops opening sites. Even with DoH, a browser sometimes needs ordinary DNS, for example to look up the address of the DNS service itself.</p></div>
+<h3>How to check</h3>
+<ul>
+  <li>New <span class="ui">DNS around the proxy</span> entries from the browser stop appearing in the <span class="ui">Leaks</span> section. Old entries stay in the list. That’s normal.</li>
+  <li>The <span class="ui">Overview</span> headline no longer reports direct DNS queries because of the browser.</li>
+</ul>
+<h3>Pitfalls</h3>
+<ul>
+  <li><b>Choose a specific provider.</b> In Chrome, Edge and Brave, the “current service provider” option encrypts queries only if your network’s DNS server supports it. Otherwise, queries go the old way, to port 53.</li>
+  <li><b>“Increased Protection” in Firefox</b> falls back to ordinary DNS when DoH fails, and the entries around the proxy appear again. “Max Protection” doesn’t do that: if DoH fails, Firefox shows an error.</li>
+  <li><b>A browser managed by an organization</b> may not let you change this setting.</li>
+  <li><b>You need this recipe only if the whole browser goes through the proxy.</b> If only a service goes through the proxy, as in the recipe <a href="#browser-video">above</a>, the rest of the browser goes direct, and direct DNS is expected.</li>
+</ul>
+<details class="deep"><summary>Details: which DNS queries Routekeeper sees</summary>
+  <p>A browser’s secure DNS is an HTTPS connection to port 443. Routekeeper sends it along the browser’s route, that is, through the proxy. An ordinary query to UDP port 53 from an app on a proxy isn’t blocked: Routekeeper lets it go direct and flags it as <span class="ui">DNS around the proxy</span>. This is the lowest severity. The service queries <code>ipv4only.arpa</code> and <code>_dns.resolver.arpa</code> are the same for everyone and aren’t flagged.</p>
+  <p>Safari and most programs look up addresses through a macOS system service. The system itself makes these queries, and Routekeeper doesn’t tie them to an app. When an app passes a site name and the proxy has <span class="ui">DNS through proxy</span> on, the proxy server looks up the address. For details, see <a href="../../../en/docs/concepts/#dns">DNS: how apps find a site’s address</a>.</p>
+</details>
+
+<h2 id="developer">Terminal, developer tools and AI apps</h2>
+<p><b>Who it’s for:</b> you need <code>git</code>, <code>npm</code>, <code>pip</code>, <code>brew</code>, <code>curl</code> and AI apps for Mac to go online through your proxy. For example, when a work repository or API accepts connections only from your server’s address. Other programs keep working as usual.</p>
+<h3>Steps</h3>
+<ol class="steps">
+  <li>Open <span class="ui">Apps</span> → <span class="ui">Add</span> → <span class="ui">From Installed Apps…</span>. Select Terminal and, if you use it, iTerm. Click <span class="ui">Add</span>.</li>
+  <li>Check that <span class="ui">Include Child Processes</span> is selected for the terminal (right-click the row; it’s on by default). Then everything you run in this terminal follows its route: <code>git</code>, <code>npm</code>, <code>pip</code>, <code>brew</code>, <code>curl</code>, <code>ssh</code>. These are its <a class="term" href="../../../en/docs/glossary/#child-process">child processes</a>.</li>
+  <li>Add your code editor the same way (VS Code, Cursor, JetBrains IDEs). Its extensions and built-in terminal are the editor’s child processes.</li>
+  <li>Add AI apps for Mac, for example ChatGPT or Claude, the same way as in step 1.</li>
+  <li>New commands go through the proxy right away. Connections that are already open, such as an <code>ssh</code> session, stay on the previous route until they reconnect.</li>
+</ol>
+<h3>How to check</h3>
+<p>Run this command in the terminal. It should print the proxy’s external IP, the same one that the menu of the menu bar icon shows.</p>
+<div class="cmd"><pre><code>curl https://ipinfo.io/ip</code></pre></div>
+<p>In <span class="ui">Monitor</span>, type <code>curl</code> in the search field. The <span class="ui">Route</span> column shows the proxy’s name, and the <span class="ui">Decision</span> field of the selected row shows the terminal’s rule.</p>
+<h3>Pitfalls</h3>
+<ul>
+  <li><b>Programs not started from the terminal</b> don’t follow its route: background services (<code>brew services</code>), scheduled tasks, programs that another app launches. Add such a program by its path: <span class="ui">Add</span> → <span class="ui">Enter Path…</span>, for example <code>/opt/homebrew/bin/node</code>. For details, see <a href="../../../en/docs/apps/#cli">Command-line programs</a>.</li>
+  <li><b>Docker Desktop.</b> The traffic of all containers and image downloads comes from one Docker Desktop process. Add Docker Desktop as an app: one rule covers all containers. You can’t single out one container with its own rule.</li>
+  <li><b>The <code>HTTP_PROXY</code>, <code>HTTPS_PROXY</code> and <code>ALL_PROXY</code> variables</b> aren’t needed for Routekeeper. If they’re set, programs go to the proxy they name on their own, and the traffic goes through two proxies in a row. Remove them from <code>~/.zshrc</code> if you set them before.</li>
+  <li><b><code>git</code> and <code>ssh</code> on port 22.</b> Some proxies, more often work ones, allow only ports 80 and 443. Then either switch the repository to an <code>https://</code> address, or create the rule “Terminal · port 22 → <span class="ui">Direct</span>”: a rule with a port wins over the terminal’s route.</li>
+  <li><b>Voice modes and calls</b> in AI apps usually go over UDP and don’t work through a proxy. Text mode works.</li>
+</ul>
+<details class="deep"><summary>Details: services for AI tools</summary>
+  <p>The <span class="ui">Services</span> list has ChatGPT, Claude, Gemini, GitHub Copilot, Cursor, Perplexity and Grok, as well as GitHub and JetBrains. A service sends its addresses through the proxy in any app: in a browser, in an editor and in command-line programs, even if they aren’t started from the terminal.</p>
+  <p>Starting with the next version, Routekeeper also adds a service’s apps along with the service: for example, ChatGPT, Claude, Cursor, JetBrains IDEs, and for Claude also the <code>claude</code> command-line program. An app installed later is added by itself. In 0.2.1, you need to add the apps separately.</p>
+  <p>A child process is matched to Terminal by its chain of parents. <code>curl</code> started from Terminal falls under Terminal’s rule, even though <code>curl</code> itself is signed by Apple. For details, see <a href="../../../en/docs/apps/#child-processes">Child processes</a>.</p>
+</details>
+
+<h2 id="local-client">On top of sing-box, Xray or Clash</h2>
+<p><b>Who it’s for:</b> you already have a client such as sing-box, Xray or Clash. It connects to a server over a protocol that Routekeeper doesn’t speak itself (for example, VLESS or Shadowsocks). The client opens a local <a class="term" href="../../../en/docs/glossary/#socks5">SOCKS5</a> port on the Mac, and Routekeeper decides which apps to send to it.</p>
+<pre class="flow"><code>App → Routekeeper → <b>127.0.0.1:port</b> → client → your server → internet</code></pre>
+<h3>Steps</h3>
+<ol class="steps">
+  <li>In the client’s settings, find the local SOCKS5 inbound (sometimes it’s called mixed): the address <code>127.0.0.1</code> and a port, for example <code>1080</code> or <code>7890</code>.</li>
+  <li>In the client, turn off System Proxy and TUN mode (also called Enhanced Mode). Only one program should manage the routes. Otherwise, Routekeeper’s rules won’t apply.</li>
+  <li>In Routekeeper, open <span class="ui">Proxy</span> and add a proxy. The easiest way is to copy a line like <code>socks5://127.0.0.1:<span class="ph">7890</span></code> and click <span class="ui">Paste</span> under the list of proxies: the fields fill in by themselves. Or click <span class="ui">Add Proxy</span> and fill them in yourself: <span class="ui">Type</span> is SOCKS5, <span class="ui">Server</span> is <code>127.0.0.1</code>, <span class="ui">Port</span> is the client’s port. Leave the <span class="ui">DNS through proxy</span> and <span class="ui">Block UDP and QUIC</span> switches on. Click <span class="ui">Add</span>.</li>
+  <li>Routekeeper checks the new proxy right away. The external IP appears next to the <span class="ui">Check</span> button: the address of the server the client is connected to.</li>
+  <li>In <span class="ui">Apps</span>, send the apps you need to this proxy, as in the <a href="#messenger">messenger recipe</a>.</li>
+  <li>If you work in <span class="ui">Ask</span> or <span class="ui">Block All</span> mode, allow the client itself to go online: add it to <span class="ui">Apps</span> with the <span class="ui">Direct</span> route. In <span class="ui">Proxy Only</span> mode, you don’t need this step.</li>
+</ol>
+<h3>How to check</h3>
+<ul>
+  <li><span class="ui">Check</span> on the proxy shows your server’s address, not your home address.</li>
+  <li>In <span class="ui">Monitor</span>, the connections of the apps you chose go through this proxy, and the client’s own connections go <span class="ui">Direct</span>.</li>
+</ul>
+<h3>Pitfalls</h3>
+<ul>
+  <li><b>The client must be running.</b> If it’s closed, the check shows “Couldn’t connect to the proxy”, and the apps on this proxy are left without a network: they won’t go direct. Set the client to open at login.</li>
+  <li><b>Don’t send the client itself through the proxy.</b> That makes a loop: the client tries to connect to its server through itself.</li>
+  <li><b>If the client runs as a system service</b> (for example, started with <code>brew services</code>), add its program by path in <span class="ui">Ask</span> and <span class="ui">Block All</span> modes: <span class="ui">Add</span> → <span class="ui">Enter Path…</span>.</li>
+  <li><b>TUN mode, if it’s on</b> in the client, takes all of the Mac’s traffic, including what Routekeeper lets go direct. It’s one more network extension next to Routekeeper: see <a href="../../../en/docs/limits/#other-vpn">Other VPNs and network extensions</a>.</li>
+  <li><b>UDP doesn’t go through such a proxy:</b> Routekeeper passes only TCP to SOCKS5 and blocks UDP from apps on a proxy. Calls through the client won’t work this way.</li>
+</ul>
+<details class="deep"><summary>Details: why turn off the client’s system proxy</summary>
+  <p>The system proxy is a macOS setting that browsers and many programs read themselves. With it, a browser sends everything to the client without Routekeeper. Routekeeper sees only a connection to <code>127.0.0.1</code>, and it doesn’t touch connections to the same Mac (<span class="ui">Settings</span> → <span class="ui">Network</span> → <span class="ui">Leave localhost alone</span>). In the end, the client decides, and Routekeeper’s rules don’t apply to such a browser.</p>
+  <p>Connections from any app to the address and port of a proxy added to Routekeeper always go direct, in any mode. So you don’t need to allow the client’s local port separately. For details, see <a href="../../../en/docs/proxies/#local-client">Local client: sing-box, Xray, Clash</a>.</p>
+</details>
+
+<h2 id="work-proxy">A work proxy for internal addresses</h2>
+<p><b>Who it’s for:</b> your company gives you an HTTP proxy that opens internal sites, for example <code>*.corp.example</code>, and the <code>10.0.0.0/8</code> network. Everything else should go as usual: direct or through your personal proxy.</p>
+<h3>Steps</h3>
+<ol class="steps">
+  <li>Open <span class="ui">Proxy</span> → <span class="ui">Add Proxy</span>. Fill in the fields. <span class="ui">Name</span>: “Office”. <span class="ui">Type</span>: HTTP (or HTTPS, if your company’s instructions say so). <span class="ui">Server</span>: for example <code>proxy.corp.example</code>. <span class="ui">Port</span>: for example <code>3128</code>. <span class="ui">Login</span> and <span class="ui">Password</span>: if the proxy requires them. Click <span class="ui">Add</span>.</li>
+  <li>Go to <span class="ui">Rules</span> → <span class="ui">New Rule</span>. Leave <span class="ui">App</span> set to <span class="ui">Any App</span>. In <span class="ui">Destination</span>, enter <code>*.corp.example</code>. In <span class="ui">Action</span>, choose “Office” in the <span class="ui">Through Proxy</span> group. In <span class="ui">Note</span>, enter “Work sites”. Click <span class="ui">Save</span>.</li>
+  <li>Create a second rule the same way, but in <span class="ui">Destination</span> enter the subnet <code>10.0.0.0/8</code>.</li>
+  <li>In <span class="ui">Apps</span>, don’t send anything to “Office”: these two rules are enough.</li>
+</ol>
+<p>The wildcard <code>*.corp.example</code> covers <code>corp.example</code> itself and all its subdomains (<a class="term" href="../../../en/docs/glossary/#wildcard">more about wildcards</a>). The entry <code>10.0.0.0/8</code> is the range of addresses from 10.0.0.0 to 10.255.255.255 (a <a class="term" href="../../../en/docs/glossary/#cidr">subnet</a>). Other ways to write an address are in <a href="../../../en/docs/rules/#syntax">Rule fields</a>.</p>
+<h3>How to check</h3>
+<ul>
+  <li>Open an internal site. In <span class="ui">Monitor</span>, its connections show “Office” in the <span class="ui">Route</span> column and your rule in the <span class="ui">Decision</span> field.</li>
+  <li>An ordinary outside site in the same browser follows the browser’s route: <span class="ui">Direct</span> or through your personal proxy.</li>
+</ul>
+<h3>Pitfalls</h3>
+<ul>
+  <li><b>Login and password only.</b> Routekeeper can sign in to an HTTP proxy with a login and password (Basic). Signing in with a Windows account (NTLM, Kerberos) and PAC auto-configuration files aren’t supported. If your company uses a PAC file, open its address in a browser and find a line like <code>PROXY host:port</code>: that’s the server and port you need.</li>
+  <li><b><span class="ui">Check</span> may show an error even though everything works.</b> The check goes through the proxy to the outside service ipinfo.io. If the work proxy doesn’t let you out to the internet, the check fails, but internal sites still open. Rely on the monitor.</li>
+  <li><b>Be careful when you move all apps to another proxy.</b> The <span class="ui">Move all apps to</span> item in the sidebar panel and the <span class="ui">Proxy for all apps</span> list in the menu bar move all rules that use a proxy, including the “Office” rules. To move only your personal proxy’s routes, use the menu of its row on the <span class="ui">Overview</span> screen → <span class="ui">Move Routes To</span>.</li>
+  <li><b>UDP to the internal network</b> doesn’t go through the proxy: the proxy carries only TCP.</li>
+</ul>
+<details class="deep"><summary>Details: why these rules win over the browser’s route</summary>
+  <p>Even if the whole browser goes through your personal proxy, connections to <code>*.corp.example</code> go through “Office”. Routekeeper picks the most specific rule. A name wildcard is more specific than a subnet, and a subnet is more specific than “any address”. An app’s route has exactly that: “any” address. The order of rules in the list doesn’t matter. For details, see <a href="../../../en/docs/rules/#priority">Which rule wins</a>.</p>
+  <p>A name rule applies when the app passed a site name. A subnet rule checks the IP address and always works, including for connections by name if the name points into that subnet. Connections to the address and port of “Office” itself always go direct, so there’s no loop. For more about a work proxy, see <a href="../../../en/docs/proxies/#work-proxy">Work proxy</a>.</p>
+</details>
+
+<h2 id="proxy-down">The proxy stopped answering</h2>
+<p><b>Who it’s for:</b> the proxy server went down, can’t be reached from your network or changed its password, and you need your apps to work again.</p>
+<h3>What happens</h3>
+<ul>
+  <li>Apps that go through this proxy are left without a network. Their connections don’t go direct: this way, Routekeeper doesn’t reveal your real address. This is the default behavior (<a class="term" href="../../../en/docs/glossary/#fail-closed">more about it</a>).</li>
+  <li>Apps with the <span class="ui">Direct</span> route and apps that go through other proxies work as before.</li>
+  <li>The <span class="ui">Overview</span> headline says “Proxy ‘…’ is unreachable”, or “Partly working” if other routes are fine. The menu bar icon and the status line in its menu also show that the proxy is unreachable.</li>
+  <li>In <span class="ui">Monitor</span>, connections show <span class="ui">Error</span>, and the details give the reason, for example “The proxy didn’t answer in time”. What the messages mean is described in <a href="../../../en/docs/troubleshooting/#errors">App messages</a>.</li>
+  <li>If notifications are allowed, you get the notification “…: proxy failed”, no more than once every 10 minutes for each app.</li>
+  <li>While the main proxy is unreachable, Routekeeper checks it again once a minute, and also a few seconds after the network changes. When the server comes back, everything starts working by itself.</li>
+</ul>
+<h3>Move one proxy’s routes</h3>
+<ol class="steps">
+  <li>Open <span class="ui">Overview</span>. In the <span class="ui">Routes</span> block, the unreachable proxy has a <span class="ui">Move to “…”</span> button with the name of another proxy. Click it. You can also choose the other proxy yourself: the row’s menu (the button with an ellipsis) → <span class="ui">Move Routes To</span>.</li>
+  <li>Routekeeper shows exactly what will move and from where. Click <span class="ui">Move</span>.</li>
+  <li>If you moved the routes to the wrong proxy, you can click <span class="ui">Undo</span> under the proxy in the sidebar panel within 10 seconds. You can also undo with <kbd>⌘Z</kbd> while the window is open.</li>
+</ol>
+<h3>Move all apps at once</h3>
+<p>When you have two or more proxies, you can move all routes in one action:</p>
+<ul>
+  <li>in the window: the panel at the bottom of the sidebar → the proxy row → <span class="ui">Move all apps to</span> → the proxy you need;</li>
+  <li>in the menu bar: the icon → <span class="ui">Proxy for all apps</span> → the proxy you need.</li>
+</ul>
+<p>Routekeeper asks you to confirm and shows what will move. Keep in mind that this moves all rules with any proxy, including the ones you sent through another proxy on purpose, for example a work one.</p>
+<h3>If there’s no other proxy</h3>
+<ul>
+  <li>You can switch the apps you need to <span class="ui">Direct</span> in <span class="ui">Apps</span> for a while.</li>
+  <li>Or turn on <span class="ui">Settings</span> → <span class="ui">Network</span> → <span class="ui">If the proxy is down, go direct</span>. Then, while the proxy is unreachable, connections go direct, around the proxy, and Routekeeper doesn’t warn you about it separately. Turn the switch off when the server works again.</li>
+</ul>
+<h3>How to check</h3>
+<ul>
+  <li>In <span class="ui">Overview</span>, click <span class="ui">Check All</span>: the working proxy has a green dot and a response time.</li>
+  <li>In <span class="ui">Monitor</span>, the app’s new connections show the new proxy’s name.</li>
+</ul>
+<h3>Pitfalls</h3>
+<ul>
+  <li><b>Open connections don’t move.</b> They stay on the old proxy until the app reconnects. It’s easier to restart a messenger.</li>
+  <li><b>Moving back moves everything.</b> If you later move the new proxy’s routes back, all of its routes move, including the ones that were on it from the start. To get back to how it was, move the apps you need back yourself in <span class="ui">Apps</span>.</li>
+  <li><b>“Slow” isn’t “unreachable”.</b> If the response time is 1500 ms or more, it says “slow” next to it, and the dot is orange. A distant server that works fine shows 500–800 ms. That’s normal.</li>
+  <li><b>To find out why the server doesn’t answer,</b> look up the error text in <a href="../../../en/docs/troubleshooting/#errors">App messages</a>. If it’s your own server, see <a href="../../../en/docs/server/#troubleshooting">server troubleshooting</a>.</li>
+</ul>
+<details class="deep"><summary>Details: how Routekeeper picks the proxy for the button on Overview</summary>
+  <p>The <span class="ui">Move to “…”</span> button offers the first proxy that passed its last check. If there’s none, it offers simply the first other proxy in the list. Moving one proxy’s routes affects only the enabled rules that go through it. Moving all apps affects all enabled rules with any proxy except the chosen one. A rule that you changed while the confirmation was open isn’t moved. For more about several proxies, see <a href="../../../en/docs/proxies/#switch">Switching to another proxy</a>.</p>
+</details>
+    <p class="checked">Checked against the Routekeeper code (version 0.2.1 and the one after it) on October 4, 2026.</p>
+    <nav class="pager"><a class="prev" href="../../../en/docs/server/"><span>Previous</span>Your own proxy server</a><a class="next" href="../../../en/docs/monitoring/"><span>Next</span>Checking and monitoring</a></nav>
+  </article>
+</main>
+
+<div class="wrap">
+  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span><a href="../../../en/">Routekeeper for macOS</a> · <a href="../../../en/docs/">Docs</a> · <a href="../../../en/privacy/">Privacy</a> · <a href="https://github.com/ilyabazhenov/routekeeper">GitHub</a></span></footer>
+</div>
+
+<script src="../../../docs/assets/docs.js?v=3e67278c"></script>
+</body>
+</html>

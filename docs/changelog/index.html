@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Что нового — Routekeeper</title>
+<meta name="description" content="История версий Routekeeper: что изменилось в 0.2.1, 0.2.0 и 0.1.0 и что готовится в следующей версии — новый идентификатор приложения, раздел «Мимо прокси», блокировка при нечитаемых настройках, новые сервисы.">
+<meta name="theme-color" content="#0a0f1f">
+<link rel="canonical" href="https://getroutekeeper.app/docs/changelog/">
+<link rel="alternate" hreflang="ru" href="https://getroutekeeper.app/docs/changelog/">
+<link rel="alternate" hreflang="en" href="https://getroutekeeper.app/en/docs/changelog/">
+<link rel="alternate" hreflang="x-default" href="https://getroutekeeper.app/en/docs/changelog/">
+<link rel="icon" href="../../mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../../icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../docs/assets/docs.css?v=891e2023">
+</head>
+<body>
+<!-- Built by Scripts/build-docs.py from site-src/docs/ru/changelog.html. Edit the fragment, not this file. -->
+
+<div class="wrap nav-wrap">
+  <header class="nav">
+    <a class="brand" href="../../"><img src="../../mark.svg" alt="" width="28" height="28">Routekeeper</a>
+    <div class="nav-end"><a class="lang" href="../../en/docs/changelog/" hreflang="en" lang="en">EN</a><a class="btn btn-primary" href="../../#download">Скачать</a></div>
+  </header>
+</div>
+
+<section class="wrap docs-hero compact">
+  <div class="hero-copy">
+    <span class="crumbs"><a href="../../docs/">Документация</a> · Справка</span>
+    <h1>Что <span class="warm">нового</span></h1>
+    <p class="lede"><b>Изменения в каждой версии Routekeeper, от новых к старым.</b> Здесь только то, что заметно в приложении.</p>
+  </div>
+</section>
+
+<main class="wrap docs-layout">
+  <aside class="side-nav" aria-label="Разделы документации">
+    <span class="group">Начало</span>
+    <a href="../../docs/">Обзор документации</a>
+    <a href="../../docs/start/">Быстрый старт</a>
+    <a href="../../docs/concepts/">Как это работает</a>
+    <span class="group">Настройка</span>
+    <a href="../../docs/proxies/">Прокси</a>
+    <a href="../../docs/apps/">Приложения и сервисы</a>
+    <a href="../../docs/rules/">Правила</a>
+    <a href="../../docs/firewall/">Режимы файрвола</a>
+    <a href="../../docs/server/">Свой прокси-сервер</a>
+    <span class="group">На практике</span>
+    <a href="../../docs/recipes/">Рецепты</a>
+    <a href="../../docs/monitoring/">Проверка и мониторинг</a>
+    <span class="group">Справка</span>
+    <a href="../../docs/troubleshooting/">Если не работает</a>
+    <a href="../../docs/maintenance/">Обновление и удаление</a>
+    <a href="../../docs/limits/">Ограничения</a>
+    <a href="../../docs/glossary/">Словарь</a>
+    <a href="../../docs/changelog/" aria-current="page">Что нового</a>
+    <a class="side-action" href="../../privacy/">Конфиденциальность</a>
+    <a href="https://github.com/ilyabazhenov/routekeeper/issues">Сообщить о проблеме</a>
+  </aside>
+  <article class="doc">
+    <details class="mobile-nav"><summary>Все разделы документации</summary><nav>
+    <span class="group">Начало</span>
+    <a href="../../docs/">Обзор документации</a>
+    <a href="../../docs/start/">Быстрый старт</a>
+    <a href="../../docs/concepts/">Как это работает</a>
+    <span class="group">Настройка</span>
+    <a href="../../docs/proxies/">Прокси</a>
+    <a href="../../docs/apps/">Приложения и сервисы</a>
+    <a href="../../docs/rules/">Правила</a>
+    <a href="../../docs/firewall/">Режимы файрвола</a>
+    <a href="../../docs/server/">Свой прокси-сервер</a>
+    <span class="group">На практике</span>
+    <a href="../../docs/recipes/">Рецепты</a>
+    <a href="../../docs/monitoring/">Проверка и мониторинг</a>
+    <span class="group">Справка</span>
+    <a href="../../docs/troubleshooting/">Если не работает</a>
+    <a href="../../docs/maintenance/">Обновление и удаление</a>
+    <a href="../../docs/limits/">Ограничения</a>
+    <a href="../../docs/glossary/">Словарь</a>
+    <a href="../../docs/changelog/" aria-current="page">Что нового</a>
+    </nav></details>
+<p class="lead-in">Routekeeper сам предлагает обновиться, когда выходит новая версия: см. <a href="../../docs/maintenance/#update">«Обновления»</a>. Все сборки лежат в <a href="https://github.com/ilyabazhenov/routekeeper/releases">GitHub Releases</a>.</p>
+
+<h2 id="next">В следующей версии</h2>
+<div class="callout"><p><b>Эта версия ещё не вышла.</b> Изменения ниже уже готовы и войдут в следующий выпуск (сборка 11). Переход на неё с 0.2.x делается вручную, один раз: <a href="../../docs/maintenance/#migrate">«Переход с 0.2.x»</a>.</p></div>
+<ul>
+  <li><b>Новый идентификатор приложения.</b> Системный идентификатор меняется с <code>dev.ilyabazenov.appproxy</code> на <code>app.getroutekeeper.mac</code>. Для macOS это новое приложение, поэтому версии 0.2.x только сообщат о нём и дадут ссылку на сайт. Старую версию нужно удалить её же кнопкой <span class="ui">Удалить…</span>, а новую — установить и заново дать три разрешения. Правила, прокси с паролями и настройки переезжают сами. Если старое <a class="term" href="../../docs/glossary/#network-extension">расширение</a> осталось включённым, новая версия покажет плашку и подскажет, как его выключить. В Системных настройках расширение теперь называется «Routekeeper Extension».</li>
+  <li><b>«Мимо прокси» вместо «Утечки».</b> Раздел переименован. У каждого вида записей теперь своя важность: <span class="ui">Процесс мимо правила</span> — самое серьёзное (красный), <span class="ui">UDP мимо прокси</span> — оранжевый, <span class="ui">DNS мимо прокси</span> — наименее важное (жёлтый). Если напрямую идут только <a class="term" href="../../docs/glossary/#dns">DNS</a>-запросы, <span class="ui">Обзор</span> не поднимает тревогу, а спокойно пишет «DNS-запросы идут напрямую». Подсказка к такой записи объясняет, что при этом видит DNS-провайдер.</li>
+  <li><b>Блокировка при нечитаемых настройках.</b> Если расширение не может прочитать файл настроек — его повредили или поверх новых настроек поставили более старую версию, — Routekeeper больше не начинает с чистых настроек, отправляя все приложения напрямую. Вместо этого он блокирует все соединения, кроме соединений внутри Mac, самого Routekeeper и системной службы DNS. Плашка предлагает <span class="ui">Проверить обновления</span> или <span class="ui">Сбросить настройки…</span>, старый файл при сбросе сохраняется. Подробнее — в <a href="../../docs/troubleshooting/#locked">«Все соединения заблокированы»</a>.</li>
+  <li><b>Настройки старых версий читаются всегда.</b> Если в файле нет параметра, который появился позже, он получает значение по умолчанию.</li>
+  <li><b>Новые сервисы:</b> TikTok, Reddit, Twitch, Slack, Zoom, GitHub и Figma. Всего сервисов теперь 32.</li>
+  <li><b>Сервис добавляет своё приложение.</b> Вместе с сервисом Routekeeper добавляет и его приложение для Mac с тем же маршрутом: например, Slack, Zoom, Telegram, ChatGPT, Claude, Cursor, IDE JetBrains. Для Claude добавляется ещё и консольная программа <code>claude</code>. Приложение, установленное позже, добавится само. Приложения, которым вы уже задали маршрут, не меняются.</li>
+  <li><b>Карта трафика быстрее.</b> Карта строится в фоне и не подтормаживает окно, точки соединений движутся плавно.</li>
+</ul>
+
+<h2 id="v0-2-1">0.2.1 — 3 октября 2026</h2>
+<p>Сборка 10.</p>
+<ul>
+  <li><b><span class="ui">Сейчас через прокси</span> на экране <span class="ui">Обзор</span>.</b> Какие приложения прямо сейчас передают трафик через прокси, с какой скоростью и через какой прокси. Приложение остаётся в списке ещё какое-то время после того, как трафик затих.</li>
+  <li><b>Меньше ложных записей о DNS мимо прокси.</b> Служебные запросы <code>ipv4only.arpa</code> и <code>_dns.resolver.arpa</code> одинаковы у всех и ничего не говорят о том, что вы делаете. Теперь они не отмечаются.</li>
+  <li><b>Браузеры и DNS.</b> Если браузер сам отправляет DNS-запросы мимо прокси, Routekeeper советует включить в нём <a class="term" href="../../docs/glossary/#doh">DNS через HTTPS</a>, а кнопку <span class="ui">Блокировать DNS</span> для браузеров не показывает: без DoH браузер с закрытым портом 53 перестал бы открывать сайты. Рецепт — <a href="../../docs/recipes/#browser-dns">«DNS через HTTPS в браузере»</a>.</li>
+  <li>График скорости больше не выходит за свои края и показывает только своё окно времени.</li>
+</ul>
+
+<h2 id="v0-2-0">0.2.0 — 3 октября 2026</h2>
+<p>Сборка 9.</p>
+<ul>
+  <li><b>Экран <span class="ui">Обзор</span></b> — новый главный экран. Сверху — всё ли работает, а если нет, то самая серьёзная проблема и кнопка, которая её решает. Ниже — каждый маршрут с состоянием и скоростью своего прокси, прямой трафик и соединения мимо прокси.</li>
+  <li><b>Перевод маршрутов на другой прокси</b> из окна и из строки меню: все приложения сразу или маршруты одного прокси. Перед переводом Routekeeper показывает, что именно переедет и откуда, а после — несколько секунд даёт отменить. Подробнее — в рецепте <a href="../../docs/recipes/#proxy-down">«Прокси перестал отвечать»</a>.</li>
+  <li><b>Сервисы.</b> Правило для сервиса целиком — например, «YouTube через прокси» — действует во всех приложениях сразу. В правилах сервис записывается как <code>@youtube</code>. Адрес, вписанный вручную, важнее сервиса. Карточка сервиса показывает, что попало под правило, и проверяет, входит ли адрес в список.</li>
+  <li><b>Новые сервисы:</b> LinkedIn, Signal, Viber, Proton Mail, Spotify, Notion, JetBrains, а также российские — госсайты, банки, популярные сайты. Российские добавляются с маршрутом <span class="ui">Напрямую</span>. Всего сервисов — 25.</li>
+  <li><b>Списки адресов сервисов обновляются с сайта</b> раз в 12 часов, без новой версии приложения. Дата списков и ручная проверка — в <span class="ui">Настройки</span> → <span class="ui">Основные</span> → <span class="ui">Адреса сервисов</span>.</li>
+  <li>Выбор сервисов на экране <span class="ui">Приложения</span> и на приветственном экране.</li>
+  <li>Окно вопроса в режиме <span class="ui">Спрашивать</span> предлагает прокси, через который уже идёт большинство приложений, и показывает, сколько соединений ждут ответа. Щелчок по нему больше не поднимает главное окно.</li>
+  <li>Точка прокси становится оранжевой, только когда задержка заметна: от 1500 мс, с пометкой «медленно».</li>
+  <li>Если основной прокси не прошёл проверку, Routekeeper повторяет её раз в минуту. Раньше после короткого сбоя строка меню могла часами показывать, что прокси недоступен.</li>
+  <li>Два прокси с одинаковым именем в меню маршрута различаются по типу и порту.</li>
+  <li>Диагностика берёт свежий список соединений у расширения, даже если монитор закрыт.</li>
+</ul>
+
+<h2 id="v0-1-0">0.1.0 — 3 октября 2026</h2>
+<p>Сборка 8. Первая публичная версия.</p>
+<ul>
+  <li>Маршрут для каждого приложения: <span class="ui">Через прокси</span>, <span class="ui">Напрямую</span>, <span class="ui">Блокировать</span> или <span class="ui">Спрашивать</span>. Приложения узнаются по подписи разработчика, вместе с дочерними процессами.</li>
+  <li>Правила по адресам: имя сайта, <a class="term" href="../../docs/glossary/#wildcard">шаблон</a> <code>*.</code>, IP, <a class="term" href="../../docs/glossary/#cidr">подсеть</a>, порт и протокол.</li>
+  <li>Прокси <a class="term" href="../../docs/glossary/#socks5">SOCKS5</a>, <a class="term" href="../../docs/glossary/#http-connect">HTTP</a> и <a class="term" href="../../docs/glossary/#https-proxy">HTTPS</a>, с логином и паролем или без. Строку прокси можно вставить из буфера обмена. Имя сайта передаётся прокси, и адрес он узнаёт сам.</li>
+  <li>Если прокси недоступен, соединения не уходят напрямую. <a class="term" href="../../docs/glossary/#udp">UDP</a> и <a class="term" href="../../docs/glossary/#quic">QUIC</a> у приложений на прокси блокируются.</li>
+  <li>Четыре режима файрвола: <span class="ui">Только прокси</span>, <span class="ui">Спрашивать</span>, <span class="ui">Тихий</span>, <span class="ui">Блокировать всё</span>.</li>
+  <li>Монитор соединений с картой трафика и отметки о соединениях мимо прокси с подсказкой, как их закрыть.</li>
+  <li>Значок в строке меню: состояние, режим и внешний IP прокси.</li>
+  <li>Импорт и экспорт правил, сбор диагностики, автоматические обновления.</li>
+  <li>Интерфейс на русском и английском.</li>
+</ul>
+    <p class="checked">Сверено с кодом Routekeeper (версия 0.2.1 и следующая за ней) 4 октября 2026 года.</p>
+    <nav class="pager"><a class="prev" href="../../docs/glossary/"><span>Назад</span>Словарь</a></nav>
+  </article>
+</main>
+
+<div class="wrap">
+  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span><a href="../../">Routekeeper для macOS</a> · <a href="../../docs/">Документация</a> · <a href="../../privacy/">Конфиденциальность</a> · <a href="https://github.com/ilyabazhenov/routekeeper">GitHub</a></span></footer>
+</div>
+
+<script src="../../docs/assets/docs.js?v=3e67278c"></script>
+</body>
+</html>

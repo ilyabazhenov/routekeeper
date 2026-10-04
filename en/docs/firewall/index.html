@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Firewall modes — Routekeeper</title>
+<meta name="description" content="Routekeeper’s four modes: Proxy Only, Silent, Ask and Block All. Who each one is for, the prompt, the answer timeout, automatic permissions and how to get back from a strict mode.">
+<meta name="theme-color" content="#0a0f1f">
+<link rel="canonical" href="https://getroutekeeper.app/en/docs/firewall/">
+<link rel="alternate" hreflang="ru" href="https://getroutekeeper.app/docs/firewall/">
+<link rel="alternate" hreflang="en" href="https://getroutekeeper.app/en/docs/firewall/">
+<link rel="alternate" hreflang="x-default" href="https://getroutekeeper.app/en/docs/firewall/">
+<link rel="icon" href="../../../mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../../../icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=891e2023">
+</head>
+<body>
+<!-- Built by Scripts/build-docs.py from site-src/docs/en/firewall.html. Edit the fragment, not this file. -->
+
+<div class="wrap nav-wrap">
+  <header class="nav">
+    <a class="brand" href="../../../en/"><img src="../../../mark.svg" alt="" width="28" height="28">Routekeeper</a>
+    <div class="nav-end"><a class="lang" href="../../../docs/firewall/" hreflang="ru" lang="ru">RU</a><a class="btn btn-primary" href="../../../en/#download">Download</a></div>
+  </header>
+</div>
+
+<section class="wrap docs-hero compact">
+  <div class="hero-copy">
+    <span class="crumbs"><a href="../../../en/docs/">Docs</a> · Setup</span>
+    <h1>Firewall modes: <span class="warm">what happens to the rest</span></h1>
+    <p class="lede"><b>The mode decides what to do with a connection that has neither a route nor a rule.</b> Start with <span class="ui">Proxy Only</span>, and turn on the stricter modes when you need them.</p>
+  </div>
+</section>
+
+<main class="wrap docs-layout">
+  <aside class="side-nav" aria-label="Docs sections">
+    <span class="group">Getting started</span>
+    <a href="../../../en/docs/">Docs overview</a>
+    <a href="../../../en/docs/start/">Quick start</a>
+    <a href="../../../en/docs/concepts/">How it works</a>
+    <span class="group">Setup</span>
+    <a href="../../../en/docs/proxies/">Proxies</a>
+    <a href="../../../en/docs/apps/">Apps and services</a>
+    <a href="../../../en/docs/rules/">Rules</a>
+    <a href="../../../en/docs/firewall/" aria-current="page">Firewall modes</a>
+    <a href="../../../en/docs/server/">Your own proxy server</a>
+    <span class="group">In practice</span>
+    <a href="../../../en/docs/recipes/">Recipes</a>
+    <a href="../../../en/docs/monitoring/">Checking and monitoring</a>
+    <span class="group">Reference</span>
+    <a href="../../../en/docs/troubleshooting/">Troubleshooting</a>
+    <a href="../../../en/docs/maintenance/">Updates and removal</a>
+    <a href="../../../en/docs/limits/">Limitations</a>
+    <a href="../../../en/docs/glossary/">Glossary</a>
+    <a href="../../../en/docs/changelog/">What's new</a>
+    <a class="side-action" href="../../../en/privacy/">Privacy</a>
+    <a href="https://github.com/ilyabazhenov/routekeeper/issues">Report a problem</a>
+  </aside>
+  <article class="doc">
+    <details class="mobile-nav"><summary>All docs sections</summary><nav>
+    <span class="group">Getting started</span>
+    <a href="../../../en/docs/">Docs overview</a>
+    <a href="../../../en/docs/start/">Quick start</a>
+    <a href="../../../en/docs/concepts/">How it works</a>
+    <span class="group">Setup</span>
+    <a href="../../../en/docs/proxies/">Proxies</a>
+    <a href="../../../en/docs/apps/">Apps and services</a>
+    <a href="../../../en/docs/rules/">Rules</a>
+    <a href="../../../en/docs/firewall/" aria-current="page">Firewall modes</a>
+    <a href="../../../en/docs/server/">Your own proxy server</a>
+    <span class="group">In practice</span>
+    <a href="../../../en/docs/recipes/">Recipes</a>
+    <a href="../../../en/docs/monitoring/">Checking and monitoring</a>
+    <span class="group">Reference</span>
+    <a href="../../../en/docs/troubleshooting/">Troubleshooting</a>
+    <a href="../../../en/docs/maintenance/">Updates and removal</a>
+    <a href="../../../en/docs/limits/">Limitations</a>
+    <a href="../../../en/docs/glossary/">Glossary</a>
+    <a href="../../../en/docs/changelog/">What's new</a>
+    </nav></details>
+    <p class="lead-in">Routekeeper decides what happens to each new connection in a fixed order. First it looks at the app’s route and the rules. The mode comes into play only if no rule matched.</p>
+    <p>So the mode doesn’t change what you’ve already set up: an app with the <span class="ui">Through Proxy</span> route goes through the <a class="term" href="../../../en/docs/glossary/#proxy">proxy</a> in any mode. How Routekeeper picks a rule when several match is explained in <a href="../../../en/docs/rules/#priority">Which rule wins</a>.</p>
+
+    <h2 id="modes">Four modes</h2>
+    <div class="table"><table>
+      <thead><tr><th>Mode</th><th>Connection without a rule</th><th>Who it’s for</th></tr></thead>
+      <tbody>
+        <tr><td><span class="ui">Proxy Only</span></td><td>Goes direct, with no questions. The firewall is off.</td><td>Everyone at the start. Anyone who only needs a route through the proxy for some apps.</td></tr>
+        <tr><td><span class="ui">Silent</span></td><td>Silently allowed (the default) or silently blocked. No prompts.</td><td>Anyone who wants to quietly collect a list of programs that go online, or to silently deny everything new.</td></tr>
+        <tr><td><span class="ui">Ask</span></td><td>Waits for your answer in a prompt. With no answer, it’s allowed after 60 seconds.</td><td>Anyone who wants to know about every new program on the network and decide for themselves.</td></tr>
+        <tr><td><span class="ui">Block All</span></td><td>Blocked.</td><td>Strict isolation: only what you’ve explicitly allowed can go online.</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="callout tip">
+      <p><b>Start with <span class="ui">Proxy Only</span>.</b> This mode is on after installation. First set up routes through the proxy and make sure in <a href="../../../en/docs/monitoring/#overview">Overview</a> that everything works. You can turn on the firewall later, and your rules won’t be lost.</p>
+    </div>
+
+    <h3>Where to switch the mode</h3>
+    <ul>
+      <li><b>In the Routekeeper window:</b> the panel at the bottom of the sidebar, the <span class="ui">Mode</span> row.</li>
+      <li><b>In the menu bar:</b> click the Routekeeper icon. The modes are listed in the <span class="ui">Mode</span> group.</li>
+      <li><b>In settings:</b> <span class="ui">Settings… → Firewall</span> (<kbd>⌘,</kbd>). The settings for the <span class="ui">Silent</span> and <span class="ui">Ask</span> modes and the <span class="ui">Always Ask</span> list are there too.</li>
+    </ul>
+    <p>The mode switches right away, without confirmation. It applies to new connections and doesn’t touch the ones already open. Hover over a mode to see a tooltip about what it does.</p>
+
+    <details class="deep">
+      <summary>Details: the order in which Routekeeper decides</summary>
+      <ol>
+        <li>If Routekeeper is turned off with the <span class="ui">Routekeeper On</span> switch, the connection goes direct, and nothing else is checked.</li>
+        <li>A connection to one of your proxy servers (the same address and port as in the <span class="ui">Proxy</span> section) goes direct.</li>
+        <li>The most specific matching rule, including app routes and services. The order of rows in the list doesn’t matter.</li>
+        <li>A connection to this same Mac (<a class="term" href="../../../en/docs/glossary/#loopback">loopback</a>), if <span class="ui">Settings → Network → Leave localhost alone</span> is on (it’s on by default).</li>
+        <li>The mode.</li>
+      </ol>
+      <p>Routekeeper has built-in rules with the source <span class="ui">Default</span>: the addresses 127.0.0.0/8 and ::1 go direct, and so does Routekeeper itself. That’s why the window and the menu bar icon work in any mode.</p>
+      <p>An app with the <span class="ui">Ask</span> route, or a rule with the <span class="ui">Ask</span> action, shows a prompt in any mode, even in <span class="ui">Proxy Only</span>. Automatic permissions (Apple software, apps installed earlier) work only in <span class="ui">Ask</span> mode.</p>
+    </details>
+
+    <h2 id="proxy-only">Proxy Only</h2>
+    <p>The firewall is off. Only your routes and rules work: some traffic goes through the proxy, some is blocked, and everything else goes direct, as if Routekeeper weren’t there. There are no prompts.</p>
+    <p>This mode is on after installation, and for most people it’s enough. The monitor and the <span class="ui">Leaks</span> section work in it too.</p>
+
+    <h2 id="silent">Silent</h2>
+    <p>Connections without a rule are handled silently, according to a setting you choose in advance. There are no prompts. When this mode is selected, two switches appear in <span class="ui">Settings → Firewall</span>:</p>
+    <div class="table"><table>
+      <thead><tr><th>Switch</th><th>Default</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><span class="ui">Allow connections without a rule</span></td><td>On</td><td>On: connections without a rule go direct. Off: they are silently blocked.</td></tr>
+        <tr><td><span class="ui">Create rules “for review”</span></td><td>Off</td><td>For each new program without a rule, Routekeeper records a rule for the whole app: allow or block, depending on the first switch. These rules have the source <span class="ui">For Review</span>.</td></tr>
+      </tbody>
+    </table></div>
+    <p>An example: turn on both switches and work as usual for a few days. A list of everything that went online will build up in <span class="ui">Rules → Source → For Review</span>. Look through it and block what you don’t need. Then you can move to <span class="ui">Ask</span> or <span class="ui">Block All</span>. For more about rule sources, see <a href="../../../en/docs/rules/#sources">The list of rules</a>.</p>
+    <details class="deep">
+      <summary>Details: a “for review” rule applies before the mode</summary>
+      <p>The rule is created at the program’s first connection and then works like any other rule: for any address, including <a class="term" href="../../../en/docs/glossary/#child-process">child processes</a>. If you later change <span class="ui">Allow connections without a rule</span>, the rules already recorded stay as they were. Change them in the <span class="ui">Rules</span> section, or delete them so that the program falls under the mode again.</p>
+    </details>
+
+    <h2 id="ask">Ask</h2>
+    <p>When a program without a rule tries to go online, Routekeeper holds the connection and shows a prompt. The program waits until you answer. Your answer is usually saved as a rule, and next time Routekeeper doesn’t ask.</p>
+
+    <h3>The prompt</h3>
+    <p>The prompt appears on top of all windows and on all desktops, but it doesn’t bring the main Routekeeper window forward. It shows:</p>
+    <ul>
+      <li><b>Title:</b> the program’s name and “wants to connect”. Below it are the address, <a class="term" href="../../../en/docs/glossary/#port">port</a> and protocol (<a class="term" href="../../../en/docs/glossary/#tcp">TCP</a> or <a class="term" href="../../../en/docs/glossary/#udp">UDP</a>).</li>
+      <li><b>Timer</b> on the right: how many seconds are left before the default answer. It turns orange 10 seconds before the end. If more connections from this program are waiting, you’ll see “+N waiting” next to it.</li>
+      <li><b>Program details:</b> <span class="ui">Path</span> to the file; <span class="ui">Signature</span> (Apple, App Store, the developer with their Team ID, <span class="ui">Ad-hoc signature</span> or <span class="ui">Unsigned</span>); <span class="ui">Launched by</span>, the chain of programs that started it, for example Terminal › zsh › curl. For more about signatures, see <a class="term" href="../../../en/docs/glossary/#code-signature">code signature</a> in the glossary.</li>
+    </ul>
+    <p>Below that, you choose what to save and where it applies:</p>
+    <div class="table"><table>
+      <thead><tr><th>Setting</th><th>Options</th></tr></thead>
+      <tbody>
+        <tr><td><span class="ui">Duration</span></td><td><span class="ui">Once</span>: a decision for this connection only. No rule is saved.<br><span class="ui">While … is running</span> (with the program’s name): the rule works until the program quits, and then it’s deleted.<br><span class="ui">Forever</span>: a permanent rule. Selected by default.</td></tr>
+        <tr><td><span class="ui">Where</span></td><td>The exact address, for example <code>api.example.com</code>.<br>The whole domain, for example <code>*.example.com</code>: the domain itself and all its subdomains. Selected by default when it’s offered. What the asterisk means is explained in the glossary: <a class="term" href="../../../en/docs/glossary/#wildcard">wildcard</a>.<br><span class="ui">Any host :443</span>: any address, but only this port.<br><span class="ui">Anywhere</span>: any address and any port.</td></tr>
+        <tr><td>Child processes</td><td>The <span class="ui">Including child processes of …</span> switch (on): the rule also covers the programs that this program starts.</td></tr>
+      </tbody>
+    </table></div>
+    <p>Below the settings, one line says what rule you’ll get, for example “Rule: curl and its child processes to *.example.com, forever”. With the <span class="ui">Once</span> duration, it says that no rule will be saved, and <span class="ui">Where</span> and child processes aren’t available.</p>
+    <p>The answer buttons:</p>
+    <div class="table"><table>
+      <thead><tr><th>Button</th><th>Keys</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><span class="ui">Block</span></td><td><kbd>⌘B</kbd></td><td>Denies the connection.</td></tr>
+        <tr><td><span class="ui">Through Proxy</span></td><td><kbd>⌘P</kbd></td><td>Sends it through a proxy. The proxy that most apps go through is already selected. If you have several proxies, the arrow on the button opens a list. The button isn’t shown until you’ve added at least one proxy.</td></tr>
+        <tr><td><span class="ui">Allow</span></td><td><kbd>↩</kbd></td><td>Lets it go direct. In the <span class="ui">Rules</span> section, such a rule has the <span class="ui">Direct</span> action.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="callout tip">
+      <p>To make a program go through the proxy, choose the <span class="ui">While … is running</span> or <span class="ui">Forever</span> duration. Routekeeper sends connections through a proxy according to a saved rule.</p>
+    </div>
+    <p><b>Gave the wrong answer?</b> Open <span class="ui">Rules</span> and choose <span class="ui">From Prompt</span> in the <span class="ui">Source</span> filter. All the rules made from prompts are there: you can change, turn off or delete them. To undo the last change, press <kbd>⌘Z</kbd>.</p>
+
+    <h4>If there are many connections</h4>
+    <ul>
+      <li>There is one prompt per program. While it’s open, new connections from this program wait along with the first one, and the “+N waiting” counter goes up.</li>
+      <li>After you answer, Routekeeper checks the waiting connections against the new rule. If the rule doesn’t cover them (for example, you allowed one address, and they go to another), a new prompt appears.</li>
+      <li>Prompts for different programs are shown one at a time.</li>
+      <li>If a program quits while it’s waiting, its connections are canceled.</li>
+    </ul>
+
+    <h3>Who Routekeeper doesn’t ask</h3>
+    <p>Otherwise, there would be far too many prompts in the very first hour. In <span class="ui">Settings → Firewall</span>, in the <span class="ui">Ask Mode</span> section, there are two switches, and both are on:</p>
+    <ul>
+      <li><span class="ui">Allow software signed by Apple</span>: Apple’s system services and programs go online without a prompt. The exception is the <span class="ui">Always Ask</span> list. For each such program, a rule with the source <span class="ui">Apple</span> appears.</li>
+      <li><span class="ui">Allow apps installed before Routekeeper</span>: programs that were on the Mac before Routekeeper was installed and are signed by their developer also pass without a prompt. Their rules have the source <span class="ui">Installed Before</span>. Routekeeper always asks about unsigned programs.</li>
+    </ul>
+    <p>You can see these programs in the <span class="ui">Apps</span> section, in the collapsed <span class="ui">Allowed Automatically</span> group.</p>
+    <p><b>The <span class="ui">Always Ask</span> list</b> holds Apple utilities that scripts and installers often use to go online. Routekeeper asks about them even though they’re signed by Apple. The default list: <code>curl</code>, <code>python3</code>, <code>python</code>, <code>osascript</code>, <code>nc</code>, <code>ssh</code>, <code>ruby</code>, <code>perl</code>, <code>openssl</code>, <code>telnet</code>, <code>ftp</code>, <code>rsync</code>, <code>scp</code>. To add a utility, type its name or signing ID in the field below the list and click <span class="ui">Add</span>. To remove one, select its row and click “−”.</p>
+    <details class="deep">
+      <summary>Details: the exact conditions for automatic permissions</summary>
+      <ul>
+        <li><b>Apple.</b> Applies only if the program has no rules of its own yet. For example, if Safari has a rule for one domain, Routekeeper will ask about the other addresses. The rule is created without child processes: whatever Terminal starts is checked separately.</li>
+        <li><b>Installed Before.</b> Routekeeper compares the date the app appeared in its folder (or the file’s creation date) with the date Routekeeper was first installed. This covers programs signed by a developer or the App Store, and programs with <span class="ui">Ad-hoc signature</span>. Apple programs aren’t included. The rule is created together with child processes.</li>
+        <li>If you turn off <span class="ui">Allow software signed by Apple</span>, system services will start asking too. Among them is mDNSResponder, which macOS uses to look up site addresses. Until you answer it or the time runs out, sites won’t open by name. Allow it <span class="ui">Forever</span>.</li>
+      </ul>
+    </details>
+
+    <h3>If you don’t answer</h3>
+    <ul>
+      <li><span class="ui">Wait for an answer</span>: how long the prompt waits. 15 seconds, 30 seconds, or 1, 2, 5 or 10 minutes. The default is 1 minute.</li>
+      <li><span class="ui">If there’s no answer</span>: what to do when the time is up. <span class="ui">Allow</span> (the default) or <span class="ui">Block</span>. This decision applies only to the connections that were waiting, and no rule is saved. The next time the program tries to connect, the prompt appears again.</li>
+    </ul>
+    <p>To see what will happen if you don’t answer, hover over the timer.</p>
+
+    <h3>If the Routekeeper app isn’t running</h3>
+    <p>Decisions are made by the <a class="term" href="../../../en/docs/glossary/#network-extension">network extension</a>, but the prompt is shown by the Routekeeper app. If the app isn’t running, there’s no one to ask. This happens if you clicked <span class="ui">Quit Routekeeper</span>, after a restart before you log in, or while the app hasn’t been opened yet.</p>
+    <p>In that case, the connection of a program without a rule is allowed, and a <span class="ui">For Review</span> rule is recorded for it: allow the whole app. From then on, this program goes online without prompts until you change the rule. If you quit Routekeeper while prompts are open, the waiting connections are allowed too.</p>
+    <ul>
+      <li>Turn on <span class="ui">Settings → General → Open at login</span>. It’s off by default, and after a restart there will be no prompts until you open Routekeeper.</li>
+      <li>From time to time, look through <span class="ui">Rules → Source → For Review</span>.</li>
+    </ul>
+
+    <h3>Where you can see what’s waiting for an answer</h3>
+    <ul>
+      <li>In the <span class="ui">Overview</span> section: the <span class="ui">Waiting for answer: N</span> line. The <span class="ui">Answer</span> button brings the prompt forward.</li>
+      <li>In the menu of the menu bar icon: the <span class="ui">Waiting for answer: N</span> item. A mark also appears on the icon itself.</li>
+      <li>Next to <span class="ui">Overview</span> in the sidebar: the number of problems. A waiting prompt counts as one.</li>
+    </ul>
+
+    <h3>DNS queries</h3>
+    <p>The <span class="ui">Allow DNS queries (UDP 53)</span> switch is off by default, and you usually don’t need it. Most programs look up site addresses through a macOS system service, and that service is signed by Apple and allowed automatically. Turn the switch on if prompts appear because of programs that send <a class="term" href="../../../en/docs/glossary/#dns">DNS</a> queries to port 53 themselves. Then such queries without a rule pass without a prompt. It works only in <span class="ui">Ask</span> mode.</p>
+
+    <h3>If you use a local proxy client</h3>
+    <p>A client such as sing-box, Xray or Clash connects to its server by itself. In <span class="ui">Ask</span> mode, Routekeeper will ask about it too, unless it was installed before Routekeeper. Allow it <span class="ui">Forever</span> with <span class="ui">Anywhere</span>, or give it the <span class="ui">Direct</span> route in the <span class="ui">Apps</span> section. Otherwise, all the apps that go through it will stop working too. For details, see the recipe <a href="../../../en/docs/recipes/#local-client">On top of sing-box, Xray or Clash</a>.</p>
+
+    <h2 id="block-all">Block All</h2>
+    <p>Every connection without a rule is blocked. Only connections inside the Mac (loopback) and Routekeeper itself are allowed on their own. Your routes and rules keep working: apps with the <span class="ui">Through Proxy</span> or <span class="ui">Direct</span> route go online as before.</p>
+    <div class="callout warn">
+      <p><b>Everything else will stop working.</b> Browsers and messengers without a route, mail, iCloud sync, updates for macOS and other programs, your proxy client (sing-box, Xray, Clash), and with it all the apps that go through its local port. Routekeeper doesn’t ask for confirmation when you switch modes, so prepare your rules first.</p>
+    </div>
+    <h3>How to prepare</h3>
+    <ol class="steps">
+      <li>Give a route to every app that needs the network: in the <span class="ui">Apps</span> section, choose <span class="ui">Through Proxy</span> or <span class="ui">Direct</span>. How to add an app is explained in <a href="../../../en/docs/apps/#add-app">How to add an app</a>.</li>
+      <li>If you use a local proxy client, give it the <span class="ui">Direct</span> route.</li>
+      <li>Switch the mode to <span class="ui">Block All</span>.</li>
+      <li>Open <span class="ui">Monitor</span> and click the <span class="ui">Blocked</span> counter. Right-click the row you need and choose <span class="ui">Create Rule…</span>.</li>
+    </ol>
+    <details class="deep">
+      <summary>Details: what else isn’t blocked, and what to check</summary>
+      <ul>
+        <li>Connections to your proxy servers from the <span class="ui">Proxy</span> section (the same address and port) aren’t blocked either, whichever program they come from.</li>
+        <li>There is no built-in rule for mDNSResponder, the system name service. If the apps you allowed can’t open sites by name, find blocked mDNSResponder connections to port 53 in the monitor and allow them. Or add <code>/usr/sbin/mDNSResponder</code> in the <span class="ui">Apps</span> section with <span class="ui">Add → Enter Path…</span> and give it the <span class="ui">Direct</span> route.</li>
+        <li>An app’s <span class="ui">Ask</span> route works in this mode too: instead of being blocked, the connection shows a prompt.</li>
+      </ul>
+    </details>
+    <h3>How to get back</h3>
+    <p>Routekeeper itself isn’t blocked, so its window and menu work. Choose <span class="ui">Proxy Only</span> in the <span class="ui">Mode</span> row on the sidebar panel, or in the menu of the menu bar icon. You can also use <span class="ui">Settings → Firewall</span>.</p>
+    <p>If you urgently need to give the network back to all programs, turn off the <span class="ui">Routekeeper On</span> switch in the icon’s menu or on the sidebar panel. Then all connections go direct, with no rules and no mode. How this differs from other ways to turn Routekeeper off is explained in <a href="../../../en/docs/start/#turn-off">How to turn it off quickly</a>.</p>
+    <p class="checked">Checked against the Routekeeper code (version 0.2.1 and the one after it) on October 4, 2026.</p>
+    <nav class="pager"><a class="prev" href="../../../en/docs/rules/"><span>Previous</span>Rules</a><a class="next" href="../../../en/docs/server/"><span>Next</span>Your own proxy server</a></nav>
+  </article>
+</main>
+
+<div class="wrap">
+  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span><a href="../../../en/">Routekeeper for macOS</a> · <a href="../../../en/docs/">Docs</a> · <a href="../../../en/privacy/">Privacy</a> · <a href="https://github.com/ilyabazhenov/routekeeper">GitHub</a></span></footer>
+</div>
+
+<script src="../../../docs/assets/docs.js?v=3e67278c"></script>
+</body>
+</html>

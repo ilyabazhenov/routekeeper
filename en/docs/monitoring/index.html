@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Checking and monitoring — Routekeeper</title>
+<meta name="description" content="How to check that apps go through the proxy: the IP in the menu bar, the Overview screen, the connection monitor, the Leaks section, what Routekeeper notices and what it can’t see, and a check on your own server.">
+<meta name="theme-color" content="#0a0f1f">
+<link rel="canonical" href="https://getroutekeeper.app/en/docs/monitoring/">
+<link rel="alternate" hreflang="ru" href="https://getroutekeeper.app/docs/monitoring/">
+<link rel="alternate" hreflang="en" href="https://getroutekeeper.app/en/docs/monitoring/">
+<link rel="alternate" hreflang="x-default" href="https://getroutekeeper.app/en/docs/monitoring/">
+<link rel="icon" href="../../../mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../../../icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=891e2023">
+</head>
+<body>
+<!-- Built by Scripts/build-docs.py from site-src/docs/en/monitoring.html. Edit the fragment, not this file. -->
+
+<div class="wrap nav-wrap">
+  <header class="nav">
+    <a class="brand" href="../../../en/"><img src="../../../mark.svg" alt="" width="28" height="28">Routekeeper</a>
+    <div class="nav-end"><a class="lang" href="../../../docs/monitoring/" hreflang="ru" lang="ru">RU</a><a class="btn btn-primary" href="../../../en/#download">Download</a></div>
+  </header>
+</div>
+
+<section class="wrap docs-hero compact">
+  <div class="hero-copy">
+    <span class="crumbs"><a href="../../../en/docs/">Docs</a> · In practice</span>
+    <h1>Checking and monitoring: <span class="warm">where each connection went</span></h1>
+    <p class="lede"><b>Routekeeper shows what goes through the proxy, what goes direct and what went around it.</b> Start with the one-minute check, and for full certainty, compare with your own server.</p>
+  </div>
+</section>
+
+<main class="wrap docs-layout">
+  <aside class="side-nav" aria-label="Docs sections">
+    <span class="group">Getting started</span>
+    <a href="../../../en/docs/">Docs overview</a>
+    <a href="../../../en/docs/start/">Quick start</a>
+    <a href="../../../en/docs/concepts/">How it works</a>
+    <span class="group">Setup</span>
+    <a href="../../../en/docs/proxies/">Proxies</a>
+    <a href="../../../en/docs/apps/">Apps and services</a>
+    <a href="../../../en/docs/rules/">Rules</a>
+    <a href="../../../en/docs/firewall/">Firewall modes</a>
+    <a href="../../../en/docs/server/">Your own proxy server</a>
+    <span class="group">In practice</span>
+    <a href="../../../en/docs/recipes/">Recipes</a>
+    <a href="../../../en/docs/monitoring/" aria-current="page">Checking and monitoring</a>
+    <span class="group">Reference</span>
+    <a href="../../../en/docs/troubleshooting/">Troubleshooting</a>
+    <a href="../../../en/docs/maintenance/">Updates and removal</a>
+    <a href="../../../en/docs/limits/">Limitations</a>
+    <a href="../../../en/docs/glossary/">Glossary</a>
+    <a href="../../../en/docs/changelog/">What's new</a>
+    <a class="side-action" href="../../../en/privacy/">Privacy</a>
+    <a href="https://github.com/ilyabazhenov/routekeeper/issues">Report a problem</a>
+  </aside>
+  <article class="doc">
+    <details class="mobile-nav"><summary>All docs sections</summary><nav>
+    <span class="group">Getting started</span>
+    <a href="../../../en/docs/">Docs overview</a>
+    <a href="../../../en/docs/start/">Quick start</a>
+    <a href="../../../en/docs/concepts/">How it works</a>
+    <span class="group">Setup</span>
+    <a href="../../../en/docs/proxies/">Proxies</a>
+    <a href="../../../en/docs/apps/">Apps and services</a>
+    <a href="../../../en/docs/rules/">Rules</a>
+    <a href="../../../en/docs/firewall/">Firewall modes</a>
+    <a href="../../../en/docs/server/">Your own proxy server</a>
+    <span class="group">In practice</span>
+    <a href="../../../en/docs/recipes/">Recipes</a>
+    <a href="../../../en/docs/monitoring/" aria-current="page">Checking and monitoring</a>
+    <span class="group">Reference</span>
+    <a href="../../../en/docs/troubleshooting/">Troubleshooting</a>
+    <a href="../../../en/docs/maintenance/">Updates and removal</a>
+    <a href="../../../en/docs/limits/">Limitations</a>
+    <a href="../../../en/docs/glossary/">Glossary</a>
+    <a href="../../../en/docs/changelog/">What's new</a>
+    </nav></details>
+    <p class="lead-in">There are five places to check, from simple to detailed.</p>
+    <div class="grid">
+      <div class="card"><b>Menu bar</b><p>Whether the proxy works and which IP websites see.</p></div>
+      <div class="card"><b>Overview</b><p>The main thing in one line, and what to do about it.</p></div>
+      <div class="card"><b>Monitor</b><p>Every connection: which app, where to, and by which route.</p></div>
+      <div class="card"><b>Leaks</b><p>What went direct from apps that should go through the proxy.</p></div>
+      <div class="card"><b>Your server</b><p>An independent check: whether connections from your Mac arrive.</p></div>
+    </div>
+
+    <h2 id="first-check">The one-minute check</h2>
+    <ol class="steps">
+      <li>Click the Routekeeper icon in the menu bar. If everything works, there is a green status line under the name, and below it a line like <code>IP 203.0.113.10 · NL</code>. This is the external <a class="term" href="../../../en/docs/glossary/#ip">IP</a> that websites see when traffic goes through the main <a class="term" href="../../../en/docs/glossary/#proxy">proxy</a> (the one most apps go through), and the country code. While the check is running, the line says <span class="ui">Checking IP…</span>.</li>
+      <li>Compare this address with your usual one: they should be different. If the proxy is your own server, you’ll see the server’s IP.</li>
+      <li>Check the app itself. In a browser that goes through the proxy, open any page that shows your IP. In Terminal, if it goes through the proxy, run the command below. The address should match the IP in the menu bar.
+        <div class="cmd"><pre><code>curl https://ipinfo.io/ip</code></pre></div>
+      </li>
+      <li>If there is no IP line, the status line is orange or gray. Open <span class="ui">Overview</span>: it says what happened and what to do.</li>
+    </ol>
+    <div class="callout">
+      <p>The IP in the menu bar shows that the proxy works. It doesn’t prove that a specific app goes through the proxy. For that, use step 3 or the <a href="#monitor">monitor</a>.</p>
+    </div>
+    <p>You can also check each proxy on its own: the <span class="ui">Proxy</span> section, the <span class="ui">Check</span> button. It shows “Working”, the latency and the external IP, or the error text. For details, see <a href="../../../en/docs/proxies/#check">Checking</a> on the Proxies page.</p>
+    <details class="deep">
+      <summary>Details: where the IP and latency come from</summary>
+      <p>Routekeeper itself opens a connection through the proxy to the ipinfo.io service on port 80 and asks for the external address and country. The latency is the time it takes to open a connection through the proxy. This takes several round trips to the server, so for a distant server that works fine, 500–800 ms is normal.</p>
+      <p>The menu bar rechecks the main proxy when you open it, but no more than once a minute. While the main proxy is unreachable, it’s rechecked once a minute on its own. What else Routekeeper sends over the network is described on the <a href="../../../en/privacy/">Privacy</a> page.</p>
+    </details>
+
+    <h2 id="overview">Overview</h2>
+    <p>The main screen of the Routekeeper window, <kbd>⌘1</kbd>. At the top is one line about the most important thing. Below it are what’s waiting for your answer, the routes, the counters and what’s going through the proxy right now.</p>
+
+    <h3>The headline: what happened and what to do</h3>
+    <p>The headline always shows the most serious problem. In the table, the states go from most to least serious.</p>
+    <div class="table"><table>
+      <thead><tr><th>Headline</th><th>What it means</th><th>What to do</th></tr></thead>
+      <tbody>
+        <tr><td><span class="ui">Routekeeper is off</span></td><td>The <span class="ui">Routekeeper On</span> switch is off. Rules don’t apply, and everything goes direct.</td><td>Click <span class="ui">Enable</span>.</td></tr>
+        <tr><td><span class="ui">All connections are blocked</span></td><td>Routekeeper couldn’t read its settings, so it blocks everything to make sure nothing goes around the proxy.</td><td>Follow the banner above the headline. For details, see <a href="../../../en/docs/troubleshooting/#locked">All connections are blocked</a>.</td></tr>
+        <tr><td><span class="ui">Proxy provider isn’t running</span>, <span class="ui">Extension not responding</span> and similar</td><td>The part of Routekeeper that runs in the system isn’t running or isn’t responding.</td><td>See the banner above the headline and <span class="ui">Settings → Extension</span>. For details, see <a href="../../../en/docs/troubleshooting/#extension">Reinstalling and stopping the extension</a>.</td></tr>
+        <tr><td><span class="ui">No apps through a proxy</span></td><td>No route leads through a proxy.</td><td>Click <span class="ui">Add App…</span>.</td></tr>
+        <tr><td><span class="ui">Proxy “…” is unreachable</span>, <span class="ui">Proxies are unavailable</span></td><td>None of the proxies that your routes use answered. Connections from these apps break off and don’t go direct.</td><td>Click <span class="ui">Check Again</span>, check the server, or move the routes to another proxy. For details, see the recipe <a href="../../../en/docs/recipes/#proxy-down">The proxy stopped answering</a>.</td></tr>
+        <tr><td><span class="ui">Leaks detected</span></td><td>In the last hour, an app that should go through the proxy sent <a class="term" href="../../../en/docs/glossary/#udp">UDP</a> direct, or one of its processes went outside the rule.</td><td>Click <span class="ui">Details</span> in the line below the headline and apply the fix. For details, see <a href="#leaks">Leaks</a>.</td></tr>
+        <tr><td><span class="ui">Partly working</span></td><td>You have several proxies, and some of them aren’t answering. What goes through them waits; the other routes work.</td><td>In that proxy’s row, click <span class="ui">Move to “…”</span> or <span class="ui">Check Again</span>.</td></tr>
+        <tr><td><span class="ui">DNS queries go direct</span></td><td>The main traffic goes through the proxy, but in the last hour an app sent <a class="term" href="../../../en/docs/glossary/#dns">DNS</a> queries direct. The DNS provider may see your IP and the names of sites.</td><td>In <a href="#leaks">Leaks</a>: for an app, <span class="ui">Block DNS</span>; for a browser, DNS over HTTPS.</td></tr>
+        <tr><td><span class="ui">Everything works</span></td><td>The routes work. Below the headline, it says what goes through which proxy and since when there have been no leaks.</td><td>Nothing.</td></tr>
+      </tbody>
+    </table></div>
+    <p>One exception: if <span class="ui">Settings → Network → If the proxy is down, go direct</span> is on, connections go direct when the proxy is unreachable, but the headline won’t say so.</p>
+    <p>In version 0.2.1, any leak, including DNS, showed the <span class="ui">Leaks detected</span> headline, and there was no separate headline for DNS.</p>
+
+    <h3>Below the headline</h3>
+    <p>Lines appear here when there is something to do:</p>
+    <ul>
+      <li><b>Connections around the proxy in the last hour</b> (or <b>Direct DNS queries in the last hour</b>, if there were only those), with the app that has the most of them. The <span class="ui">Details</span> button opens the <span class="ui">Leaks</span> section.</li>
+      <li><span class="ui">Waiting for answer: N</span>: in <span class="ui">Ask</span> mode, programs are waiting for your decision. The <span class="ui">Answer</span> button brings the prompt forward. For details, see <a href="../../../en/docs/firewall/#ask">Ask mode</a>.</li>
+    </ul>
+
+    <h3>Routes</h3>
+    <p>There is one row for each proxy that routes go through. The last row is <span class="ui">Direct</span>: everything else goes through your usual connection.</p>
+    <ul>
+      <li><b>Dot:</b> green means the proxy answers, orange means it answers slowly, red means it doesn’t answer, and gray means it hasn’t been checked yet.</li>
+      <li><b>Name, country and external IP</b> from the last check.</li>
+      <li><b>Latency.</b> From 1500 ms, “slow” is added to it. For a distant server that works fine, 500–800 ms is normal.</li>
+      <li><b>What uses the route:</b> icons and names of apps and services. Click to expand the full list. Clicking an item opens its rule in the <span class="ui">Apps</span> or <span class="ui">Rules</span> section.</li>
+      <li><b>Speed</b> right now and, if you have several proxies, each one’s share.</li>
+      <li><b>The “…” menu:</b> <span class="ui">Check Again</span>, <span class="ui">Move Routes To</span> (moves only this proxy’s routes), <span class="ui">All Proxies…</span>.</li>
+    </ul>
+    <p>If a proxy doesn’t answer, its row is highlighted, and there are two buttons below it: <span class="ui">Move to “…”</span> (to another proxy, if possible one that passed its check) and <span class="ui">Check Again</span>. Above the list are <span class="ui">Check All</span> and <span class="ui">All Proxies</span>. While <span class="ui">Overview</span> is open, Routekeeper rechecks the proxies used in your routes, but each one no more than once a minute.</p>
+    <p>To move all apps to another proxy in one go, use the panel at the bottom of the sidebar or the menu of the menu bar icon (there, if you have two or more proxies). For details, see <a href="../../../en/docs/proxies/#switch">Switching to another proxy</a>.</p>
+
+    <h3>Counters and “Through Proxies Now”</h3>
+    <ul>
+      <li><b>The <span class="ui">Leaks</span> card:</b> how many leaks there were, since when they’ve been counted, and which one was the last. The <span class="ui">Details</span> link goes to the section.</li>
+      <li><b>The traffic card:</b> the speed through the proxy right now, how much has been transferred since counting started, and a graph for the last 3 minutes. A <span class="ui">Monitor</span> link.</li>
+      <li><b><span class="ui">Through Proxies Now</span>:</b> apps that sent data through the proxy in the last minute, the most active at the top. For each app: which service’s rule sent it to the proxy, which proxy it uses (if you have several), how many connections it has and its speed. Apps that go through the proxy only by a service rule also show up here. The first five are shown, and the rest are in the monitor.</li>
+    </ul>
+
+    <h2 id="monitor">Monitor</h2>
+    <p>A list of connections: which app, where to, and by which route. Open <span class="ui">Monitor</span> in the sidebar (<kbd>⌘5</kbd>) or in the menu of the menu bar icon.</p>
+
+    <h3>The counters are filters</h3>
+    <p>At the top are five cards: <span class="ui">Through Proxy</span>, <span class="ui">Direct</span>, <span class="ui">Blocked</span>, <span class="ui">Leaks</span>, <span class="ui">Errors</span>. Each shows a number and its share of all connections. Click a card, and only those connections stay in the list. Click it again to show all of them. Next to them is the <span class="ui">Proxy Traffic</span> card: the speed right now and how much has gone through the proxy since counting started.</p>
+    <p>The search field in the toolbar searches by domain, IP and app name.</p>
+
+    <h3>Three views</h3>
+    <p>Use the switch at the top of the window. The filter and search work in all three views.</p>
+    <ul>
+      <li><span class="ui">Connections</span>: a table with the columns <span class="ui">App</span>, <span class="ui">Host</span>, <span class="ui">Route</span>, <span class="ui">↑ / ↓</span>, <span class="ui">Time</span>. The <span class="ui">Protocol</span> column is hidden: to show it, right-click the table header. The <span class="ui">Route</span> column shows the proxy’s name, <span class="ui">Direct</span>, <span class="ui">Blocked</span>, <span class="ui">Error</span>, <span class="ui">Waiting</span> or the kind of leak. The amount of data is counted only for connections through the proxy. The table shows the last 500 connections found. If there are more, “showing the last 500” appears under the window title.</li>
+      <li><span class="ui">By App</span>: a summary for each app. How many connections it has, how many go through the proxy, direct and blocked, how many problems (leaks and errors), its traffic and the last address. Double-click a row, or choose <span class="ui">Show Connections</span> in the row’s menu, to open this app’s connections.</li>
+      <li><span class="ui">Map</span>: where in the world your traffic goes. More about it below.</li>
+    </ul>
+
+    <h3>A connection row</h3>
+    <p>Select a row, and a panel with details appears below the table: IP, process number (PID), <span class="ui">Decision</span> (why the connection went this way: which rule, the mode, an automatic permission), <span class="ui">Duration</span>. For connections through the proxy, there are also <span class="ui">Proxy latency</span> and <span class="ui">Traffic</span>. For an error, the panel gives its cause; for a leak, a tip.</p>
+    <p>The buttons on the panel:</p>
+    <ul>
+      <li><span class="ui">Create Rule…</span> opens the rule editor, already filled in with this app and address.</li>
+      <li><span class="ui">Through “…”</span> adds a rule right away: this app and this address through the main proxy.</li>
+      <li><span class="ui">Block Host</span> adds a rule right away that blocks this address for this app.</li>
+    </ul>
+    <p>Right-click a row to open a menu: <span class="ui">Create Rule…</span>, <span class="ui">Block This Host</span>, <span class="ui">This Host Through “…”</span>, <span class="ui">Copy Host</span>, <span class="ui">Copy IP</span>. For several rows: <span class="ui">Copy Hosts</span> or <kbd>⌘C</kbd>.</p>
+
+    <h3>Pause, export and clearing</h3>
+    <ul>
+      <li><span class="ui">Pause</span> stops updating the list, so it’s easier to read. The counters keep counting. The <span class="ui">Resume</span> button turns updates back on.</li>
+      <li><span class="ui">Export</span> saves to a CSV file all connections that match the current filter and search, not only the 500 shown. The columns are time, app, process, host, ip, port, protocol, route, bytes_up, bytes_down.</li>
+      <li><span class="ui">Clear</span> empties the list and resets all counters, including <span class="ui">Leaks</span> and the “since …” time in <span class="ui">Overview</span>.</li>
+    </ul>
+
+    <h3>Map</h3>
+    <ul>
+      <li>Lines go from this Mac to the countries the connections go to. Connections through the proxy are drawn via the proxy’s country. The colors: green for through the proxy, blue for direct, red for leaks, orange for errors, gray for blocked.</li>
+      <li>The Mac’s location is worked out from its time zone.</li>
+      <li>The <span class="ui">All Apps</span> menu leaves one app on the map. <span class="ui">By traffic</span> and <span class="ui">By connections</span> change the size of the markers. The amount of traffic is known only for connections through the proxy.</li>
+      <li>Zoom: <kbd>⌘+</kbd> to zoom in, <kbd>⌘−</kbd> to zoom out, <kbd>⌘0</kbd> for the whole world.</li>
+      <li>Next to the map is a list of countries. <span class="ui">Global networks</span> and <span class="ui">Local network and other</span> have rows of their own. Content delivery networks answer from the point nearest to you, and the country in the database is only where they’re registered, so they aren’t on the map.</li>
+      <li>The country database is built into the app. Addresses for the map aren’t sent anywhere.</li>
+    </ul>
+    <details class="deep">
+      <summary>Details: what is stored, and how much</summary>
+      <ul>
+        <li>The <a class="term" href="../../../en/docs/glossary/#network-extension">network extension</a> keeps the last 5000 connections in memory and doesn’t write them to disk. After the extension or the Mac restarts, the list starts over.</li>
+        <li>The counters count from the moment the extension started or from the last <span class="ui">Clear</span>.</li>
+        <li>While the <span class="ui">Routekeeper On</span> switch is off, connections aren’t recorded.</li>
+        <li>The <span class="ui">Direct</span> counter also includes leaks: they went direct too. The <span class="ui">Direct</span> filter doesn’t show them; they’re in the <span class="ui">Leaks</span> filter.</li>
+      </ul>
+    </details>
+
+    <h2 id="leaks">Leaks</h2>
+    <p>The <span class="ui">Leaks</span> section, <kbd>⌘6</kbd>. It shows connections from apps that should go through the proxy but went direct. If there are none, the section is empty and says <span class="ui">No Leaks</span>.</p>
+    <p>Rows are grouped by app and kind. Each row shows the app, the kind, how many times it happened (× N), up to four addresses, a tip and a fix button. The most serious are at the top.</p>
+    <div class="table"><table>
+      <thead><tr><th>Kind</th><th>What happened</th><th>Fix button</th></tr></thead>
+      <tbody>
+        <tr><td><span class="ui">Process outside the rule</span><br>red, the most serious</td><td>A process from the same app (or, for command-line programs, from the same developer) wasn’t covered by the app’s rule and connected directly. It’s usually a helper process, when <span class="ui">Include Child Processes</span> is off.</td><td><span class="ui">Through “…”</span> adds a rule: this process through the main proxy. Or turn on <a href="../../../en/docs/apps/#child-processes">Include Child Processes</a>.</td></tr>
+        <tr><td><span class="ui">UDP around the proxy</span><br>orange</td><td>The app’s UDP traffic went direct because <span class="ui">Block UDP and QUIC</span> is off for its proxy. Most often it’s <a class="term" href="../../../en/docs/glossary/#quic">QUIC</a> in a browser, or calls.</td><td><span class="ui">Block UDP</span> turns on <span class="ui">Block UDP and QUIC</span> for this app’s proxy. If the proxy can’t be determined, it adds a rule that blocks UDP for this process. After that, the app switches to <a class="term" href="../../../en/docs/glossary/#tcp">TCP</a>, and calls over UDP stop working. See <a href="../../../en/docs/limits/#udp">UDP: calls, voice and games</a>.</td></tr>
+        <tr><td><span class="ui">DNS around the proxy</span><br>yellow, the least serious</td><td>The app itself sent a DNS query direct. The main traffic goes through the proxy, but the DNS provider may see your IP and the site’s name.</td><td><span class="ui">Block DNS</span> adds a rule that blocks port 53 for this process. Browsers don’t get this button; see below.</td></tr>
+      </tbody>
+    </table></div>
+    <p>For more about UDP, see <a href="../../../en/docs/concepts/#udp">UDP and QUIC</a>. For more about the proxy switches, see <a href="../../../en/docs/proxies/#toggles">DNS through proxy and UDP blocking</a>.</p>
+
+    <h3>Browsers: DNS over HTTPS instead of blocking</h3>
+    <p>If you close port 53 for a browser, it will stop opening sites. That’s why browsers don’t get the <span class="ui">Block DNS</span> button. Instead, turn on “DNS over HTTPS” (<a class="term" href="../../../en/docs/glossary/#doh">DoH</a>) in the browser itself. Then the browser looks up site addresses inside an ordinary HTTPS connection, and that connection goes through the proxy along with the rest of the traffic.</p>
+    <div class="table"><table>
+      <thead><tr><th>Browser</th><th>Where to turn it on</th></tr></thead>
+      <tbody>
+        <tr><td>Chrome</td><td>Paste <code>chrome://settings/security</code> into the address bar. Turn on “Use secure DNS” and choose a provider from the list, not your current one.</td></tr>
+        <tr><td>Edge</td><td><code>edge://settings/privacy</code> → the “Security” section → “Use secure DNS to specify how to look up the network address for websites”. Choose a provider from the list.</td></tr>
+        <tr><td>Firefox</td><td><code>about:preferences#privacy</code> → “DNS over HTTPS” → under “Enable secure DNS using”, choose “Increased Protection” or “Max Protection”.</td></tr>
+        <tr><td>Brave</td><td><code>brave://settings/security</code> → “Use secure DNS”. Choose a provider from the list.</td></tr>
+      </tbody>
+    </table></div>
+    <p>The names depend on the browser version. If you can’t find the setting, type “DNS” in the settings search. After you turn it on, restart the browser, and new <span class="ui">DNS around the proxy</span> rows will stop appearing for it. For step-by-step instructions, see the recipe <a href="../../../en/docs/recipes/#browser-dns">DNS over HTTPS in the browser</a>.</p>
+    <details class="deep">
+      <summary>Details: which DoH option is more reliable, and which browsers are recognized</summary>
+      <ul>
+        <li>With the current-provider option in Chrome, Edge and Brave, and with “Default Protection” or “Increased Protection” in Firefox, the browser may fall back to ordinary DNS if secure DNS isn’t available. “Max Protection” in Firefox and a provider chosen from the list in Chrome, Edge and Brave don’t do this.</li>
+        <li>Routekeeper treats these apps as browsers: Chrome (all channels), Chromium, Edge (except Canary), Brave, Arc, Vivaldi, Opera, Firefox (including Developer Edition and Nightly), Zen, Waterfox and Yandex Browser.</li>
+        <li>Safari looks up addresses through the macOS system service, so its DNS queries don’t show up in <span class="ui">Leaks</span>.</li>
+        <li>The service queries <code>ipv4only.arpa</code> and <code>_dns.resolver.arpa</code> are the same for everyone and say nothing about you. Routekeeper doesn’t flag them.</li>
+      </ul>
+    </details>
+
+    <h3>Notifications</h3>
+    <p>In <span class="ui">Settings → General → Notifications</span>, there are two switches, and both are on: <span class="ui">About leaks around the proxy</span> and <span class="ui">About connections the proxy couldn’t make</span>. So as not to flood you with messages, Routekeeper sends at most one notification every 10 minutes for each kind of problem in a given app.</p>
+    <p>Notifications arrive while the Routekeeper app is running, even if its window is closed. macOS asks for permission to show them at first launch. If you declined, turn them on in <span class="ui">System Settings → Notifications → Routekeeper</span>.</p>
+
+    <h2 id="what-is-detected">What Routekeeper notices and what it doesn’t</h2>
+    <p>Routekeeper checks only apps whose whole traffic goes through the proxy, that is, apps with the <span class="ui">Through Proxy</span> route in the <span class="ui">Apps</span> section. If an app is set to go direct, or goes through the proxy only for certain addresses, Routekeeper treats that as your decision, not as a mistake.</p>
+    <div class="table"><table>
+      <thead><tr><th>Situation</th><th>Noticed?</th><th>What you see</th></tr></thead>
+      <tbody>
+        <tr><td>An app with a route through the proxy sends a DNS query over UDP by itself (port 53 or 853)</td><td>Yes</td><td><span class="ui">DNS around the proxy</span>. The query goes direct: Routekeeper flags it but doesn’t block it until you add a rule.</td></tr>
+        <tr><td>UDP or QUIC from such an app when <span class="ui">Block UDP and QUIC</span> is off</td><td>Yes</td><td><span class="ui">UDP around the proxy</span>.</td></tr>
+        <tr><td>The same when <span class="ui">Block UDP and QUIC</span> is on (the default)</td><td>Not flagged</td><td>UDP is blocked and shown as <span class="ui">Blocked</span> in the monitor.</td></tr>
+        <tr><td>A process from the same app or the same developer isn’t covered by the rule and connects directly over TCP</td><td>Yes</td><td><span class="ui">Process outside the rule</span>.</td></tr>
+        <tr><td>A browser or app goes through the proxy only by domain or service rules, and its own route is <span class="ui">Direct</span></td><td>No</td><td>Its DNS, QUIC and all other addresses go direct as part of its usual route. You can close QUIC with a rule; see the recipe <a href="../../../en/docs/recipes/#browser-video">One video service in the browser through a proxy</a>.</td></tr>
+        <tr><td>Name lookups that the macOS system service makes on behalf of an app (this is how most programs and Safari work)</td><td>No</td><td>The service sends them, not the app, and Routekeeper doesn’t link them to the app.</td></tr>
+        <tr><td>Apple push notifications (the <code>apsd</code> system process)</td><td>No, and that’s normal</td><td><code>apsd</code> is a separate macOS process, and it goes direct. It isn’t the app’s own traffic.</td></tr>
+        <tr><td>A program from another developer that the app starts, when <span class="ui">Include Child Processes</span> is off</td><td>No</td><td>It follows its own route or the mode.</td></tr>
+        <tr><td>Connections in the first seconds after the extension restarts or updates</td><td>No</td><td>The extension doesn’t see them. See <a href="../../../en/docs/limits/#restart-gap">Pause when the extension restarts</a>.</td></tr>
+        <tr><td>The <span class="ui">Routekeeper On</span> switch is off</td><td>No</td><td>Everything goes direct, and the monitor doesn’t record anything.</td></tr>
+        <tr><td>Connections to the proxy server itself and inside the Mac</td><td>Not counted</td><td>That’s as it should be.</td></tr>
+      </tbody>
+    </table></div>
+    <details class="deep">
+      <summary>Details: the exact checking rules</summary>
+      <ul>
+        <li><b>Which app counts as “through the proxy”.</b> Routekeeper takes the rule that would apply to an arbitrary TCP connection from this app to an unknown address. If that rule leads through a proxy, the app is checked. This can be the app’s route or a general “any app → proxy” rule.</li>
+        <li><b>DNS</b> means ports 53 and 853. Over UDP, such queries don’t go through the proxy: proxies carry only TCP. DNS over HTTPS is an ordinary HTTPS connection to port 443. It goes through the proxy and doesn’t count as a leak.</li>
+        <li><b><span class="ui">Process outside the rule</span></b> is checked only for TCP and only for “whole app → proxy” rules. The process must be inside this app’s bundle. If the rule is for a command-line program, any other command-line program from the same developer (Team ID) counts.</li>
+        <li><b>History.</b> The section shows the connections that are still in the monitor. The counter in <span class="ui">Overview</span> also remembers older ones, until you click <span class="ui">Clear</span> or the extension restarts.</li>
+      </ul>
+    </details>
+
+    <h2 id="server-check">Checking on your own server</h2>
+    <p>The most independent check is to look on the server and see whether connections from your Mac arrive. The commands below are for a server set up with the <a href="../../../en/docs/server/">Your own proxy server</a> guide: there, the proxy is Caddy on <a class="term" href="../../../en/docs/glossary/#port">port</a> 443.</p>
+    <ol class="steps">
+      <li>Find out your usual address. In a browser that goes direct (for example, Safari, if you haven’t routed it through the proxy), open any page that shows your IP. Write it down.</li>
+      <li>Connect to the server over <a class="term" href="../../../en/docs/glossary/#ssh">SSH</a>, the same way as during <a href="../../../en/docs/server/#install">installation</a>.</li>
+      <li>Look at the open connections to Caddy on port 443:
+        <div class="cmd"><pre><code>ss -tnp state established '( sport = :443 )'</code></pre></div>
+        The <code>Peer Address:Port</code> column shows the addresses the connections came from. Your address from step 1 should be among them, and the last column should mention <code>caddy</code>. The address may be written as <code>[::ffff:198.51.100.7]:51234</code>; it’s the same IPv4 address.</li>
+      <li>Count the connections from your address only, and watch how the number changes. Put in the address from step 1:
+        <div class="cmd"><pre><code>watch -n 2 "ss -tn state established '( sport = :443 )' | grep -c <span class="ph">YOUR_IP</span>"</code></pre></div>
+        On your Mac, open an app that goes through the proxy and start using it: the number goes up. Close the app, and the number goes down as its connections close. To exit <code>watch</code>, press <kbd>Ctrl+C</kbd>.</li>
+    </ol>
+    <p>Keep in mind that Routekeeper itself checks the proxy through this same server, so one or two connections may show up even when your apps are closed.</p>
+    <h3>On the Mac</h3>
+    <p>Open Terminal and look at the open connections to the server. Put in the server’s IP:</p>
+    <div class="cmd"><pre><code>netstat -an -p tcp | grep ESTABLISHED | grep '<span class="ph">SERVER_IP</span>.443'</code></pre></div>
+    <p>Each line is one connection to the proxy. macOS writes the port after a dot: <code>203.0.113.10.443</code>. If the server is entered as a domain in Routekeeper, find out its IP:</p>
+    <div class="cmd"><pre><code>dig +short <span class="ph">DOMAIN</span></code></pre></div>
+    <details class="deep">
+      <summary>Details: which process holds these connections</summary>
+      <p>Connections to the proxy are opened by Routekeeper’s network extension on behalf of the apps, so the app names don’t appear here. To see which app went where, use the monitor. To see the process, you need an administrator password:</p>
+      <div class="cmd"><pre><code>sudo lsof -nP +c 0 -iTCP@<span class="ph">SERVER_IP</span>:443 -sTCP:ESTABLISHED</code></pre></div>
+      <p>The <code>COMMAND</code> column will show a process whose name starts with <code>Routekeeper</code>. If you see a different program there, something else is also connecting to the server, for example a proxy client.</p>
+    </details>
+    <p class="checked">Checked against the Routekeeper code (version 0.2.1 and the one after it) on October 4, 2026.</p>
+    <nav class="pager"><a class="prev" href="../../../en/docs/recipes/"><span>Previous</span>Recipes</a><a class="next" href="../../../en/docs/troubleshooting/"><span>Next</span>Troubleshooting</a></nav>
+  </article>
+</main>
+
+<div class="wrap">
+  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span><a href="../../../en/">Routekeeper for macOS</a> · <a href="../../../en/docs/">Docs</a> · <a href="../../../en/privacy/">Privacy</a> · <a href="https://github.com/ilyabazhenov/routekeeper">GitHub</a></span></footer>
+</div>
+
+<script src="../../../docs/assets/docs.js?v=3e67278c"></script>
+</body>
+</html>

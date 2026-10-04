@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Glossary — Routekeeper</title>
+<meta name="description" content="Routekeeper glossary: proxy, SOCKS5, HTTPS proxy, VPS, SSH, domain, A record, IP, port, DNS, DoH, TCP, UDP, QUIC, TLS, network extension, child process, code signature, subnet, domain wildcard, localhost, fail-closed.">
+<meta name="theme-color" content="#0a0f1f">
+<link rel="canonical" href="https://getroutekeeper.app/en/docs/glossary/">
+<link rel="alternate" hreflang="ru" href="https://getroutekeeper.app/docs/glossary/">
+<link rel="alternate" hreflang="en" href="https://getroutekeeper.app/en/docs/glossary/">
+<link rel="alternate" hreflang="x-default" href="https://getroutekeeper.app/en/docs/glossary/">
+<link rel="icon" href="../../../mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../../../icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=891e2023">
+</head>
+<body>
+<!-- Built by Scripts/build-docs.py from site-src/docs/en/glossary.html. Edit the fragment, not this file. -->
+
+<div class="wrap nav-wrap">
+  <header class="nav">
+    <a class="brand" href="../../../en/"><img src="../../../mark.svg" alt="" width="28" height="28">Routekeeper</a>
+    <div class="nav-end"><a class="lang" href="../../../docs/glossary/" hreflang="ru" lang="ru">RU</a><a class="btn btn-primary" href="../../../en/#download">Download</a></div>
+  </header>
+</div>
+
+<section class="wrap docs-hero compact">
+  <div class="hero-copy">
+    <span class="crumbs"><a href="../../../en/docs/">Docs</a> · Reference</span>
+    <h1>Glossary: <span class="warm">terms in plain words</span></h1>
+    <p class="lede"><b>Short explanations of the words used in the docs.</b> For each one: what it is and how it relates to Routekeeper.</p>
+  </div>
+</section>
+
+<main class="wrap docs-layout">
+  <aside class="side-nav" aria-label="Docs sections">
+    <span class="group">Getting started</span>
+    <a href="../../../en/docs/">Docs overview</a>
+    <a href="../../../en/docs/start/">Quick start</a>
+    <a href="../../../en/docs/concepts/">How it works</a>
+    <span class="group">Setup</span>
+    <a href="../../../en/docs/proxies/">Proxies</a>
+    <a href="../../../en/docs/apps/">Apps and services</a>
+    <a href="../../../en/docs/rules/">Rules</a>
+    <a href="../../../en/docs/firewall/">Firewall modes</a>
+    <a href="../../../en/docs/server/">Your own proxy server</a>
+    <span class="group">In practice</span>
+    <a href="../../../en/docs/recipes/">Recipes</a>
+    <a href="../../../en/docs/monitoring/">Checking and monitoring</a>
+    <span class="group">Reference</span>
+    <a href="../../../en/docs/troubleshooting/">Troubleshooting</a>
+    <a href="../../../en/docs/maintenance/">Updates and removal</a>
+    <a href="../../../en/docs/limits/">Limitations</a>
+    <a href="../../../en/docs/glossary/" aria-current="page">Glossary</a>
+    <a href="../../../en/docs/changelog/">What's new</a>
+    <a class="side-action" href="../../../en/privacy/">Privacy</a>
+    <a href="https://github.com/ilyabazhenov/routekeeper/issues">Report a problem</a>
+  </aside>
+  <article class="doc">
+    <details class="mobile-nav"><summary>All docs sections</summary><nav>
+    <span class="group">Getting started</span>
+    <a href="../../../en/docs/">Docs overview</a>
+    <a href="../../../en/docs/start/">Quick start</a>
+    <a href="../../../en/docs/concepts/">How it works</a>
+    <span class="group">Setup</span>
+    <a href="../../../en/docs/proxies/">Proxies</a>
+    <a href="../../../en/docs/apps/">Apps and services</a>
+    <a href="../../../en/docs/rules/">Rules</a>
+    <a href="../../../en/docs/firewall/">Firewall modes</a>
+    <a href="../../../en/docs/server/">Your own proxy server</a>
+    <span class="group">In practice</span>
+    <a href="../../../en/docs/recipes/">Recipes</a>
+    <a href="../../../en/docs/monitoring/">Checking and monitoring</a>
+    <span class="group">Reference</span>
+    <a href="../../../en/docs/troubleshooting/">Troubleshooting</a>
+    <a href="../../../en/docs/maintenance/">Updates and removal</a>
+    <a href="../../../en/docs/limits/">Limitations</a>
+    <a href="../../../en/docs/glossary/" aria-current="page">Glossary</a>
+    <a href="../../../en/docs/changelog/">What's new</a>
+    </nav></details>
+<p class="lead-in">The terms are grouped by topic. Other docs pages link here the first time a term appears.</p>
+<p><a href="#proxy">Proxy</a> · <a href="#socks5">SOCKS5</a> · <a href="#http-connect">HTTP CONNECT</a> · <a href="#https-proxy">HTTPS proxy</a> · <a href="#fail-closed">Fail-closed</a> · <a href="#vps">VPS</a> · <a href="#ssh">SSH</a> · <a href="#domain">Domain</a> · <a href="#a-record">A&nbsp;record</a> · <a href="#ip">IP address</a> · <a href="#port">Port</a> · <a href="#tcp">TCP</a> · <a href="#udp">UDP</a> · <a href="#quic">QUIC</a> · <a href="#dns">DNS</a> · <a href="#doh">DoH</a> · <a href="#tls">TLS</a> · <a href="#network-extension">Network extension</a> · <a href="#child-process">Child process</a> · <a href="#code-signature">Code signature</a> · <a href="#loopback">localhost</a> · <a href="#cidr">Subnet (CIDR)</a> · <a href="#wildcard">Wildcard *.domain</a></p>
+
+<h2 id="g-proxy">Proxies</h2>
+
+<h3 id="proxy">Proxy (proxy server)</h3>
+<p>A go-between server between your Mac and a site. An app sends its connection to the proxy, and the proxy connects to the site on its own behalf. So the site sees the proxy’s IP address, not yours. Unlike a VPN, a proxy doesn’t work for the whole Mac, only for the connections that are sent to it.</p>
+<p><b>In Routekeeper:</b> you decide which apps and services go through a proxy; you add the proxies themselves in the <span class="ui">Proxy</span> section. See <a href="../../../en/docs/proxies/">Proxies</a>.</p>
+
+<h3 id="socks5">SOCKS5</h3>
+<p>A general-purpose proxy protocol: it carries any TCP connection without looking into its content. Clients running on the same Mac often open it, for example at <code>127.0.0.1:1080</code>. SOCKS5 itself doesn’t encrypt the connection to the proxy, so for a proxy somewhere on the internet, an <a href="#https-proxy">HTTPS proxy</a> is a better fit.</p>
+<p><b>In Routekeeper:</b> the SOCKS5 type, default port 1080. Strings that start with <code>socks5://</code>, <code>socks5h://</code> or <code>socks://</code>, and strings with no scheme, are treated as SOCKS5.</p>
+
+<h3 id="http-connect">HTTP proxy (HTTP CONNECT)</h3>
+<p>A proxy that an app talks to over HTTP. With the CONNECT command, the app asks the proxy to open a tunnel to the right site and port, and after that the data goes through as is. HTTPS sites stay encrypted, but the connection to the proxy itself isn’t: the login, the password and the site names can be seen on the way. Such proxies are common in office networks.</p>
+<p><b>In Routekeeper:</b> the HTTP type, default port 8080. Authentication works only with a login and password (Basic); NTLM, Kerberos and PAC files aren’t supported.</p>
+
+<h3 id="https-proxy">HTTPS proxy</h3>
+<p>The same HTTP CONNECT, but the connection to the proxy is protected by <a href="#tls">TLS</a>, like a site with <code>https://</code>. Neither the login and password nor the names of the sites you open can be seen on the way. The server proves that it’s genuine with a certificate issued for its <a href="#domain">domain name</a>.</p>
+<p><b>In Routekeeper:</b> the HTTPS type, default port 443. In the <span class="ui">Server</span> field, enter the domain, not the IP: the certificate is checked against it. The script from <a href="../../../en/docs/server/">Your own proxy server</a> installs such a proxy on your own server.</p>
+
+<h3 id="fail-closed">Fail-closed: if the proxy is down, connections don’t go direct</h3>
+<p>This is the name for behavior where a failure doesn’t open anything up. If the proxy is down, the connection is cut instead of going direct. The app shows a network error, but your real address isn’t revealed. The opposite behavior is called fail-open.</p>
+<p><b>In Routekeeper:</b> this is how it works by default. To let connections go direct when the proxy is down, turn on <span class="ui">Settings</span> → <span class="ui">Network</span> → <span class="ui" style="white-space: normal">If the proxy is down, go direct</span>. Exceptions: DNS over UDP, UDP when <span class="ui">Block UDP and QUIC</span> is off, and a couple of seconds while the extension restarts or updates. See <a href="../../../en/docs/limits/#restart-gap">Limitations</a>.</p>
+
+<h2 id="g-server">Servers and addresses</h2>
+
+<h3 id="vps">VPS</h3>
+<p>A virtual server that you rent from a hosting provider, usually by the month. It has its own permanent public IP address and usually runs Linux, such as Debian or Ubuntu. You manage it remotely, over <a href="#ssh">SSH</a>.</p>
+<p><b>In Routekeeper:</b> you can install your own HTTPS proxy on a VPS with one script. See <a href="../../../en/docs/server/#need">Your own proxy server</a>.</p>
+
+<h3 id="ssh">SSH</h3>
+<p>A secure way to manage a server from Terminal on your Mac: you type commands, and they run on the server. Connecting looks like this: <code>ssh root@203.0.113.7</code>, that is, the user name, <code>@</code> and the server’s address. The first time you connect, SSH shows the fingerprint of the server’s key and asks whether to trust it.</p>
+<p><b>In Routekeeper:</b> you need SSH once, to run the proxy install script on the server. See <a href="../../../en/docs/server/#login">Your own proxy server</a>.</p>
+
+<h3 id="domain">Domain (domain name)</h3>
+<p>A human-friendly name of a site or a server, for example <code>example.com</code>. A subdomain is a name inside a domain: <code>proxy.example.com</code>. Domains are bought from a registrar, and there are also free names like <code>my-name.duckdns.org</code>.</p>
+<p><b>In Routekeeper:</b> an HTTPS proxy needs a domain, and rules can be written for domains. See <a href="../../../en/docs/server/#domain">a domain for your own server</a> and <a href="../../../en/docs/rules/#syntax">how to write an address in a rule</a>.</p>
+
+<h3 id="a-record">A record</h3>
+<p>A record in <a href="#dns">DNS</a> that links a domain name to an IPv4 address. This is how computers find out that <code>proxy.example.com</code> is, for example, <code>203.0.113.7</code>. You create it where you manage the domain; a new record usually starts working within a few minutes.</p>
+<p><b>In Routekeeper:</b> for your own server, the domain’s A record must point to your VPS’s IP, or the server won’t get a certificate. See <a href="../../../en/docs/server/#domain">Your own proxy server</a>.</p>
+
+<h3 id="ip">IP address</h3>
+<p>The numeric address of a device on a network: IPv4, like <code>203.0.113.7</code>, or IPv6, like <code>2001:db8::1</code>. Your external IP is the address that sites see your connection coming from; at home, it’s usually your provider’s address. Through a proxy, sites see the proxy’s IP.</p>
+<p><b>In Routekeeper:</b> the proxy’s external IP is shown in the icon’s menu and after you click <span class="ui">Check</span>; in rules, you can use an IP address or a <a href="#cidr">subnet</a>.</p>
+
+<h3 id="port">Port</h3>
+<p>A number that tells apart different services at the same address, like an apartment number in a building. HTTPS sites use port 443, HTTP sites use port 80, and DNS uses port 53.</p>
+<p><b>In Routekeeper:</b> a proxy has a port (by default 1080 for SOCKS5, 8080 for HTTP, 443 for HTTPS), and a rule can be limited to a port, for example “port 443 · UDP”.</p>
+
+<h2 id="g-network">How data travels</h2>
+
+<h3 id="tcp">TCP</h3>
+<p>A way of sending data that sets up a connection and confirms delivery: if a piece gets lost, it’s sent again. Sites, email and most apps run on TCP.</p>
+<p><b>In Routekeeper:</b> TCP is what goes through the proxy.</p>
+
+<h3 id="udp">UDP</h3>
+<p>A way of sending data with no connection and no confirmations: the data is simply sent. This is faster, so UDP is used by calls, real-time video, games, <a href="#dns">DNS</a> and <a href="#quic">QUIC</a>.</p>
+<p><b>In Routekeeper:</b> SOCKS5, HTTP and HTTPS proxies don’t carry UDP, so for apps that go through a proxy, UDP is either blocked or goes direct and is flagged. See <a href="../../../en/docs/concepts/#udp">UDP and QUIC</a>.</p>
+
+<h3 id="quic">QUIC</h3>
+<p>A modern way to load sites over UDP; HTTP/3 runs on it. Browsers use it where the site supports it. If QUIC isn’t available, the browser quietly switches to regular HTTPS over TCP.</p>
+<p><b>In Routekeeper:</b> the <span class="ui">Block UDP and QUIC</span> switch turns QUIC off for apps that go through a proxy, and browsers switch to TCP, which goes through the proxy.</p>
+
+<h3 id="dns">DNS</h3>
+<p>The internet’s lookup service: it turns a name like <code>example.com</code> into an IP address. Usually lookups go to your provider or your router, and they see which names your Mac asks about. Regular DNS lookups go over UDP to port 53 and aren’t encrypted.</p>
+<p><b>In Routekeeper:</b> <span class="ui">DNS through proxy</span> passes the site name to the proxy, so that the proxy looks up the address. For what still goes around the proxy, see <a href="../../../en/docs/concepts/#dns">DNS</a>.</p>
+
+<h3 id="doh">DoH (DNS over HTTPS)</h3>
+<p>DNS lookups inside a regular encrypted HTTPS connection. No one on the way can see which names you look up. In browsers, you turn it on in the settings; the setting is called “DNS over HTTPS” or “secure DNS”.</p>
+<p><b>In Routekeeper:</b> if the whole browser goes through a proxy, its DoH lookups go through the proxy along with the rest of its traffic; this way, the “DNS around the proxy” flags for the browser go away. See the <a href="../../../en/docs/recipes/#browser-dns">recipe</a>.</p>
+
+<h3 id="tls">TLS</h3>
+<p>Encryption of a connection; it’s what <code>https://</code> in the address bar runs on. It hides the content from everyone on the way, and with a certificate it confirms that you’re talking to the very server whose name is given. A certificate is issued for a domain name, for example for free by Let’s Encrypt.</p>
+<p><b>In Routekeeper:</b> an HTTPS proxy encrypts the connection to the proxy with TLS; if the certificate doesn’t match the name in the <span class="ui">Server</span> field, the check shows “Couldn’t connect to the proxy: TLS: the proxy’s certificate failed validation”.</p>
+
+<h2 id="g-mac">Mac and apps</h2>
+
+<h3 id="network-extension">Network extension</h3>
+<p>A module through which a program can filter and route network connections in macOS. It’s installed as a system extension: separately from the app’s window, and only with the user’s permission. The extension runs on behalf of the system, so it keeps working even when the window is closed.</p>
+<p><b>In Routekeeper:</b> the extension is called Routekeeper Extension (in version 0.2.1, Routekeeper Network Extension), and its status is shown in <span class="ui">Settings</span> → <span class="ui">Extension</span>. See <a href="../../../en/docs/concepts/#parts">What Routekeeper is made of</a>.</p>
+
+<h3 id="child-process">Child process</h3>
+<p>A program that another program has launched. Terminal launches <code>git</code>, <code>curl</code> and <code>npm</code>. Browsers and messengers launch helper processes, and almost all of their traffic goes through them.</p>
+<p><b>In Routekeeper:</b> <span class="ui">Include Child Processes</span> is on by default: the app’s route applies to its helper processes and to everything it launches. See <a href="../../../en/docs/apps/#child-processes">Apps and services</a>.</p>
+
+<h3 id="code-signature">Code signature</h3>
+<p>A digital signature that a developer puts on their program. It shows who released the program (the developer’s Team ID) and which program it is (an identifier like <code>com.example.app</code>). If the program is changed after it was signed, the signature no longer matches.</p>
+<p><b>In Routekeeper:</b> apps are recognized by their signature, not by the file name: a renamed program won’t fall under someone else’s rule, and a rule survives an app update. Programs without a signature are recognized by the path to the file.</p>
+
+<h3 id="loopback">localhost (loopback)</h3>
+<p>The addresses that a Mac uses to reach itself: <code>127.0.0.1</code>, <code>::1</code> and the name <code>localhost</code>. Such connections don’t go out to the network. For example, apps use them to connect to a proxy client running on the same Mac.</p>
+<p><b>In Routekeeper:</b> connections to the Mac itself go direct; the built-in rules and the <span class="ui">Settings</span> → <span class="ui">Network</span> → <span class="ui">Leave localhost alone</span> setting make it so.</p>
+
+<h2 id="g-rules">Addresses in rules</h2>
+
+<h3 id="cidr">Subnet (CIDR)</h3>
+<p>A way to write a range of IP addresses: an address, a slash and the prefix length. <code>10.0.0.0/8</code> is all addresses from <code>10.0.0.0</code> to <code>10.255.255.255</code>, and <code>192.168.1.0/24</code> is from <code>192.168.1.0</code> to <code>192.168.1.255</code>. The bigger the number after the slash, the narrower the range.</p>
+<p><b>In Routekeeper:</b> you can use a subnet in a rule, and some services already include subnets, for example Telegram’s addresses. See <a href="../../../en/docs/rules/#syntax">how to write an address in a rule</a>.</p>
+
+<h3 id="wildcard">Wildcard *.domain</h3>
+<p>An asterisk in place of any subdomain. Without the asterisk, a rule matches only one name; with it, a rule matches a whole family of names.</p>
+<p><b>In Routekeeper:</b> <code>*.example.com</code> matches both <code>example.com</code> itself and all its subdomains at any depth, for example <code>a.b.example.com</code>; a longer wildcard is more specific, so <code>*.mail.example.com</code> beats <code>*.example.com</code>.</p>
+    <p class="checked">Checked against the Routekeeper code (version 0.2.1 and the one after it) on October 4, 2026.</p>
+    <nav class="pager"><a class="prev" href="../../../en/docs/limits/"><span>Previous</span>Limitations</a><a class="next" href="../../../en/docs/changelog/"><span>Next</span>What's new</a></nav>
+  </article>
+</main>
+
+<div class="wrap">
+  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span><a href="../../../en/">Routekeeper for macOS</a> · <a href="../../../en/docs/">Docs</a> · <a href="../../../en/privacy/">Privacy</a> · <a href="https://github.com/ilyabazhenov/routekeeper">GitHub</a></span></footer>
+</div>
+
+<script src="../../../docs/assets/docs.js?v=3e67278c"></script>
+</body>
+</html>

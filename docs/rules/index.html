@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Правила — Routekeeper</title>
+<meta name="description" content="Правила Routekeeper: когда они нужны, поля правила и синтаксис назначения (имя, *.домен, IP, подсеть, @сервис), порт и протокол, точный порядок приоритета с разобранными примерами, соединения без имени сайта, источники, встроенные правила, импорт и экспорт.">
+<meta name="theme-color" content="#0a0f1f">
+<link rel="canonical" href="https://getroutekeeper.app/docs/rules/">
+<link rel="alternate" hreflang="ru" href="https://getroutekeeper.app/docs/rules/">
+<link rel="alternate" hreflang="en" href="https://getroutekeeper.app/en/docs/rules/">
+<link rel="alternate" hreflang="x-default" href="https://getroutekeeper.app/en/docs/rules/">
+<link rel="icon" href="../../mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../../icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../docs/assets/docs.css?v=891e2023">
+</head>
+<body>
+<!-- Built by Scripts/build-docs.py from site-src/docs/ru/rules.html. Edit the fragment, not this file. -->
+
+<div class="wrap nav-wrap">
+  <header class="nav">
+    <a class="brand" href="../../"><img src="../../mark.svg" alt="" width="28" height="28">Routekeeper</a>
+    <div class="nav-end"><a class="lang" href="../../en/docs/rules/" hreflang="en" lang="en">EN</a><a class="btn btn-primary" href="../../#download">Скачать</a></div>
+  </header>
+</div>
+
+<section class="wrap docs-hero compact">
+  <div class="hero-copy">
+    <span class="crumbs"><a href="../../docs/">Документация</a> · Настройка</span>
+    <h1>Правила: <span class="warm">исключения по адресам</span></h1>
+    <p class="lede"><b>Правило решает, куда идут соединения с определёнными адресами, портами или протоколами.</b> Маршрут целого приложения задаётся в «Приложениях», а правила нужны для исключений и для адресов, общих для всех приложений.</p>
+  </div>
+</section>
+
+<main class="wrap docs-layout">
+  <aside class="side-nav" aria-label="Разделы документации">
+    <span class="group">Начало</span>
+    <a href="../../docs/">Обзор документации</a>
+    <a href="../../docs/start/">Быстрый старт</a>
+    <a href="../../docs/concepts/">Как это работает</a>
+    <span class="group">Настройка</span>
+    <a href="../../docs/proxies/">Прокси</a>
+    <a href="../../docs/apps/">Приложения и сервисы</a>
+    <a href="../../docs/rules/" aria-current="page">Правила</a>
+    <a href="../../docs/firewall/">Режимы файрвола</a>
+    <a href="../../docs/server/">Свой прокси-сервер</a>
+    <span class="group">На практике</span>
+    <a href="../../docs/recipes/">Рецепты</a>
+    <a href="../../docs/monitoring/">Проверка и мониторинг</a>
+    <span class="group">Справка</span>
+    <a href="../../docs/troubleshooting/">Если не работает</a>
+    <a href="../../docs/maintenance/">Обновление и удаление</a>
+    <a href="../../docs/limits/">Ограничения</a>
+    <a href="../../docs/glossary/">Словарь</a>
+    <a href="../../docs/changelog/">Что нового</a>
+    <a class="side-action" href="../../privacy/">Конфиденциальность</a>
+    <a href="https://github.com/ilyabazhenov/routekeeper/issues">Сообщить о проблеме</a>
+  </aside>
+  <article class="doc">
+    <details class="mobile-nav"><summary>Все разделы документации</summary><nav>
+    <span class="group">Начало</span>
+    <a href="../../docs/">Обзор документации</a>
+    <a href="../../docs/start/">Быстрый старт</a>
+    <a href="../../docs/concepts/">Как это работает</a>
+    <span class="group">Настройка</span>
+    <a href="../../docs/proxies/">Прокси</a>
+    <a href="../../docs/apps/">Приложения и сервисы</a>
+    <a href="../../docs/rules/" aria-current="page">Правила</a>
+    <a href="../../docs/firewall/">Режимы файрвола</a>
+    <a href="../../docs/server/">Свой прокси-сервер</a>
+    <span class="group">На практике</span>
+    <a href="../../docs/recipes/">Рецепты</a>
+    <a href="../../docs/monitoring/">Проверка и мониторинг</a>
+    <span class="group">Справка</span>
+    <a href="../../docs/troubleshooting/">Если не работает</a>
+    <a href="../../docs/maintenance/">Обновление и удаление</a>
+    <a href="../../docs/limits/">Ограничения</a>
+    <a href="../../docs/glossary/">Словарь</a>
+    <a href="../../docs/changelog/">Что нового</a>
+    </nav></details>
+<p class="lead-in">Правило отвечает на вопрос «какое приложение, куда, на какой порт и по какому протоколу — и что с этим делать». Раздел <span class="ui">Правила</span> (<kbd>⌘3</kbd>) показывает все правила, включая строки из <span class="ui">Приложений</span>.</p>
+
+<h2 id="when">Когда нужно правило</h2>
+<p>Чаще всего правила писать не нужно:</p>
+<ul>
+  <li>куда идёт <b>всё приложение</b>, задаётся в разделе <a href="../../docs/apps/#route">Приложения</a>;</li>
+  <li>куда идёт <b>известный сайт или мессенджер</b> из всех приложений, задаёт <a href="../../docs/apps/#services">сервис</a>.</li>
+</ul>
+<p>Правило нужно для исключений и тонкой настройки:</p>
+<ul>
+  <li><b>исключение внутри приложения</b>: браузер идёт через прокси, а сайты компании — напрямую;</li>
+  <li><b>адреса для всех приложений</b>: «Любое приложение · <code>*.corp.example</code> → Через прокси «Офис»»;</li>
+  <li><b>порт или протокол</b>: заблокировать QUIC в браузере («браузер · порт 443 · UDP → Блокировать»), пустить SSH (порт 22) напрямую;</li>
+  <li><b>один адрес</b>: заблокировать сервер, куда приложение отправляет статистику.</li>
+</ul>
+<p>Как создать правило:</p>
+<ul>
+  <li>в разделе <span class="ui">Правила</span> нажмите <span class="ui">Новое правило</span> (<span class="ui">+</span> на панели инструментов) или <kbd>⌘N</kbd>. <kbd>⌘N</kbd> работает из любого раздела: <span class="ui">Файл</span> → <span class="ui">Новое правило…</span>;</li>
+  <li>в <a href="../../docs/monitoring/#monitor"><span class="ui">Мониторе</span></a> выберите у соединения <span class="ui">Создать правило…</span> в контекстном меню или в подробностях: приложение и адрес уже будут заполнены;</li>
+  <li>в режиме <span class="ui">Спрашивать</span> правило создаёт ответ в окне вопроса, см. <a href="../../docs/firewall/#ask">Спрашивать</a>.</li>
+</ul>
+<div class="callout warn"><p><b>Новое правило начинается как «Любое приложение · любой адрес → <a href="../../docs/proxies/#several">основной прокси</a>».</b> Если сохранить его, ничего не поменяв, через прокси пойдут все приложения, у которых нет своей строки. Заполните <span class="ui">Назначение</span> или выберите приложение. Если прокси ещё нет, действие нового правила — <span class="ui">Напрямую</span>.</p></div>
+
+<h2 id="syntax">Поля правила</h2>
+<p>Двойной щелчок по правилу или <span class="ui">Новое правило</span> открывает окно с полями:</p>
+<div class="table"><table>
+  <thead><tr><th>Поле</th><th>Что задаёт</th></tr></thead>
+  <tbody>
+    <tr><td><span class="ui">Приложение</span></td><td><span class="ui">Любое приложение</span> или конкретное. Кнопка <span class="ui">Изменить</span>: <span class="ui">Любое приложение</span>, <span class="ui">Выбрать…</span> (окно выбора файла) или одно из приложений, которые уже есть в правилах.</td></tr>
+    <tr><td><span class="ui">Вместе с дочерними процессами</span></td><td>Появляется, когда выбрано конкретное приложение. Что делает — в разделе <a href="../../docs/apps/#child-processes">Приложения и сервисы</a>.</td></tr>
+    <tr><td><span class="ui">Назначение</span></td><td>Куда идёт соединение, см. таблицу ниже. Меню <span class="ui">Сервис</span> рядом вписывает сервис.</td></tr>
+    <tr><td><span class="ui">Порт</span></td><td>Одно число от 1 до 65535 — <a class="term" href="../../docs/glossary/#port">порт</a> сервера. Пусто — любой порт. Например, 443 — HTTPS и QUIC, 80 — HTTP, 22 — SSH, 53 — DNS.</td></tr>
+    <tr><td><span class="ui">Протокол</span></td><td><span class="ui">TCP и UDP</span> (любой), <span class="ui">TCP</span> или <span class="ui">UDP</span>. Почти все соединения — <a class="term" href="../../docs/glossary/#tcp">TCP</a>; <a class="term" href="../../docs/glossary/#udp">UDP</a> — это <a class="term" href="../../docs/glossary/#quic">QUIC</a>, звонки и DNS.</td></tr>
+    <tr><td><span class="ui">Действие</span></td><td>Прокси из раздела <span class="ui">Через прокси</span>, <span class="ui">Напрямую</span>, <span class="ui">Блокировать</span> или <span class="ui">Спрашивать</span>. Подробнее — в разделе <a href="../../docs/concepts/#actions">Как это работает</a>.</td></tr>
+    <tr><td><span class="ui">Заметка</span></td><td>Любой текст для себя. Виден под назначением, по нему работает поиск.</td></tr>
+  </tbody>
+</table></div>
+<p>Кнопки: <span class="ui">Сохранить</span>, <span class="ui">Отмена</span> и, у существующего правила, <span class="ui">Удалить</span>. Срока действия в окне нет: правило из него действует, пока вы его не выключите или не удалите.</p>
+
+<h3 id="destination">Как записать адрес</h3>
+<div class="table"><table>
+  <thead><tr><th>Что вписать</th><th>Что подходит</th><th>Пример</th></tr></thead>
+  <tbody>
+    <tr><td>Пусто</td><td>Любой адрес. То же значат <code>*</code> и «любой адрес».</td><td>—</td></tr>
+    <tr><td>Имя</td><td>Только это имя, без поддоменов.</td><td><code>files.example.com</code> — не подходит ни для <code>example.com</code>, ни для <code>a.files.example.com</code></td></tr>
+    <tr><td><code>*.</code>имя</td><td>Само имя и все его поддомены (<a class="term" href="../../docs/glossary/#wildcard">шаблон</a>).</td><td><code>*.example.com</code> — подходит для <code>example.com</code>, <code>www.example.com</code>, <code>a.b.example.com</code></td></tr>
+    <tr><td>IP-адрес</td><td>Только этот <a class="term" href="../../docs/glossary/#ip">адрес</a>, IPv4 или IPv6.</td><td><code>203.0.113.10</code>, <code>2001:db8::1</code></td></tr>
+    <tr><td>Подсеть</td><td>Все адреса <a class="term" href="../../docs/glossary/#cidr">подсети</a>.</td><td><code>10.0.0.0/8</code>, <code>192.168.1.0/24</code>, <code>fd00::/8</code></td></tr>
+    <tr><td><code>@</code>сервис</td><td>Все адреса <a href="../../docs/apps/#services">сервиса</a>.</td><td><code>@youtube</code>, <code>@github</code>, <code>@ru-banks</code></td></tr>
+  </tbody>
+</table></div>
+<ul>
+  <li>Регистр букв не важен.</li>
+  <li>Только имя сервера: без <code>https://</code>, без пути и без порта. Порт — отдельное поле. Routekeeper видит имя сервера, но не адрес страницы.</li>
+  <li>Звёздочка работает только в начале и с точкой: <code>*.example.com</code>. Записи вроде <code>*example.com</code> или <code>ex*.com</code> не сработают.</li>
+  <li>Если Routekeeper не понял назначение, он ответит «Не понимаю назначение «…»». Неверный порт — «Порт должен быть числом от 1 до 65535».</li>
+</ul>
+<details class="deep"><summary>Подробнее: коды сервисов для <code>@</code></summary>
+  <p>Меню <span class="ui">Сервис</span> вписывает код само. Если удобнее набрать руками:</p>
+  <ul>
+    <li><code>youtube</code>, <code>telegram</code>, <code>discord</code>, <code>tiktok</code>, <code>reddit</code>, <code>twitch</code>, <code>x</code>, <code>linkedin</code>, <code>signal</code>, <code>viber</code>, <code>slack</code>, <code>zoom</code>, <code>proton</code>, <code>spotify</code>, <code>notion</code>, <code>github</code>, <code>figma</code>, <code>jetbrains</code>;</li>
+    <li><code>instagram</code>, <code>facebook</code>, <code>whatsapp</code>, <code>threads</code>;</li>
+    <li><code>chatgpt</code>, <code>claude</code>, <code>gemini</code>, <code>copilot</code>, <code>cursor</code>, <code>perplexity</code>, <code>grok</code>;</li>
+    <li><code>ru-gov</code>, <code>ru-banks</code>, <code>ru-sites</code>.</li>
+  </ul>
+  <p>В версии 0.2.1 нет <code>tiktok</code>, <code>reddit</code>, <code>twitch</code>, <code>slack</code>, <code>zoom</code>, <code>github</code> и <code>figma</code>.</p>
+</details>
+<p>Действие <span class="ui">Через прокси</span> для UDP: UDP через прокси не проходит, его судьбу решает переключатель прокси <a href="../../docs/proxies/#toggles"><span class="ui">Блокировать UDP и QUIC</span></a>.</p>
+
+<h2 id="priority">Какое правило важнее</h2>
+<p>Решает точность, а не порядок в списке. Для каждого соединения Routekeeper берёт все включённые правила, которые к нему подходят, и выбирает самое точное. Правила сравниваются по очереди, пока не найдётся разница:</p>
+<ol>
+  <li><b>Точнее назначение.</b> Точное имя или IP-адрес важнее шаблона <code>*.</code>, шаблон важнее подсети, подсеть важнее любого адреса. Из двух шаблонов важнее длинный (<code>*.cdn.example.com</code> важнее <code>*.example.com</code>), из двух подсетей — меньшая (<code>/24</code> важнее <code>/8</code>).</li>
+  <li><b>Вписанный вручную адрес важнее сервиса</b>, если оба одинаково точны.</li>
+  <li><b>Правило с портом</b> важнее правила без порта.</li>
+  <li><b>Правило с протоколом</b> важнее правила без протокола.</li>
+  <li><b>Конкретное приложение</b> важнее его дочерних процессов, а они важнее «Любого приложения».</li>
+  <li><b>Действие:</b> <span class="ui">Блокировать</span> важнее <span class="ui">Через прокси</span>, оно важнее <span class="ui">Напрямую</span>, а то — <span class="ui">Спрашивать</span>.</li>
+</ol>
+<p>Если не подошло ни одно правило, решает <a href="../../docs/firewall/#modes">режим</a>. В режиме <span class="ui">Только прокси</span> соединение идёт напрямую.</p>
+<div class="callout"><p><b>Сначала адрес, потом приложение.</b> Поэтому правило «Любое приложение · <code>*.corp.example</code> → Напрямую» для сайтов компании важнее маршрута «Браузер → Через прокси», хотя браузер указан конкретно. По той же причине сервис важнее маршрута приложения.</p></div>
+
+<h3 id="examples">Разобранные примеры</h3>
+<h4>1. Браузер через прокси, сайты компании напрямую</h4>
+<ul>
+  <li>Браузер → Через прокси «Амстердам» (строка в <span class="ui">Приложениях</span>);</li>
+  <li>Любое приложение · <code>*.corp.example</code> → Напрямую.</li>
+</ul>
+<div class="table"><table>
+  <thead><tr><th>Соединение</th><th>Результат</th><th>Почему</th></tr></thead>
+  <tbody>
+    <tr><td>Браузер → <code>news.example.org</code></td><td>Через «Амстердам»</td><td>Подходит только маршрут браузера.</td></tr>
+    <tr><td>Браузер → <code>wiki.corp.example</code></td><td>Напрямую</td><td>Подходят оба. Шаблон точнее любого адреса, а назначение сравнивается раньше приложения.</td></tr>
+  </tbody>
+</table></div>
+
+<h4>2. Два шаблона</h4>
+<ul>
+  <li>Любое приложение · <code>*.example.com</code> → Через прокси «Амстердам»;</li>
+  <li>Любое приложение · <code>*.cdn.example.com</code> → Напрямую.</li>
+</ul>
+<div class="table"><table>
+  <thead><tr><th>Соединение</th><th>Результат</th><th>Почему</th></tr></thead>
+  <tbody>
+    <tr><td><code>img.cdn.example.com</code></td><td>Напрямую</td><td>Подходят оба, длинный шаблон точнее.</td></tr>
+    <tr><td><code>www.example.com</code></td><td>Через «Амстердам»</td><td>Второй шаблон сюда не подходит.</td></tr>
+  </tbody>
+</table></div>
+
+<h4>3. Сервис и свой домен</h4>
+<ul>
+  <li>Сервис Slack → Через прокси «Амстердам»;</li>
+  <li>Любое приложение · <code>*.slack.com</code> → Через прокси «Офис».</li>
+</ul>
+<div class="table"><table>
+  <thead><tr><th>Соединение</th><th>Результат</th><th>Почему</th></tr></thead>
+  <tbody>
+    <tr><td><code>app.slack.com</code></td><td>Через «Офис»</td><td>Сервис совпал по <code>slack.com</code>, то есть так же точно, как <code>*.slack.com</code>. При равной точности вписанный вручную адрес важнее сервиса.</td></tr>
+    <tr><td><code>slack-edge.com</code></td><td>Через «Амстердам»</td><td>Это имя есть только в сервисе.</td></tr>
+  </tbody>
+</table></div>
+
+<h4>4. Порт, приложение и дочерние процессы</h4>
+<ul>
+  <li>Терминал → Через прокси «Амстердам», с дочерними процессами;</li>
+  <li>Любое приложение · порт 22 · TCP → Напрямую;</li>
+  <li><code>curl</code> → Напрямую.</li>
+</ul>
+<div class="table"><table>
+  <thead><tr><th>Соединение</th><th>Результат</th><th>Почему</th></tr></thead>
+  <tbody>
+    <tr><td><code>ssh</code> из Терминала → сервер, порт 22</td><td>Напрямую</td><td>Назначение у обоих правил — любой адрес. Правило с портом важнее, и порт сравнивается раньше приложения.</td></tr>
+    <tr><td><code>curl</code> из Терминала → любой сайт</td><td>Напрямую</td><td>Строка самого <code>curl</code> важнее строки Терминала, который его запустил.</td></tr>
+    <tr><td><code>git</code> из Терминала → <code>github.com</code>, порт 443</td><td>Через «Амстердам»</td><td>Подходит только строка Терминала: <code>git</code> — его дочерний процесс.</td></tr>
+  </tbody>
+</table></div>
+
+<details class="deep"><summary>Подробнее: точный алгоритм</summary>
+  <ol>
+    <li>Если Routekeeper выключен переключателем <span class="ui">Routekeeper включён</span>, всё идёт напрямую.</li>
+    <li>Соединение на адрес и порт любого прокси из списка идёт напрямую, правила не проверяются.</li>
+    <li>Кандидаты — включённые правила с неистёкшим сроком, у которых совпали приложение, назначение и, если заданы, порт и протокол. Приложение совпадает точно, как дочерний процесс (если у правила включена настройка) или как «Любое приложение».</li>
+    <li>У каждого кандидата считается вес — шесть чисел, которые сравниваются по порядку:
+      <ul>
+        <li>назначение: точное имя или IP-адрес — 4000; шаблон <code>*.имя</code> — 3000 плюс длина шаблона в символах; подсеть — 2000 плюс длина префикса; любой адрес — 0. Сервис получает вес совпавшей записи: имя из списка «только это имя» — как точное имя, имя «и поддомены» — как шаблон <code>*.имя</code>, подсеть — как подсеть;</li>
+        <li>адрес вписан вручную — 1, сервис — 0;</li>
+        <li>порт задан — 1, нет — 0;</li>
+        <li>протокол задан — 1, нет — 0;</li>
+        <li>приложение: точное — 3, дочерний процесс — 2, любое — 1;</li>
+        <li>действие: <span class="ui">Блокировать</span> — 3, <span class="ui">Через прокси</span> — 2, <span class="ui">Напрямую</span> — 1, <span class="ui">Спрашивать</span> — 0.</li>
+      </ul>
+    </li>
+    <li>Побеждает больший вес. При полном равенстве остаётся правило, которое раньше появилось в списке правил. Сортировка таблицы на это не влияет.</li>
+    <li>Если кандидатов нет: соединение с этим же Mac (<code>127.0.0.0/8</code>, <code>::1</code>, <code>localhost</code>) при включённой настройке <span class="ui">Не трогать localhost</span> идёт напрямую, остальное решает режим.</li>
+  </ol>
+  <p>Следствия:</p>
+  <ul>
+    <li>Правило с портом, но с любым адресом проигрывает правилу с адресом, но без порта: точность адреса сравнивается первой.</li>
+    <li>Если в списке сервиса есть точное имя, для этого имени сервис важнее вашего шаблона <code>*.</code>: шаблон проигрывает точному имени, кто бы его ни вписал. Чтобы перебить сервис, впишите точное имя.</li>
+    <li>Шаблон всегда важнее подсети. <code>*.corp.example</code> перебьёт <code>10.0.0.0/8</code> для имени из этого домена, даже если его адрес лежит в подсети.</li>
+    <li>Правило «Любое приложение · любой адрес» срабатывает раньше режима: режим решает, только когда не подошло ни одно правило.</li>
+  </ul>
+</details>
+
+<h2 id="hostnames">Правила по именам сайтов</h2>
+<p>Правила с именем (<code>example.com</code>, <code>*.example.com</code>) и сервисы сравнивают имя сервера. Routekeeper знает имя, когда приложение попросило macOS подключиться по имени. Так делают браузеры и большинство приложений.</p>
+<p>Имени нет, когда:</p>
+<ul>
+  <li>приложение подключается к голому IP-адресу: так делают некоторые мессенджеры и игры, <code>ssh 203.0.113.10</code>, программы со своим способом узнавать адреса;</li>
+  <li>соединение идёт по UDP, в том числе QUIC в браузерах: чаще всего имени у него нет.</li>
+</ul>
+<p>Тогда правила по имени и сервисы к соединению не подходят. Оно идёт по правилам с IP-адресом или подсетью и по маршруту приложения. Исключение — сервисы, в которых есть подсети, например Telegram: их соединения узнаются и по IP. Подробнее — в разделе <a href="../../docs/limits/#hostnames">Ограничения</a>.</p>
+
+<h3 id="quic-fix">Пример: видео в браузере идёт мимо прокси</h3>
+<p>Браузер идёт <span class="ui">Напрямую</span> или его нет в списке, а сервис YouTube — <span class="ui">Через прокси</span>. Страницы открываются через прокси: обычный HTTPS идёт по TCP и несёт имя. А видео браузер часто грузит по QUIC — это UDP на порт 443, обычно без имени. Такое соединение идёт по маршруту браузера, то есть напрямую.</p>
+<p>Решение — заблокировать браузеру QUIC:</p>
+<ol class="steps">
+  <li>В разделе <span class="ui">Правила</span> нажмите <kbd>⌘N</kbd>.</li>
+  <li><span class="ui">Приложение</span>: <span class="ui">Изменить</span> → выберите браузер.</li>
+  <li><span class="ui">Назначение</span> оставьте пустым. <span class="ui">Порт</span>: <code>443</code>. <span class="ui">Протокол</span>: <span class="ui">UDP</span>. <span class="ui">Действие</span>: <span class="ui">Блокировать</span>.</li>
+  <li>Нажмите <span class="ui">Сохранить</span>.</li>
+</ol>
+<p>Браузер перейдёт на обычный HTTPS по TCP. Такое соединение несёт имя и идёт по правилу сервиса, через прокси. Сайты продолжают работать. Подробный рецепт — <a href="../../docs/recipes/#browser-video">Один видеосервис в браузере через прокси</a>.</p>
+<p>Если сам браузер идёт <span class="ui">Через прокси</span>, такое правило не нужно: его UDP и так блокирует переключатель прокси <a href="../../docs/proxies/#toggles"><span class="ui">Блокировать UDP и QUIC</span></a>.</p>
+<p>Соединения без имени <span class="ui">Монитор</span> показывает только с IP-адресом, см. <a href="../../docs/monitoring/#monitor">Монитор</a>.</p>
+
+<h2 id="sources">Список правил</h2>
+<h3>Столбцы</h3>
+<ul>
+  <li><span class="ui">Приложение</span> — приложение или <span class="ui">Все приложения</span>.</li>
+  <li><span class="ui">Назначение</span> — адрес, «Любой адрес» или «Сервис: YouTube»; после двоеточия — порт, после точки — протокол. Ниже — заметка.</li>
+  <li><span class="ui">Действие</span> — «Прокси: Амстердам», «Напрямую», «Блокировать» или «Спрашивать».</li>
+  <li><span class="ui">Срок</span> — <span class="ui">Навсегда</span> или <span class="ui">До выхода</span>: временное правило из окна вопроса, оно удаляется, когда приложение завершит работу.</li>
+  <li><span class="ui">Источник</span> — откуда правило, см. ниже.</li>
+  <li><span class="ui">Вкл.</span> — переключатель. Выключенное правило не действует: соединения идут по остальным правилам и по режиму.</li>
+</ul>
+<p>Щелчок по заголовку столбца сортирует список. Поиск на панели инструментов ищет по приложению, адресу и заметке.</p>
+
+<h3>Источники</h3>
+<div class="table"><table>
+  <thead><tr><th>Источник</th><th>Откуда правило</th></tr></thead>
+  <tbody>
+    <tr><td><span class="ui">Вручную</span></td><td>Вы создали его сами: в окне правила, в <span class="ui">Приложениях</span>, добавив сервис, или из <span class="ui">Монитора</span>.</td></tr>
+    <tr><td><span class="ui">Из алерта</span></td><td>Ваш ответ в окне вопроса со сроком «Пока работает…» или <span class="ui">Навсегда</span>. Ответ со сроком <span class="ui">Один раз</span> правила не создаёт. См. <a href="../../docs/firewall/#ask">Спрашивать</a>.</td></tr>
+    <tr><td><span class="ui">Apple</span></td><td>Режим <span class="ui">Спрашивать</span> сам разрешил программу Apple.</td></tr>
+    <tr><td><span class="ui">Установлено ранее</span></td><td>Режим <span class="ui">Спрашивать</span> сам разрешил приложение, установленное до Routekeeper.</td></tr>
+    <tr><td><span class="ui">На проверку</span></td><td>Routekeeper пропустил соединение без вопроса и оставил правило, чтобы вы его проверили. Так бывает в режиме <span class="ui">Спрашивать</span>, когда ответить было некому (приложение Routekeeper не было запущено), и в режиме <a href="../../docs/firewall/#silent"><span class="ui">Тихий</span></a> с настройкой <span class="ui">Создавать правила «на проверку»</span>.</td></tr>
+    <tr><td><span class="ui">По умолчанию</span></td><td>Встроенные правила, см. <a href="#built-in">ниже</a>.</td></tr>
+  </tbody>
+</table></div>
+<p>Меню <span class="ui">Источник</span> на панели инструментов показывает правила одного источника, в скобках — их число. Чтобы разобрать правила <span class="ui">На проверку</span>, выберите этот источник, откройте правило двойным щелчком, выберите действие и нажмите <span class="ui">Сохранить</span>. Или выделите несколько и задайте действие через контекстное меню. После этого источник станет <span class="ui">Вручную</span>.</p>
+
+<h3>Действия со списком</h3>
+<ul>
+  <li><b>Двойной щелчок</b> открывает правило.</li>
+  <li><b>Контекстное меню</b>: <span class="ui">Изменить…</span>, <span class="ui">Дублировать</span>, <span class="ui">Действие</span>, <span class="ui">Включить</span> или <span class="ui">Выключить</span>, <span class="ui">Удалить</span>. Можно выделить несколько правил и изменить их разом.</li>
+  <li><b>Delete</b> удаляет выделенные правила без вопроса.</li>
+  <li><b><kbd>⌘Z</kbd></b> (<span class="ui">Правка</span> → <span class="ui">Отменить</span>) отменяет последнее изменение: новое правило, правку, включение и выключение, удаление, <a href="../../docs/proxies/#switch">перевод на другой прокси</a>. Удаление прокси и импорт не отменяются, а история отмены после них очищается.</li>
+  <li><b><kbd>⌘N</kbd></b> — новое правило.</li>
+</ul>
+
+<h3 id="built-in">Встроенные правила</h3>
+<p>Три правила с источником <span class="ui">По умолчанию</span> есть с первого запуска:</p>
+<ul>
+  <li><b>Все приложения · <code>127.0.0.0/8</code> → Напрямую</b> и <b>Все приложения · <code>::1/128</code> → Напрямую</b>, заметка «Loopback». Соединения с этим же Mac (<a class="term" href="../../docs/glossary/#loopback">loopback</a>) никогда не уходят в прокси: локальные серверы разработки, локальный клиент прокси.</li>
+  <li><b>Routekeeper → Напрямую</b>, заметка «Само приложение (проверка прокси)». Собственные соединения Routekeeper, например проверка обновлений и загрузка списков сервисов, идут напрямую. В версии 0.2.1 это правило называется AppProxy.</li>
+</ul>
+<div class="callout warn"><p><b>Не удаляйте и не выключайте встроенные правила.</b> Без первых двух приложение с маршрутом через прокси отправит в прокси и свои соединения с этим же Mac: маршрут приложения важнее настройки <span class="ui">Не трогать localhost</span>, которая действует, только когда не подошло ни одно правило.</p></div>
+<p>Ещё два исключения работают вне списка: соединения на адрес и порт самих прокси всегда идут напрямую, а проверку прокси выполняет сетевое расширение, и правила на неё не действуют.</p>
+
+<h2 id="import-export">Импорт и экспорт</h2>
+<h3>Экспорт</h3>
+<ol class="steps">
+  <li>В разделе <span class="ui">Правила</span> нажмите <span class="ui">Импорт и экспорт</span> на панели инструментов и выберите <span class="ui">Экспортировать…</span>. Из любого раздела: <span class="ui">Файл</span> → <span class="ui">Экспортировать правила…</span>.</li>
+  <li>Выберите, куда сохранить файл. По умолчанию он называется <code>Routekeeper-rules.json</code>.</li>
+</ol>
+<p>В файл попадают все правила, включая встроенные, и все прокси: адреса серверов, порты и логины. <b>Пароли прокси в файл не попадают.</b> Настройки (режим, вкладки <span class="ui">Настройки</span>) тоже не сохраняются. Храните файл как личный: в нём адреса ваших прокси и логины.</p>
+
+<h3>Импорт</h3>
+<ol class="steps">
+  <li><span class="ui">Импорт и экспорт</span> → <span class="ui">Импортировать…</span> или <span class="ui">Файл</span> → <span class="ui">Импортировать правила…</span>. Выберите файл.</li>
+  <li>Routekeeper спросит: <span class="ui">Заменить все правила и прокси?</span> и покажет, сколько правил и прокси сейчас и сколько в файле.</li>
+  <li>Нажмите <span class="ui">Заменить</span>.</li>
+  <li>Откройте раздел <a href="../../docs/proxies/#add"><span class="ui">Прокси</span></a>, впишите пароли у прокси с логином и нажмите <span class="ui">Проверить</span>.</li>
+</ol>
+<div class="callout warn"><p><b>Импорт заменяет, а не добавляет.</b> Все текущие правила и прокси удаляются, на их место встают правила и прокси из файла. Отменить это нельзя, <kbd>⌘Z</kbd> не поможет. Перед импортом экспортируйте текущие правила, чтобы осталась копия.</p></div>
+<ul>
+  <li>Если импортировать файл, выгруженный на этом же Mac, у прокси, которые никуда не делись, сохранённые пароли останутся.</li>
+  <li>Правила, которые ссылаются на прокси, которого нет в файле, после импорта выключены.</li>
+  <li>Если файл не читается, Routekeeper ответит «Не удалось прочитать файл правил».</li>
+</ul>
+<p><b>Перенос на другой Mac:</b> экспортируйте правила, перенесите файл, импортируйте его на другом Mac и впишите пароли прокси. Приложения с подписью разработчика узнаются и там. Программы без подписи узнаются по пути к файлу, поэтому если на другом Mac они лежат в другом месте, добавьте их заново, см. <a href="../../docs/apps/#cli">Программы командной строки</a>.</p>
+    <p class="checked">Сверено с кодом Routekeeper (версия 0.2.1 и следующая за ней) 4 октября 2026 года.</p>
+    <nav class="pager"><a class="prev" href="../../docs/apps/"><span>Назад</span>Приложения и сервисы</a><a class="next" href="../../docs/firewall/"><span>Дальше</span>Режимы файрвола</a></nav>
+  </article>
+</main>
+
+<div class="wrap">
+  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span><a href="../../">Routekeeper для macOS</a> · <a href="../../docs/">Документация</a> · <a href="../../privacy/">Конфиденциальность</a> · <a href="https://github.com/ilyabazhenov/routekeeper">GitHub</a></span></footer>
+</div>
+
+<script src="../../docs/assets/docs.js?v=3e67278c"></script>
+</body>
+</html>

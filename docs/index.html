@@ -4,173 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Документация — Routekeeper</title>
-<meta name="description" content="Документация Routekeeper: быстрый старт, типовые сценарии, настройка прокси, ограничения и проверка утечек.">
+<meta name="description" content="Документация Routekeeper: быстрый старт, как это работает, прокси, приложения и сервисы, правила, режимы файрвола, свой прокси-сервер, рецепты, мониторинг, неполадки и словарь.">
 <meta name="theme-color" content="#0a0f1f">
-<link rel="icon" href="../mark.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="../icon.png">
+<link rel="canonical" href="https://getroutekeeper.app/docs/">
 <link rel="alternate" hreflang="ru" href="https://getroutekeeper.app/docs/">
 <link rel="alternate" hreflang="en" href="https://getroutekeeper.app/en/docs/">
+<link rel="alternate" hreflang="x-default" href="https://getroutekeeper.app/en/docs/">
+<link rel="icon" href="../mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<style>
-:root {
-  --bg: #0a0f1f;
-  --surface: rgba(170, 190, 255, 0.035);
-  --surface-2: rgba(170, 190, 255, 0.06);
-  --line: rgba(170, 190, 255, 0.09);
-  --line-2: rgba(170, 190, 255, 0.16);
-  --text: #f3ecdf;
-  --muted: #a3abc4;
-  --faint: #6b7493;
-  --amber: #ffb547;
-  --amber-2: #ff8a3d;
-  --glow: rgba(255, 168, 76, 0.5);
-  --direct: #9cc0ff;
-  --stop: #ff7a66;
-  --ok: #7fd8a4;
-  --font: "Onest", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
-  color-scheme: dark;
-}
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; overflow-x: clip; }
-body {
-  margin: 0; color: var(--text);
-  background: radial-gradient(1500px 1000px at 50% -160px, #18234b, transparent 70%) no-repeat, var(--bg);
-  font: 400 17px/1.65 var(--font); -webkit-font-smoothing: antialiased; overflow-x: clip;
-}
-h1, h2, h3, p, ul, ol, table { margin: 0; }
-h1, h2, h3 { font-weight: 600; letter-spacing: -0.025em; text-wrap: balance; }
-a { color: inherit; text-decoration: none; }
-:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; border-radius: 8px; }
-.wrap { width: min(1180px, 100% - 32px); margin-inline: auto; }
-.warm { background: linear-gradient(100deg, #ffd58a 0%, var(--amber) 40%, var(--amber-2) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
-
-.nav-wrap { position: sticky; top: 12px; z-index: 50; margin-top: 12px; }
-.nav {
-  display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  padding: 8px 8px 8px 14px; border-radius: 16px;
-  background: rgba(12, 18, 38, 0.6); border: 1px solid var(--line);
-  backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4);
-}
-.brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 17px; letter-spacing: -0.01em; }
-.brand img { width: 28px; height: 28px; }
-.nav-end { display: flex; align-items: center; gap: 6px; }
-.lang { padding: 8px 10px; border-radius: 10px; color: var(--muted); font: 500 13px/1 var(--mono); letter-spacing: .06em; }
-.lang:hover { color: var(--text); background: var(--surface-2); }
-.btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 10px; font: 600 14px/1 var(--font); }
-.btn-primary { color: #2a1606; background: linear-gradient(180deg, #ffd27e, var(--amber) 55%, #f39a3a); box-shadow: inset 0 1px 0 rgba(255, 248, 225, .7), 0 8px 28px -8px var(--glow); }
-.btn-ghost { color: var(--text); background: var(--surface-2); border: 1px solid var(--line); }
-
-.docs-hero {
-  display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 48px; align-items: center;
-  min-height: 330px; padding-block: 34px 28px;
-}
-.hero-copy h1 { margin-top: 18px; max-width: 760px; font-size: clamp(42px, 6.2vw, 78px); line-height: 1.02; letter-spacing: -0.045em; }
-.hero-copy .lede { margin-top: 24px; max-width: 720px; font-size: 20px; color: var(--text); }
-.hero-copy .lede b { color: var(--amber); font-weight: 600; }
-.hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
-.lantern-scene {
-  position: relative; min-height: 260px; display: grid; place-items: center; overflow: hidden;
-  border: 1px solid var(--line); border-radius: 20px;
-  background:
-    radial-gradient(circle at 50% 45%, rgba(255, 181, 71, .24), rgba(255, 138, 61, .08) 35%, transparent 62%),
-    linear-gradient(180deg, rgba(170, 190, 255, .06), rgba(170, 190, 255, .02));
-}
-.lantern-scene::before {
-  content: ""; position: absolute; inset: 18px; border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(255, 181, 71, .28), transparent 72%);
-  filter: blur(16px);
-}
-.lantern-scene::after {
-  content: ""; position: absolute; inset: auto 12% 34px; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 181, 71, .55), transparent);
-  box-shadow: 0 0 34px 10px rgba(255, 181, 71, .18);
-}
-.lantern-scene img {
-  position: relative; z-index: 1; width: min(164px, 44vw); height: auto;
-  filter: drop-shadow(0 0 28px rgba(255, 181, 71, .42));
-}
-
-.docs-layout { display: grid; grid-template-columns: 220px minmax(0, 860px); gap: 52px; align-items: start; padding-block: 32px 96px; }
-.side-nav {
-  position: sticky; top: 96px; display: grid; gap: 6px; padding: 14px;
-  border: 1px solid var(--line); border-radius: 16px; background: rgba(12, 18, 38, 0.42);
-}
-.side-nav b { padding: 4px 8px 10px; color: var(--text); font-size: 14px; font-weight: 600; }
-.side-nav a { padding: 8px; border-radius: 9px; color: var(--muted); font-size: 14px; line-height: 1.25; transition: color .2s, background .2s; }
-.side-nav a:hover { color: var(--text); background: var(--surface-2); }
-.side-nav .side-action { margin-top: 8px; border-top: 1px solid var(--line); padding-top: 14px; color: var(--amber); }
-.doc { max-width: 860px; min-width: 0; }
-.eyebrow { font: 500 13px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber); }
-.lede { margin-top: 24px; max-width: 760px; font-size: 20px; color: var(--text); }
-.lede b { color: var(--amber); font-weight: 600; }
-.dated { margin-top: 14px; color: var(--faint); font-size: 14px; }
-.toc {
-  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;
-  margin-top: 36px;
-}
-.toc a, .card {
-  display: block; min-width: 0; padding: 16px 18px; border-radius: 16px;
-  background: var(--surface); border: 1px solid var(--line);
-}
-.toc a { color: var(--muted); transition: color .2s, background .2s, border-color .2s; }
-.toc a:hover { color: var(--text); background: var(--surface-2); border-color: var(--line-2); }
-.toc b, .card b { display: block; color: var(--text); font-weight: 600; }
-.toc span { display: block; margin-top: 4px; font-size: 14px; line-height: 1.45; }
-.doc h2 { margin-top: 64px; font-size: 30px; }
-.doc h3 { margin-top: 28px; font-size: 20px; }
-.doc p, .doc ul, .doc ol, .doc table { margin-top: 16px; color: var(--muted); }
-.doc p b, .doc li b { color: var(--text); font-weight: 600; }
-.doc ul, .doc ol { padding-left: 22px; }
-.doc li + li { margin-top: 10px; }
-.doc li::marker { color: var(--amber); }
-.doc code {
-  font: 500 0.88em/1 var(--mono); color: var(--text);
-  background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px; padding: 2px 6px;
-}
-.doc pre {
-  overflow-x: auto; margin: 16px 0 0; padding: 16px; border-radius: 14px;
-  background: rgba(0, 0, 0, .22); border: 1px solid var(--line);
-  color: var(--text); font: 500 14px/1.6 var(--mono);
-}
-.doc a:not(.btn):not(.card) { color: var(--amber); text-decoration: underline; text-decoration-color: rgba(255, 181, 71, .4); text-underline-offset: 3px; }
-.doc a:not(.btn):hover { text-decoration-color: var(--amber); }
-.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
-.card p { margin-top: 8px; font-size: 15px; line-height: 1.55; }
-.tagline { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
-.tag {
-  display: inline-flex; align-items: center; min-height: 30px; padding: 5px 10px; border-radius: 999px;
-  background: var(--surface-2); border: 1px solid var(--line); color: var(--muted); font: 500 13px/1.2 var(--mono);
-}
-.callout {
-  margin-top: 18px; padding: 18px 20px; border-radius: 16px;
-  background: rgba(255, 181, 71, .08); border: 1px solid rgba(255, 181, 71, .22); color: var(--text);
-}
-.table { overflow-x: auto; margin-top: 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
-.doc table { margin: 0; width: 100%; border-collapse: collapse; font-size: 15px; min-width: 640px; }
-.doc th, .doc td { padding: 12px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
-.doc tr:last-child td { border-bottom: 0; }
-.doc th { color: var(--text); font-weight: 600; font-size: 14px; background: var(--surface-2); }
-.doc td:first-child { color: var(--text); }
-.footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; padding-block: 28px 44px; border-top: 1px solid var(--line); color: var(--faint); font-size: 14px; }
-.footer a:hover { color: var(--text); }
-@media (max-width: 980px) {
-  .docs-hero { grid-template-columns: minmax(0, 1fr); gap: 24px; padding-block: 34px 14px; }
-  .lantern-scene { min-height: 220px; }
-  .docs-layout { display: block; padding-block: 56px 72px; }
-  .side-nav { display: none; }
-}
-@media (max-width: 760px) {
-  .docs-hero { min-height: 0; }
-  .hero-copy h1 { font-size: clamp(38px, 12vw, 56px); }
-  .lede { font-size: 18px; }
-  .toc, .grid { grid-template-columns: minmax(0, 1fr); }
-}
-</style>
+<link rel="stylesheet" href="../docs/assets/docs.css?v=891e2023">
 </head>
-<body>
+<body data-moved='{&quot;quick-start&quot;:&quot;../docs/start/&quot;,&quot;recipes&quot;:&quot;../docs/recipes/&quot;,&quot;proxy&quot;:&quot;../docs/proxies/&quot;,&quot;leaks&quot;:&quot;../docs/monitoring/&quot;,&quot;limits&quot;:&quot;../docs/limits/&quot;,&quot;troubleshooting&quot;:&quot;../docs/troubleshooting/&quot;}'>
+<!-- Built by Scripts/build-docs.py from site-src/docs/ru/index.html. Edit the fragment, not this file. -->
 
 <div class="wrap nav-wrap">
   <header class="nav">
@@ -182,112 +30,127 @@ a { color: inherit; text-decoration: none; }
 <section class="wrap docs-hero">
   <div class="hero-copy">
     <span class="eyebrow">Документация</span>
-    <h1>Настройте Routekeeper <span class="warm">под свой маршрут</span></h1>
-    <p class="lede"><b>Routekeeper направляет трафик отдельных приложений через прокси, напрямую или в тупик.</b> Здесь собран первый запуск, типовые сценарии и честные границы продукта.</p>
-    <p class="dated">Редакция от 4 октября 2026 года.</p>
-    <div class="hero-actions"><a class="btn btn-primary" href="#quick-start">Начать настройку</a><a class="btn btn-ghost" href="#recipes">Посмотреть сценарии</a></div>
+    <h1>Как пользоваться <span class="warm">Routekeeper</span></h1>
+    <p class="lede"><b>Routekeeper направляет трафик выбранных приложений на Mac через ваш прокси, пускает напрямую или блокирует.</b> Выберите, с чего начать: пошаговая настройка, рецепты для готового прокси или точное описание поведения.</p>
   </div>
   <div class="lantern-scene" aria-hidden="true"><img src="../lantern.svg" alt=""></div>
 </section>
 
 <main class="wrap docs-layout">
-  <aside class="side-nav" aria-label="Навигация по документации">
-    <b>На этой странице</b>
-    <a href="#quick-start">Быстрый старт</a>
-    <a href="#recipes">Типовые сценарии</a>
-    <a href="#proxy">Свой прокси</a>
-    <a href="#leaks">Проверка утечек</a>
-    <a href="#limits">Ограничения</a>
-    <a href="#troubleshooting">Если не работает</a>
-    <a class="side-action" href="../#download">Скачать Routekeeper</a>
-    <a href="https://github.com/ilyabazhenov/routekeeper/issues">GitHub Issues</a>
+  <aside class="side-nav" aria-label="Разделы документации">
+    <span class="group">Начало</span>
+    <a href="../docs/" aria-current="page">Обзор документации</a>
+    <a href="../docs/start/">Быстрый старт</a>
+    <a href="../docs/concepts/">Как это работает</a>
+    <span class="group">Настройка</span>
+    <a href="../docs/proxies/">Прокси</a>
+    <a href="../docs/apps/">Приложения и сервисы</a>
+    <a href="../docs/rules/">Правила</a>
+    <a href="../docs/firewall/">Режимы файрвола</a>
+    <a href="../docs/server/">Свой прокси-сервер</a>
+    <span class="group">На практике</span>
+    <a href="../docs/recipes/">Рецепты</a>
+    <a href="../docs/monitoring/">Проверка и мониторинг</a>
+    <span class="group">Справка</span>
+    <a href="../docs/troubleshooting/">Если не работает</a>
+    <a href="../docs/maintenance/">Обновление и удаление</a>
+    <a href="../docs/limits/">Ограничения</a>
+    <a href="../docs/glossary/">Словарь</a>
+    <a href="../docs/changelog/">Что нового</a>
+    <a class="side-action" href="../privacy/">Конфиденциальность</a>
+    <a href="https://github.com/ilyabazhenov/routekeeper/issues">Сообщить о проблеме</a>
   </aside>
   <article class="doc">
-    <nav class="toc" aria-label="Разделы документации">
-      <a href="#quick-start"><b>Быстрый старт</b><span>Что сделать после установки.</span></a>
-      <a href="#recipes"><b>Сценарии</b><span>AI, Telegram, YouTube, Tor, корпоративный прокси.</span></a>
-      <a href="#proxy"><b>Свой прокси</b><span>Какой тип выбрать и что включить.</span></a>
-      <a href="#leaks"><b>Проверка утечек</b><span>Как убедиться, что приложение не ушло мимо.</span></a>
-      <a href="#limits"><b>Ограничения</b><span>UDP, звонки, игры и другие границы.</span></a>
-      <a href="#troubleshooting"><b>Если не работает</b><span>Короткий чеклист диагностики.</span></a>
-    </nav>
+    <details class="mobile-nav"><summary>Все разделы документации</summary><nav>
+    <span class="group">Начало</span>
+    <a href="../docs/" aria-current="page">Обзор документации</a>
+    <a href="../docs/start/">Быстрый старт</a>
+    <a href="../docs/concepts/">Как это работает</a>
+    <span class="group">Настройка</span>
+    <a href="../docs/proxies/">Прокси</a>
+    <a href="../docs/apps/">Приложения и сервисы</a>
+    <a href="../docs/rules/">Правила</a>
+    <a href="../docs/firewall/">Режимы файрвола</a>
+    <a href="../docs/server/">Свой прокси-сервер</a>
+    <span class="group">На практике</span>
+    <a href="../docs/recipes/">Рецепты</a>
+    <a href="../docs/monitoring/">Проверка и мониторинг</a>
+    <span class="group">Справка</span>
+    <a href="../docs/troubleshooting/">Если не работает</a>
+    <a href="../docs/maintenance/">Обновление и удаление</a>
+    <a href="../docs/limits/">Ограничения</a>
+    <a href="../docs/glossary/">Словарь</a>
+    <a href="../docs/changelog/">Что нового</a>
+    </nav></details>
+<div class="paths">
+  <a href="../docs/start/"><b>Впервые настраиваю прокси</b><span>Установка, три разрешения macOS, первый прокси и первое приложение — по шагам, с объяснением каждого слова.</span></a>
+  <a href="../docs/proxies/"><b>У меня уже есть прокси или клиент</b><span>SOCKS5, HTTP или HTTPS-прокси, локальный клиент вроде sing-box или Xray, рабочий прокси. Как добавить и что включить.</span></a>
+  <a href="../docs/concepts/"><b>Нужны точные детали</b><span>Как решается судьба соединения, что происходит с DNS и UDP, какое правило важнее.</span></a>
+</div>
+<p>Сразу к делу: <a href="../docs/recipes/">рецепты</a> для мессенджера, браузера, терминала, локального клиента и рабочего прокси · <a href="../docs/rules/#priority">какое правило важнее</a> · <a href="../docs/start/#turn-off">как быстро выключить Routekeeper</a>.</p>
 
-    <h2 id="quick-start">Быстрый старт</h2>
-    <ol>
-      <li><b>Установите Routekeeper</b> и пройдите онбординг macOS: разрешите системное расширение, сетевой фильтр и конфигурацию прокси.</li>
-      <li><b>Добавьте прокси</b> в разделе «Прокси». Для личного сервера чаще всего подходит HTTPS-прокси на 443 порту или локальный SOCKS5 от sing-box, Xray или Clash. Своего сервера нет — <a href="server/">поднимите его за 15 минут</a>.</li>
-      <li><b>Включите DNS через прокси</b>, если прокси это поддерживает. Так сайты разрешаются не через DNS провайдера.</li>
-      <li><b>Включите блокировку UDP и QUIC</b> для браузеров и мессенджеров, когда нужен режим без утечек.</li>
-      <li><b>Создайте правило</b>: приложение → прокси, напрямую или блокировать. Routekeeper узнаёт приложение по подписи и учитывает helper-процессы.</li>
-      <li><b>Загляните в «Обзор»</b>: это главный экран. Сверху самая серьёзная проблема и как её исправить, ниже каждый маршрут с состоянием и скоростью прокси, приложения, которые сейчас идут через прокси, и утечки. Подробности по каждому соединению — в мониторе и на вкладке «Утечки».</li>
-    </ol>
+<h2 id="pages">Все разделы</h2>
 
-    <div class="callout">
-      Начинайте с режима «Только прокси»: он применяет ваши правила, а всё остальное оставляет напрямую. Когда поймёте, какие приложения должны молчать или спрашивать разрешение, можно перейти к более строгим режимам.
-    </div>
+<h3>Начало</h3>
+<div class="grid">
+  <a class="card" href="../docs/start/"><b>Быстрый старт</b><p>От скачивания до первого приложения через прокси и проверки.</p></a>
+  <a class="card" href="../docs/concepts/"><b>Как это работает</b><p>Приложение и сетевое расширение, порядок выбора действия, DNS и UDP.</p></a>
+</div>
 
-    <h2 id="recipes">Типовые сценарии</h2>
-    <div class="grid">
-      <div class="card"><b>AI-сервисы и инструменты разработчика</b><p>Добавьте ChatGPT, Claude, Codex, Cursor, VS Code, Terminal или iTerm. Правило для терминала покрывает дочерние процессы: <code>curl</code>, <code>git</code>, <code>npm</code>, <code>pip</code>, <code>brew</code>.</p></div>
-      <div class="card"><b>Telegram, Discord text, YouTube</b><p>Назначьте приложение или браузер на прокси. Для браузера можно ограничить правило доменами сервиса, например YouTube, чтобы банки и локальные сайты оставались напрямую.</p></div>
-      <div class="card"><b>Поверх sing-box, Xray или Clash</b><p>Пусть отдельный клиент держит VLESS, Shadowsocks или другой протокол, а Routekeeper решает, какие приложения идут в его локальный SOCKS5-порт, например <code>127.0.0.1:1080</code>.</p></div>
-      <div class="card"><b>Корпоративный прокси</b><p>Создайте правило для рабочих доменов, подсетей или портов: <code>*.corp.example</code> через офисный прокси, остальное напрямую.</p></div>
-      <div class="card"><b>Tor для отдельных приложений</b><p>Запустите Tor локально и добавьте SOCKS5 <code>127.0.0.1:9050</code>. Включите DNS через прокси, чтобы имена разрешались внутри Tor.</p></div>
-      <div class="card"><b>Kill switch для приложения</b><p>Назначьте приложение на прокси и не разрешайте прямой обход. Если прокси упадёт, соединения не уйдут напрямую.</p></div>
-    </div>
+<h3>Настройка</h3>
+<div class="grid">
+  <a class="card" href="../docs/proxies/"><b>Прокси</b><p>Типы, поля, вставка строки, проверка, несколько прокси, локальный клиент и рабочий прокси.</p></a>
+  <a class="card" href="../docs/apps/"><b>Приложения и сервисы</b><p>Маршрут приложения, дочерние процессы, консольные программы и 32 сервиса.</p></a>
+  <a class="card" href="../docs/rules/"><b>Правила</b><p>Исключения по доменам, адресам и портам, какое правило важнее, импорт и экспорт.</p></a>
+  <a class="card" href="../docs/firewall/"><b>Режимы файрвола</b><p><span class="ui">Только прокси</span>, <span class="ui">Тихий</span>, <span class="ui">Спрашивать</span>, <span class="ui">Блокировать всё</span>: что делать с соединением без правила.</p></a>
+  <a class="card" href="../docs/server/"><b>Свой прокси-сервер</b><p>HTTPS-прокси на своём VPS одной командой и подключение к Routekeeper.</p></a>
+</div>
 
-    <h2 id="proxy">Свой прокси</h2>
-    <p>Routekeeper умеет ходить в SOCKS5, HTTP CONNECT и HTTPS-прокси. Для публичного интернета самый практичный вариант — HTTPS-прокси на своём VPS: снаружи он выглядит как обычный TLS-сайт на 443 порту.</p>
-    <p>Такой сервер ставится одной командой: Caddy с <code>forwardproxy@naive</code>, сертификат Let's Encrypt и защита SSH от подбора пароля. В конце скрипт печатает строку, которую достаточно вставить в «Прокси» по ⌘V.</p>
-    <div class="callout"><b>Нет своего сервера?</b> <a href="server/">Пошаговая инструкция: свой прокси-сервер за 15 минут</a> — от домена до первого правила.</div>
-    <p>Если HTTPS-прокси нестабилен в вашей сети, запасной путь — sing-box или Xray на сервере и локальный SOCKS5-клиент на Mac. В Routekeeper при этом меняется только прокси, правила приложений остаются прежними.</p>
-    <p><b>Несколько прокси.</b> Если прокси упал или стал медленным, «Обзор» покажет это первым, а значок в боковой панели посчитает недоступные прокси. Перевести все маршруты на другой прокси можно с экрана «Обзор» или из меню-бара: Routekeeper спросит подтверждение и покажет, что и откуда переедет, а потом несколько секунд можно отменить перевод. Так же переводятся правила только одного прокси.</p>
-    <div class="tagline">
-      <span class="tag">HTTPS 443</span>
-      <span class="tag">SOCKS5 local</span>
-      <span class="tag">remote DNS</span>
-      <span class="tag">block UDP/QUIC</span>
-    </div>
+<h3>На практике</h3>
+<div class="grid">
+  <a class="card" href="../docs/recipes/"><b>Рецепты</b><p>Мессенджер, видео и DNS в браузере, инструменты разработчика, локальный клиент, рабочий прокси, упавший прокси.</p></a>
+  <a class="card" href="../docs/monitoring/"><b>Проверка и мониторинг</b><p><span class="ui">Обзор</span>, монитор соединений, раздел <span class="ui">Мимо прокси</span> и что он замечает.</p></a>
+</div>
 
-    <h2 id="leaks">Проверка утечек</h2>
-    <p>Самая полезная проверка — не внешний сайт, а сравнение трёх мест: монитор Routekeeper, вкладка «Утечки» и соединения на прокси-сервере.</p>
-    <ol>
-      <li>Откройте приложение, для которого создано правило через прокси.</li>
-      <li>В мониторе Routekeeper проверьте, что соединения помечены нужным прокси, а не «напрямую».</li>
-      <li>Откройте «Обзор» или вкладку «Утечки»: прямой DNS, обход правила и UDP будут отмечены отдельно, рядом с каждой утечкой — как её закрыть.</li>
-      <li>На своём сервере посмотрите активные соединения прокси и убедитесь, что они идут от вашего Mac.</li>
-    </ol>
-    <p>Push-уведомления Apple могут идти через системный процесс <code>apsd</code>, а не через правило приложения. Это нормально: это не трафик самого приложения.</p>
-    <p><b>DNS из браузера.</b> Если браузер разрешает имена напрямую через DNS провайдера, включите в его настройках «DNS через HTTPS» (Chrome, Edge, Firefox, Brave): тогда запросы имён пойдут через прокси вместе с остальным трафиком. Порт 53 для браузера не блокируйте — без DoH он перестанет открывать сайты. Служебные запросы macOS вроде <code>ipv4only.arpa</code> утечками не считаются.</p>
+<h3>Справка</h3>
+<div class="grid">
+  <a class="card" href="../docs/troubleshooting/"><b>Если не работает</b><p>Симптомы и причины, сообщения об ошибках, диагностика, как сообщить о проблеме.</p></a>
+  <a class="card" href="../docs/maintenance/"><b>Обновление и удаление</b><p>Обновления, переход с 0.2.x, выключение, полное удаление и где лежат данные.</p></a>
+  <a class="card" href="../docs/limits/"><b>Ограничения</b><p>UDP и звонки, соединения без имени сайта, профили браузера, другие VPN.</p></a>
+  <a class="card" href="../docs/glossary/"><b>Словарь</b><p>Прокси, DNS, UDP, QUIC, VPS и другие термины простыми словами.</p></a>
+  <a class="card" href="../docs/changelog/"><b>Что нового</b><p>Что изменилось в каждой версии.</p></a>
+</div>
 
-    <h2 id="limits">Ограничения</h2>
-    <div class="table"><table>
-      <thead><tr><th>Сценарий</th><th>Статус</th><th>Почему</th></tr></thead>
-      <tbody>
-        <tr><td>Обычный TCP-трафик приложений</td><td>Работает хорошо</td><td>Routekeeper перехватывает исходящие TCP-соединения и применяет правила.</td></tr>
-        <tr><td>DNS через прокси</td><td>Работает, когда известно имя хоста</td><td>Если приложение передало hostname, прокси разрешает имя сам.</td></tr>
-        <tr><td>QUIC, UDP, звонки и голос</td><td>Ограничено</td><td>Текущие прокси-маршруты передают TCP. UDP лучше блокировать, если важен режим без утечек.</td></tr>
-        <tr><td>Игры</td><td>Обычно не подходит</td><td>Многие игры используют UDP и собственные сетевые протоколы.</td></tr>
-        <tr><td>Два профиля одного браузера на разные прокси</td><td>Не поддерживается</td><td>Правила привязаны к приложению и подписи процесса, а не к профилю внутри приложения.</td></tr>
-      </tbody>
-    </table></div>
+<h2 id="symptoms">Что-то не работает?</h2>
+<p>Найдите похожий случай. Если ничего не подошло, начните с <a href="../docs/troubleshooting/#quick">быстрой проверки</a>.</p>
+<div class="table"><table>
+  <thead><tr><th>Что случилось</th><th>Куда смотреть</th></tr></thead>
+  <tbody>
+    <tr><td>После настройки перестали открываться сайты или приложения</td><td><a href="../docs/start/#turn-off">Выключите Routekeeper</a>, затем <a href="../docs/troubleshooting/#quick">быстрая проверка</a></td></tr>
+    <tr><td>macOS не даёт разрешение, или вы нажали «Не разрешать»</td><td><a href="../docs/troubleshooting/#permissions">Разрешения macOS</a></td></tr>
+    <tr><td>Приложение идёт напрямую, а не через прокси</td><td><a href="../docs/troubleshooting/#not-through-proxy">Не идёт через прокси</a></td></tr>
+    <tr><td>Проверка прокси пишет ошибку, например «SOCKS5: неверный логин или пароль» или «Прокси не ответил вовремя»</td><td><a href="../docs/troubleshooting/#errors">Сообщения об ошибках</a></td></tr>
+    <tr><td>Вверху окна «Сетевое расширение не отвечает»</td><td><a href="../docs/troubleshooting/#extension">Сетевое расширение</a></td></tr>
+    <tr><td>«Все соединения заблокированы», настройки не прочитаны</td><td><a href="../docs/troubleshooting/#locked">Блокировка всех соединений</a></td></tr>
+    <tr><td>Прокси упал или стал медленным</td><td><a href="../docs/recipes/#proxy-down">Если прокси упал</a></td></tr>
+    <tr><td>Через прокси не работают звонки или голосовые чаты</td><td><a href="../docs/limits/#udp">Ограничения: UDP</a></td></tr>
+    <tr><td>В разделе <span class="ui">Мимо прокси</span> появились записи</td><td><a href="../docs/monitoring/#leaks">Мимо прокси</a></td></tr>
+    <tr><td>Нужно сообщить об ошибке</td><td><a href="../docs/troubleshooting/#diagnostics">Собрать диагностику</a> и <a href="../docs/troubleshooting/#report">отправить отчёт</a></td></tr>
+  </tbody>
+</table></div>
 
-    <h2 id="troubleshooting">Если не работает</h2>
-    <ul>
-      <li><b>Прокси не проверяется:</b> проверьте домен, порт, логин, пароль и сертификат. Для HTTPS используйте домен, а не IP.</li>
-      <li><b>Приложение идёт напрямую:</b> проверьте, что правило создано для правильного приложения и включено наследование helper-процессов.</li>
-      <li><b>Прокси упал или тормозит:</b> переведите маршруты на другой прокси из «Обзора» или меню-бара, а потом верните, когда сервер оживёт.</li>
-      <li><b>Браузер обходит прокси:</b> включите блокировку UDP и QUIC, затем перезапустите вкладку или браузер. Если в «Утечках» DNS из браузера — включите в нём «DNS через HTTPS».</li>
-      <li><b>Нет соединений в мониторе:</b> убедитесь, что системное расширение и сетевой фильтр разрешены в настройках macOS.</li>
-      <li><b>Нужно приложить диагностику:</b> соберите архив в настройках Routekeeper, просмотрите его и только потом прикладывайте к публичному issue.</li>
-    </ul>
-    <p>Сообщения об ошибках и пожелания лучше оставлять в <a href="https://github.com/ilyabazhenov/routekeeper/issues">GitHub Issues</a>. Если вопрос касается приватных адресов или логов, сначала удалите из них лишние детали.</p>
+<div class="callout">
+  <p><b>Своего прокси пока нет?</b> На странице <a href="../docs/server/">«Свой прокси-сервер»</a> — как арендовать VPS, запустить одну команду и получить HTTPS-прокси с паролем и готовой строкой для Routekeeper. Без пароля такой сервер отвечает как обычный веб-сервер, поэтому сканеры не находят открытый прокси и не могут пользоваться им чужими руками.</p>
+</div>
+    <p class="checked">Сверено с кодом Routekeeper (версия 0.2.1 и следующая за ней) 4 октября 2026 года.</p>
+    <nav class="pager"><a class="next" href="../docs/start/"><span>Дальше</span>Быстрый старт</a></nav>
   </article>
 </main>
 
 <div class="wrap">
-  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span><a href="../">Routekeeper для macOS</a> · <a href="../privacy/">Конфиденциальность</a> · <a href="https://github.com/ilyabazhenov/routekeeper">GitHub</a></span></footer>
+  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span><a href="../">Routekeeper для macOS</a> · <a href="../docs/">Документация</a> · <a href="../privacy/">Конфиденциальность</a> · <a href="https://github.com/ilyabazhenov/routekeeper">GitHub</a></span></footer>
 </div>
 
+<script src="../docs/assets/docs.js?v=3e67278c"></script>
 </body>
 </html>

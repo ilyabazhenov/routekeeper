@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Troubleshooting — Routekeeper</title>
+<meta name="description" content="Routekeeper troubleshooting: symptoms and what to do, permissions in macOS 14 and 15, why an app goes around the proxy, a list of messages and banners, reinstalling and stopping the network extension, the lock when the settings can’t be read, diagnostics and bug reports.">
+<meta name="theme-color" content="#0a0f1f">
+<link rel="canonical" href="https://getroutekeeper.app/en/docs/troubleshooting/">
+<link rel="alternate" hreflang="ru" href="https://getroutekeeper.app/docs/troubleshooting/">
+<link rel="alternate" hreflang="en" href="https://getroutekeeper.app/en/docs/troubleshooting/">
+<link rel="alternate" hreflang="x-default" href="https://getroutekeeper.app/en/docs/troubleshooting/">
+<link rel="icon" href="../../../mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../../../icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=891e2023">
+</head>
+<body>
+<!-- Built by Scripts/build-docs.py from site-src/docs/en/troubleshooting.html. Edit the fragment, not this file. -->
+
+<div class="wrap nav-wrap">
+  <header class="nav">
+    <a class="brand" href="../../../en/"><img src="../../../mark.svg" alt="" width="28" height="28">Routekeeper</a>
+    <div class="nav-end"><a class="lang" href="../../../docs/troubleshooting/" hreflang="ru" lang="ru">RU</a><a class="btn btn-primary" href="../../../en/#download">Download</a></div>
+  </header>
+</div>
+
+<section class="wrap docs-hero compact">
+  <div class="hero-copy">
+    <span class="crumbs"><a href="../../../en/docs/">Docs</a> · Reference</span>
+    <h1>When something <span class="warm">doesn’t work</span></h1>
+    <p class="lede"><b>Start with the table of symptoms.</b> Below are the macOS permissions, all of the app’s messages, reinstalling the extension, the lock when the settings can’t be read, diagnostics and how to report a problem.</p>
+  </div>
+</section>
+
+<main class="wrap docs-layout">
+  <aside class="side-nav" aria-label="Docs sections">
+    <span class="group">Getting started</span>
+    <a href="../../../en/docs/">Docs overview</a>
+    <a href="../../../en/docs/start/">Quick start</a>
+    <a href="../../../en/docs/concepts/">How it works</a>
+    <span class="group">Setup</span>
+    <a href="../../../en/docs/proxies/">Proxies</a>
+    <a href="../../../en/docs/apps/">Apps and services</a>
+    <a href="../../../en/docs/rules/">Rules</a>
+    <a href="../../../en/docs/firewall/">Firewall modes</a>
+    <a href="../../../en/docs/server/">Your own proxy server</a>
+    <span class="group">In practice</span>
+    <a href="../../../en/docs/recipes/">Recipes</a>
+    <a href="../../../en/docs/monitoring/">Checking and monitoring</a>
+    <span class="group">Reference</span>
+    <a href="../../../en/docs/troubleshooting/" aria-current="page">Troubleshooting</a>
+    <a href="../../../en/docs/maintenance/">Updates and removal</a>
+    <a href="../../../en/docs/limits/">Limitations</a>
+    <a href="../../../en/docs/glossary/">Glossary</a>
+    <a href="../../../en/docs/changelog/">What's new</a>
+    <a class="side-action" href="../../../en/privacy/">Privacy</a>
+    <a href="https://github.com/ilyabazhenov/routekeeper/issues">Report a problem</a>
+  </aside>
+  <article class="doc">
+    <details class="mobile-nav"><summary>All docs sections</summary><nav>
+    <span class="group">Getting started</span>
+    <a href="../../../en/docs/">Docs overview</a>
+    <a href="../../../en/docs/start/">Quick start</a>
+    <a href="../../../en/docs/concepts/">How it works</a>
+    <span class="group">Setup</span>
+    <a href="../../../en/docs/proxies/">Proxies</a>
+    <a href="../../../en/docs/apps/">Apps and services</a>
+    <a href="../../../en/docs/rules/">Rules</a>
+    <a href="../../../en/docs/firewall/">Firewall modes</a>
+    <a href="../../../en/docs/server/">Your own proxy server</a>
+    <span class="group">In practice</span>
+    <a href="../../../en/docs/recipes/">Recipes</a>
+    <a href="../../../en/docs/monitoring/">Checking and monitoring</a>
+    <span class="group">Reference</span>
+    <a href="../../../en/docs/troubleshooting/" aria-current="page">Troubleshooting</a>
+    <a href="../../../en/docs/maintenance/">Updates and removal</a>
+    <a href="../../../en/docs/limits/">Limitations</a>
+    <a href="../../../en/docs/glossary/">Glossary</a>
+    <a href="../../../en/docs/changelog/">What's new</a>
+    </nav></details>
+<p class="lead-in">First, open the <span class="ui">Overview</span> screen. At the top, it shows the most serious problem and a button that fixes it. If the cause isn’t clear, find your case in the table below.</p>
+<div class="callout tip"><p><b>Is Routekeeper to blame?</b> Turn off the <span class="ui">Routekeeper On</span> switch in the menu of the menu bar icon. Rules stop applying, and all connections go direct, past the <a class="term" href="../../../en/docs/glossary/#proxy">proxy</a>. If everything works now, the problem is in your rules or the proxy. If not, it’s most likely the network or another program. Don’t forget to turn the switch back on.</p></div>
+
+<h2 id="quick">Quick check</h2>
+<div class="table"><table>
+  <thead><tr><th>What you see</th><th>Why it happens</th><th>What to do</th></tr></thead>
+  <tbody>
+    <tr><td>Nothing opens in any app</td><td><span class="ui">Block All</span> mode is on. Or Routekeeper couldn’t read its settings and is blocking everything. Or an old Routekeeper extension or another VPN program is running alongside it.</td><td>Check the mode in the icon’s menu and the banners at the top of the window. About the lock, see <a href="#locked">below</a>; about banners, the <a href="#errors">list of messages</a>; about VPNs, <a href="../../../en/docs/limits/#other-vpn">Limitations</a>.</td></tr>
+    <tr><td>One app has no network at all</td><td>Its proxy is unreachable, and Routekeeper doesn’t let such connections go direct. Less often, it’s a <span class="ui">Block</span> rule or a prompt that’s waiting for an answer in <span class="ui">Ask</span> mode.</td><td>On <span class="ui">Overview</span>, click <span class="ui">Check All</span>. If the proxy is unreachable, <a href="../../../en/docs/recipes/#proxy-down">move the routes</a>. If the icon’s menu has <span class="ui">Waiting for answer</span>, answer the prompt.</td></tr>
+    <tr><td>An app goes direct instead of through the proxy</td><td>There’s no route, child processes are turned off, another rule took over the address, or the connection has no site name.</td><td>Go through the list in <a href="#not-through-proxy">An app goes around the proxy</a>.</td></tr>
+    <tr><td>The proxy check fails</td><td>Wrong server, <a class="term" href="../../../en/docs/glossary/#port">port</a>, type, login or password. An IP instead of a domain name for HTTPS. The local client isn’t running.</td><td>Find the error text in the <a href="#errors">list of messages</a>.</td></tr>
+    <tr><td>Everything works, but slowly</td><td>The server is far away or overloaded. A response time of 1500 ms or more is marked “slow”. The first connection of a program that has just started can be delayed by a fraction of a second.</td><td>A distant server that works fine shows 500–800 ms. That’s normal. If you have a closer proxy, <a href="../../../en/docs/recipes/#proxy-down">move the routes to it</a>.</td></tr>
+    <tr><td>The browser goes around the proxy</td><td>The browser opens some sites over <a class="term" href="../../../en/docs/glossary/#quic">QUIC</a>, sends its own <a class="term" href="../../../en/docs/glossary/#dns">DNS</a> queries, or goes through the proxy only for a service. Old connections stayed on the previous route.</td><td>Check <span class="ui">Block UDP and QUIC</span> on the proxy. Recipes: <a href="../../../en/docs/recipes/#browser-video">a video service in the browser</a> and <a href="../../../en/docs/recipes/#browser-dns">DNS over HTTPS</a>. Restart the browser.</td></tr>
+    <tr><td>No icon in the menu bar</td><td>Routekeeper isn’t running: for example, after a restart if <span class="ui">Open at login</span> is off. Or the icon is hidden behind the MacBook’s notch or under other icons.</td><td>Open Routekeeper from the Applications folder or with Spotlight: the icon appears. If you still can’t see the icon, open Routekeeper once more. Then its window opens. Rules work even when the app isn’t running: the network extension applies them.</td></tr>
+    <tr><td>The window doesn’t open, and there’s no icon in the Dock</td><td>Routekeeper is a menu bar app. It appears in the Dock only while its window is open.</td><td>Click the menu bar icon → <span class="ui">Open Routekeeper</span> (<kbd>⌘O</kbd>). Or right-click the icon, or click it while holding <kbd>⌥</kbd>. Or open Routekeeper again from Finder or Spotlight.</td></tr>
+    <tr><td>The monitor is empty</td><td>Routekeeper is turned off with the switch, and then the monitor doesn’t record. Or the macOS permissions aren’t given.</td><td>Turn on <span class="ui">Routekeeper On</span>. If the window shows the welcome screen, go through its steps (<a href="#permissions">permissions</a>).</td></tr>
+  </tbody>
+</table></div>
+
+<h2 id="permissions">macOS permissions</h2>
+<p>Routekeeper works through a <a class="term" href="../../../en/docs/glossary/#network-extension">network extension</a>, and macOS asks for permission three times: to turn on the extension, to filter network content and to add a proxy configuration. Until all three are given, the Routekeeper window shows the welcome screen with steps instead of the sections. Installation is described step by step in the <a href="../../../en/docs/start/#permissions">Quick start</a>. Here is what to do if something went wrong.</p>
+
+<h3>You clicked “Don’t Allow”</h3>
+<ul>
+  <li><b>In the window about filtering network content.</b> Open the Routekeeper window. On the welcome screen, at step 2, click <span class="ui">Turn On Filter</span> again. macOS asks again. Click “Allow”.</li>
+  <li><b>In the window about the proxy configuration.</b> The same way: step 3 → <span class="ui">Turn On Proxy</span> → “Allow”.</li>
+</ul>
+
+<h3>Where to allow the extension</h3>
+<p>You do this step in System Settings, and the path depends on your macOS version.</p>
+<ul>
+  <li><b>macOS 15 and later.</b> System Settings → General → Login Items &amp; Extensions → Network Extensions. Turn on Routekeeper. If the general list of extensions opens, switch it to By Category and open Network Extensions. The <span class="ui">Open System Settings</span> button on the welcome screen and <span class="ui">Open Settings</span> in the hint window take you straight there.</li>
+  <li><b>macOS 14.</b> System Settings → Privacy &amp; Security. Scroll down to the message that system software from developer Ilya Bazhenov was blocked from loading. Click “Allow” and enter the administrator password. Routekeeper’s hints describe only the macOS 15 path, so on macOS 14 open System Settings yourself. If there’s no message, click <span class="ui">Try Again</span> or <span class="ui">Install</span> at step 1: macOS shows it again.</li>
+</ul>
+<p>In the list, the extension is called “Routekeeper Extension”, and in versions 0.2.x “Routekeeper Network Extension”. Only a user with administrator rights can allow the extension.</p>
+
+<h3>The extension was turned off in System Settings</h3>
+<p>If you turn Routekeeper off in the list of network extensions, the filter and proxy stop working, and the Routekeeper window shows the welcome screen again. At step 1, click <span class="ui">Install</span> or <span class="ui">Try Again</span> and turn the extension back on in the same list. If Routekeeper’s configurations were turned off or removed in System Settings → Network, open the Routekeeper window. If it shows the welcome screen, repeat steps 2 and 3. If not, and the status line says “Proxy provider isn’t running”, click <span class="ui">Settings</span> → <span class="ui">Extension</span> → <span class="ui">Reinstall</span>.</p>
+
+<h3>macOS asks for a restart</h3>
+<p>Sometimes, after the extension is installed, step 1 shows “Restart your Mac to finish installing.” Restart your Mac and open Routekeeper. After a restart, the extension, filter and proxy start by themselves. The Routekeeper window opens by itself only if <span class="ui">Open at login</span> is on (<span class="ui">Settings</span> → <span class="ui">General</span>).</p>
+
+<h3>A Mac managed by an organization</h3>
+<p>On a work Mac, an administrator can forbid system extensions or network filters with a management profile (MDM). Then the switch in System Settings is missing or can’t be turned on, and you can’t change this yourself. Contact your administrator.</p>
+<details class="deep"><summary>Details: what to tell the administrator</summary>
+  <p>Routekeeper installs a system network extension with two configurations: a network content filter (sockets) and a transparent proxy (app proxy). The developer’s Team ID is <code>N577X226Q5</code>. The extension’s identifier is <code>app.getroutekeeper.mac.extension</code>; in versions 0.2.x, it’s <code>dev.ilyabazenov.appproxy.extension</code>. The app must be in <code>/Applications</code>.</p>
+  <p>Other VPN programs and network filters can also get in the way: see <a href="../../../en/docs/limits/#other-vpn">Other VPNs and network extensions</a>.</p>
+</details>
+
+<h2 id="not-through-proxy">An app goes around the proxy</h2>
+<p>The quickest way to find the cause is the monitor. Open <span class="ui">Monitor</span>, type the app’s name in the search field and select its connection. The <span class="ui">Decision</span> field at the bottom says why the connection went this way: “rule: …” with the app and the address, “no rule — Proxy Only mode”, “Routekeeper is off” and so on.</p>
+<ol class="steps">
+  <li><b>Does the app have a route?</b> Where all of an app’s traffic goes is set in the <span class="ui">Apps</span> section, not in <span class="ui">Rules</span>. The app’s row should have a route like <span class="ui">Proxy: …</span>, and the switch on the right should be on. If the <span class="ui">Decision</span> field says “no rule”, there’s no route. How to add one: <a href="../../../en/docs/apps/#route">An app’s route</a>.</li>
+  <li><b>Is it the right app?</b> Routekeeper recognizes an app by its <a class="term" href="../../../en/docs/glossary/#code-signature">signature</a>. A beta version, a copy from another store or a second browser are different apps. Add the one you need.</li>
+  <li><b>Is <span class="ui">Include Child Processes</span> on?</b> Right-click the app’s row. If the item is off, the app’s helper processes and the programs it launches follow their own rules. In the <span class="ui">Leaks</span> section, such connections are marked <span class="ui">Process outside the rule</span>. For details, see <a href="../../../en/docs/apps/#child-processes">Child processes</a>.</li>
+  <li><b>Did another rule take over the address?</b> A rule for a specific address, or a service, wins over the app’s route. For example, the “Russian sites” service with the <span class="ui">Direct</span> route, or the rule <code>*.example.com</code> → <span class="ui">Direct</span>, sends these addresses direct even for an app on a proxy. The <span class="ui">Decision</span> field shows this rule. The order is described in <a href="../../../en/docs/rules/#priority">Which rule wins</a>.</li>
+  <li><b>Does the connection have a site name?</b> Domain and service rules apply only when the app passed a name. Connections to a bare <a class="term" href="../../../en/docs/glossary/#ip">IP</a> and most QUIC connections carry no name and follow the app’s route. If you’re counting on a service rule and the browser’s route is <span class="ui">Direct</span>, you need the recipe <a href="../../../en/docs/recipes/#browser-video">for a video service</a>. For details, see <a href="../../../en/docs/rules/#hostnames">Rules by site name</a>.</li>
+  <li><b>Is it an old connection?</b> Open connections don’t move to a new route. Restart the app.</li>
+  <li><b>Is going direct allowed when the proxy fails?</b> If <span class="ui">Settings</span> → <span class="ui">Network</span> → <span class="ui">If the proxy is down, go direct</span> is on, connections go direct while the proxy is unreachable.</li>
+</ol>
+<details class="deep"><summary>Details: what always goes direct</summary>
+  <ul>
+    <li>Connections to the same Mac (<code>127.0.0.1</code>, <code>::1</code>), that is, <a class="term" href="../../../en/docs/glossary/#loopback">loopback</a>. There are built-in rules for this, and also the <span class="ui">Leave localhost alone</span> switch in <span class="ui">Settings</span> → <span class="ui">Network</span>.</li>
+    <li>Connections from any app to the address and port of a proxy added to Routekeeper. The <span class="ui">Decision</span> field says “connection to the proxy server”.</li>
+    <li>Routekeeper’s own connections: proxy checks, updates, service lists.</li>
+    <li><a class="term" href="../../../en/docs/glossary/#udp">UDP</a> DNS queries to port 53 from an app on a proxy: they’re let through directly and flagged as <span class="ui">DNS around the proxy</span>. For a browser, there’s a <a href="../../../en/docs/recipes/#browser-dns">recipe</a>.</li>
+    <li>UDP from an app on a proxy if that proxy has <span class="ui">Block UDP and QUIC</span> off. Such connections are flagged as <span class="ui">UDP around the proxy</span>.</li>
+    <li>New connections in the first seconds after the extension restarts or updates: see <a href="../../../en/docs/limits/#restart-gap">Limitations</a>.</li>
+  </ul>
+  <p>What Routekeeper flags as a connection around the proxy and what it doesn’t is described in <a href="../../../en/docs/monitoring/#what-is-detected">What Routekeeper notices and what it doesn’t</a>.</p>
+</details>
+
+<h2 id="errors">App messages</h2>
+<h3>Proxy errors</h3>
+<p>You see them in three places: next to the <span class="ui">Check</span> button in the <span class="ui">Proxy</span> section, in <span class="ui">Monitor</span> (the <span class="ui">Route</span> column shows <span class="ui">Error</span>, and the reason is in the connection’s details) and in the notification “…: proxy failed”.</p>
+<div class="table"><table>
+  <thead><tr><th>Message</th><th>What it means</th><th>What to do</th></tr></thead>
+  <tbody>
+    <tr><td>The proxy didn’t answer in time</td><td>The server didn’t answer within the allowed time: the check waits 10 seconds. The server is off, the address or port is wrong, or the server doesn’t answer from your network.</td><td>Check the server and port. Try from another network, for example through your phone’s hotspot. If it’s your own server, see <a href="../../../en/docs/server/#troubleshooting">server troubleshooting</a>.</td></tr>
+    <tr><td>Couldn’t connect to the proxy: … (followed by the reason from macOS, for example “Connection refused”)</td><td>Nothing accepts connections at this address and port.</td><td>Check the port. For a local client, check that it’s running and which port it listens on.</td></tr>
+    <tr><td>Couldn’t connect to the proxy: TLS: the proxy’s certificate failed validation</td><td>HTTPS proxy: the server’s certificate doesn’t match the name in the <span class="ui">Server</span> field, has expired, or was issued by an authority that isn’t trusted.</td><td>In the <span class="ui">Server</span> field, enter the domain name the certificate was issued for, not the IP.</td></tr>
+    <tr><td>Couldn’t connect to the proxy: TLS: TLS error (code)</td><td>Another failure of the encrypted connection. Often the HTTPS type is chosen for an ordinary HTTP proxy.</td><td>Check <span class="ui">Type</span>: choose HTTPS only if the proxy itself works over <a class="term" href="../../../en/docs/glossary/#tls">TLS</a>.</td></tr>
+    <tr><td>SOCKS5: wrong login or password</td><td>The proxy rejected the login and password.</td><td>Enter them again and click <span class="ui">Save</span>.</td></tr>
+    <tr><td>SOCKS5: the proxy requires a login and password</td><td>The proxy doesn’t let anyone in without signing in, and no login is set.</td><td>Fill in <span class="ui">Login</span> and <span class="ui">Password</span>.</td></tr>
+    <tr><td>SOCKS5: the proxy accepted no authentication method</td><td>The proxy expects a different way of signing in than the one Routekeeper offers.</td><td>Check whether a login is needed. Routekeeper supports SOCKS5 without signing in and with a login and password.</td></tr>
+    <tr><td>SOCKS5: … (for example, “host unreachable”, “connection refused”, “connection not allowed by the proxy’s rules”)</td><td>The proxy works, but it couldn’t or wouldn’t connect to the site.</td><td>The cause is on the proxy’s or the site’s side. Try another site. If every site gives the error, check the proxy server’s settings.</td></tr>
+    <tr><td>HTTP: the proxy requires authentication (407)</td><td>The HTTP proxy didn’t accept the login and password, or they’re missing.</td><td>Check the login and password. Routekeeper supports only signing in with a login and password (Basic), without NTLM or Kerberos.</td></tr>
+    <tr><td>The HTTP proxy answered … (a code and text, for example 403)</td><td>The proxy refused to connect to this address or port.</td><td>Work proxies are often restricted like this. Ask your administrator which addresses and ports are allowed.</td></tr>
+    <tr><td>The proxy closed the connection</td><td>The proxy dropped the connection without explaining anything.</td><td>Often the <span class="ui">Type</span> is wrong: SOCKS5 instead of HTTP or the other way around. It also happens when the server is overloaded or has limits.</td></tr>
+    <tr><td>Proxy protocol error: …</td><td>The answer doesn’t look like a proxy of the chosen type.</td><td>Check <span class="ui">Type</span> and <span class="ui">Port</span>: maybe this port has another type of proxy, or isn’t a proxy at all.</td></tr>
+    <tr><td>proxy not found (in the monitor)</td><td>A rule points to a proxy that no longer exists. The connection is blocked, not sent direct.</td><td>Open the rule and choose another <span class="ui">Action</span>.</td></tr>
+    <tr><td>proxy provider isn’t running (in the monitor)</td><td>The part of Routekeeper that passes traffic to the proxy hasn’t started yet: for example, right after the Mac starts up or the extension restarts. The connection is dropped so that it doesn’t go direct.</td><td>Usually the app tries again by itself in a few seconds. If the error doesn’t go away, see the “Proxy provider isn’t running” status below.</td></tr>
+    <tr><td>No connection to the network extension</td><td>The window can’t reach the extension.</td><td>See the “The network extension isn’t responding” banner below.</td></tr>
+  </tbody>
+</table></div>
+
+<h3>Banners at the top of the window</h3>
+<div class="table"><table>
+  <thead><tr><th>Banner</th><th>What it means</th><th>What to do</th></tr></thead>
+  <tbody>
+    <tr><td>Connecting to the network extension…</td><td>The window is connecting to the extension. This is normal in the first seconds after launch or an update.</td><td>Wait.</td></tr>
+    <tr><td>The network extension isn’t responding, with the <span class="ui">Details</span> and <span class="ui">Reinstall Extension</span> buttons</td><td>The extension is on, but it hasn’t answered the window for 10 seconds. This most often happens after an update. Rules keep working, but you can’t change them, and the proxy may not be running.</td><td>Click <span class="ui">Reinstall Extension</span> (the icon’s menu has the same item). If that doesn’t help, restart your Mac. For details, see <a href="#extension">below</a>.</td></tr>
+    <tr><td>Settings couldn’t be read, all connections are blocked</td><td>The extension couldn’t read the settings file and is blocking everything.</td><td>See <a href="#locked">All connections are blocked</a>.</td></tr>
+    <tr><td>An extension from an old version of Routekeeper is running</td><td>After the move from 0.2.x, the old extension stayed on and also handles traffic.</td><td>Turn off “Routekeeper Network Extension” in System Settings. Leave “Routekeeper Extension” alone. For details, see <a href="../../../en/docs/maintenance/#migrate">Moving from 0.2.x</a>.</td></tr>
+    <tr><td>A network extension update is available (current: …), with the <span class="ui">Update…</span> button</td><td>The app was updated, but the extension is still the old one.</td><td>Update it when it’s convenient: see <a href="../../../en/docs/maintenance/#update">Updates</a>.</td></tr>
+    <tr><td>An orange bar with the error text and a close button (×)</td><td>The last error, for example when saving a rule.</td><td>Read the text. The bar closes with the × button, or by itself after 12 seconds.</td></tr>
+  </tbody>
+</table></div>
+<p>The “Settings couldn’t be read, all connections are blocked” and “An extension from an old version of Routekeeper is running” banners appeared in the version after 0.2.1.</p>
+
+<h3>Status line</h3>
+<p>A short status is shown in the icon’s menu under the word Routekeeper, and in the panel at the bottom of the sidebar.</p>
+<div class="table"><table>
+  <thead><tr><th>Status</th><th>What it means and what to do</th></tr></thead>
+  <tbody>
+    <tr><td>Waiting for approval in System Settings</td><td>macOS is waiting for you to allow the extension: see <a href="#permissions">permissions</a>.</td></tr>
+    <tr><td>Setup isn’t finished</td><td>A permission is missing. Open the window and go through the steps of the welcome screen.</td></tr>
+    <tr><td>Connecting to the extension… / Extension not responding</td><td>The same as the banners above.</td></tr>
+    <tr><td>Off</td><td>The <span class="ui">Routekeeper On</span> switch is off: rules don’t apply, and everything goes direct.</td></tr>
+    <tr><td>All connections are blocked</td><td>The settings couldn’t be read: see <a href="#locked">below</a>.</td></tr>
+    <tr><td>Proxy provider isn’t running</td><td>Routekeeper’s proxy configuration isn’t working: it was turned off in System Settings → Network, or it didn’t start. Open the window. If it shows the welcome screen, click <span class="ui">Turn On Proxy</span>. If not, click <span class="ui">Settings</span> → <span class="ui">Extension</span> → <span class="ui">Reinstall</span>.</td></tr>
+    <tr><td>Proxy “…” is unreachable</td><td>The main proxy failed its check: see <a href="../../../en/docs/recipes/#proxy-down">The proxy stopped answering</a>.</td></tr>
+    <tr><td>No apps through a proxy</td><td>No app or service is sent through a proxy. Add them in <span class="ui">Apps</span>.</td></tr>
+  </tbody>
+</table></div>
+
+<h3>Other messages</h3>
+<div class="table"><table>
+  <thead><tr><th>Message</th><th>What to do</th></tr></thead>
+  <tbody>
+    <tr><td>macOS installs system extensions only for apps in the Applications folder.</td><td>Click <span class="ui">Move to Applications and Relaunch</span>. If a copy of Routekeeper is already in Applications, it goes to the Trash.</td></tr>
+    <tr><td>Couldn’t install: …</td><td>The reason comes from macOS. Check that Routekeeper is in Applications and that you have administrator rights, and click <span class="ui">Install</span> again. If that doesn’t help, restart your Mac.</td></tr>
+    <tr><td>Restart your Mac to finish installing.</td><td>Restart your Mac.</td></tr>
+    <tr><td>The clipboard has no proxy string. Expected something like socks5://user:pass@host:1080</td><td>Copy the whole line, including the port. Which formats Routekeeper understands is described in <a href="../../../en/docs/proxies/#paste">Paste a proxy line</a>.</td></tr>
+    <tr><td>Enter a server and a port (1–65535)</td><td>Fill in <span class="ui">Server</span> and <span class="ui">Port</span>.</td></tr>
+    <tr><td>Can’t parse the destination “…”</td><td>The address in the rule is written in a way that Routekeeper doesn’t understand: see <a href="../../../en/docs/rules/#syntax">Rule fields</a>.</td></tr>
+    <tr><td>Routekeeper couldn’t read its settings, so they can’t be changed. Update Routekeeper or reset the settings.</td><td>See <a href="#locked">below</a>.</td></tr>
+    <tr><td>Diagnostics not collected: …</td><td>Try again. Check that there’s free space on the disk.</td></tr>
+  </tbody>
+</table></div>
+
+<h2 id="extension">Reinstalling and stopping the extension</h2>
+<p>The extension’s status is shown in <span class="ui">Settings</span> → <span class="ui">Extension</span>, in the <span class="ui">Status</span> section. If everything is fine, it says: <span class="ui">Network extension</span> “Active”, <span class="ui">Filter</span> “On”, <span class="ui">Proxy</span> “Running”. The <span class="ui">Extension version</span> is shown there too.</p>
+
+<h3>Reinstall</h3>
+<p>This helps when the extension has stopped responding, for example after an update.</p>
+<ol class="steps">
+  <li>Open <span class="ui">Settings</span> → <span class="ui">Extension</span> and click <span class="ui">Reinstall</span>. The <span class="ui">Reinstall Extension</span> button on the banner and in the icon’s menu does the same.</li>
+  <li>Routekeeper removes the extension and installs it again right away. For a few seconds, the filter and proxy are off: open connections through the proxy break, and new ones go direct during this time. Then the filter and proxy turn on by themselves.</li>
+  <li>If macOS asks you to allow the extension again, allow it as you did during installation (<a href="#permissions">permissions</a>).</li>
+</ol>
+<p>Rules, proxies and passwords are kept when you reinstall. If the “The network extension isn’t responding” banner doesn’t go away, restart your Mac.</p>
+
+<h3>Stop…</h3>
+<p><span class="ui">Settings</span> → <span class="ui">Extension</span> → <span class="ui">Stop…</span> → <span class="ui">Stop</span>. Routekeeper’s filter and proxy are turned off at the system level. Apps start going online directly, past the proxy, and firewall rules stop applying. The extension stays installed, and the rules stay on disk. After that, the Routekeeper window shows the welcome screen.</p>
+<div class="callout warn"><p><b>The <span class="ui">Routekeeper On</span> switch doesn’t undo “Stop…”.</b> It only turns the rules on and off inside a running filter and proxy. To bring the filter and proxy back after you stopped them, open <span class="ui">Settings</span> (icon’s menu → <span class="ui">Settings…</span>) → <span class="ui">Extension</span> and click <span class="ui">Reinstall</span>: after reinstalling, Routekeeper turns them on by itself. If the window shows the welcome screen with the <span class="ui">Turn On Filter</span> or <span class="ui">Turn On Proxy</span> buttons, you can click those too.</p></div>
+<p>How the switch, “Stop…” and “Delete…” differ is summed up in a table in <a href="../../../en/docs/maintenance/#turn-off">How to turn it off</a>.</p>
+
+<h2 id="locked">All connections are blocked</h2>
+<p>The banner “Settings couldn’t be read, all connections are blocked” means that the network extension couldn’t read the file with your rules and proxies. To make sure nothing goes around the proxy, Routekeeper then blocks everything. Only connections within this Mac, Routekeeper itself and the system DNS service are let through. This behavior appeared in the version after 0.2.1.</p>
+<h3>Why it happens</h3>
+<ul>
+  <li><b>An older version of Routekeeper was installed over newer settings.</b> The newer version may have saved the settings in a form the older one doesn’t know. Then the banner says: “They were saved by a newer version of Routekeeper”.</li>
+  <li><b>The settings file is damaged.</b> Then the banner says: “The settings file is damaged”.</li>
+</ul>
+<h3>What to do</h3>
+<ol class="steps">
+  <li>Click <span class="ui">Check for Updates</span> on the banner. Routekeeper itself is still allowed to go online in this state. Install the new version: it will read the settings, and everything will work as before.</li>
+  <li>If there’s no update or it didn’t help, click <span class="ui">Reset Settings…</span> → <span class="ui">Reset</span>. Your rules and proxies are deleted, and apps go direct until you set them up again.</li>
+  <li>The reset doesn’t delete the old file: it stays next to the new one, named <code>config.broken-<span class="ph">number</span>.json</code>, in the <code>/Library/Application Support/Routekeeper</code> folder.</li>
+</ol>
+<p>While the settings can’t be read, you can’t change them: Routekeeper answers “Routekeeper couldn’t read its settings, so they can’t be changed…”. You can turn Routekeeper off with the switch, but only until the extension restarts. After that, everything is blocked again.</p>
+<div class="callout"><p><b>Don’t install an old version over a new one.</b> If you need to go back, save your rules first: <span class="ui">Rules</span> → <span class="ui">Import and Export</span> → <span class="ui">Export…</span> (proxy passwords aren’t saved to the file). For details, see <a href="../../../en/docs/rules/#import-export">Import and export</a>.</p></div>
+<details class="deep"><summary>Details: the backup and version 0.2.1</summary>
+  <p>Only an administrator can open this folder. To see what’s in it:</p>
+  <div class="cmd"><pre><code>sudo ls -l "/Library/Application Support/Routekeeper"</code></pre></div>
+  <p>The <code>config.broken-…json</code> file is JSON with your rules, proxies and settings. It has the proxy passwords in plain text, so don’t attach it to a public bug report. The number in the name is the time of the reset in seconds since 1970.</p>
+  <p>Version 0.2.1 has no lock. It renames an unreadable file to <code>config.broken-…json</code> in the <code>/Library/Application Support/AppProxy</code> folder, and Routekeeper starts with clean settings: all apps go direct.</p>
+</details>
+
+<h2 id="diagnostics">Collect diagnostics</h2>
+<p>A diagnostics archive helps work out what the problem is. Routekeeper doesn’t send it anywhere: the archive simply appears on your Desktop.</p>
+<ol class="steps">
+  <li>Open the Routekeeper window. In the menu bar at the top of the screen, choose <span class="ui">Help</span> → <span class="ui">Collect Diagnostics…</span>. Or open <span class="ui">Settings</span> → <span class="ui">Extension</span> and click <span class="ui">Collect…</span> in the <span class="ui">Diagnostics</span> section.</li>
+  <li>After a few seconds, Finder shows the file <code>Routekeeper-diagnostics-<span class="ph">date time</span>.zip</code> on the Desktop.</li>
+  <li>Unzip it and look through it before you send it to anyone.</li>
+</ol>
+<h3>What’s in the archive</h3>
+<div class="table"><table>
+  <thead><tr><th>File</th><th>What’s inside</th></tr></thead>
+  <tbody>
+    <tr><td><code>info.txt</code></td><td>The Routekeeper and macOS versions, the status of the extension, filter and proxy, the mode, the number of rules. For each proxy: its name, type, server address and port, and the result of the last check.</td></tr>
+    <tr><td><code>config.json</code></td><td>Rules, proxies and settings. There are no passwords, but there are server addresses and logins.</td></tr>
+    <tr><td><code>connections.json</code></td><td>The last 500 connections: app, address, port, route, error.</td></tr>
+    <tr><td><code>log.txt</code></td><td>Routekeeper’s internal log for the last 30 minutes, including the addresses that apps connected to.</td></tr>
+  </tbody>
+</table></div>
+<div class="callout warn"><p><b>The archive contains personal data:</b> the addresses of sites you opened, and proxy addresses and logins. Bug reports on GitHub are public. Before you attach the archive, remove from it anything you don’t want to show.</p></div>
+<details class="deep"><summary>Details: the log without an archive</summary>
+  <p>If the Routekeeper window doesn’t open, you can save the log with a command in Terminal. The file appears on your Desktop.</p>
+  <div class="cmd"><pre><code>log show --last 30m --info --predicate 'subsystem == "app.getroutekeeper.mac"' &gt; ~/Desktop/routekeeper.log</code></pre></div>
+  <p>For versions 0.2.x, the subsystem has a different name:</p>
+  <div class="cmd"><pre><code>log show --last 30m --info --predicate 'subsystem == "dev.ilyabazenov.appproxy"' &gt; ~/Desktop/routekeeper.log</code></pre></div>
+</details>
+
+<h2 id="report">Report a problem</h2>
+<p>Bugs and suggestions go to the project’s GitHub Issues. You need a GitHub account.</p>
+<ol class="steps">
+  <li>Check whether your case is on this page or in <a href="../../../en/docs/limits/">Limitations</a>.</li>
+  <li>If the problem happens again, <a href="#diagnostics">collect diagnostics</a> right after it shows up, and look through the archive.</li>
+  <li>In the Routekeeper window, choose <span class="ui">Help</span> → <span class="ui">Report a Problem…</span>. A form for a new issue opens in the <a href="https://github.com/ilyabazhenov/routekeeper/issues">project’s GitHub Issues</a>.</li>
+  <li>Write down:
+    <ul>
+      <li>the Routekeeper version: it’s in <span class="ui">Settings</span> → <span class="ui">General</span> → <span class="ui">Version</span>, for example “0.2.1 (10)”;</li>
+      <li>the macOS version and the Mac model: Apple menu → “About This Mac”;</li>
+      <li>the mode and the proxy type (SOCKS5, HTTP or HTTPS), without the address or password;</li>
+      <li>what you did, step by step, what you expected and what happened.</li>
+    </ul>
+  </li>
+  <li>Drag the diagnostics archive into the message field.</li>
+</ol>
+<p>Everyone can see reports on GitHub. Don’t paste passwords, keys or addresses you don’t want to show. If you can’t share the archive, describe the problem without it and say that you have the archive.</p>
+    <p class="checked">Checked against the Routekeeper code (version 0.2.1 and the one after it) on October 4, 2026.</p>
+    <nav class="pager"><a class="prev" href="../../../en/docs/monitoring/"><span>Previous</span>Checking and monitoring</a><a class="next" href="../../../en/docs/maintenance/"><span>Next</span>Updates and removal</a></nav>
+  </article>
+</main>
+
+<div class="wrap">
+  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span><a href="../../../en/">Routekeeper for macOS</a> · <a href="../../../en/docs/">Docs</a> · <a href="../../../en/privacy/">Privacy</a> · <a href="https://github.com/ilyabazhenov/routekeeper">GitHub</a></span></footer>
+</div>
+
+<script src="../../../docs/assets/docs.js?v=3e67278c"></script>
+</body>
+</html>

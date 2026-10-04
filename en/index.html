@@ -282,7 +282,7 @@ section { padding-top: 128px; }
 .faq summary::-webkit-details-marker { display: none; }
 .faq summary::after { content: "+"; flex: none; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 8px; background: rgba(255, 181, 71, .1); color: var(--amber); font-size: 18px; transition: rotate .25s; }
 .faq details[open] summary::after { rotate: 45deg; }
-.faq p a { color: var(--amber); text-decoration: underline; text-decoration-color: rgba(255, 181, 71, .4); text-underline-offset: 3px; }
+.faq p a, .req-list span a { color: var(--amber); text-decoration: underline; text-decoration-color: rgba(255, 181, 71, .4); text-underline-offset: 3px; }
 .faq details p { padding: 0 22px 20px; color: var(--muted); font-size: 16px; max-width: 64ch; }
 .faq details p code { font: .92em var(--mono); color: var(--text); }
 
@@ -527,7 +527,7 @@ section { padding-top: 128px; }
 <main id="top">
   <section class="hero">
     <div class="wrap">
-      <span class="pill rv"><b>Beta</b>First public release for macOS 14 and later</span>
+      <span class="pill rv"><b>Beta</b>Early release for macOS 14 and later</span>
       <h1 class="rv">Every app gets<br><span class="warm">its own route</span></h1>
       <p class="sub rv"><b>Routekeeper</b> sends the apps you choose through your proxy server and leaves the rest alone. And it makes sure nothing leaks: if the proxy goes down, traffic won’t go direct, and anything that slips past shows up.</p>
       <div class="hero-cta rv">
@@ -547,7 +547,6 @@ section { padding-top: 128px; }
               <div><svg><use href="#i-server"/></svg>Proxies</div>
               <div><svg><use href="#i-pulse"/></svg>Monitor</div>
               <div><svg><use href="#i-warn"/></svg>Leaks<span class="badge">2</span></div>
-              <div><svg><use href="#i-gear"/></svg>Settings</div>
             </div>
             <div class="list" id="apps">
               <div class="list-head"><h4>Apps</h4><span>try switching a route</span></div>
@@ -721,7 +720,7 @@ section { padding-top: 128px; }
 
         <article class="card c-4 rv">
           <h3>Any proxy, even for stubborn apps</h3>
-          <p>Works with apps that have no proxy settings of their own: command-line tools, Electron apps, messengers. UDP and QUIC are closed for them, so traffic can’t sneak around.</p>
+          <p>Works with apps that have no proxy settings of their own: command-line tools, Electron apps, messengers. UDP and QUIC are closed for them, so traffic can’t slip past the proxy.</p>
           <div class="viz protos"><span>SOCKS5</span><span>HTTP CONNECT</span><span>HTTPS</span><span>username &amp; password</span><span>curl · git · node</span></div>
         </article>
       </div>
@@ -733,7 +732,7 @@ section { padding-top: 128px; }
       <div class="head rv">
         <span class="eyebrow">For developers</span>
         <h2>AI assistants and the terminal, through your server</h2>
-        <p>ChatGPT, Claude, Cursor and Copilot aren’t available everywhere. Routekeeper sends just them through your proxy and leaves everything else direct. No <code>HTTP_PROXY</code>, no VPN for the whole Mac.</p>
+        <p>Routekeeper can send just ChatGPT, Claude, Cursor and Copilot through your proxy and leave everything else direct. No <code>HTTP_PROXY</code>, no VPN for the whole Mac.</p>
       </div>
       <div class="privacy">
         <div class="priv rv"><span class="ic"><svg><use href="#i-zap"/></svg></span><h3>Desktop AI apps</h3><p>ChatGPT, Claude, Codex and other Electron apps go through the proxy together with all their helper processes.</p></div>
@@ -754,7 +753,7 @@ section { padding-top: 128px; }
       <div class="modes rv">
         <div class="mode-list" role="tablist" aria-label="Modes">
           <button class="mode" role="tab" aria-selected="true" data-m="0"><span class="n">01</span><span><b>Proxy only</b><small>Your routes apply, everything else as usual</small></span></button>
-          <button class="mode" role="tab" aria-selected="false" tabindex="-1"><span class="n">02</span><span><b>Ask</b><small>A new connection waits for your decision</small></span></button>
+          <button class="mode" role="tab" aria-selected="false" tabindex="-1"><span class="n">02</span><span><b>Ask</b><small>A new connection waits for your answer</small></span></button>
           <button class="mode" role="tab" aria-selected="false" tabindex="-1"><span class="n">03</span><span><b>Silent</b><small>No pop-ups, follows a preset default</small></span></button>
           <button class="mode" role="tab" aria-selected="false" tabindex="-1"><span class="n">04</span><span><b>Block all</b><small>Only what you explicitly allowed gets out</small></span></button>
         </div>
@@ -793,7 +792,7 @@ section { padding-top: 128px; }
         </div>
         <ul class="req-list">
           <li><b>A Mac with macOS 14 Sonoma or later</b><span>Routekeeper uses Apple’s system network extensions, no kernel extensions.</span></li>
-          <li><b>Three permissions on first launch</b><span>Turn on the extension in System Settings → General → Login Items &amp; Extensions, then click Allow in two macOS prompts: network content filtering and the proxy configuration. Routekeeper walks you through it.</span></li>
+          <li><b>Three permissions on first launch</b><span>Turn on the network extension in System Settings (General → Login Items &amp; Extensions on macOS 15 and later, Privacy &amp; Security on macOS 14), then click Allow in two macOS prompts: network content filtering and the proxy configuration. Routekeeper walks you through it, and the <a href="docs/start/">quick start</a> shows every step.</span></li>
           <li><b>Your own proxy server</b><span>SOCKS5, HTTP CONNECT or HTTPS, with or without a password. Only for proxy routes: the firewall needs no server.</span></li>
           <li><b>That’s it</b><span>No account, no subscription to someone else’s servers, no second client running alongside.</span></li>
         </ul>
@@ -810,11 +809,11 @@ section { padding-top: 128px; }
       <div class="faq rv">
         <details open>
           <summary>How is this different from a VPN?</summary>
-          <p>A VPN wraps your whole Mac in one tunnel, and then your bank or local services see a foreign address and may turn you away. Routekeeper decides per app and per destination: Telegram through your server, your bank and Zoom direct, the pushy updater nowhere. Everything else works as if Routekeeper weren’t there.</p>
+          <p>A VPN wraps your whole Mac in one tunnel, and then your bank or local services see a foreign address and may turn you away. Routekeeper decides per app and per destination: your work messenger through your server, your bank and Zoom direct, the pushy updater nowhere. Everything else works as if Routekeeper weren’t there.</p>
         </details>
         <details>
           <summary>I use VLESS or Shadowsocks. Will it work?</summary>
-          <p>Not directly: Routekeeper talks to the server over SOCKS5, HTTP CONNECT or HTTPS. But a VLESS or Shadowsocks client (sing-box, Xray, Clash and others) usually opens a local SOCKS5 port on your Mac, such as <code>127.0.0.1:1080</code>. Add it to Routekeeper as a proxy: the client handles the protocol to the server, and Routekeeper decides which apps go there and makes sure nothing leaks. Turn off the client’s system proxy and TUN mode so only one of them manages routes.</p>
+          <p>Not directly: Routekeeper talks to the server over SOCKS5, HTTP CONNECT or HTTPS. But a VLESS or Shadowsocks client (sing-box, Xray, Clash and others) usually opens a local SOCKS5 port on your Mac, such as <code>127.0.0.1:1080</code>. Add it to Routekeeper as a proxy: the client handles the protocol to the server, and Routekeeper decides which apps go there and makes sure nothing leaks. Turn off the client’s system proxy and TUN mode so only one of them manages routes. <a href="docs/proxies/#local-client">More</a>.</p>
         </details>
         <details>
           <summary>How is it different from Proxifier?</summary>
@@ -838,11 +837,11 @@ section { padding-top: 128px; }
         </details>
         <details>
           <summary>How do I check that nothing leaks?</summary>
-          <p>The menu bar shows the external IP your apps use through the proxy. The monitor shows every connection and its route, and the leak detector flags what went around the proxy for proxied apps: DNS queries to your ISP, UDP and QUIC, processes with no rule. Each leak comes with a hint on how to close it: for browsers, for example, turning on DNS over HTTPS. The Overview screen brings it together: the most serious problem first, each proxy’s health and what is going through the proxy right now.</p>
+          <p>The menu bar shows the external IP your apps use through the proxy. The monitor shows every connection and its route, and the Leaks section flags what went past the proxy for apps routed entirely through it: DNS queries to your ISP, UDP and QUIC, processes with no rule. Each leak comes with a hint on how to close it: for browsers, for example, turning on DNS over HTTPS. The Overview screen brings it together: the most serious problem first, each proxy’s health and what is going through the proxy right now. <a href="docs/monitoring/">How to check, and what isn’t caught</a>.</p>
         </details>
         <details>
           <summary>What if the proxy server is down?</summary>
-          <p>By default that app’s connections don’t go around the proxy; they fail with an error you can see in the monitor. That way nothing leaks silently. If you prefer, you can let them go direct in Settings. Overview and the menu bar show right away which proxy isn’t answering, and from there you can move every route to another proxy, with undo if you change your mind.</p>
+          <p>By default that app’s connections don’t go direct past the proxy; they fail with an error you can see in the monitor. That way nothing leaks silently. If you prefer, you can let them go direct in Settings. Overview and the menu bar show right away which proxy isn’t answering, and you can move its routes to another proxy, with undo if you change your mind. <a href="docs/proxies/#switch">How to move routes</a>.</p>
         </details>
         <details>
           <summary>Do calls and UDP work?</summary>
@@ -850,11 +849,11 @@ section { padding-top: 128px; }
         </details>
         <details>
           <summary>Can Routekeeper see my traffic?</summary>
-          <p>Traffic passes through the network extension on your Mac and goes where you sent it. Routekeeper doesn’t decrypt connections and sends nothing to its developer: no analytics, no list of sites. It goes online on its own for only two things: checking for updates at getroutekeeper.app and, to show your external IP, asking ipinfo.io for it through your proxy.</p>
+          <p>Traffic passes through the network extension on your Mac and goes where you sent it. Routekeeper doesn’t decrypt connections and sends nothing to its developer: no analytics, no list of sites. It goes online on its own for only three things: checking for updates at getroutekeeper.app, downloading the service address lists from there every 12 hours, and, to show your external IP, asking ipinfo.io for it through your proxy. <a href="privacy/">More in the privacy policy</a>.</p>
         </details>
         <details>
           <summary>Why does macOS ask me to allow something?</summary>
-          <p>Routekeeper runs as an Apple system network extension. macOS only turns those on with the owner’s explicit consent, so on first launch it asks three times: turn on the extension in System Settings → General → Login Items &amp; Extensions, allow network content filtering, and allow the proxy configuration. You only do this once.</p>
+          <p>Routekeeper runs as an Apple system network extension. macOS only turns those on with the owner’s explicit consent, so on first launch it asks three times: turn on the extension (System Settings → General → Login Items &amp; Extensions on macOS 15 and later, System Settings → Privacy &amp; Security on macOS 14), allow network content filtering, and allow the proxy configuration. You only do this once. <a href="docs/start/#permissions">Step by step</a>.</p>
         </details>
         <details>
           <summary>What if I close the Routekeeper window?</summary>
@@ -870,7 +869,7 @@ section { padding-top: 128px; }
       <h2 class="rv">The lantern <span class="warm">is lit</span></h2>
       <p class="rv">Public beta for macOS 14 Sonoma and later. Open the DMG and drag Routekeeper to Applications: the build is signed with Developer ID and notarized by Apple, and it keeps itself up to date.</p>
       <div class="hero-cta rv"><a class="btn btn-primary" href="https://github.com/ilyabazhenov/routekeeper/releases/latest/download/Routekeeper.dmg">Download Routekeeper</a><a class="btn btn-ghost" href="https://github.com/ilyabazhenov/routekeeper/releases">All versions</a></div>
-      <p class="fine rv"><a href="docs/">Documentation and first run</a> · <a href="privacy/">Privacy</a></p>
+      <p class="fine rv"><a href="docs/start/">First run</a> · <a href="docs/">Docs</a> · <a href="privacy/">Privacy</a></p>
     </div>
   </section>
 </main>
@@ -1220,7 +1219,7 @@ section { padding-top: 128px; }
   // Modes.
   const MODES = [
     ['Proxy only', 'Only your routes apply. Everything else goes direct, no questions asked. A good place to start.', 'direct', 'direct'],
-    ['Ask', 'A new connection pauses and waits for your answer. The answer is saved as a rule right away: once, while the app runs, forever, or until a date.', 'ask', 'pause and ask'],
+    ['Ask', 'A new connection pauses and waits for your answer, a minute by default; with no answer it goes through. You can keep the answer as a rule: while the app runs, or forever. Apple apps and apps installed before Routekeeper go through without a question.', 'ask', 'pause and ask'],
     ['Silent', 'No pop-ups. Connections without a rule are allowed or blocked, whichever you set in advance.', 'proxy', 'your preset default'],
     ['Block all', 'Only what you explicitly allowed gets online. Everything else waits at a dead end.', 'stop', 'dead end'],
   ];

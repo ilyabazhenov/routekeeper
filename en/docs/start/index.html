@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quick start — Routekeeper</title>
+<meta name="description" content="How to install Routekeeper, grant the permissions in macOS 14 and macOS 15, add your first proxy, send an app or a service through it, check that it works, and turn it off quickly.">
+<meta name="theme-color" content="#0a0f1f">
+<link rel="canonical" href="https://getroutekeeper.app/en/docs/start/">
+<link rel="alternate" hreflang="ru" href="https://getroutekeeper.app/docs/start/">
+<link rel="alternate" hreflang="en" href="https://getroutekeeper.app/en/docs/start/">
+<link rel="alternate" hreflang="x-default" href="https://getroutekeeper.app/en/docs/start/">
+<link rel="icon" href="../../../mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../../../icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=891e2023">
+</head>
+<body>
+<!-- Built by Scripts/build-docs.py from site-src/docs/en/start.html. Edit the fragment, not this file. -->
+
+<div class="wrap nav-wrap">
+  <header class="nav">
+    <a class="brand" href="../../../en/"><img src="../../../mark.svg" alt="" width="28" height="28">Routekeeper</a>
+    <div class="nav-end"><a class="lang" href="../../../docs/start/" hreflang="ru" lang="ru">RU</a><a class="btn btn-primary" href="../../../en/#download">Download</a></div>
+  </header>
+</div>
+
+<section class="wrap docs-hero compact">
+  <div class="hero-copy">
+    <span class="crumbs"><a href="../../../en/docs/">Docs</a> · Getting started</span>
+    <h1>Quick start: <span class="warm">your first app through a proxy</span></h1>
+    <p class="lede"><b>From download to your first app through a proxy takes about ten minutes.</b> Install Routekeeper, give macOS three permissions, add a proxy and choose what goes through it.</p>
+  </div>
+</section>
+
+<main class="wrap docs-layout">
+  <aside class="side-nav" aria-label="Docs sections">
+    <span class="group">Getting started</span>
+    <a href="../../../en/docs/">Docs overview</a>
+    <a href="../../../en/docs/start/" aria-current="page">Quick start</a>
+    <a href="../../../en/docs/concepts/">How it works</a>
+    <span class="group">Setup</span>
+    <a href="../../../en/docs/proxies/">Proxies</a>
+    <a href="../../../en/docs/apps/">Apps and services</a>
+    <a href="../../../en/docs/rules/">Rules</a>
+    <a href="../../../en/docs/firewall/">Firewall modes</a>
+    <a href="../../../en/docs/server/">Your own proxy server</a>
+    <span class="group">In practice</span>
+    <a href="../../../en/docs/recipes/">Recipes</a>
+    <a href="../../../en/docs/monitoring/">Checking and monitoring</a>
+    <span class="group">Reference</span>
+    <a href="../../../en/docs/troubleshooting/">Troubleshooting</a>
+    <a href="../../../en/docs/maintenance/">Updates and removal</a>
+    <a href="../../../en/docs/limits/">Limitations</a>
+    <a href="../../../en/docs/glossary/">Glossary</a>
+    <a href="../../../en/docs/changelog/">What's new</a>
+    <a class="side-action" href="../../../en/privacy/">Privacy</a>
+    <a href="https://github.com/ilyabazhenov/routekeeper/issues">Report a problem</a>
+  </aside>
+  <article class="doc">
+    <details class="mobile-nav"><summary>All docs sections</summary><nav>
+    <span class="group">Getting started</span>
+    <a href="../../../en/docs/">Docs overview</a>
+    <a href="../../../en/docs/start/" aria-current="page">Quick start</a>
+    <a href="../../../en/docs/concepts/">How it works</a>
+    <span class="group">Setup</span>
+    <a href="../../../en/docs/proxies/">Proxies</a>
+    <a href="../../../en/docs/apps/">Apps and services</a>
+    <a href="../../../en/docs/rules/">Rules</a>
+    <a href="../../../en/docs/firewall/">Firewall modes</a>
+    <a href="../../../en/docs/server/">Your own proxy server</a>
+    <span class="group">In practice</span>
+    <a href="../../../en/docs/recipes/">Recipes</a>
+    <a href="../../../en/docs/monitoring/">Checking and monitoring</a>
+    <span class="group">Reference</span>
+    <a href="../../../en/docs/troubleshooting/">Troubleshooting</a>
+    <a href="../../../en/docs/maintenance/">Updates and removal</a>
+    <a href="../../../en/docs/limits/">Limitations</a>
+    <a href="../../../en/docs/glossary/">Glossary</a>
+    <a href="../../../en/docs/changelog/">What's new</a>
+    </nav></details>
+<p class="lead-in">This page takes you from installation to a working check, step by step. If something stops opening after setup, the end of the page shows how to <a href="#turn-off">turn Routekeeper off in a second</a>.</p>
+
+<div class="grid">
+  <div class="card"><b>A Mac with macOS 14 Sonoma or later</b><p>Macs with Apple silicon and with Intel both work.</p></div>
+  <div class="card"><b>An administrator account</b><p>macOS asks for an administrator password when you allow the <a class="term" href="../../../en/docs/glossary/#network-extension">network extension</a>.</p></div>
+  <div class="card"><b>A proxy server</b><p>The address, port and, if needed, the login and password of your <a class="term" href="../../../en/docs/glossary/#proxy">proxy</a>. If you don’t have a proxy yet, see <a href="#first-proxy">where to get one</a> below.</p></div>
+  <div class="card"><b>About ten minutes</b><p>Sometimes macOS asks you to restart the Mac after the extension is installed.</p></div>
+</div>
+
+<h2 id="install">Installation</h2>
+<ol class="steps">
+  <li><b>Download Routekeeper.</b> The <a href="../../../en/#download">Download</a> button on the home page downloads the file <code>Routekeeper.dmg</code> with the latest version. All versions are on the <a href="https://github.com/ilyabazhenov/routekeeper/releases">releases page on GitHub</a>.</li>
+  <li><b>Open the DMG.</b> Double-click the downloaded file. A window opens with the Routekeeper icon and the Applications folder.</li>
+  <li><b>Drag the Routekeeper icon onto the Applications folder.</b> This puts the app in your Applications folder. Run it from there: macOS installs network extensions only for apps in Applications.</li>
+  <li><b>Open Routekeeper from Applications.</b> macOS warns that the app was downloaded from the internet and asks whether to open it. Click <span class="ui">Open</span>.</li>
+</ol>
+<p>macOS asks this about any app that isn’t from the App Store. Routekeeper is signed with a developer certificate and checked by Apple (notarized), so you don’t need to change anything in the security settings.</p>
+<div class="callout tip">
+  <p><b>Opened it straight from the DMG or from Downloads?</b> The welcome screen shows a warning and a <span class="ui" style="white-space: normal">Move to Applications and Relaunch</span> button. It copies Routekeeper to Applications and moves the old copy there, if there is one, to the Trash. Then Routekeeper opens again, this time from Applications. After that, you can eject the DMG.</p>
+</div>
+
+<h3>Where to find Routekeeper</h3>
+<p>Routekeeper has no icon in the Dock. It lives in the menu bar, at the top right of the screen: look for the lantern icon.</p>
+<ul>
+  <li><b>Click</b> the icon to open the menu: the status, the mode, the proxy’s external address, and a way to the window.</li>
+  <li><b>Right-click</b> the icon, or click it while holding <kbd>⌥</kbd>, to open the Routekeeper window right away. In the menu, <span class="ui">Open Routekeeper</span> (<kbd>⌘O</kbd>) does the same.</li>
+  <li><b>A MacBook with a notch.</b> If the menu bar has a lot of icons, the Routekeeper icon may hide behind the notch. In that case, open Routekeeper again from Applications or with Spotlight: its window opens.</li>
+</ul>
+<p>The first time you open Routekeeper, its window opens by itself, with the welcome screen. Until setup is finished, you see the welcome screen instead of the usual window.</p>
+<p>macOS also asks whether Routekeeper may show notifications. That’s up to you. In notifications, Routekeeper tells you about connections that went around the proxy and about connections that couldn’t be made through the proxy. It does this no more than once every 10 minutes for each process and kind of event.</p>
+<div class="callout">
+  <p><b>Routekeeper 0.2.x is already on your Mac?</b> First read <a href="../../../en/docs/maintenance/#migrate">how to move to the new version</a>: you need to remove the old app with its own button, not just replace it.</p>
+</div>
+
+<h2 id="permissions">Three macOS permissions</h2>
+<p>Routekeeper works through a network extension: a part that plugs into macOS and sees the outgoing connections of apps. Something like this can’t be installed silently, so macOS asks for three permissions. You give them once. The welcome screen walks you through the steps and marks each finished one with a green check mark.</p>
+<div class="table"><table>
+  <thead><tr><th>Permission</th><th>What it’s for</th><th>What you’ll see</th></tr></thead>
+  <tbody>
+    <tr><td>1. Network extension</td><td>Installs the part of Routekeeper that runs inside the system and decides where each connection goes. Nothing works without it.</td><td>A switch in System Settings, and the administrator password.</td></tr>
+    <tr><td>2. Network content filtering</td><td>Lets Routekeeper see each new outgoing connection: which app is connecting and where. Based on this, Routekeeper lets the connection through, blocks it or asks you. The monitor’s data also comes from here.</td><td>The window “‘Routekeeper’ Would Like to Filter Network Content”.</td></tr>
+    <tr><td>3. Proxy configuration</td><td>Lets Routekeeper take the connections of the apps you chose and send them through your proxy.</td><td>The window “‘Routekeeper’ Would Like to Add Proxy Configurations”.</td></tr>
+  </tbody>
+</table></div>
+<p>Routekeeper looks at which app is connecting and where. It doesn’t read the content of pages or messages, and it sends traffic only to your proxies. For details, see the <a href="../../../en/privacy/">privacy policy</a>.</p>
+
+<h3>Step 1. Network extension</h3>
+<ol class="steps">
+  <li>On the welcome screen, click <span class="ui">Install</span>. macOS may say that a system extension was blocked. A Routekeeper hint, <span class="ui">Allow the network extension</span>, appears on top of other windows.</li>
+  <li>Allow the extension in System Settings. The path depends on your macOS version and is described below.</li>
+  <li>Enter the administrator password when macOS asks for it.</li>
+  <li>Go back to Routekeeper. After a couple of seconds, the step is marked as done by itself, and the hint says “Done, the extension is on” and closes.</li>
+</ol>
+
+<h4>macOS 15 Sequoia and later</h4>
+<ol>
+  <li>Click <span class="ui">Open System Settings</span> on the welcome screen or <span class="ui">Open Settings</span> in the hint.</li>
+  <li><span class="ui">System Settings</span> → <span class="ui">General</span> → <span class="ui">Login Items &amp; Extensions</span> opens. Find <span class="ui">Network Extensions</span> there. If the general list of extensions opens instead, choose <span class="ui">By Category</span> → <span class="ui">Network Extensions</span>.</li>
+  <li>Turn on the switch next to Routekeeper and confirm with your password.</li>
+</ol>
+
+<h4>macOS 14 Sonoma</h4>
+<ol>
+  <li>Open <span class="ui">System Settings</span> → <span class="ui" style="white-space: normal">Privacy &amp; Security</span>.</li>
+  <li>Scroll down to the <span class="ui">Security</span> section. There you’ll see the message “System software from developer ‘Ilya Bazhenov’ was blocked from loading.”</li>
+  <li>Click <span class="ui">Allow</span> next to this message and enter the administrator password. If several programs are blocked, macOS shows a button with a list instead: select Routekeeper in that list.</li>
+</ol>
+<div class="callout">
+  <p><b>On macOS 14, Routekeeper’s hints describe the macOS 15 path.</b> Sonoma has no “Login Items &amp; Extensions” item, so the <span class="ui">Open System Settings</span> and <span class="ui">Open Settings</span> buttons take you to the wrong place. Open “Privacy &amp; Security” yourself, as described above.</p>
+</div>
+<p>If macOS asks for a restart, the welcome screen shows “Restart your Mac to finish installing.” Restart your Mac and open Routekeeper again: the welcome screen picks up where it left off.</p>
+<p>Closed the hint with <span class="ui">Hide</span>? You can bring it back from the icon’s menu: <span class="ui">Allow Network Extension…</span>. The <span class="ui">Try Again</span> button on the welcome screen sends the request to macOS again.</p>
+
+<h3>Step 2. Network content filtering</h3>
+<p>Click <span class="ui">Turn On Filter</span>. macOS shows the window “‘Routekeeper’ Would Like to Filter Network Content”. Click <span class="ui">Allow</span>.</p>
+
+<h3>Step 3. Proxy configuration</h3>
+<p>Click <span class="ui">Turn On Proxy</span>. macOS shows the window “‘Routekeeper’ Would Like to Add Proxy Configurations”. Click <span class="ui">Allow</span>.</p>
+<p>The steps become available one by one: the filter after the extension, the proxy after the filter.</p>
+
+<h3>If you clicked “Don’t Allow”</h3>
+<p>Nothing is broken: the step simply stays unfinished.</p>
+<ul>
+  <li><b>Filter or proxy.</b> Click <span class="ui">Turn On Filter</span> or <span class="ui">Turn On Proxy</span> again. macOS asks again.</li>
+  <li><b>Extension.</b> If you closed System Settings without turning it on, click <span class="ui">Open System Settings</span> (on macOS 14, open “Privacy &amp; Security” yourself) or <span class="ui">Try Again</span>.</li>
+  <li><b>The prompt doesn’t appear, or the switch won’t turn on.</b> This can happen, for example, on a work Mac managed by an organization. What to do in this case is described in <a href="../../../en/docs/troubleshooting/#permissions">Troubleshooting</a>.</li>
+</ul>
+<details class="deep">
+  <summary>Details: what appeared in the system</summary>
+  <ul>
+    <li>The extension is installed as a system extension. In macOS lists, it’s called Routekeeper Extension (in version 0.2.1, Routekeeper Network Extension).</li>
+    <li>In System Settings, in the <span class="ui">Network</span> section, there are now two Routekeeper configurations: a content filter and a proxy. Manage them from Routekeeper, not from there.</li>
+    <li>The filter and the proxy start with the system. After a restart, your routes work even if you don’t open the Routekeeper window.</li>
+    <li>The status of all three parts is shown in Routekeeper’s settings, on the <span class="ui">Extension</span> tab, in the <span class="ui">Status</span> block: <span class="ui">Network extension</span>, <span class="ui">Filter</span>, <span class="ui">Proxy</span>.</li>
+    <li>To list the installed system extensions, run this command in Terminal:</li>
+  </ul>
+  <div class="cmd"><pre><code>systemextensionsctl list</code></pre></div>
+</details>
+
+<h2 id="first-proxy">Your first proxy</h2>
+<p>A proxy is a go-between server. An app connects to the proxy, and the proxy connects to the site, so the site sees the proxy’s address, not yours. Routekeeper has no servers of its own: it sends traffic to the proxy you give it.</p>
+
+<h3>Where to get a proxy</h3>
+<div class="grid">
+  <div class="card"><b>Your own server</b><p>Rent a <a class="term" href="../../../en/docs/glossary/#vps">VPS</a> and install an HTTPS proxy on it with one command. At the end, the script prints a ready line for Routekeeper. Step by step: <a href="../../../en/docs/server/">Your own proxy server</a>.</p></div>
+  <div class="card"><b>A client on this Mac</b><p>Clients such as sing-box, Xray or Clash usually open a local <a class="term" href="../../../en/docs/glossary/#socks5">SOCKS5</a> port on the Mac, for example <code>127.0.0.1:1080</code>. Add that port. Details: <a href="../../../en/docs/proxies/#local-client">local client</a>.</p></div>
+  <div class="card"><b>A work proxy</b><p>Your network administrator gives you the address, port, login and password. Details: <a href="../../../en/docs/proxies/#work-proxy">work proxy</a>.</p></div>
+  <div class="card"><b>A ready-made string</b><p>If you were given a string like <code>socks5://login:password@server:1080</code>, just copy and paste it.</p></div>
+</div>
+<p>Routekeeper connects to three types of proxy: SOCKS5, <a class="term" href="../../../en/docs/glossary/#http-connect">HTTP</a> and <a class="term" href="../../../en/docs/glossary/#https-proxy">HTTPS</a>. It doesn’t understand other protocols, such as Shadowsocks or VLESS, directly. For them, you need a client on the Mac with a local SOCKS5 port.</p>
+
+<h3>Add a proxy on the welcome screen</h3>
+<p>Once the three permissions are given, the <span class="ui">Add a proxy server</span> step becomes available.</p>
+<ol class="steps">
+  <li>Copy the proxy string, for example <code>https://login:password@my.example.com:443</code>.</li>
+  <li>Click <span class="ui">Paste from Clipboard</span>. The proxy form opens with the <span class="ui">Type</span>, <span class="ui">Server</span>, <span class="ui">Port</span>, <span class="ui">Login</span> and <span class="ui">Password</span> fields filled in.</li>
+  <li>The <span class="ui">DNS through proxy</span> and <span class="ui">Block UDP and QUIC</span> switches are already on. Leave them on. Why they’re needed is explained in <a href="../../../en/docs/concepts/#dns">How it works</a>.</li>
+  <li>If you want to check the proxy before saving it, click <span class="ui">Check</span>. After a couple of seconds, “Working · 48 ms · IP 203.0.113.7” or an error message appears next to it.</li>
+  <li>Click <span class="ui">Add</span>. Routekeeper saves the proxy and checks it right away.</li>
+</ol>
+<p>No string? Click <span class="ui">Enter Manually…</span> and fill in the fields yourself:</p>
+<ul>
+  <li><span class="ui">Type</span>: SOCKS5, HTTP or HTTPS.</li>
+  <li><span class="ui">Server</span>: the proxy’s address, either a <a class="term" href="../../../en/docs/glossary/#domain">domain name</a> or an <a class="term" href="../../../en/docs/glossary/#ip">IP address</a>. HTTPS needs a domain name: the server’s certificate is checked against it.</li>
+  <li><span class="ui">Port</span>: if you leave it empty, the usual port for the type is used: 1080 for SOCKS5, 8080 for HTTP, 443 for HTTPS.</li>
+  <li><span class="ui">Login</span> and <span class="ui">Password</span>: if the proxy requires them.</li>
+  <li><span class="ui">Name</span>: how the proxy is labeled in lists, for example “Amsterdam”.</li>
+</ul>
+<p>If the clipboard has no proxy string, Routekeeper tells you so and shows an example. Which string formats it understands is described in <a href="../../../en/docs/proxies/#paste">Proxies</a>.</p>
+<div class="callout tip">
+  <p><b>Already past the welcome screen?</b> Open the <span class="ui">Proxy</span> section and press <kbd>⌘V</kbd> or click the <span class="ui">Paste</span> button.</p>
+</div>
+<p>The <span class="ui">I’ll Do It Later</span> button at the bottom of the welcome screen skips the proxy and app steps. You can come back to them in the <span class="ui">Proxy</span> and <span class="ui">Apps</span> sections.</p>
+
+<h2 id="first-app">Your first app</h2>
+<p>The last step of the welcome screen, <span class="ui">What to send through the proxy</span>, offers two ways. You can combine them.</p>
+
+<h3>A whole app</h3>
+<ol class="steps">
+  <li>Click <span class="ui">Choose Apps…</span>. A list of installed apps opens, with a search field.</li>
+  <li>Select one or more, for example a browser, a work messenger or Terminal, and click <span class="ui">Add</span>.</li>
+</ol>
+<p>All traffic from these apps goes through the proxy you added. Other apps work as before, directly.</p>
+<p>Programs that the app launches, its <a class="term" href="../../../en/docs/glossary/#child-process">child processes</a>, go through the proxy along with it. For example, if you add Terminal, the <code>git</code>, <code>curl</code> or <code>npm</code> you run in it go through the proxy too.</p>
+
+<h3>A service in every app</h3>
+<p>Below the button are services: YouTube, Telegram, ChatGPT and others. A service is the set of addresses of one site or messenger. A service you select goes through the proxy in any app: in a browser, in a client app, in a command-line tool. Everything else in these apps works as before.</p>
+<p>The <span class="ui">All Services…</span> button opens the full list of 32 services. If a service has its own Mac app, Routekeeper adds that app too. If you install such an app later, Routekeeper adds it while it’s running. Services from the <span class="ui">Russian services</span> group are added with the <span class="ui">Direct</span> route.</p>
+<p>As soon as at least one app or service goes through the proxy, the welcome screen closes and the main window opens with the <span class="ui">Overview</span> section.</p>
+
+<h3>Add or change things later</h3>
+<p>Where all of an app’s traffic goes is set in the <span class="ui">Apps</span> section, not in the <span class="ui">Rules</span> section. <span class="ui">Rules</span> are for exceptions: a single domain, address or port.</p>
+<ul>
+  <li>The <span class="ui">Add</span> menu has <span class="ui">From Installed Apps…</span>, <span class="ui">Choose File…</span>, <span class="ui">Enter Path…</span> (for command-line tools, for example <code>/opt/homebrew/bin/git</code>), <span class="ui">Service</span> and <span class="ui">All Services…</span>. You can also simply drag an app into the list from Finder or the Dock.</li>
+  <li>To change a route, click it on the right side of the app’s row, for example <span class="ui">Proxy: Amsterdam</span>. Choose another proxy, <span class="ui">Direct</span>, <span class="ui">Block</span> or <span class="ui">Ask</span>.</li>
+  <li>The switch at the end of the row turns the route off without deleting it.</li>
+</ul>
+<p>For details, see <a href="../../../en/docs/apps/">Apps and services</a>.</p>
+<div class="callout">
+  <p><b>Connections that are already open don’t move to the new route.</b> Routekeeper decides where to send a connection at the moment it opens. If an app keeps long-lived connections, as messengers do, restart the app.</p>
+</div>
+
+<h2 id="check">Check that it works</h2>
+<ol class="steps">
+  <li><b>The menu bar icon.</b> Click it. If everything is fine, you’ll see “Running” under the name, with the number of apps going through the proxy. The next line shows the proxy’s external IP and its country: this is the address that sites see. If only services go through the proxy, not whole apps, it says “No apps through a proxy” there. That’s normal.</li>
+  <li><b>The Check button.</b> In the <span class="ui">Proxy</span> section, select a proxy and click <span class="ui">Check</span>. Routekeeper connects through the proxy and shows the delay and the external IP: “Working · 48 ms · IP 203.0.113.7”. If you see an error instead, such as “SOCKS5: wrong login or password” or “The proxy didn’t answer in time”, see <a href="../../../en/docs/troubleshooting/#errors">what the error messages mean</a>.</li>
+  <li><b>Overview.</b> This is the main screen. At the top is the overall result: “Everything works”, and which apps go through which proxy. If something is wrong, it says what, for example “Proxy ‘Amsterdam’ is unreachable” or “Some connections went around the proxy”. The <span class="ui">Through Proxies Now</span> block shows the apps that have traffic through a proxy right now.</li>
+  <li><b>In the app itself.</b> Open the app you sent through the proxy, for example a browser, and go to any site that shows your IP address. It should match the IP in the menu bar. The <span class="ui">Monitor</span> section shows that this app’s connections go through the proxy.</li>
+</ol>
+<p>If an app that should go through the proxy sends something directly, Routekeeper shows it in the <span class="ui">Leaks</span> section and suggests how to fix it. For details, see <a href="../../../en/docs/monitoring/">Checking and monitoring</a>.</p>
+
+<h2 id="turn-off">How to turn it off quickly</h2>
+<p>If something stopped opening after setup, turn Routekeeper off completely. It’s safe and takes a second.</p>
+<ol class="steps">
+  <li>Click the Routekeeper icon in the menu bar.</li>
+  <li>Turn off the switch to the right of the Routekeeper name (<span class="ui">Routekeeper On</span>). The Routekeeper window has the same switch at the bottom of the sidebar, next to the status.</li>
+</ol>
+<p>Now all connections go direct, as they would without Routekeeper. Rules and the mode don’t apply, and the monitor doesn’t record connections. The lantern in the menu bar goes dark, and the <span class="ui">Overview</span> section shows “Routekeeper is off”.</p>
+<p>To turn it back on, use the same switch or the <span class="ui">Enable</span> button in the <span class="ui">Overview</span> section. Your proxies, apps and rules stay where they are.</p>
+<div class="callout warn">
+  <p><b><span class="ui">Quit Routekeeper</span> doesn’t turn it off.</b> This command closes only the window and the icon. The network extension keeps running and applies your rules. To make everything go direct, you need the switch.</p>
+</div>
+<details class="deep">
+  <summary>Details: how the switch differs from other ways</summary>
+  <div class="table"><table>
+    <thead><tr><th>Way</th><th>What happens</th><th>How to undo it</th></tr></thead>
+    <tbody>
+      <tr><td>The <span class="ui">Routekeeper On</span> switch</td><td>All connections go direct. The filter and the proxy stay registered in macOS.</td><td>The same switch.</td></tr>
+      <tr><td><span class="ui">Quit Routekeeper</span></td><td>The window and the icon close. The extension keeps working by your rules. In <span class="ui">Ask</span> mode there’s no one to ask, so connections without a rule are allowed.</td><td>Open Routekeeper from Applications.</td></tr>
+      <tr><td><span class="ui">Settings</span> → <span class="ui">Extension</span> → <span class="ui">Stop…</span></td><td>The filter and the proxy are turned off in macOS itself.</td><td><span class="ui">Reinstall</span> in the same place. The switch won’t bring them back.</td></tr>
+      <tr><td><span class="ui">Settings</span> → <span class="ui">Extension</span> → <span class="ui">Delete…</span></td><td>The extension is removed from the system. Your rules stay on disk.</td><td>Go through the welcome screen again.</td></tr>
+    </tbody>
+  </table></div>
+  <p>For details, see <a href="../../../en/docs/maintenance/#turn-off">Updates and removal</a>.</p>
+</details>
+<p><b>The switch is gray and can’t be clicked?</b> The window has lost contact with the network extension. At the top of the window you’ll see “The network extension isn’t responding” and a <span class="ui">Reinstall Extension</span> button. What to do is described in <a href="../../../en/docs/troubleshooting/#extension">Troubleshooting</a>.</p>
+<p><b>Only the proxy is down?</b> By default, the apps that go through it get a connection error instead of going direct. This is by design: traffic doesn’t go around the proxy. How to switch to another proxy for a while or let everything go direct is described in the <a href="../../../en/docs/recipes/#proxy-down">recipe for this case</a>.</p>
+
+<h2 id="next">What’s next</h2>
+<div class="grid">
+  <a class="card" href="../../../en/docs/concepts/"><b>How it works</b><p>How Routekeeper decides where to send a connection, and what happens to DNS and UDP.</p></a>
+  <a class="card" href="../../../en/docs/apps/"><b>Apps and services</b><p>Routes, child processes, command-line tools, all 32 services.</p></a>
+  <a class="card" href="../../../en/docs/recipes/"><b>Recipes</b><p>Ready-made setups for a messenger, a browser, the terminal, a local client and a work proxy.</p></a>
+  <a class="card" href="../../../en/docs/monitoring/"><b>Checking and monitoring</b><p>Overview, the connection monitor and the <span class="ui">Leaks</span> section.</p></a>
+</div>
+    <p class="checked">Checked against the Routekeeper code (version 0.2.1 and the one after it) on October 4, 2026.</p>
+    <nav class="pager"><a class="prev" href="../../../en/docs/"><span>Previous</span>Docs overview</a><a class="next" href="../../../en/docs/concepts/"><span>Next</span>How it works</a></nav>
+  </article>
+</main>
+
+<div class="wrap">
+  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span><a href="../../../en/">Routekeeper for macOS</a> · <a href="../../../en/docs/">Docs</a> · <a href="../../../en/privacy/">Privacy</a> · <a href="https://github.com/ilyabazhenov/routekeeper">GitHub</a></span></footer>
+</div>
+
+<script src="../../../docs/assets/docs.js?v=3e67278c"></script>
+</body>
+</html>

@@ -99,7 +99,7 @@ a { color: inherit; text-decoration: none; }
     <span class="eyebrow">Privacy</span>
     <h1>What Routekeeper knows <span class="warm">and where it doesn’t go</span></h1>
     <p class="lede"><b>Routekeeper doesn’t collect data about you or your traffic and doesn’t send it anywhere.</b> Everything it knows about your connections stays on your Mac.</p>
-    <p class="dated">In effect from the first public version of Routekeeper. Revised October 3, 2026.</p>
+    <p class="dated">In effect from the first public version of Routekeeper. Revised October 4, 2026.</p>
 
     <h2>What Routekeeper sees</h2>
     <p>To decide where a connection goes, the Routekeeper system extension sees, for every outgoing connection:</p>
@@ -117,10 +117,12 @@ a { color: inherit; text-decoration: none; }
         <tr><td>Connection log for the monitor</td><td>In the system extension’s memory, the last few thousand entries</td><td>Until the extension restarts. Never written to disk.</td></tr>
         <tr><td>Rules, proxy list, settings, proxy passwords</td><td>The system extension’s configuration file, readable only by root</td><td>Until you delete them. Kept when the app is removed, so your rules come back if you reinstall.</td></tr>
         <tr><td>Service logs</td><td>The macOS system log (unified logging)</td><td>As long as macOS keeps them, usually a few days.</td></tr>
+        <tr><td>Service address lists</td><td>The app’s folder in <code>~/Library/Application Support</code></td><td>Until you delete them. Updated every 12 hours.</td></tr>
+        <tr><td>Unpacked country and network database for the traffic map</td><td><code>~/Library/Caches</code>, about 55 MB</td><td>Until you delete it. If you do, the app unpacks it again.</td></tr>
       </tbody>
     </table></div>
     <p>The Routekeeper window receives settings <b>without proxy passwords</b>.</p>
-    <p>Service logs contain technical events: startup, errors, decisions about connections. They may include addresses that apps connected to. Logs don’t leave your Mac unless you attach them to a bug report yourself. “Collect diagnostics” in Settings puts an archive on your desktop and sends it nowhere.</p>
+    <p>Service logs contain technical events: startup, errors, decisions about connections. They may include addresses that apps connected to. Logs don’t leave your Mac unless you attach them to a bug report yourself. “Collect diagnostics” in Settings puts an archive on your desktop and sends it nowhere. It contains a summary, the settings without passwords (but with the proxy address and login), the last 500 connections and 30 minutes of logs. <a href="../docs/maintenance/#leftovers">How to remove everything that stays behind</a>.</p>
     <p>The traffic map looks up countries and networks in a database built into the app (DB-IP Lite), without any requests to the internet.</p>
 
     <h2>What Routekeeper connects to on its own</h2>

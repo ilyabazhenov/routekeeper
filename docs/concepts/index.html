@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Как это работает — Routekeeper</title>
+<meta name="description" content="Устройство Routekeeper: приложение и сетевое расширение, три разрешения macOS, порядок выбора действия для соединения, четыре действия, DNS через прокси и блокировка UDP и QUIC.">
+<meta name="theme-color" content="#0a0f1f">
+<link rel="canonical" href="https://getroutekeeper.app/docs/concepts/">
+<link rel="alternate" hreflang="ru" href="https://getroutekeeper.app/docs/concepts/">
+<link rel="alternate" hreflang="en" href="https://getroutekeeper.app/en/docs/concepts/">
+<link rel="alternate" hreflang="x-default" href="https://getroutekeeper.app/en/docs/concepts/">
+<link rel="icon" href="../../mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../../icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../docs/assets/docs.css?v=891e2023">
+</head>
+<body>
+<!-- Built by Scripts/build-docs.py from site-src/docs/ru/concepts.html. Edit the fragment, not this file. -->
+
+<div class="wrap nav-wrap">
+  <header class="nav">
+    <a class="brand" href="../../"><img src="../../mark.svg" alt="" width="28" height="28">Routekeeper</a>
+    <div class="nav-end"><a class="lang" href="../../en/docs/concepts/" hreflang="en" lang="en">EN</a><a class="btn btn-primary" href="../../#download">Скачать</a></div>
+  </header>
+</div>
+
+<section class="wrap docs-hero compact">
+  <div class="hero-copy">
+    <span class="crumbs"><a href="../../docs/">Документация</a> · Начало</span>
+    <h1>Как это <span class="warm">работает</span></h1>
+    <p class="lede"><b>Routekeeper решает судьбу каждого соединения отдельно.</b> Здесь — из чего он состоит, в каком порядке выбирает действие и что происходит с DNS и UDP.</p>
+  </div>
+</section>
+
+<main class="wrap docs-layout">
+  <aside class="side-nav" aria-label="Разделы документации">
+    <span class="group">Начало</span>
+    <a href="../../docs/">Обзор документации</a>
+    <a href="../../docs/start/">Быстрый старт</a>
+    <a href="../../docs/concepts/" aria-current="page">Как это работает</a>
+    <span class="group">Настройка</span>
+    <a href="../../docs/proxies/">Прокси</a>
+    <a href="../../docs/apps/">Приложения и сервисы</a>
+    <a href="../../docs/rules/">Правила</a>
+    <a href="../../docs/firewall/">Режимы файрвола</a>
+    <a href="../../docs/server/">Свой прокси-сервер</a>
+    <span class="group">На практике</span>
+    <a href="../../docs/recipes/">Рецепты</a>
+    <a href="../../docs/monitoring/">Проверка и мониторинг</a>
+    <span class="group">Справка</span>
+    <a href="../../docs/troubleshooting/">Если не работает</a>
+    <a href="../../docs/maintenance/">Обновление и удаление</a>
+    <a href="../../docs/limits/">Ограничения</a>
+    <a href="../../docs/glossary/">Словарь</a>
+    <a href="../../docs/changelog/">Что нового</a>
+    <a class="side-action" href="../../privacy/">Конфиденциальность</a>
+    <a href="https://github.com/ilyabazhenov/routekeeper/issues">Сообщить о проблеме</a>
+  </aside>
+  <article class="doc">
+    <details class="mobile-nav"><summary>Все разделы документации</summary><nav>
+    <span class="group">Начало</span>
+    <a href="../../docs/">Обзор документации</a>
+    <a href="../../docs/start/">Быстрый старт</a>
+    <a href="../../docs/concepts/" aria-current="page">Как это работает</a>
+    <span class="group">Настройка</span>
+    <a href="../../docs/proxies/">Прокси</a>
+    <a href="../../docs/apps/">Приложения и сервисы</a>
+    <a href="../../docs/rules/">Правила</a>
+    <a href="../../docs/firewall/">Режимы файрвола</a>
+    <a href="../../docs/server/">Свой прокси-сервер</a>
+    <span class="group">На практике</span>
+    <a href="../../docs/recipes/">Рецепты</a>
+    <a href="../../docs/monitoring/">Проверка и мониторинг</a>
+    <span class="group">Справка</span>
+    <a href="../../docs/troubleshooting/">Если не работает</a>
+    <a href="../../docs/maintenance/">Обновление и удаление</a>
+    <a href="../../docs/limits/">Ограничения</a>
+    <a href="../../docs/glossary/">Словарь</a>
+    <a href="../../docs/changelog/">Что нового</a>
+    </nav></details>
+<p class="lead-in">Чтобы пользоваться Routekeeper, эту страницу читать не обязательно: хватит <a href="../../docs/start/">быстрого старта</a>. Она нужна, когда хочется понять, почему соединение пошло именно так, а не иначе.</p>
+
+<h2 id="parts">Из чего состоит Routekeeper</h2>
+<p>Routekeeper — это две программы, которые работают вместе.</p>
+<div class="grid">
+  <div class="card"><b>Приложение</b><p>Окно и значок в строке меню. Здесь вы добавляете <a class="term" href="../../docs/glossary/#proxy">прокси</a> и приложения, пишете правила, смотрите монитор. Приложение можно закрыть: маршруты от этого не перестают работать.</p></div>
+  <div class="card"><b><a class="term" href="../../docs/glossary/#network-extension">Сетевое расширение</a></b><p>Часть Routekeeper, которая встраивается в macOS; сама macOS называет такие модули системными расширениями. Расширение видит каждое новое исходящее соединение, решает, что с ним делать, и отправляет трафик через прокси. Работает и при закрытом окне, и после перезагрузки.</p></div>
+</div>
+<p>Сетевое расширение хранит прокси, пароли и правила в файле, который может читать только система. Окно получает настройки без паролей, а проверку прокси выполняет само расширение.</p>
+
+<h3>Почему macOS просит три разрешения</h3>
+<p>Внутри расширения две половины, и на каждую macOS спрашивает отдельно. Плюс разрешение на установку самого расширения.</p>
+<div class="table"><table>
+  <thead><tr><th>Разрешение</th><th>Что оно даёт</th><th>Без него</th></tr></thead>
+  <tbody>
+    <tr><td>Сетевое расширение</td><td>Установить расширение в систему.</td><td>Не работает ничего.</td></tr>
+    <tr><td>Фильтрация сетевого контента</td><td>Фильтр видит каждое новое исходящее соединение: какое приложение и куда подключается. Он пропускает соединение, блокирует его или придерживает, пока вы отвечаете на вопрос. Он же записывает соединения в монитор.</td><td>Нет файрвола, монитора и окон вопроса.</td></tr>
+    <tr><td>Конфигурация прокси</td><td>Прокси-часть забирает соединения, которым положено идти через прокси, и передаёт их на ваш прокси-сервер.</td><td>Ничего не идёт через прокси.</td></tr>
+  </tbody>
+</table></div>
+<p>Как дать разрешения в macOS 14 и macOS 15, написано в <a href="../../docs/start/#permissions">быстром старте</a>.</p>
+<details class="deep">
+  <summary>Подробнее: устройство для опытных</summary>
+  <ul>
+    <li>Фильтр — это <code>NEFilterDataProvider</code> на уровне сокетов: он решает судьбу соединения при открытии и не читает передаваемые данные. Прокси-часть — <code>NETransparentProxyProvider</code>, она принимает исходящие TCP и UDP.</li>
+    <li>Перехватываются только исходящие соединения. Входящие Routekeeper не трогает.</li>
+    <li>Настройки лежат в <code>/Library/Application Support/Routekeeper</code>, папка доступна только root. Версии 0.2.x хранили их в <code>/Library/Application Support/AppProxy</code>.</li>
+    <li>Прокси-конфигурация включается по требованию, поэтому после перезагрузки или остановки macOS запускает её снова сама.</li>
+    <li>Решение принимается один раз, когда соединение открывается. Если поменять правило, уже открытые соединения остаются там, где были; новые пойдут по-новому.</li>
+  </ul>
+</details>
+
+<h2 id="decision">Как решается судьба соединения</h2>
+<p>Для каждого нового соединения Routekeeper знает три вещи: какое приложение подключается (по его <a class="term" href="../../docs/glossary/#code-signature">подписи</a>), куда (имя сайта, если оно известно, <a class="term" href="../../docs/glossary/#ip">IP-адрес</a> и <a class="term" href="../../docs/glossary/#port">порт</a>) и как (<a class="term" href="../../docs/glossary/#tcp">TCP</a> или <a class="term" href="../../docs/glossary/#udp">UDP</a>). Дальше он идёт по шагам сверху вниз и останавливается на первом, который даёт ответ.</p>
+<figure class="figure">
+<svg viewBox="0 0 720 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="dc-title dc-desc">
+  <title id="dc-title">Порядок выбора действия для соединения</title>
+  <desc id="dc-desc">Если Routekeeper выключен, соединение идёт напрямую. Иначе сначала ищется самое точное правило для адреса, порта или протокола, затем маршрут приложения, затем действие режима по умолчанию. Если итог — через прокси, TCP идёт через прокси, а UDP блокируется или идёт напрямую с пометкой.</desc>
+  <style>
+    .dc-start { fill: var(--surface-2); stroke: var(--muted); stroke-width: 1.5; }
+    .dc-q { fill: var(--surface-2); stroke: var(--amber); stroke-width: 1.5; }
+    .dc-out { fill: var(--surface-2); stroke: var(--line-2); stroke-width: 1.5; }
+    .dc-note { fill: none; stroke: var(--line-2); stroke-width: 1.5; stroke-dasharray: 6 5; }
+    .dc-line { stroke: var(--muted); stroke-width: 1.5; fill: none; }
+    .dc-t { fill: var(--text); font-size: 16px; font-weight: 600; }
+    .dc-s { fill: var(--muted); font-size: 13.5px; }
+    .dc-o { fill: var(--text); font-size: 13.5px; }
+    .dc-yn { fill: var(--amber); font-size: 13px; font-weight: 600; }
+    .dc-head { fill: var(--muted); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; }
+  </style>
+  <defs>
+    <marker id="dc-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" style="fill: var(--muted)"/>
+    </marker>
+  </defs>
+
+  <text class="dc-head" x="20" y="12">ШАГИ</text>
+  <text class="dc-head" x="480" y="12">ИТОГ</text>
+
+  <rect class="dc-start" x="20" y="22" width="400" height="56" rx="28"/>
+  <text class="dc-t" x="44" y="46">Новое соединение</text>
+  <text class="dc-s" x="44" y="66">приложение, имя сайта или IP, порт, TCP или UDP</text>
+  <line class="dc-line" x1="220" y1="78" x2="220" y2="102" marker-end="url(#dc-arrow)"/>
+
+  <rect class="dc-q" x="20" y="104" width="400" height="60" rx="12"/>
+  <text class="dc-t" x="36" y="130">1. Routekeeper включён?</text>
+  <text class="dc-s" x="36" y="151">переключатель в строке меню и в окне</text>
+  <line class="dc-line" x1="420" y1="134" x2="478" y2="134" marker-end="url(#dc-arrow)"/>
+  <text class="dc-yn" x="449" y="126" text-anchor="middle">нет</text>
+  <rect class="dc-out" x="480" y="104" width="220" height="60" rx="12"/>
+  <text class="dc-t" x="496" y="130">Напрямую</text>
+  <text class="dc-s" x="496" y="151">правила не действуют</text>
+  <line class="dc-line" x1="220" y1="164" x2="220" y2="198" marker-end="url(#dc-arrow)"/>
+  <text class="dc-yn" x="232" y="186">да</text>
+
+  <rect class="dc-q" x="20" y="200" width="400" height="80" rx="12"/>
+  <text class="dc-t" x="36" y="226">2. Есть правило для этого адреса?</text>
+  <text class="dc-s" x="36" y="247">домен, IP, подсеть, сервис, порт или протокол;</text>
+  <text class="dc-s" x="36" y="267">побеждает самое точное, порядок в списке не важен</text>
+  <line class="dc-line" x1="420" y1="240" x2="478" y2="240" marker-end="url(#dc-arrow)"/>
+  <text class="dc-yn" x="449" y="232" text-anchor="middle">да</text>
+  <rect class="dc-out" x="480" y="210" width="220" height="60" rx="12"/>
+  <text class="dc-t" x="496" y="236">Действие правила</text>
+  <text class="dc-s" x="496" y="257">из «Правил» или сервиса</text>
+  <line class="dc-line" x1="220" y1="280" x2="220" y2="314" marker-end="url(#dc-arrow)"/>
+  <text class="dc-yn" x="232" y="302">нет</text>
+
+  <rect class="dc-q" x="20" y="316" width="400" height="60" rx="12"/>
+  <text class="dc-t" x="36" y="342">3. У приложения есть маршрут?</text>
+  <text class="dc-s" x="36" y="363">раздел «Приложения»</text>
+  <line class="dc-line" x1="420" y1="346" x2="478" y2="346" marker-end="url(#dc-arrow)"/>
+  <text class="dc-yn" x="449" y="338" text-anchor="middle">да</text>
+  <rect class="dc-out" x="480" y="316" width="220" height="60" rx="12"/>
+  <text class="dc-t" x="496" y="342">Маршрут приложения</text>
+  <text class="dc-s" x="496" y="363">прокси, напрямую, блок…</text>
+  <line class="dc-line" x1="220" y1="376" x2="220" y2="410" marker-end="url(#dc-arrow)"/>
+  <text class="dc-yn" x="232" y="398">нет</text>
+
+  <rect class="dc-q" x="20" y="412" width="400" height="60" rx="12"/>
+  <text class="dc-t" x="36" y="438">4. Режим по умолчанию</text>
+  <text class="dc-s" x="36" y="459">для соединений без правила</text>
+  <line class="dc-line" x1="420" y1="442" x2="478" y2="442" marker-end="url(#dc-arrow)"/>
+  <rect class="dc-out" x="480" y="394" width="220" height="96" rx="12"/>
+  <text class="dc-o" x="496" y="418">Только прокси → напрямую</text>
+  <text class="dc-o" x="496" y="440">Тихий → разрешить или блок</text>
+  <text class="dc-o" x="496" y="462">Спрашивать → окно вопроса</text>
+  <text class="dc-o" x="496" y="484">Блокировать всё → блок</text>
+
+  <rect class="dc-note" x="20" y="512" width="680" height="112" rx="12"/>
+  <text class="dc-t" x="36" y="538">Если итог — «Через прокси»</text>
+  <text class="dc-o" x="36" y="562">TCP: идёт через прокси-сервер. Прокси недоступен — ошибка, а не напрямую.</text>
+  <text class="dc-o" x="36" y="584">UDP: блокируется («Блокировать UDP и QUIC») или идёт напрямую с пометкой.</text>
+  <text class="dc-o" x="36" y="606">DNS по UDP: идёт напрямую и отмечается в разделе «Мимо прокси».</text>
+</svg>
+<figcaption>Порядок выбора действия. Правила и сервисы проверяются раньше маршрута приложения, режим срабатывает, только если не подошло ничего.</figcaption>
+</figure>
+
+<h3>Шаги по порядку</h3>
+<ol class="steps">
+  <li><b>Routekeeper выключен</b> — всё идёт напрямую, как будто его нет. Переключатель <span class="ui">Routekeeper включён</span> есть в меню значка и внизу боковой колонки окна.</li>
+  <li><b>Правило для адреса.</b> Сюда относятся правила из раздела <span class="ui">Правила</span> (домен, IP-адрес, подсеть, порт, протокол) и сервисы из раздела <span class="ui">Приложения</span>. Если подходит несколько, побеждает самое точное: точный адрес важнее <a class="term" href="../../docs/glossary/#wildcard"><code>*.домена</code></a>, домен важнее <a class="term" href="../../docs/glossary/#cidr">подсети</a>, а при одинаковом адресе правило с портом важнее правила без порта. Порядок строк в списке не играет роли. Разобранные примеры — на странице <a href="../../docs/rules/#priority">«Правила»</a>.</li>
+  <li><b>Маршрут приложения</b> — то, что выбрано для приложения в разделе <span class="ui">Приложения</span>. Он действует на весь трафик приложения, который не забрали более точные правила. Если включено <span class="ui">Вместе с дочерними процессами</span>, маршрут действует и на его <a class="term" href="../../docs/glossary/#child-process">дочерние процессы</a> — программы, которые приложение запускает. Если у такой программы есть свой маршрут, важнее её собственный.</li>
+  <li><b>Режим по умолчанию</b> — что делать с соединением, для которого нет ни правила, ни маршрута. В режиме <span class="ui">Только прокси</span> (он стоит сразу после установки) такое соединение идёт напрямую. Остальные режимы описаны на странице <a href="../../docs/firewall/#modes">«Режимы файрвола»</a>.</li>
+</ol>
+
+<h3>Пример</h3>
+<p>Браузер добавлен в <span class="ui">Приложения</span> с маршрутом через прокси «Амстердам». В разделе <span class="ui">Правила</span> есть правило «любое приложение · <code>*.corp.example</code> → <span class="ui">Напрямую</span>» для корпоративного портала. Терминал никуда не добавлен, режим — <span class="ui">Только прокси</span>.</p>
+<div class="table"><table>
+  <thead><tr><th>Соединение</th><th>Что сработало</th><th>Итог</th></tr></thead>
+  <tbody>
+    <tr><td>Браузер → <code>portal.corp.example</code></td><td>Шаг 2: правило для <code>*.corp.example</code> точнее, чем маршрут браузера</td><td>Напрямую</td></tr>
+    <tr><td>Браузер → <code>example.org</code></td><td>Шаг 3: маршрут браузера</td><td>Через «Амстердам»</td></tr>
+    <tr><td>Терминал → <code>example.org</code></td><td>Шаг 4: правила и маршрута нет, режим <span class="ui">Только прокси</span></td><td>Напрямую</td></tr>
+    <tr><td>Терминал → <code>portal.corp.example</code></td><td>Шаг 2: правило для любого приложения</td><td>Напрямую</td></tr>
+  </tbody>
+</table></div>
+
+<details class="deep">
+  <summary>Подробнее: точный порядок для опытных</summary>
+  <ul>
+    <li><b>До правил.</b> Если Routekeeper выключен, соединение идёт напрямую и не записывается в монитор. Соединения с самим прокси-сервером (его адрес и порт из списка <span class="ui">Прокси</span>) всегда идут напрямую, иначе до прокси было бы не достучаться.</li>
+    <li><b>Встроенные правила</b> с источником <span class="ui">По умолчанию</span>: <code>127.0.0.0/8</code> и <code>::1</code> → <span class="ui">Напрямую</span>, сам Routekeeper → <span class="ui">Напрямую</span> (это его проверки прокси). Они участвуют в выборе наравне с вашими.</li>
+    <li><b>Сравнение правил.</b> Из включённых правил, подходящих по приложению, адресу, порту и протоколу, выбирается одно. Сравнение идёт по очереди: точность адреса (точное имя или IP, затем <code>*.домен</code> — чем длиннее, тем точнее, затем подсеть — чем длиннее префикс, тем точнее, затем «любой адрес»); вписанный вручную адрес важнее сервиса с той же точностью; правило с портом важнее; правило с протоколом важнее; точное приложение важнее его дочерних процессов, а те важнее «любого приложения»; при полном равенстве — <span class="ui">Блокировать</span>, затем <span class="ui">Через прокси</span>, затем <span class="ui">Напрямую</span>, затем <span class="ui">Спрашивать</span>.</li>
+    <li><b>Маршрут приложения</b> — это тоже правило: приложение и «любой адрес» без порта и протокола. Поэтому он проигрывает любому правилу с адресом, портом или протоколом и выигрывает у правила «любое приложение · любой адрес».</li>
+    <li><b>Без имени сайта</b> правила по доменам не срабатывают: соединение по голому IP подходит только под правила с IP и подсетями. В некоторые сервисы входят подсети (например, адреса Telegram), они срабатывают и по IP. Подробнее — в <a href="../../docs/limits/#hostnames">ограничениях</a>.</li>
+    <li><b>Без правила</b>, если включено <span class="ui">Настройки</span> → <span class="ui">Сеть</span> → <span class="ui">Не трогать localhost</span> (включено по умолчанию), соединения с самим Mac идут напрямую. Затем срабатывает режим. В режиме <span class="ui">Спрашивать</span> до окна вопроса ещё действуют автоматические разрешения для программ Apple и программ, установленных до Routekeeper.</li>
+    <li><b>Правила со сроком</b> из окна вопроса («Пока работает…») исчезают, когда процесс завершается.</li>
+  </ul>
+</details>
+
+<h3>Что происходит после решения «Через прокси»</h3>
+<p>TCP-соединение уходит на прокси-сервер. Если прокси недоступен, соединение обрывается с ошибкой и напрямую не уходит. Так Routekeeper не раскрывает ваш адрес, когда прокси упал: это называют <a class="term" href="../../docs/glossary/#fail-closed">fail-closed</a>. Если вам важнее, чтобы приложения работали хоть как-то, включите <span class="ui">Настройки</span> → <span class="ui">Сеть</span> → <span class="ui" style="white-space: normal">Если прокси недоступен — пускать напрямую</span> (по умолчанию выключено).</p>
+<p>С UDP всё иначе: через прокси он не идёт вовсе. Что с ним происходит, описано ниже, в разделах <a href="#dns">про DNS</a> и <a href="#udp">про UDP</a>.</p>
+
+<h2 id="actions">Четыре действия</h2>
+<p>У правила, маршрута приложения и сервиса одно из четырёх действий.</p>
+<div class="table"><table>
+  <thead><tr><th>Действие</th><th>Что происходит с соединением</th><th>Заметки</th></tr></thead>
+  <tbody>
+    <tr><td><span class="ui">Через прокси</span></td><td>Идёт через выбранный прокси-сервер. Сайт видит IP прокси, а не ваш.</td><td>В списках показывается именем прокси, например <span class="ui">Прокси: Амстердам</span>. Через прокси идёт только TCP.</td></tr>
+    <tr><td><span class="ui">Напрямую</span></td><td>Идёт через ваше обычное подключение, как без Routekeeper.</td><td>Так по умолчанию идут все приложения, которые вы не добавили.</td></tr>
+    <tr><td><span class="ui">Блокировать</span></td><td>Соединение сразу обрывается. Приложение видит ошибку сети.</td><td>При равной точности блокирующее правило важнее остальных.</td></tr>
+    <tr><td><span class="ui">Спрашивать</span></td><td>Соединение ждёт, пока вы ответите в окне вопроса: <span class="ui">Заблокировать</span>, <span class="ui">Через прокси</span> или <span class="ui">Разрешить</span>.</td><td>Без ответа через 60 секунд соединение разрешается (оба значения меняются в <span class="ui">Настройки</span> → <span class="ui">Файрвол</span>). Если приложение Routekeeper не запущено, спросить некому: соединение разрешается, а для приложения создаётся разрешающее правило с пометкой <span class="ui">На проверку</span>. Для сервисов этого действия нет.</td></tr>
+  </tbody>
+</table></div>
+<p>Ответ в окне вопроса сохраняется как правило: навсегда или пока работает программа. Вариант <span class="ui">Один раз</span> правила не сохраняет. Подробно — на странице <a href="../../docs/firewall/#ask">«Режимы файрвола»</a>.</p>
+
+<h2 id="dns">DNS: как приложения узнают адрес сайта</h2>
+<p>Сайты в интернете находятся по числовым адресам — IP. Людям и программам удобнее имена, например <code>example.com</code>. <a class="term" href="../../docs/glossary/#dns">DNS</a> — справочная служба, которая переводит имя в адрес. Обычно на такие запросы отвечает ваш провайдер или роутер, поэтому он видит, какие имена спрашивает ваш Mac.</p>
+
+<h3>Что делает «DNS через прокси»</h3>
+<p>Переключатель <span class="ui">DNS через прокси</span> есть у каждого прокси и по умолчанию включён. Когда приложение подключается к сайту по имени, Routekeeper передаёт прокси само имя, а не адрес. Прокси-сервер сам узнаёт адрес и подключается к нему. Сайт открывается так же, как если бы вы открывали его с сервера.</p>
+<p>Выключать переключатель обычно незачем. Без него прокси получает IP-адрес, который узнал ваш Mac.</p>
+
+<h3>Что при этом идёт мимо прокси</h3>
+<ul>
+  <li><b>Соединение без имени.</b> Если приложение подключается сразу по IP-адресу, прокси получает только адрес: узнавать нечего. Правила по доменам к такому соединению тоже не подходят.</li>
+  <li><b>DNS-запросы самого приложения.</b> Некоторые приложения, например браузеры и мессенджеры, сами отправляют DNS-запросы по UDP на порт 53. У приложения с маршрутом через прокси такие запросы идут напрямую. Routekeeper их не блокирует, чтобы приложение не сломалось, а только отмечает в разделе <span class="ui">Мимо прокси</span> как «DNS мимо прокси».</li>
+  <li><b>Запросы системной службы имён.</b> Часто адрес за приложение узнаёт сама macOS. Такие запросы Routekeeper не может отнести к конкретному приложению и не показывает.</li>
+</ul>
+<div class="callout tip">
+  <p><b>Для браузера включите «DNS через HTTPS».</b> Этот параметр есть в настройках Chrome, Edge, Firefox и Brave. С ним браузер спрашивает адреса внутри обычного HTTPS-соединения (<a class="term" href="../../docs/glossary/#doh">DoH</a>), и если браузер целиком идёт через прокси, эти запросы тоже пойдут через прокси. Порт 53 браузеру не блокируйте: без DoH он перестанет открывать сайты.</p>
+</div>
+<details class="deep">
+  <summary>Подробнее: что считается DNS и где это видно</summary>
+  <ul>
+    <li>DNS-запросом Routekeeper считает соединение на порт 53 или 853. Если такое соединение по UDP идёт от приложения, которому положено идти через прокси, оно уходит напрямую при любом положении <span class="ui">Блокировать UDP и QUIC</span> и отмечается как «DNS мимо прокси». Это наименее важный вид пометок.</li>
+    <li>Заблокировать его можно только явным правилом: кнопка <span class="ui">Блокировать DNS</span> в разделе <span class="ui">Мимо прокси</span> создаёт правило «приложение · порт 53 → <span class="ui">Блокировать</span>». Для браузеров кнопки нет: им нужен DoH.</li>
+    <li>Служебные имена <code>ipv4only.arpa</code> и <code>_dns.resolver.arpa</code> не отмечаются: их спрашивают все системы одинаково, и они ничего о вас не говорят.</li>
+    <li>Пометки зависят от того, куда по правилам должно было идти само соединение. Процесс мимо правила отмечается только у приложений, у которых весь маршрут идёт через прокси. DNS и UDP отмечаются, когда это соединение по правилам должно было уйти в прокси. Поэтому браузер, у которого через прокси идут только отдельные сервисы или домены, почти не проверяется: его DNS-запросы обращаются к адресу DNS-сервера, а не к этим доменам. Подробнее — <a href="../../docs/monitoring/#what-is-detected">что замечает Routekeeper</a>.</li>
+    <li>С включённым переключателем SOCKS5-прокси получает в запросе на подключение имя хоста, HTTP и HTTPS-прокси — имя в запросе CONNECT. С выключенным — IP-адрес.</li>
+    <li>В режиме <span class="ui">Спрашивать</span> есть отдельная настройка <span class="ui">Разрешать DNS-запросы (UDP 53)</span>: она пропускает без вопроса DNS-запросы приложений без правила. По умолчанию выключена.</li>
+  </ul>
+</details>
+
+<h2 id="udp">UDP и QUIC</h2>
+<p>Данные по сети ходят двумя основными способами. <b>TCP</b> похож на разговор с подтверждением: стороны договариваются о соединении и проверяют, что всё дошло. На нём работают сайты, почта и большинство приложений. <b>UDP</b> похож на открытки без подтверждения: быстрее, но без гарантий. По UDP идут звонки, видео в реальном времени, игры, DNS и <a class="term" href="../../docs/glossary/#quic">QUIC</a> — новый способ загружать сайты, которым пользуются браузеры.</p>
+<p>Прокси типов SOCKS5, HTTP и HTTPS в Routekeeper передают только TCP. Значит, UDP приложения, пущенного через прокси, через прокси пройти не может. Что с ним делать, решает переключатель <span class="ui">Блокировать UDP и QUIC</span> в настройках прокси.</p>
+<div class="table"><table>
+  <thead><tr><th>Переключатель</th><th>Что происходит с UDP</th><th>Что вы заметите</th></tr></thead>
+  <tbody>
+    <tr><td>Включён (по умолчанию)</td><td>UDP блокируется.</td><td>Браузеры сами переходят на обычный HTTPS по TCP и работают через прокси. Звонки и голосовые чаты могут не работать — см. <a href="../../docs/limits/#udp">ограничения</a>.</td></tr>
+    <tr><td>Выключен</td><td>UDP идёт напрямую, мимо прокси.</td><td>Каждое такое соединение отмечается в разделе <span class="ui">Мимо прокси</span> как «UDP мимо прокси».</td></tr>
+  </tbody>
+</table></div>
+<p>Исключение — DNS по UDP. Он идёт напрямую и только отмечается при любом положении переключателя, как описано <a href="#dns">выше</a>.</p>
+
+<h3>Почему правило для сервиса может не поймать QUIC</h3>
+<p>Правила по доменам и сервисам узнают сайт по имени. В UDP-соединении, в том числе в QUIC, имени сайта обычно нет — только IP-адрес. Такое соединение не подходит под правило домена и идёт по маршруту приложения.</p>
+<p>Пример: браузер идёт напрямую, а сервис YouTube из списка <span class="ui">Сервисы</span> — через прокси. Видео по QUIC уйдёт напрямую: для Routekeeper это просто UDP-соединение браузера на порт 443. Помогает правило «браузер · порт 443 · UDP → <span class="ui">Блокировать</span>». QUIC перестаёт работать, браузер переходит на TCP, где имя сайта известно, и правило сервиса срабатывает. Готовая настройка — в рецепте <a href="../../docs/recipes/#browser-video">про видео в браузере</a>.</p>
+<details class="deep">
+  <summary>Подробнее: как Routekeeper обрабатывает UDP</summary>
+  <ul>
+    <li>Фильтр видит исходящие TCP и UDP, прокси-часть принимает и то и другое. Если для UDP-соединения выбрано <span class="ui">Через прокси</span>: DNS (порты 53 и 853) уходит напрямую с пометкой; остальное при включённом <span class="ui">Блокировать UDP и QUIC</span> закрывается, при выключенном — уходит напрямую с пометкой «UDP мимо прокси».</li>
+    <li>Переключатель задаётся для каждого прокси отдельно и действует на приложения, которые идут через этот прокси.</li>
+    <li>Кнопка <span class="ui">Блокировать UDP</span> в разделе <span class="ui">Мимо прокси</span> включает этот переключатель у прокси, через который идёт приложение. Если у приложения нет маршрута через прокси, кнопка создаёт правило «приложение · UDP → <span class="ui">Блокировать</span>».</li>
+    <li>Правила с действием <span class="ui">Блокировать</span> и <span class="ui">Напрямую</span> действуют на UDP так же, как на TCP.</li>
+  </ul>
+</details>
+    <p class="checked">Сверено с кодом Routekeeper (версия 0.2.1 и следующая за ней) 4 октября 2026 года.</p>
+    <nav class="pager"><a class="prev" href="../../docs/start/"><span>Назад</span>Быстрый старт</a><a class="next" href="../../docs/proxies/"><span>Дальше</span>Прокси</a></nav>
+  </article>
+</main>
+
+<div class="wrap">
+  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span><a href="../../">Routekeeper для macOS</a> · <a href="../../docs/">Документация</a> · <a href="../../privacy/">Конфиденциальность</a> · <a href="https://github.com/ilyabazhenov/routekeeper">GitHub</a></span></footer>
+</div>
+
+<script src="../../docs/assets/docs.js?v=3e67278c"></script>
+</body>
+</html>

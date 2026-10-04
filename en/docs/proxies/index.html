@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Proxies — Routekeeper</title>
+<meta name="description" content="Proxies in Routekeeper: the SOCKS5, HTTP and HTTPS types, the fields and pasting a proxy line, DNS through proxy and blocking UDP and QUIC, checking and error messages, several proxies and moving routes, a local sing-box, Xray or Clash client, a work proxy.">
+<meta name="theme-color" content="#0a0f1f">
+<link rel="canonical" href="https://getroutekeeper.app/en/docs/proxies/">
+<link rel="alternate" hreflang="ru" href="https://getroutekeeper.app/docs/proxies/">
+<link rel="alternate" hreflang="en" href="https://getroutekeeper.app/en/docs/proxies/">
+<link rel="alternate" hreflang="x-default" href="https://getroutekeeper.app/en/docs/proxies/">
+<link rel="icon" href="../../../mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../../../icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=891e2023">
+</head>
+<body>
+<!-- Built by Scripts/build-docs.py from site-src/docs/en/proxies.html. Edit the fragment, not this file. -->
+
+<div class="wrap nav-wrap">
+  <header class="nav">
+    <a class="brand" href="../../../en/"><img src="../../../mark.svg" alt="" width="28" height="28">Routekeeper</a>
+    <div class="nav-end"><a class="lang" href="../../../docs/proxies/" hreflang="ru" lang="ru">RU</a><a class="btn btn-primary" href="../../../en/#download">Download</a></div>
+  </header>
+</div>
+
+<section class="wrap docs-hero compact">
+  <div class="hero-copy">
+    <span class="crumbs"><a href="../../../en/docs/">Docs</a> · Setup</span>
+    <h1>Proxies: <span class="warm">where to send traffic</span></h1>
+    <p class="lede"><b>A proxy is the server Routekeeper sends the traffic of your chosen apps through.</b> This page covers how to add a proxy, check it and, if needed, replace it with another one.</p>
+  </div>
+</section>
+
+<main class="wrap docs-layout">
+  <aside class="side-nav" aria-label="Docs sections">
+    <span class="group">Getting started</span>
+    <a href="../../../en/docs/">Docs overview</a>
+    <a href="../../../en/docs/start/">Quick start</a>
+    <a href="../../../en/docs/concepts/">How it works</a>
+    <span class="group">Setup</span>
+    <a href="../../../en/docs/proxies/" aria-current="page">Proxies</a>
+    <a href="../../../en/docs/apps/">Apps and services</a>
+    <a href="../../../en/docs/rules/">Rules</a>
+    <a href="../../../en/docs/firewall/">Firewall modes</a>
+    <a href="../../../en/docs/server/">Your own proxy server</a>
+    <span class="group">In practice</span>
+    <a href="../../../en/docs/recipes/">Recipes</a>
+    <a href="../../../en/docs/monitoring/">Checking and monitoring</a>
+    <span class="group">Reference</span>
+    <a href="../../../en/docs/troubleshooting/">Troubleshooting</a>
+    <a href="../../../en/docs/maintenance/">Updates and removal</a>
+    <a href="../../../en/docs/limits/">Limitations</a>
+    <a href="../../../en/docs/glossary/">Glossary</a>
+    <a href="../../../en/docs/changelog/">What's new</a>
+    <a class="side-action" href="../../../en/privacy/">Privacy</a>
+    <a href="https://github.com/ilyabazhenov/routekeeper/issues">Report a problem</a>
+  </aside>
+  <article class="doc">
+    <details class="mobile-nav"><summary>All docs sections</summary><nav>
+    <span class="group">Getting started</span>
+    <a href="../../../en/docs/">Docs overview</a>
+    <a href="../../../en/docs/start/">Quick start</a>
+    <a href="../../../en/docs/concepts/">How it works</a>
+    <span class="group">Setup</span>
+    <a href="../../../en/docs/proxies/" aria-current="page">Proxies</a>
+    <a href="../../../en/docs/apps/">Apps and services</a>
+    <a href="../../../en/docs/rules/">Rules</a>
+    <a href="../../../en/docs/firewall/">Firewall modes</a>
+    <a href="../../../en/docs/server/">Your own proxy server</a>
+    <span class="group">In practice</span>
+    <a href="../../../en/docs/recipes/">Recipes</a>
+    <a href="../../../en/docs/monitoring/">Checking and monitoring</a>
+    <span class="group">Reference</span>
+    <a href="../../../en/docs/troubleshooting/">Troubleshooting</a>
+    <a href="../../../en/docs/maintenance/">Updates and removal</a>
+    <a href="../../../en/docs/limits/">Limitations</a>
+    <a href="../../../en/docs/glossary/">Glossary</a>
+    <a href="../../../en/docs/changelog/">What's new</a>
+    </nav></details>
+<p class="lead-in">Routekeeper has no servers of its own. It sends app traffic to the <a class="term" href="../../../en/docs/glossary/#proxy">proxy</a> you give it: your own server, a client of another program on this Mac, a work proxy or a proxy from a provider.</p>
+<pre class="flow"><code>App → Routekeeper → <b>proxy</b> → site</code></pre>
+<p>Don’t have a proxy? You can set one up on a rented server with one command: <a href="../../../en/docs/server/">Your own proxy server</a>.</p>
+
+<h2 id="types">Which type to choose</h2>
+<p>Routekeeper works with three types of proxy. The type sets how Routekeeper talks to the server. Apps don’t notice the difference.</p>
+<div class="table"><table>
+  <thead><tr><th>Type</th><th>Default port</th><th>When to choose it</th><th>What to know</th></tr></thead>
+  <tbody>
+    <tr><td><a class="term" href="../../../en/docs/glossary/#socks5">SOCKS5</a></td><td>1080</td><td>A sing-box, Xray or Clash client on this Mac. A proxy from a provider with a line like <code>socks5://…</code>.</td><td>The connection to the proxy isn’t encrypted: the login, password and site names can be seen on the way.</td></tr>
+    <tr><td><a class="term" href="../../../en/docs/glossary/#http-connect">HTTP</a></td><td>8080</td><td>A work proxy in the office. A proxy with a line like <code>http://…</code>.</td><td>The connection to the proxy isn’t encrypted. Only login-and-password sign-in.</td></tr>
+    <tr><td><a class="term" href="../../../en/docs/glossary/#https-proxy">HTTPS</a></td><td>443</td><td>Your own server, set up <a href="../../../en/docs/server/">with our guide</a>. A proxy with a line like <code>https://…</code>.</td><td>The connection to the proxy is encrypted with <a class="term" href="../../../en/docs/glossary/#tls">TLS</a>. The <span class="ui">Server</span> field needs a domain name.</td></tr>
+  </tbody>
+</table></div>
+<p>How to choose:</p>
+<ul>
+  <li><b>You have a proxy line</b> from a provider or from the server install script: just <a href="#paste">paste it</a>, and the type is set for you.</li>
+  <li><b>Your own server set up with our guide</b>: HTTPS.</li>
+  <li><b>A client on this Mac</b>: SOCKS5, server <code>127.0.0.1</code>. See <a href="#local-client">Local client</a> for details.</li>
+  <li><b>A proxy at work</b>: HTTP, or HTTPS if your IT department says so. See <a href="#work-proxy">Work proxy</a> for details.</li>
+  <li><b>A remote server, and you have a choice</b>: take HTTPS. SOCKS5 and HTTP also work over the internet, but the login, password and site names travel in plain text. The content of HTTPS sites stays encrypted in any case.</li>
+</ul>
+<div class="callout"><p>Routekeeper doesn’t support other protocols, such as Shadowsocks or VLESS, directly. If your server uses such a protocol, run its client on the Mac and connect Routekeeper to the client’s local port, as described <a href="#local-client">below</a>.</p></div>
+<details class="deep"><summary>Details: how Routekeeper talks to each type of proxy</summary>
+  <ul>
+    <li><b>SOCKS5</b>: as in RFC 1928, with login and password as in RFC 1929. Only the CONNECT command is used, so only <a class="term" href="../../../en/docs/glossary/#tcp">TCP</a>. Routekeeper doesn’t use UDP ASSOCIATE, so UDP doesn’t go through SOCKS5 even if the client supports it.</li>
+    <li><b>HTTP</b>: for each connection, a tunnel is opened with the CONNECT method, including to port 80. The login and password are sent in the <code>Proxy-Authorization: Basic</code> header.</li>
+    <li><b>HTTPS</b>: the same CONNECT inside TLS 1.2 or newer, ALPN <code>http/1.1</code>. The server certificate is checked against the macOS trusted root certificates and the name in the <span class="ui">Server</span> field. A self-signed certificate won’t pass the check.</li>
+    <li>Routekeeper allows 15 seconds to set up a tunnel (TCP, TLS and the handshake with the proxy), or 10 seconds during a check. Open tunnels are checked with TCP keepalive: after 30 seconds of silence, three probes 10 seconds apart. A tunnel whose server has gone away is closed after about a minute.</li>
+  </ul>
+</details>
+
+<h2 id="add">How to add a proxy</h2>
+<p>The quickest way is to <a href="#paste">paste a proxy line</a>. If you don’t have a line, fill in the fields by hand.</p>
+<ol class="steps">
+  <li>In the Routekeeper window, open the <span class="ui">Proxy</span> section (<kbd>⌘4</kbd>).</li>
+  <li>Click <span class="ui">+</span> below the list of proxies or <span class="ui">Add Proxy</span> in the toolbar. <kbd>⌥⌘N</kbd> does the same from any section. Empty fields open on the right.</li>
+  <li>Fill in the fields as shown in the table below.</li>
+  <li>Click <span class="ui">Check</span>. You can check before you save: Routekeeper uses what’s in the fields. What the result means is explained in <a href="#check">Checking</a>.</li>
+  <li>Click <span class="ui">Add</span>. The proxy appears in the list on the left, and Routekeeper checks it again right away.</li>
+</ol>
+<p>On first launch, the same is on the <a href="../../../en/docs/start/#first-proxy">welcome screen</a>: the <span class="ui">Add a proxy server</span> step, with the <span class="ui">Paste from Clipboard</span> and <span class="ui">Enter Manually…</span> buttons.</p>
+<div class="table"><table>
+  <thead><tr><th>Field</th><th>What to enter</th></tr></thead>
+  <tbody>
+    <tr><td><span class="ui">Name</span></td><td>Any name you’ll see in the route menu: “Amsterdam”, “Office”. If you leave the field empty, the server address becomes the name.</td></tr>
+    <tr><td><span class="ui">Type</span></td><td>SOCKS5, HTTP or HTTPS. How to choose: see <a href="#types">above</a>.</td></tr>
+    <tr><td><span class="ui">Server</span></td><td>A <a class="term" href="../../../en/docs/glossary/#domain">domain name</a> like <code>proxy.example.net</code> or an <a class="term" href="../../../en/docs/glossary/#ip">IP address</a> like <code>203.0.113.10</code>; IPv6 works too. No <code>https://</code> and no port. For HTTPS, only a domain name: the certificate is checked against it.</td></tr>
+    <tr><td><span class="ui">Port</span></td><td>The proxy’s <a class="term" href="../../../en/docs/glossary/#port">port</a>, a number from 1 to 65535. If you leave the field empty, Routekeeper uses the default port for the type: 1080, 8080 or 443. The hint in the field shows which one.</td></tr>
+    <tr><td><span class="ui">Login</span></td><td>If the proxy lets you in without a password, leave it empty.</td></tr>
+    <tr><td><span class="ui">Password</span></td><td>Saved only together with a login.</td></tr>
+    <tr><td><span class="ui">DNS through proxy</span></td><td>On by default. Usually you don’t need to change it. What it does: see <a href="#toggles">below</a>.</td></tr>
+    <tr><td><span class="ui">Block UDP and QUIC</span></td><td>On by default. Usually you don’t need to change it.</td></tr>
+  </tbody>
+</table></div>
+<p>To change a proxy, select it in the list, edit the fields and click <span class="ui">Save</span>. <span class="ui">Revert Changes</span> brings back the saved values. The <span class="ui">Used in rules: N</span> line below the <span class="ui">Check</span> button shows how many routes and rules go through this proxy.</p>
+<details class="deep"><summary>Details: where the password is stored</summary>
+  <p>The password is stored by the Routekeeper <a class="term" href="../../../en/docs/glossary/#network-extension">network extension</a> in its settings file. Only the system (root) can read this file. The Routekeeper window doesn’t get the saved password: the <span class="ui">Password</span> field shows dots instead, and the extension itself runs the proxy check. If you don’t touch the field, the password stays the same when you save. If you clear <span class="ui">Login</span>, the password is deleted.</p>
+</details>
+
+<h2 id="paste">Paste a proxy line</h2>
+<p>Providers and the server install script give you a proxy as a single line. Routekeeper reads it by itself.</p>
+<ol class="steps">
+  <li>Copy the proxy line (<kbd>⌘C</kbd>).</li>
+  <li>Paste it into Routekeeper:
+    <ul>
+      <li><b>The <span class="ui">Proxy</span> section:</b> click the list of proxies on the left and press <kbd>⌘V</kbd>, or click <span class="ui">Paste</span> below the list.</li>
+      <li><b>The welcome screen:</b> at the <span class="ui">Add a proxy server</span> step, click <span class="ui">Paste from Clipboard</span>.</li>
+    </ul>
+  </li>
+  <li>A new proxy opens with the fields filled in. Check the type, server, port and login, click <span class="ui">Check</span>, then <span class="ui">Add</span>. Nothing is saved until you click <span class="ui">Add</span>.</li>
+</ol>
+<p>Which lines Routekeeper understands:</p>
+<div class="table"><table>
+  <thead><tr><th>Line</th><th>Type</th><th>Login and password</th></tr></thead>
+  <tbody>
+    <tr><td><code>socks5://user:pass@203.0.113.10:1080</code></td><td>SOCKS5</td><td><code>user</code> and <code>pass</code></td></tr>
+    <tr><td><code>socks5h://203.0.113.10:1080</code>, <code>socks://203.0.113.10:1080</code></td><td>SOCKS5</td><td>none</td></tr>
+    <tr><td><code>http://proxy.corp.example:3128</code></td><td>HTTP</td><td>none</td></tr>
+    <tr><td><code>https://user:pass@proxy.example.net:443</code></td><td>HTTPS</td><td><code>user</code> and <code>pass</code></td></tr>
+    <tr><td><code>203.0.113.10:1080</code></td><td>SOCKS5</td><td>none</td></tr>
+    <tr><td><code>203.0.113.10:1080:user:pass</code></td><td>SOCKS5</td><td><code>user</code> and <code>pass</code></td></tr>
+    <tr><td><code>user:pass@203.0.113.10:1080</code></td><td>SOCKS5</td><td><code>user</code> and <code>pass</code></td></tr>
+    <tr><td><code>socks5://[2001:db8::1]:1080</code></td><td>SOCKS5, IPv6 address in square brackets</td><td>none</td></tr>
+  </tbody>
+</table></div>
+<ul>
+  <li><b>The port is required</b>, even in an <code>https://</code> line. The line <code>https://proxy.example.net</code> without <code>:443</code> won’t be recognized.</li>
+  <li><b>Without a prefix</b> (<code>socks5://</code>, <code>http://</code>, <code>https://</code>), you get SOCKS5. If your provider gave you an <code>address:port</code> line for an HTTP proxy, change <span class="ui">Type</span> to HTTP after you paste it.</li>
+  <li><b>Special characters</b> in the login and password can be written as <code>%40</code> instead of <code>@</code> or <code>%3A</code> instead of <code>:</code>. Routekeeper decodes them.</li>
+  <li>Spaces and line breaks at the start or end and a slash at the end don’t get in the way.</li>
+  <li>The <b>name</b> of a pasted proxy is the server address. You can change it in the <span class="ui">Name</span> field.</li>
+</ul>
+<p>If the clipboard doesn’t hold a proxy line, Routekeeper replies: “The clipboard has no proxy string. Expected something like socks5://user:pass@host:1080”. The <span class="ui">Copy Address</span> item in a proxy’s context menu copies back only <code>address:port</code>, without the login and password.</p>
+<details class="deep"><summary>Details: socks5 and socks5h</summary>
+  <p>In other programs, the <code>h</code> in <code>socks5h://</code> means “the proxy looks up site names”. In Routekeeper, both prefixes give the same SOCKS5. Whether the proxy gets names is decided by the <span class="ui">DNS through proxy</span> toggle, and it’s on for a pasted proxy.</p>
+</details>
+
+<h2 id="toggles">DNS through proxy and UDP blocking</h2>
+<p>Each proxy has two toggles: <span class="ui">DNS through proxy</span> and <span class="ui">Block UDP and QUIC</span>. Both are on by default, including for a pasted proxy. They apply to connections that go through this proxy.</p>
+
+<h3>DNS through proxy</h3>
+<p>When an app opens a site by name, Routekeeper gives the proxy the name, for example <code>example.com</code>, not the IP address your Mac found. The proxy looks up the site’s address itself, through its own <a class="term" href="../../../en/docs/glossary/#dns">DNS</a>.</p>
+<p>This way, the site opens at an address that suits the server’s location: big sites give out different addresses in different countries. And if your network’s DNS answered with a wrong address, the proxy still finds the right one.</p>
+<p>This works only when the name is known. If an app connects to an IP address by itself, the proxy gets the IP. For more about connections without a name, see <a href="../../../en/docs/rules/#hostnames">Rules</a>.</p>
+<p><b>When to turn it off.</b> When the names you need are known only to the DNS of your local or work network, and the proxy is outside that network. For example, internal company sites that open only from the office network: a remote proxy won’t find them. With the toggle off, Routekeeper gives the proxy the address your Mac found. In all other cases, keep the toggle on.</p>
+<details class="deep"><summary>Details: what your network’s DNS sees</summary>
+  <p>A connection reaches Routekeeper when the app already knows the server’s address. If macOS itself looked up the name, its query went to your network’s DNS before Routekeeper saw the connection. The toggle decides which address the proxy opens the site at, but it doesn’t cancel that query. How DNS works in Routekeeper, and how a browser can look up names over a secure channel, is explained in <a href="../../../en/docs/concepts/#dns">How it works</a> and <a href="../../../en/docs/recipes/#browser-dns">DNS over HTTPS in the browser</a>.</p>
+</details>
+
+<h3>Block UDP and QUIC</h3>
+<p>SOCKS5, HTTP and HTTPS proxies carry only <a class="term" href="../../../en/docs/glossary/#tcp">TCP</a>. <a class="term" href="../../../en/docs/glossary/#udp">UDP</a> is a different kind of traffic: it’s used by <a class="term" href="../../../en/docs/glossary/#quic">QUIC</a> in browsers, by voice and video calls, and by games. UDP can’t go through the proxy.</p>
+<ul>
+  <li><b>The toggle is on</b> (the default). UDP connections of apps that go through this proxy are blocked. Browsers then switch to regular HTTPS over TCP, and that goes through the proxy. Sites open as usual.</li>
+  <li><b>The toggle is off.</b> UDP from these apps goes direct, around the proxy, with your real IP. Each such connection is flagged in the <a href="../../../en/docs/monitoring/#leaks"><span class="ui">Leaks</span></a> section as <span class="ui">UDP around the proxy</span>.</li>
+</ul>
+<p>The toggle doesn’t block DNS queries (ports 53 and 853): without them, apps would stop working. Such queries go direct and are flagged in <span class="ui">Leaks</span> as <span class="ui">DNS around the proxy</span>.</p>
+<p><b>When to turn it off.</b> When it matters more that calls work than that they go through the proxy. For example, a messenger goes through the proxy, and its calls use UDP: with blocking, they won’t connect at all; without it, they go direct. The toggle applies to all apps on this proxy. To leave the others as they are, add the same server again under a different name, turn off blocking only for this copy, and choose the copy as the messenger’s route. Calls over UDP don’t work through a proxy in any case; see <a href="../../../en/docs/limits/#udp">Limitations</a>.</p>
+<details class="deep"><summary>Details: when the toggle applies</summary>
+  <p>The toggle is checked for a UDP connection that, by the rules, should go through this proxy: by the app’s route, by a service or by a rule. Connections to ports 53 and 853 are let through directly and flagged “DNS around the proxy”, unless a separate rule has already blocked them. The rest of the UDP is blocked or, with the toggle off, let through directly and flagged. The toggle doesn’t affect UDP from apps that don’t go through the proxy. For example, a browser’s QUIC without a site name follows the browser’s own route; see <a href="../../../en/docs/rules/#hostnames">Rules by site name</a>.</p>
+</details>
+
+<h2 id="check">Checking</h2>
+<p>The <span class="ui">Check</span> button opens a connection through the proxy to the ipinfo.io service and asks which IP address it sees. After a couple of seconds, the result appears next to the button, for example:</p>
+<pre><code>Working · 640 ms · IP 203.0.113.10 (NL)</code></pre>
+<ul>
+  <li><b>IP</b> is the address that sites see. If it matches your server’s address, the proxy works.</li>
+  <li><b>The country code in parentheses</b> is where this address is registered, according to ipinfo.io.</li>
+  <li><b>Milliseconds</b> is the time it takes to open a new connection through the proxy. That takes several exchanges with the server, so a healthy server far away shows 500–800 ms. In <a href="../../../en/docs/monitoring/#overview"><span class="ui">Overview</span></a>, a time of 1500 ms or more is marked “slow”.</li>
+</ul>
+<p>In the list of proxies on the left, each proxy has a colored dot and a short line: green means it works (<code>SOCKS5 · 640 ms · NL</code>), red means <span class="ui">unreachable</span>, blue means <span class="ui">checking…</span>, gray means <span class="ui">not checked</span>.</p>
+<p>You don’t need to click <span class="ui">Check</span> every time. Routekeeper checks proxies by itself: after you save; when you open the <span class="ui">Proxy</span> section, if a proxy hasn’t been checked yet; and, for the main proxy, when you open the menu of the menu bar icon and after the network changes. While the main proxy isn’t answering, it’s rechecked once a minute. To check all proxies at once, use the <span class="ui">Check All</span> button in the toolbar.</p>
+
+<h3 id="errors">Error messages</h3>
+<p>If the check fails, a message appears instead of the result. <a href="../../../en/docs/monitoring/#monitor"><span class="ui">Monitor</span></a> shows the same messages for connections that couldn’t be made through the proxy.</p>
+<div class="table"><table>
+  <thead><tr><th>Message</th><th>What it means</th><th>What to do</th></tr></thead>
+  <tbody>
+    <tr><td>The proxy didn’t answer in time</td><td>The proxy didn’t answer within 10 seconds during a check, or within 15 seconds for an app’s connection.</td><td>Check the server and port. Make sure the server is running and the port isn’t closed by a firewall on it.</td></tr>
+    <tr><td>Couldn’t connect to the proxy: …</td><td>macOS couldn’t connect to the server. After the colon is the reason from macOS. <code>Connection refused</code> means nothing is running on this port.</td><td>Check <span class="ui">Server</span> and <span class="ui">Port</span>. Check that the Mac is online.</td></tr>
+    <tr><td>Couldn’t connect to the proxy: TLS: the proxy’s certificate failed validation</td><td>HTTPS: the server’s certificate doesn’t fit.</td><td>The <span class="ui">Server</span> field must contain the domain name the certificate was issued for, not the IP. The certificate must not be expired or self-signed.</td></tr>
+    <tr><td>Couldn’t connect to the proxy: TLS: TLS error (number)</td><td>An encrypted connection couldn’t be set up.</td><td>Most often, the HTTPS type is selected, but the server doesn’t use TLS on this port. Try HTTP or SOCKS5.</td></tr>
+    <tr><td>The proxy closed the connection</td><td>The server dropped the connection in the middle of the handshake.</td><td>Often it’s the wrong proxy type, for example HTTP instead of SOCKS5, or the wrong port.</td></tr>
+    <tr><td>Proxy protocol error: …</td><td>The server didn’t answer the way a proxy of the selected type does.</td><td>Check <span class="ui">Type</span> and <span class="ui">Port</span>. If the text after the colon is “couldn’t read the IP check service’s reply”, the proxy works, but ipinfo.io gave an answer Routekeeper couldn’t read. Check again later.</td></tr>
+    <tr><td>SOCKS5: the proxy requires a login and password</td><td>No login is set.</td><td>Enter the login and password.</td></tr>
+    <tr><td>SOCKS5: wrong login or password</td><td>The proxy didn’t accept the login or password.</td><td>Copy them again, without spaces at the start or end.</td></tr>
+    <tr><td>SOCKS5: the proxy accepted no authentication method</td><td>The proxy accepted neither sign-in without a password nor sign-in with a login and password.</td><td>If no login is set, set one. If one is set, the proxy requires a sign-in method that Routekeeper doesn’t support.</td></tr>
+    <tr><td>SOCKS5: connection not allowed by the proxy’s rules, SOCKS5: host unreachable and other replies after “SOCKS5:”</td><td>Sign-in worked, but the proxy didn’t open a connection to the check service.</td><td>The proxy may forbid some addresses or ports. The check goes to port 80.</td></tr>
+    <tr><td>HTTP: the proxy requires authentication (407)</td><td>There’s no login or password, they’re wrong, or the proxy requires Windows sign-in (NTLM, Kerberos).</td><td>Check the login and password. Routekeeper supports only login-and-password sign-in; see <a href="#work-proxy">Work proxy</a>.</td></tr>
+    <tr><td>The HTTP proxy answered 403 Forbidden, and other codes</td><td>The proxy refused the connection.</td><td>Office proxies often allow tunnels only to port 443, while the check goes to port 80. In that case, HTTPS sites will work even though the check fails.</td></tr>
+    <tr><td>No connection to the network extension</td><td>The network extension runs the check, and it isn’t answering.</td><td>See <a href="../../../en/docs/troubleshooting/#extension">Reinstalling and stopping the extension</a>.</td></tr>
+  </tbody>
+</table></div>
+<p>Other Routekeeper messages and what to do about them are in <a href="../../../en/docs/troubleshooting/#errors">Troubleshooting</a>.</p>
+
+<h2 id="several">Several proxies</h2>
+<p>You can add as many proxies as you like. Each app, service and rule chooses its own: the route menu has a <span class="ui">Through Proxy</span> section with all proxies by name. For example, the browser goes through “Amsterdam”, and the work messenger through “Office”. How to choose a route is described in <a href="../../../en/docs/apps/#route">An app’s route</a>.</p>
+<p>If two proxies have the same name, the menu adds the type and port to them. It’s clearer to give them different names.</p>
+
+<h3 id="main-proxy">The main proxy</h3>
+<p>The main proxy is the one that most enabled routes and rules go through. If there are none, the first proxy in the list is the main one. The main proxy:</p>
+<ul>
+  <li>is shown in the panel at the bottom of the window’s sidebar, with its response time and country, and in the menu of the menu bar icon, with its external IP and country;</li>
+  <li>becomes the route of new apps and services;</li>
+  <li>is offered in the quick actions in <span class="ui">Monitor</span>.</li>
+</ul>
+<p>A number like “+1” next to it in the sidebar means that some rules go through other proxies.</p>
+
+<h3 id="delete">Deleting a proxy</h3>
+<p>Select the proxy in the list and click <span class="ui">−</span> below the list, or press Delete. You can also right-click the proxy and choose <span class="ui">Delete…</span>. Routekeeper asks you to confirm and tells you how many rules go through this proxy. Deleting can’t be undone: <kbd>⌘Z</kbd> won’t bring the proxy back, and its login and password are deleted with it.</p>
+<p>Routes and rules that went through the deleted proxy are turned off.</p>
+<div class="callout warn"><p><b>A turned-off rule has no effect.</b> Apps that went through the deleted proxy will follow the other rules and the <a href="../../../en/docs/firewall/#modes">mode</a>. In <span class="ui">Proxy Only</span> mode, this means they go direct, with your real IP, and these connections won’t show up in <span class="ui">Leaks</span>. So first <a href="#switch">move the routes</a> to another proxy, and only then delete.</p></div>
+
+<h2 id="switch">Switching to another proxy</h2>
+<p>When a proxy stops working, or you’re moving to another server, you can move routes all at once, without changing each app. You need at least two proxies for this.</p>
+<div class="table"><table>
+  <thead><tr><th>Where</th><th>What is moved</th></tr></thead>
+  <tbody>
+    <tr><td><span class="ui">Overview</span> → <span class="ui">Routes</span> → the <span class="ui">⋯</span> button in the proxy’s row → <span class="ui">Move Routes To</span></td><td>Only this proxy’s routes and rules.</td></tr>
+    <tr><td><span class="ui">Overview</span> → the row of a proxy that isn’t answering → <span class="ui">Move to “…”</span></td><td>Only this proxy’s routes and rules. Routekeeper suggests a proxy that answered at the last check.</td></tr>
+    <tr><td>The panel at the bottom of the sidebar → the <span class="ui">Proxy</span> row → <span class="ui">Move all apps to</span></td><td>All enabled routes and rules that go through any proxy.</td></tr>
+    <tr><td>The menu of the menu bar icon → <span class="ui">Proxy for all apps</span></td><td>The same as in the sidebar. The list appears in the menu only when there are two or more proxies.</td></tr>
+  </tbody>
+</table></div>
+<ol class="steps">
+  <li>Choose the proxy to move to.</li>
+  <li>Routekeeper asks: <span class="ui">Move to “…”?</span> The question says what will move and from where. If the rules went through different proxies, Routekeeper warns that this split will be lost. It also warns you if the chosen proxy didn’t answer at the last check. Click <span class="ui">Move</span>. In the menu of the menu bar icon, the question appears right in the menu.</li>
+  <li>After the move, a line like “5 rules moved” and an <span class="ui">Undo</span> button appear for 10 seconds. The button returns the moved rules to their previous proxies. Later, <kbd>⌘Z</kbd> in the Routekeeper window does the same.</li>
+</ol>
+<p>Only enabled routes and rules with the <span class="ui">Through Proxy</span> action are moved. <span class="ui">Direct</span>, <span class="ui">Block</span> and turned-off rules stay as they were. Connections that are already open stay on the previous proxy until the app reconnects.</p>
+
+<h3 id="down">If the proxy is down</h3>
+<p>By default, connections that should go through the proxy are dropped when the proxy fails. The app shows an error or “no network”, but <a class="term" href="../../../en/docs/glossary/#fail-closed">connections don’t go direct</a>, and your real IP isn’t revealed.</p>
+<p>What you’ll see:</p>
+<ul>
+  <li>in <span class="ui">Overview</span>, the heading “Proxy ‘…’ is unreachable”, or “Partly working” if other proxies with routes are working;</li>
+  <li>in <span class="ui">Routes</span>, the proxy’s row turns orange: “Not responding” and “What goes through this proxy can't connect now. It doesn't go out directly.”, with the <span class="ui">Move to “…”</span> and <span class="ui">Check Again</span> buttons next to it;</li>
+  <li>in the menu of the menu bar icon, an orange line “Proxy ‘…’ is unreachable”, if the main proxy has failed.</li>
+</ul>
+<p>What to do: move the routes to another proxy, as described above, or wait. The main proxy is rechecked once a minute. As soon as the server answers, new connections go through it again.</p>
+<p>If it matters more to you that apps work than that they go through the proxy, turn on <span class="ui">Settings</span> → <span class="ui">Network</span> → <span class="ui">If the proxy is down, go direct</span>. It’s off by default. With this setting, a connection that couldn’t go through the proxy goes direct: sites see your real IP. <span class="ui">Monitor</span> shows these connections as direct, and they won’t show up in <span class="ui">Leaks</span>. A ready-made scenario is in the recipe <a href="../../../en/docs/recipes/#proxy-down">The proxy stopped answering</a>.</p>
+<details class="deep"><summary>Details: what a failure looks like to the app</summary>
+  <p>Routekeeper accepts the app’s connection right away and connects to the proxy at the same time. This way, browsers don’t open extra backup connections. If the proxy fails or doesn’t answer within 15 seconds, the app’s connection is dropped. With the “go direct” setting, Routekeeper connects to the site’s address itself at that moment. UDP blocking doesn’t depend on the proxy’s state.</p>
+</details>
+
+<h2 id="local-client">Local client: sing-box, Xray, Clash</h2>
+<p>If you already use a client such as sing-box, Xray, Clash or a program based on them, Routekeeper can send chosen apps into it. The client still keeps the connection to your server over its own protocol, and Routekeeper decides which apps go into the client.</p>
+<pre class="flow"><code>App → Routekeeper → <b>SOCKS5 127.0.0.1</b> → client → your server → site</code></pre>
+<ol class="steps">
+  <li>In the client’s settings, find the local proxy port. It may be called SOCKS port, mixed port or inbound, for example <code>1080</code> or <code>7890</code>.</li>
+  <li>In the client, turn off the system proxy (System Proxy, Set as system proxy) and TUN mode (TUN mode, Enhanced mode, VPN mode). With the system proxy, apps go to the client by themselves, and Routekeeper no longer controls them. TUN captures all of the Mac’s traffic, like a VPN, and gets in Routekeeper’s way; see <a href="../../../en/docs/limits/#other-vpn">Limitations</a>.</li>
+  <li>In Routekeeper, add a proxy: <span class="ui">Type</span> SOCKS5, <span class="ui">Server</span> <code>127.0.0.1</code>, <span class="ui">Port</span> the client’s port. You usually don’t need a login and password. You can copy and paste the line <code>socks5://127.0.0.1:7890</code> with your own port in it.</li>
+  <li>Leave both toggles on. With <span class="ui">DNS through proxy</span>, the client gets site names and looks up addresses according to its own settings.</li>
+  <li>Click <span class="ui">Check</span>. The IP in the result should be your server’s address, not your home one.</li>
+  <li>Choose the apps that will go through the client: <a href="../../../en/docs/apps/#add-app">Apps and services</a>.</li>
+</ol>
+<div class="callout warn"><p><b>Don’t send the client itself through the proxy.</b> Its connection to the server would come back to it, making a loop, and everything on this proxy would stop working. If you have the rule “Any App · any address → Through Proxy”, add the client to <span class="ui">Apps</span> with the <span class="ui">Direct</span> route: a rule for a specific app wins over a rule for any app; see <a href="../../../en/docs/rules/#priority">Which rule wins</a>.</p></div>
+<div class="callout"><p><b>In <span class="ui">Ask</span> and <span class="ui">Block All</span> modes</b>, the client must be explicitly allowed to connect to the server. Add it to <span class="ui">Apps</span> with the <span class="ui">Direct</span> route, or answer <span class="ui">Allow</span> with the <span class="ui">Forever</span> duration in the prompt. Otherwise, the client’s connection to the server will be blocked or will wait for an answer, and all apps on this proxy will be left without a network. In <span class="ui">Proxy Only</span> and <span class="ui">Silent</span> modes with default settings, you don’t need to do anything. More about modes: <a href="../../../en/docs/firewall/#modes">Firewall modes</a>.</p></div>
+<p>If the client is off or has frozen, apps on this proxy are left without a network, and they don’t go direct. A ready step-by-step setup is in the recipe <a href="../../../en/docs/recipes/#local-client">On top of sing-box, Xray or Clash</a>.</p>
+<details class="deep"><summary>Details: localhost, UDP and the client’s HTTP port</summary>
+  <ul>
+    <li>Connections to the address and port of any proxy in the list always go direct; rules don’t apply to them. Connections to <code>127.0.0.1</code> and <code>::1</code> are covered by built-in rules; see <a href="../../../en/docs/rules/#sources">The list of rules</a>.</li>
+    <li>Through SOCKS5, Routekeeper passes only TCP, even if the client supports UDP. So the <span class="ui">Block UDP and QUIC</span> toggle is needed here too.</li>
+    <li>If the client offers only an HTTP port, choose the HTTP type. A mixed port accepts both SOCKS5 and HTTP.</li>
+  </ul>
+</details>
+
+<h2 id="work-proxy">Work proxy</h2>
+<p>In an office, the IT department usually gives you the proxy: an address, a port (often 3128 or 8080) and maybe a login and password.</p>
+<ol class="steps">
+  <li>Add a proxy: <span class="ui">Name</span> “Office”, <span class="ui">Type</span> HTTP, <span class="ui">Server</span> and <span class="ui">Port</span> from the IT department, <span class="ui">Login</span> and <span class="ui">Password</span> if needed. Choose the HTTPS type only if the IT department said the proxy accepts TLS.</li>
+  <li>Click <span class="ui">Check</span>. If the answer is “The HTTP proxy answered 403 …”, read the item about port 80 below.</li>
+  <li>Decide what will go through the work proxy:
+    <ul>
+      <li><b>whole apps</b>, for example a work messenger: the “Office” route in <a href="../../../en/docs/apps/#route">Apps</a>;</li>
+      <li><b>company addresses from any app</b>: the rule “Any App · <code>*.corp.example</code> → Through Proxy ‘Office’” in <a href="../../../en/docs/rules/#syntax">Rules</a>. For internal networks, add a rule with a subnet, for example <code>10.0.0.0/8</code>. Such a rule wins over an app’s route: the browser goes through your usual proxy, and company sites through the office one.</li>
+    </ul>
+  </li>
+</ol>
+<p>Limitations:</p>
+<ul>
+  <li><b>Only login-and-password sign-in</b> (Basic). Windows sign-in (NTLM, Kerberos, Negotiate) isn’t supported. Such a proxy answers “HTTP: the proxy requires authentication (407)”.</li>
+  <li><b>PAC files and automatic proxy discovery (WPAD) aren’t supported.</b> If your company hands out settings in a PAC file, open the file in a browser and find a line like <code>PROXY proxy.corp.example:3128</code>, or ask the IT department for the address. Move the addresses that the PAC file sends to the proxy into rules.</li>
+  <li><b>Tunnels only.</b> Routekeeper opens a tunnel (CONNECT) through an HTTP proxy for any connection, including to port 80. Many office proxies allow tunnels only to port 443. Then HTTPS sites work, but HTTP sites and the <span class="ui">Check</span> button get “The HTTP proxy answered 403 …”.</li>
+  <li><b>With HTTP, the login and password travel in plain text.</b> Inside an office network, that’s usually acceptable. Over the internet, use an HTTPS proxy.</li>
+</ul>
+<p>A ready-made scenario is in the recipe <a href="../../../en/docs/recipes/#work-proxy">Work proxy for internal addresses</a>.</p>
+    <p class="checked">Checked against the Routekeeper code (version 0.2.1 and the one after it) on October 4, 2026.</p>
+    <nav class="pager"><a class="prev" href="../../../en/docs/concepts/"><span>Previous</span>How it works</a><a class="next" href="../../../en/docs/apps/"><span>Next</span>Apps and services</a></nav>
+  </article>
+</main>
+
+<div class="wrap">
+  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span><a href="../../../en/">Routekeeper for macOS</a> · <a href="../../../en/docs/">Docs</a> · <a href="../../../en/privacy/">Privacy</a> · <a href="https://github.com/ilyabazhenov/routekeeper">GitHub</a></span></footer>
+</div>
+
+<script src="../../../docs/assets/docs.js?v=3e67278c"></script>
+</body>
+</html>

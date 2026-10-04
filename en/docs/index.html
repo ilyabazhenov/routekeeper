@@ -4,235 +4,153 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Documentation — Routekeeper</title>
-<meta name="description" content="Routekeeper documentation: quick start, common recipes, proxy setup, limitations and leak checks.">
+<meta name="description" content="Routekeeper documentation: quick start, how it works, proxies, apps and services, rules, firewall modes, your own proxy server, recipes, monitoring, troubleshooting and a glossary.">
 <meta name="theme-color" content="#0a0f1f">
-<link rel="icon" href="../../mark.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="../../icon.png">
+<link rel="canonical" href="https://getroutekeeper.app/en/docs/">
 <link rel="alternate" hreflang="ru" href="https://getroutekeeper.app/docs/">
 <link rel="alternate" hreflang="en" href="https://getroutekeeper.app/en/docs/">
+<link rel="alternate" hreflang="x-default" href="https://getroutekeeper.app/en/docs/">
+<link rel="icon" href="../../mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../../icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<style>
-:root {
-  --bg: #0a0f1f;
-  --surface: rgba(170, 190, 255, 0.035);
-  --surface-2: rgba(170, 190, 255, 0.06);
-  --line: rgba(170, 190, 255, 0.09);
-  --line-2: rgba(170, 190, 255, 0.16);
-  --text: #f3ecdf;
-  --muted: #a3abc4;
-  --faint: #6b7493;
-  --amber: #ffb547;
-  --amber-2: #ff8a3d;
-  --glow: rgba(255, 168, 76, 0.5);
-  --font: "Onest", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
-  color-scheme: dark;
-}
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; overflow-x: clip; }
-body {
-  margin: 0; color: var(--text);
-  background: radial-gradient(1500px 1000px at 50% -160px, #18234b, transparent 70%) no-repeat, var(--bg);
-  font: 400 17px/1.65 var(--font); -webkit-font-smoothing: antialiased; overflow-x: clip;
-}
-h1, h2, h3, p, ul, ol, table { margin: 0; }
-h1, h2, h3 { font-weight: 600; letter-spacing: -0.025em; text-wrap: balance; }
-a { color: inherit; text-decoration: none; }
-:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; border-radius: 8px; }
-.wrap { width: min(1180px, 100% - 32px); margin-inline: auto; }
-.warm { background: linear-gradient(100deg, #ffd58a 0%, var(--amber) 40%, var(--amber-2) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
-
-.nav-wrap { position: sticky; top: 12px; z-index: 50; margin-top: 12px; }
-.nav {
-  display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  padding: 8px 8px 8px 14px; border-radius: 16px;
-  background: rgba(12, 18, 38, 0.6); border: 1px solid var(--line);
-  backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4);
-}
-.brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 17px; letter-spacing: -0.01em; }
-.brand img { width: 28px; height: 28px; }
-.nav-end { display: flex; align-items: center; gap: 6px; }
-.lang { padding: 8px 10px; border-radius: 10px; color: var(--muted); font: 500 13px/1 var(--mono); letter-spacing: .06em; }
-.lang:hover { color: var(--text); background: var(--surface-2); }
-.btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 10px; font: 600 14px/1 var(--font); }
-.btn-primary { color: #2a1606; background: linear-gradient(180deg, #ffd27e, var(--amber) 55%, #f39a3a); box-shadow: inset 0 1px 0 rgba(255, 248, 225, .7), 0 8px 28px -8px var(--glow); }
-.btn-ghost { color: var(--text); background: var(--surface-2); border: 1px solid var(--line); }
-
-.docs-hero { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 48px; align-items: center; min-height: 330px; padding-block: 34px 28px; }
-.hero-copy h1 { margin-top: 18px; max-width: 760px; font-size: clamp(42px, 6.2vw, 78px); line-height: 1.02; letter-spacing: -0.045em; }
-.hero-copy .lede { margin-top: 24px; max-width: 720px; font-size: 20px; color: var(--text); }
-.hero-copy .lede b { color: var(--amber); font-weight: 600; }
-.hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
-.lantern-scene { position: relative; min-height: 260px; display: grid; place-items: center; overflow: hidden; border: 1px solid var(--line); border-radius: 20px; background: radial-gradient(circle at 50% 45%, rgba(255, 181, 71, .24), rgba(255, 138, 61, .08) 35%, transparent 62%), linear-gradient(180deg, rgba(170, 190, 255, .06), rgba(170, 190, 255, .02)); }
-.lantern-scene::before { content: ""; position: absolute; inset: 18px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255, 181, 71, .28), transparent 72%); filter: blur(16px); }
-.lantern-scene::after { content: ""; position: absolute; inset: auto 12% 34px; height: 1px; background: linear-gradient(90deg, transparent, rgba(255, 181, 71, .55), transparent); box-shadow: 0 0 34px 10px rgba(255, 181, 71, .18); }
-.lantern-scene img { position: relative; z-index: 1; width: min(164px, 44vw); height: auto; filter: drop-shadow(0 0 28px rgba(255, 181, 71, .42)); }
-
-.docs-layout { display: grid; grid-template-columns: 220px minmax(0, 860px); gap: 52px; align-items: start; padding-block: 32px 96px; }
-.side-nav { position: sticky; top: 96px; display: grid; gap: 6px; padding: 14px; border: 1px solid var(--line); border-radius: 16px; background: rgba(12, 18, 38, 0.42); }
-.side-nav b { padding: 4px 8px 10px; color: var(--text); font-size: 14px; font-weight: 600; }
-.side-nav a { padding: 8px; border-radius: 9px; color: var(--muted); font-size: 14px; line-height: 1.25; transition: color .2s, background .2s; }
-.side-nav a:hover { color: var(--text); background: var(--surface-2); }
-.side-nav .side-action { margin-top: 8px; border-top: 1px solid var(--line); padding-top: 14px; color: var(--amber); }
-.doc { max-width: 860px; min-width: 0; }
-.eyebrow { font: 500 13px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber); }
-.lede { margin-top: 24px; max-width: 760px; font-size: 20px; color: var(--text); }
-.lede b { color: var(--amber); font-weight: 600; }
-.dated { margin-top: 14px; color: var(--faint); font-size: 14px; }
-.toc { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 36px; }
-.toc a, .card { display: block; min-width: 0; padding: 16px 18px; border-radius: 16px; background: var(--surface); border: 1px solid var(--line); }
-.toc a { color: var(--muted); transition: color .2s, background .2s, border-color .2s; }
-.toc a:hover { color: var(--text); background: var(--surface-2); border-color: var(--line-2); }
-.toc b, .card b { display: block; color: var(--text); font-weight: 600; }
-.toc span { display: block; margin-top: 4px; font-size: 14px; line-height: 1.45; }
-.doc h2 { margin-top: 64px; font-size: 30px; }
-.doc h3 { margin-top: 28px; font-size: 20px; }
-.doc p, .doc ul, .doc ol, .doc table { margin-top: 16px; color: var(--muted); }
-.doc p b, .doc li b { color: var(--text); font-weight: 600; }
-.doc ul, .doc ol { padding-left: 22px; }
-.doc li + li { margin-top: 10px; }
-.doc li::marker { color: var(--amber); }
-.doc code { font: 500 0.88em/1 var(--mono); color: var(--text); background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px; padding: 2px 6px; }
-.doc pre { overflow-x: auto; margin: 16px 0 0; padding: 16px; border-radius: 14px; background: rgba(0, 0, 0, .22); border: 1px solid var(--line); color: var(--text); font: 500 14px/1.6 var(--mono); }
-.doc a:not(.btn):not(.card) { color: var(--amber); text-decoration: underline; text-decoration-color: rgba(255, 181, 71, .4); text-underline-offset: 3px; }
-.doc a:not(.btn):hover { text-decoration-color: var(--amber); }
-.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
-.card p { margin-top: 8px; font-size: 15px; line-height: 1.55; }
-.tagline { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
-.tag { display: inline-flex; align-items: center; min-height: 30px; padding: 5px 10px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); color: var(--muted); font: 500 13px/1.2 var(--mono); }
-.callout { margin-top: 18px; padding: 18px 20px; border-radius: 16px; background: rgba(255, 181, 71, .08); border: 1px solid rgba(255, 181, 71, .22); color: var(--text); }
-.table { overflow-x: auto; margin-top: 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
-.doc table { margin: 0; width: 100%; border-collapse: collapse; font-size: 15px; min-width: 640px; }
-.doc th, .doc td { padding: 12px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
-.doc tr:last-child td { border-bottom: 0; }
-.doc th { color: var(--text); font-weight: 600; font-size: 14px; background: var(--surface-2); }
-.doc td:first-child { color: var(--text); }
-.footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; padding-block: 28px 44px; border-top: 1px solid var(--line); color: var(--faint); font-size: 14px; }
-.footer a:hover { color: var(--text); }
-@media (max-width: 980px) { .docs-hero { grid-template-columns: minmax(0, 1fr); gap: 24px; padding-block: 34px 14px; } .lantern-scene { min-height: 220px; } .docs-layout { display: block; padding-block: 56px 72px; } .side-nav { display: none; } }
-@media (max-width: 760px) { .docs-hero { min-height: 0; } .hero-copy h1 { font-size: clamp(38px, 12vw, 56px); } .lede { font-size: 18px; } .toc, .grid { grid-template-columns: minmax(0, 1fr); } }
-</style>
+<link rel="stylesheet" href="../../docs/assets/docs.css?v=891e2023">
 </head>
-<body>
+<body data-moved='{&quot;quick-start&quot;:&quot;../../en/docs/start/&quot;,&quot;recipes&quot;:&quot;../../en/docs/recipes/&quot;,&quot;proxy&quot;:&quot;../../en/docs/proxies/&quot;,&quot;leaks&quot;:&quot;../../en/docs/monitoring/&quot;,&quot;limits&quot;:&quot;../../en/docs/limits/&quot;,&quot;troubleshooting&quot;:&quot;../../en/docs/troubleshooting/&quot;}'>
+<!-- Built by Scripts/build-docs.py from site-src/docs/en/index.html. Edit the fragment, not this file. -->
 
 <div class="wrap nav-wrap">
   <header class="nav">
-    <a class="brand" href="../"><img src="../../mark.svg" alt="" width="28" height="28">Routekeeper</a>
-    <div class="nav-end"><a class="lang" href="../../docs/" hreflang="ru" lang="ru">RU</a><a class="btn btn-primary" href="../#download">Download</a></div>
+    <a class="brand" href="../../en/"><img src="../../mark.svg" alt="" width="28" height="28">Routekeeper</a>
+    <div class="nav-end"><a class="lang" href="../../docs/" hreflang="ru" lang="ru">RU</a><a class="btn btn-primary" href="../../en/#download">Download</a></div>
   </header>
 </div>
 
 <section class="wrap docs-hero">
   <div class="hero-copy">
-    <span class="eyebrow">Documentation</span>
-    <h1>Set up Routekeeper <span class="warm">for your route</span></h1>
-    <p class="lede"><b>Routekeeper sends traffic from selected apps through a proxy, direct, or nowhere.</b> This page covers first run, common recipes and the product’s honest limits.</p>
-    <p class="dated">Revised October 4, 2026.</p>
-    <div class="hero-actions"><a class="btn btn-primary" href="#quick-start">Start setup</a><a class="btn btn-ghost" href="#recipes">Browse recipes</a></div>
+    <span class="eyebrow">Docs</span>
+    <h1>How to use <span class="warm">Routekeeper</span></h1>
+    <p class="lede"><b>Routekeeper sends the traffic of the apps you choose on your Mac through your proxy, lets it go direct, or blocks it.</b> Choose where to start: step-by-step setup, recipes for a proxy you already have, or an exact description of how it behaves.</p>
   </div>
   <div class="lantern-scene" aria-hidden="true"><img src="../../lantern.svg" alt=""></div>
 </section>
 
 <main class="wrap docs-layout">
-  <aside class="side-nav" aria-label="Documentation navigation">
-    <b>On this page</b>
-    <a href="#quick-start">Quick start</a>
-    <a href="#recipes">Common recipes</a>
-    <a href="#proxy">Your proxy</a>
-    <a href="#leaks">Leak checks</a>
-    <a href="#limits">Limits</a>
-    <a href="#troubleshooting">Troubleshooting</a>
-    <a class="side-action" href="../#download">Download Routekeeper</a>
-    <a href="https://github.com/ilyabazhenov/routekeeper/issues">GitHub Issues</a>
+  <aside class="side-nav" aria-label="Docs sections">
+    <span class="group">Getting started</span>
+    <a href="../../en/docs/" aria-current="page">Docs overview</a>
+    <a href="../../en/docs/start/">Quick start</a>
+    <a href="../../en/docs/concepts/">How it works</a>
+    <span class="group">Setup</span>
+    <a href="../../en/docs/proxies/">Proxies</a>
+    <a href="../../en/docs/apps/">Apps and services</a>
+    <a href="../../en/docs/rules/">Rules</a>
+    <a href="../../en/docs/firewall/">Firewall modes</a>
+    <a href="../../en/docs/server/">Your own proxy server</a>
+    <span class="group">In practice</span>
+    <a href="../../en/docs/recipes/">Recipes</a>
+    <a href="../../en/docs/monitoring/">Checking and monitoring</a>
+    <span class="group">Reference</span>
+    <a href="../../en/docs/troubleshooting/">Troubleshooting</a>
+    <a href="../../en/docs/maintenance/">Updates and removal</a>
+    <a href="../../en/docs/limits/">Limitations</a>
+    <a href="../../en/docs/glossary/">Glossary</a>
+    <a href="../../en/docs/changelog/">What's new</a>
+    <a class="side-action" href="../../en/privacy/">Privacy</a>
+    <a href="https://github.com/ilyabazhenov/routekeeper/issues">Report a problem</a>
   </aside>
   <article class="doc">
-    <nav class="toc" aria-label="Documentation sections">
-      <a href="#quick-start"><b>Quick start</b><span>What to do after installing.</span></a>
-      <a href="#recipes"><b>Recipes</b><span>AI, Telegram, YouTube, Tor, work proxy.</span></a>
-      <a href="#proxy"><b>Your proxy</b><span>Which proxy type to choose.</span></a>
-      <a href="#leaks"><b>Leak checks</b><span>How to verify the route.</span></a>
-      <a href="#limits"><b>Limits</b><span>UDP, calls, games and other edges.</span></a>
-      <a href="#troubleshooting"><b>Troubleshooting</b><span>A short diagnostic checklist.</span></a>
-    </nav>
+    <details class="mobile-nav"><summary>All docs sections</summary><nav>
+    <span class="group">Getting started</span>
+    <a href="../../en/docs/" aria-current="page">Docs overview</a>
+    <a href="../../en/docs/start/">Quick start</a>
+    <a href="../../en/docs/concepts/">How it works</a>
+    <span class="group">Setup</span>
+    <a href="../../en/docs/proxies/">Proxies</a>
+    <a href="../../en/docs/apps/">Apps and services</a>
+    <a href="../../en/docs/rules/">Rules</a>
+    <a href="../../en/docs/firewall/">Firewall modes</a>
+    <a href="../../en/docs/server/">Your own proxy server</a>
+    <span class="group">In practice</span>
+    <a href="../../en/docs/recipes/">Recipes</a>
+    <a href="../../en/docs/monitoring/">Checking and monitoring</a>
+    <span class="group">Reference</span>
+    <a href="../../en/docs/troubleshooting/">Troubleshooting</a>
+    <a href="../../en/docs/maintenance/">Updates and removal</a>
+    <a href="../../en/docs/limits/">Limitations</a>
+    <a href="../../en/docs/glossary/">Glossary</a>
+    <a href="../../en/docs/changelog/">What's new</a>
+    </nav></details>
+<div class="paths">
+  <a href="../../en/docs/start/"><b>I’m setting up a proxy for the first time</b><span>Installation, three macOS permissions, your first proxy and your first app — step by step, with every word explained.</span></a>
+  <a href="../../en/docs/proxies/"><b>I already have a proxy or a client</b><span>A SOCKS5, HTTP or HTTPS proxy, a local client such as sing-box or Xray, a work proxy. How to add it and what to turn on.</span></a>
+  <a href="../../en/docs/concepts/"><b>I need the exact details</b><span>How Routekeeper decides what to do with a connection, what happens to DNS and UDP, which rule wins.</span></a>
+</div>
+<p>Straight to the point: <a href="../../en/docs/recipes/">recipes</a> for a messenger, a browser, the terminal, a local client and a work proxy · <a href="../../en/docs/rules/#priority">which rule wins</a> · <a href="../../en/docs/start/#turn-off">how to turn Routekeeper off quickly</a>.</p>
 
-    <h2 id="quick-start">Quick start</h2>
-    <ol>
-      <li><b>Install Routekeeper</b> and complete the macOS onboarding: allow the system extension, network filter and proxy configuration.</li>
-      <li><b>Add a proxy</b> in Proxies. For a personal server, HTTPS on port 443 or a local SOCKS5 port from sing-box, Xray or Clash are the most common choices. No server yet? <a href="server/">Set one up in 15 minutes</a>.</li>
-      <li><b>Enable DNS through proxy</b> when the proxy supports it, so names are resolved away from your ISP.</li>
-      <li><b>Enable UDP and QUIC blocking</b> for browsers and messengers when you need a no-leak setup.</li>
-      <li><b>Create a rule</b>: app → proxy, direct or block. Routekeeper recognizes apps by signature and follows helper processes.</li>
-      <li><b>Look at Overview</b>: it is the main screen. The most serious problem and its fix come first, then every route with its proxy’s health and rate, the apps going through the proxy right now, and leaks. Per-connection details are in Monitor and Leaks.</li>
-    </ol>
+<h2 id="pages">All sections</h2>
 
-    <div class="callout">
-      Start with “Proxy only”. It applies your rules and leaves everything else direct. Once you know which apps should be blocked or ask for permission, switch to stricter modes.
-    </div>
+<h3>Getting started</h3>
+<div class="grid">
+  <a class="card" href="../../en/docs/start/"><b>Quick start</b><p>From download to your first app through a proxy, and a check that it works.</p></a>
+  <a class="card" href="../../en/docs/concepts/"><b>How it works</b><p>The app and the network extension, the order in which an action is chosen, DNS and UDP.</p></a>
+</div>
 
-    <h2 id="recipes">Common recipes</h2>
-    <div class="grid">
-      <div class="card"><b>AI services and developer tools</b><p>Add ChatGPT, Claude, Codex, Cursor, VS Code, Terminal or iTerm. A terminal rule covers child processes such as <code>curl</code>, <code>git</code>, <code>npm</code>, <code>pip</code> and <code>brew</code>.</p></div>
-      <div class="card"><b>Telegram, Discord text, YouTube</b><p>Route the app or browser through a proxy. For a browser, narrow the rule to service domains, such as YouTube, while banks and local sites stay direct.</p></div>
-      <div class="card"><b>On top of sing-box, Xray or Clash</b><p>Let another client handle VLESS, Shadowsocks or another protocol, while Routekeeper decides which apps use its local SOCKS5 port, for example <code>127.0.0.1:1080</code>.</p></div>
-      <div class="card"><b>Work proxy</b><p>Create a rule for work domains, subnets or ports: <code>*.corp.example</code> through the office proxy, everything else direct.</p></div>
-      <div class="card"><b>Tor for selected apps</b><p>Run Tor locally and add SOCKS5 <code>127.0.0.1:9050</code>. Enable DNS through proxy so names resolve inside Tor.</p></div>
-      <div class="card"><b>App kill switch</b><p>Route an app through a proxy and do not allow direct fallback. If the proxy is down, connections do not leave directly.</p></div>
-    </div>
+<h3>Setup</h3>
+<div class="grid">
+  <a class="card" href="../../en/docs/proxies/"><b>Proxies</b><p>Types, fields, pasting a proxy string, checking, several proxies, a local client and a work proxy.</p></a>
+  <a class="card" href="../../en/docs/apps/"><b>Apps and services</b><p>An app’s route, child processes, command-line tools and 32 services.</p></a>
+  <a class="card" href="../../en/docs/rules/"><b>Rules</b><p>Exceptions by domain, address and port, which rule wins, import and export.</p></a>
+  <a class="card" href="../../en/docs/firewall/"><b>Firewall modes</b><p><span class="ui">Proxy Only</span>, <span class="ui">Silent</span>, <span class="ui">Ask</span>, <span class="ui">Block All</span>: what to do with a connection that has no rule.</p></a>
+  <a class="card" href="../../en/docs/server/"><b>Your own proxy server</b><p>An HTTPS proxy on your own VPS with one command, and connecting it to Routekeeper.</p></a>
+</div>
 
-    <h2 id="proxy">Your proxy</h2>
-    <p>Routekeeper supports SOCKS5, HTTP CONNECT and HTTPS proxies. For the public internet, an HTTPS proxy on your own VPS is usually the practical option: from the outside it looks like a normal TLS site on port 443.</p>
-    <p>Such a server takes one command to set up: Caddy with <code>forwardproxy@naive</code>, a Let's Encrypt certificate and SSH protection against password guessing. At the end the script prints a line you simply paste into Proxy with ⌘V.</p>
-    <div class="callout"><b>No server yet?</b> <a href="server/">Step-by-step guide: your own proxy server in 15 minutes</a> — from the domain to your first rule.</div>
-    <p>If HTTPS proxying is unstable on your network, use sing-box or Xray on the server and a local SOCKS5 client on the Mac. In Routekeeper you only change the proxy; app rules stay as they are.</p>
-    <p><b>Several proxies.</b> If a proxy goes down or gets slow, Overview shows it first and the sidebar badge counts proxies that are down. Move every route to another proxy from Overview or the menu bar: Routekeeper asks for confirmation, says what moves and from where, and lets you undo for a few seconds. You can also move only one proxy’s rules.</p>
-    <div class="tagline">
-      <span class="tag">HTTPS 443</span>
-      <span class="tag">SOCKS5 local</span>
-      <span class="tag">remote DNS</span>
-      <span class="tag">block UDP/QUIC</span>
-    </div>
+<h3>In practice</h3>
+<div class="grid">
+  <a class="card" href="../../en/docs/recipes/"><b>Recipes</b><p>A messenger, video and DNS in the browser, developer tools, a local client, a work proxy, a proxy that’s down.</p></a>
+  <a class="card" href="../../en/docs/monitoring/"><b>Checking and monitoring</b><p><span class="ui">Overview</span>, the connection monitor, the <span class="ui">Leaks</span> section and what it detects.</p></a>
+</div>
 
-    <h2 id="leaks">Leak checks</h2>
-    <p>The useful check is not one external website, but comparing three places: Routekeeper Monitor, the Leaks tab and the proxy server’s active connections.</p>
-    <ol>
-      <li>Open the app that has a proxy rule.</li>
-      <li>In Routekeeper Monitor, make sure connections are marked with the expected proxy, not “direct”.</li>
-      <li>Open Overview or Leaks: direct DNS, rule bypasses and UDP are shown separately, each with a hint on how to close it.</li>
-      <li>On your server, check active proxy connections and make sure they come from your Mac.</li>
-    </ol>
-    <p>Apple push notifications may go through the system <code>apsd</code> process rather than through the app’s rule. That is normal: it is not the app’s own traffic.</p>
-    <p><b>DNS from a browser.</b> If a browser resolves names directly through your ISP’s DNS, turn on DNS over HTTPS in its settings (Chrome, Edge, Firefox, Brave) so name lookups go through the proxy with the rest of its traffic. Don’t block port 53 for the browser: without DoH it stops opening sites. macOS service lookups such as <code>ipv4only.arpa</code> are not counted as leaks.</p>
+<h3>Reference</h3>
+<div class="grid">
+  <a class="card" href="../../en/docs/troubleshooting/"><b>Troubleshooting</b><p>Symptoms and causes, error messages, diagnostics, how to report a problem.</p></a>
+  <a class="card" href="../../en/docs/maintenance/"><b>Updates and removal</b><p>Updates, moving from 0.2.x, turning it off, removing it completely, and where the data is kept.</p></a>
+  <a class="card" href="../../en/docs/limits/"><b>Limitations</b><p>UDP and calls, connections without a site name, browser profiles, other VPNs.</p></a>
+  <a class="card" href="../../en/docs/glossary/"><b>Glossary</b><p>Proxy, DNS, UDP, QUIC, VPS and other terms in plain words.</p></a>
+  <a class="card" href="../../en/docs/changelog/"><b>What’s new</b><p>What changed in each version.</p></a>
+</div>
 
-    <h2 id="limits">Limits</h2>
-    <div class="table"><table>
-      <thead><tr><th>Scenario</th><th>Status</th><th>Why</th></tr></thead>
-      <tbody>
-        <tr><td>Regular app TCP traffic</td><td>Works well</td><td>Routekeeper intercepts outgoing TCP connections and applies rules.</td></tr>
-        <tr><td>DNS through proxy</td><td>Works when the hostname is known</td><td>If the app provides a hostname, the proxy resolves it.</td></tr>
-        <tr><td>QUIC, UDP, calls and voice</td><td>Limited</td><td>Current proxy routes carry TCP. Block UDP when a no-leak setup matters.</td></tr>
-        <tr><td>Games</td><td>Usually not a fit</td><td>Many games use UDP and custom network protocols.</td></tr>
-        <tr><td>Two browser profiles on different proxies</td><td>Not supported</td><td>Rules are attached to the app and process signature, not to an in-app profile.</td></tr>
-      </tbody>
-    </table></div>
+<h2 id="symptoms">Something not working?</h2>
+<p>Find a case like yours. If none fits, start with the <a href="../../en/docs/troubleshooting/#quick">quick check</a>.</p>
+<div class="table"><table>
+  <thead><tr><th>What happened</th><th>Where to look</th></tr></thead>
+  <tbody>
+    <tr><td>Sites or apps stopped opening after setup</td><td><a href="../../en/docs/start/#turn-off">Turn Routekeeper off</a>, then do the <a href="../../en/docs/troubleshooting/#quick">quick check</a></td></tr>
+    <tr><td>macOS won’t give a permission, or you clicked “Don’t Allow”</td><td><a href="../../en/docs/troubleshooting/#permissions">macOS permissions</a></td></tr>
+    <tr><td>An app goes direct instead of through the proxy</td><td><a href="../../en/docs/troubleshooting/#not-through-proxy">Not going through the proxy</a></td></tr>
+    <tr><td>Checking the proxy shows an error, such as “SOCKS5: wrong login or password” or “The proxy didn’t answer in time”</td><td><a href="../../en/docs/troubleshooting/#errors">Error messages</a></td></tr>
+    <tr><td>“The network extension isn’t responding” at the top of the window</td><td><a href="../../en/docs/troubleshooting/#extension">The network extension</a></td></tr>
+    <tr><td>“All connections are blocked”, the settings couldn’t be read</td><td><a href="../../en/docs/troubleshooting/#locked">All connections blocked</a></td></tr>
+    <tr><td>The proxy is down or has become slow</td><td><a href="../../en/docs/recipes/#proxy-down">If the proxy is down</a></td></tr>
+    <tr><td>Calls or voice chats don’t work through the proxy</td><td><a href="../../en/docs/limits/#udp">Limitations: UDP</a></td></tr>
+    <tr><td>Entries have appeared in the <span class="ui">Leaks</span> section</td><td><a href="../../en/docs/monitoring/#leaks">Leaks</a></td></tr>
+    <tr><td>You need to report a bug</td><td><a href="../../en/docs/troubleshooting/#diagnostics">Collect diagnostics</a> and <a href="../../en/docs/troubleshooting/#report">send a report</a></td></tr>
+  </tbody>
+</table></div>
 
-    <h2 id="troubleshooting">Troubleshooting</h2>
-    <ul>
-      <li><b>Proxy check fails:</b> verify domain, port, username, password and certificate. For HTTPS, use a domain, not an IP address.</li>
-      <li><b>The app goes direct:</b> make sure the rule targets the right app and helper processes are included.</li>
-      <li><b>The proxy is down or slow:</b> move routes to another proxy from Overview or the menu bar, and move them back once the server recovers.</li>
-      <li><b>The browser bypasses the proxy:</b> enable UDP and QUIC blocking, then restart the tab or browser. If Leaks shows DNS from the browser, turn on DNS over HTTPS in it.</li>
-      <li><b>Monitor is empty:</b> make sure the system extension and network filter are allowed in macOS Settings.</li>
-      <li><b>You need to attach diagnostics:</b> collect the archive in Routekeeper Settings, inspect it and only then attach it to a public issue.</li>
-    </ul>
-    <p>Bug reports and feature requests belong in <a href="https://github.com/ilyabazhenov/routekeeper/issues">GitHub Issues</a>. If your report contains private addresses or logs, remove the extra details first.</p>
+<div class="callout">
+  <p><b>No proxy of your own yet?</b> The <a href="../../en/docs/server/">Your own proxy server</a> page shows how to rent a VPS, run one command and get an HTTPS proxy with a password and a ready line for Routekeeper. Without the password, such a server answers like an ordinary web server. So scanners don’t find an open proxy, and strangers can’t use it.</p>
+</div>
+    <p class="checked">Checked against the Routekeeper code (version 0.2.1 and the one after it) on October 4, 2026.</p>
+    <nav class="pager"><a class="next" href="../../en/docs/start/"><span>Next</span>Quick start</a></nav>
   </article>
 </main>
 
 <div class="wrap">
-  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span><a href="../">Routekeeper for macOS</a> · <a href="../privacy/">Privacy</a> · <a href="https://github.com/ilyabazhenov/routekeeper">GitHub</a></span></footer>
+  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span><a href="../../en/">Routekeeper for macOS</a> · <a href="../../en/docs/">Docs</a> · <a href="../../en/privacy/">Privacy</a> · <a href="https://github.com/ilyabazhenov/routekeeper">GitHub</a></span></footer>
 </div>
 
+<script src="../../docs/assets/docs.js?v=3e67278c"></script>
 </body>
 </html>

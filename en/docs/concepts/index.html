@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>How it works — Routekeeper</title>
+<meta name="description" content="How Routekeeper is built: the app and the network extension, the three macOS permissions, the order in which an action is chosen for a connection, the four actions, DNS through the proxy, and blocking UDP and QUIC.">
+<meta name="theme-color" content="#0a0f1f">
+<link rel="canonical" href="https://getroutekeeper.app/en/docs/concepts/">
+<link rel="alternate" hreflang="ru" href="https://getroutekeeper.app/docs/concepts/">
+<link rel="alternate" hreflang="en" href="https://getroutekeeper.app/en/docs/concepts/">
+<link rel="alternate" hreflang="x-default" href="https://getroutekeeper.app/en/docs/concepts/">
+<link rel="icon" href="../../../mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../../../icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=891e2023">
+</head>
+<body>
+<!-- Built by Scripts/build-docs.py from site-src/docs/en/concepts.html. Edit the fragment, not this file. -->
+
+<div class="wrap nav-wrap">
+  <header class="nav">
+    <a class="brand" href="../../../en/"><img src="../../../mark.svg" alt="" width="28" height="28">Routekeeper</a>
+    <div class="nav-end"><a class="lang" href="../../../docs/concepts/" hreflang="ru" lang="ru">RU</a><a class="btn btn-primary" href="../../../en/#download">Download</a></div>
+  </header>
+</div>
+
+<section class="wrap docs-hero compact">
+  <div class="hero-copy">
+    <span class="crumbs"><a href="../../../en/docs/">Docs</a> · Getting started</span>
+    <h1>How it <span class="warm">works</span></h1>
+    <p class="lede"><b>Routekeeper decides what to do with each connection separately.</b> This page covers what it’s made of, in what order it chooses an action, and what happens to DNS and UDP.</p>
+  </div>
+</section>
+
+<main class="wrap docs-layout">
+  <aside class="side-nav" aria-label="Docs sections">
+    <span class="group">Getting started</span>
+    <a href="../../../en/docs/">Docs overview</a>
+    <a href="../../../en/docs/start/">Quick start</a>
+    <a href="../../../en/docs/concepts/" aria-current="page">How it works</a>
+    <span class="group">Setup</span>
+    <a href="../../../en/docs/proxies/">Proxies</a>
+    <a href="../../../en/docs/apps/">Apps and services</a>
+    <a href="../../../en/docs/rules/">Rules</a>
+    <a href="../../../en/docs/firewall/">Firewall modes</a>
+    <a href="../../../en/docs/server/">Your own proxy server</a>
+    <span class="group">In practice</span>
+    <a href="../../../en/docs/recipes/">Recipes</a>
+    <a href="../../../en/docs/monitoring/">Checking and monitoring</a>
+    <span class="group">Reference</span>
+    <a href="../../../en/docs/troubleshooting/">Troubleshooting</a>
+    <a href="../../../en/docs/maintenance/">Updates and removal</a>
+    <a href="../../../en/docs/limits/">Limitations</a>
+    <a href="../../../en/docs/glossary/">Glossary</a>
+    <a href="../../../en/docs/changelog/">What's new</a>
+    <a class="side-action" href="../../../en/privacy/">Privacy</a>
+    <a href="https://github.com/ilyabazhenov/routekeeper/issues">Report a problem</a>
+  </aside>
+  <article class="doc">
+    <details class="mobile-nav"><summary>All docs sections</summary><nav>
+    <span class="group">Getting started</span>
+    <a href="../../../en/docs/">Docs overview</a>
+    <a href="../../../en/docs/start/">Quick start</a>
+    <a href="../../../en/docs/concepts/" aria-current="page">How it works</a>
+    <span class="group">Setup</span>
+    <a href="../../../en/docs/proxies/">Proxies</a>
+    <a href="../../../en/docs/apps/">Apps and services</a>
+    <a href="../../../en/docs/rules/">Rules</a>
+    <a href="../../../en/docs/firewall/">Firewall modes</a>
+    <a href="../../../en/docs/server/">Your own proxy server</a>
+    <span class="group">In practice</span>
+    <a href="../../../en/docs/recipes/">Recipes</a>
+    <a href="../../../en/docs/monitoring/">Checking and monitoring</a>
+    <span class="group">Reference</span>
+    <a href="../../../en/docs/troubleshooting/">Troubleshooting</a>
+    <a href="../../../en/docs/maintenance/">Updates and removal</a>
+    <a href="../../../en/docs/limits/">Limitations</a>
+    <a href="../../../en/docs/glossary/">Glossary</a>
+    <a href="../../../en/docs/changelog/">What's new</a>
+    </nav></details>
+<p class="lead-in">You don’t have to read this page to use Routekeeper: the <a href="../../../en/docs/start/">Quick start</a> is enough. This page helps when you want to understand why a connection went one way and not another.</p>
+
+<h2 id="parts">What Routekeeper is made of</h2>
+<p>Routekeeper is two programs that work together.</p>
+<div class="grid">
+  <div class="card"><b>The app</b><p>The window and the menu bar icon. This is where you add <a class="term" href="../../../en/docs/glossary/#proxy">proxies</a> and apps, write rules and watch the monitor. You can close the app: your routes keep working.</p></div>
+  <div class="card"><b><a class="term" href="../../../en/docs/glossary/#network-extension">Network extension</a></b><p>The part of Routekeeper that plugs into macOS; macOS itself calls such modules system extensions. The extension sees each new outgoing connection, decides what to do with it, and sends traffic through the proxy. It works when the window is closed and after a restart.</p></div>
+</div>
+<p>The network extension keeps proxies, passwords and rules in a file that only the system can read. The window gets the settings without the passwords, and proxy checks are done by the extension itself.</p>
+
+<h3>Why macOS asks for three permissions</h3>
+<p>The extension has two halves inside, and macOS asks about each one separately. On top of that, there’s the permission to install the extension itself.</p>
+<div class="table"><table>
+  <thead><tr><th>Permission</th><th>What it gives</th><th>Without it</th></tr></thead>
+  <tbody>
+    <tr><td>Network extension</td><td>Installs the extension in the system.</td><td>Nothing works.</td></tr>
+    <tr><td>Network content filtering</td><td>The filter sees each new outgoing connection: which app is connecting and where. It lets the connection through, blocks it, or holds it while you answer a prompt. It also records connections in the monitor.</td><td>No firewall, no monitor and no prompts.</td></tr>
+    <tr><td>Proxy configuration</td><td>The proxy part takes the connections that should go through a proxy and passes them to your proxy server.</td><td>Nothing goes through the proxy.</td></tr>
+  </tbody>
+</table></div>
+<p>How to give the permissions in macOS 14 and macOS 15 is described in the <a href="../../../en/docs/start/#permissions">Quick start</a>.</p>
+<details class="deep">
+  <summary>Details: the internals, for advanced users</summary>
+  <ul>
+    <li>The filter is an <code>NEFilterDataProvider</code> at the socket level: it decides what happens to a connection when the connection opens, and it doesn’t read the data being sent. The proxy part is an <code>NETransparentProxyProvider</code>; it takes outgoing TCP and UDP.</li>
+    <li>Only outgoing connections are intercepted. Routekeeper doesn’t touch incoming ones.</li>
+    <li>The settings are in <code>/Library/Application Support/Routekeeper</code>, a folder that only root can access. Versions 0.2.x kept them in <code>/Library/Application Support/AppProxy</code>.</li>
+    <li>The proxy configuration is on-demand, so after a restart or a stop, macOS starts it again by itself.</li>
+    <li>The decision is made once, when the connection opens. If you change a rule, connections that are already open stay where they were; new ones follow the new rule.</li>
+  </ul>
+</details>
+
+<h2 id="decision">How Routekeeper decides what to do with a connection</h2>
+<p>For each new connection, Routekeeper knows three things: which app is connecting (by its <a class="term" href="../../../en/docs/glossary/#code-signature">signature</a>), where to (the site name if it’s known, the <a class="term" href="../../../en/docs/glossary/#ip">IP address</a> and the <a class="term" href="../../../en/docs/glossary/#port">port</a>), and how (<a class="term" href="../../../en/docs/glossary/#tcp">TCP</a> or <a class="term" href="../../../en/docs/glossary/#udp">UDP</a>). Then it goes through the steps from top to bottom and stops at the first one that gives an answer.</p>
+<figure class="figure">
+<svg viewBox="0 0 720 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="dc-title dc-desc">
+  <title id="dc-title">The order in which an action is chosen for a connection</title>
+  <desc id="dc-desc">If Routekeeper is off, the connection goes direct. Otherwise, Routekeeper first looks for the most specific rule for the address, port or protocol, then for the app’s route, then uses the action of the default mode. If the result is through the proxy, TCP goes through the proxy, and UDP is blocked or goes direct and is flagged.</desc>
+  <style>
+    .dc-start { fill: var(--surface-2); stroke: var(--muted); stroke-width: 1.5; }
+    .dc-q { fill: var(--surface-2); stroke: var(--amber); stroke-width: 1.5; }
+    .dc-out { fill: var(--surface-2); stroke: var(--line-2); stroke-width: 1.5; }
+    .dc-note { fill: none; stroke: var(--line-2); stroke-width: 1.5; stroke-dasharray: 6 5; }
+    .dc-line { stroke: var(--muted); stroke-width: 1.5; fill: none; }
+    .dc-t { fill: var(--text); font-size: 16px; font-weight: 600; }
+    .dc-s { fill: var(--muted); font-size: 13.5px; }
+    .dc-o { fill: var(--text); font-size: 13.5px; }
+    .dc-yn { fill: var(--amber); font-size: 13px; font-weight: 600; }
+    .dc-head { fill: var(--muted); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; }
+  </style>
+  <defs>
+    <marker id="dc-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" style="fill: var(--muted)"/>
+    </marker>
+  </defs>
+
+  <text class="dc-head" x="20" y="12">STEPS</text>
+  <text class="dc-head" x="480" y="12">RESULT</text>
+
+  <rect class="dc-start" x="20" y="22" width="400" height="56" rx="28"/>
+  <text class="dc-t" x="44" y="46">New connection</text>
+  <text class="dc-s" x="44" y="66">app, site name or IP, port, TCP or UDP</text>
+  <line class="dc-line" x1="220" y1="78" x2="220" y2="102" marker-end="url(#dc-arrow)"/>
+
+  <rect class="dc-q" x="20" y="104" width="400" height="60" rx="12"/>
+  <text class="dc-t" x="36" y="130">1. Is Routekeeper on?</text>
+  <text class="dc-s" x="36" y="151">the switch in the menu bar and in the window</text>
+  <line class="dc-line" x1="420" y1="134" x2="478" y2="134" marker-end="url(#dc-arrow)"/>
+  <text class="dc-yn" x="449" y="126" text-anchor="middle">no</text>
+  <rect class="dc-out" x="480" y="104" width="220" height="60" rx="12"/>
+  <text class="dc-t" x="496" y="130">Direct</text>
+  <text class="dc-s" x="496" y="151">rules don’t apply</text>
+  <line class="dc-line" x1="220" y1="164" x2="220" y2="198" marker-end="url(#dc-arrow)"/>
+  <text class="dc-yn" x="232" y="186">yes</text>
+
+  <rect class="dc-q" x="20" y="200" width="400" height="80" rx="12"/>
+  <text class="dc-t" x="36" y="226">2. Is there a rule for this address?</text>
+  <text class="dc-s" x="36" y="247">domain, IP, subnet, service, port or protocol;</text>
+  <text class="dc-s" x="36" y="267">the most specific wins, list order doesn’t matter</text>
+  <line class="dc-line" x1="420" y1="240" x2="478" y2="240" marker-end="url(#dc-arrow)"/>
+  <text class="dc-yn" x="449" y="232" text-anchor="middle">yes</text>
+  <rect class="dc-out" x="480" y="210" width="220" height="60" rx="12"/>
+  <text class="dc-t" x="496" y="236">The rule’s action</text>
+  <text class="dc-s" x="496" y="257">from Rules or a service</text>
+  <line class="dc-line" x1="220" y1="280" x2="220" y2="314" marker-end="url(#dc-arrow)"/>
+  <text class="dc-yn" x="232" y="302">no</text>
+
+  <rect class="dc-q" x="20" y="316" width="400" height="60" rx="12"/>
+  <text class="dc-t" x="36" y="342">3. Does the app have a route?</text>
+  <text class="dc-s" x="36" y="363">the Apps section</text>
+  <line class="dc-line" x1="420" y1="346" x2="478" y2="346" marker-end="url(#dc-arrow)"/>
+  <text class="dc-yn" x="449" y="338" text-anchor="middle">yes</text>
+  <rect class="dc-out" x="480" y="316" width="220" height="60" rx="12"/>
+  <text class="dc-t" x="496" y="342">The app’s route</text>
+  <text class="dc-s" x="496" y="363">proxy, direct, block…</text>
+  <line class="dc-line" x1="220" y1="376" x2="220" y2="410" marker-end="url(#dc-arrow)"/>
+  <text class="dc-yn" x="232" y="398">no</text>
+
+  <rect class="dc-q" x="20" y="412" width="400" height="60" rx="12"/>
+  <text class="dc-t" x="36" y="438">4. Default mode</text>
+  <text class="dc-s" x="36" y="459">for connections without a rule</text>
+  <line class="dc-line" x1="420" y1="442" x2="478" y2="442" marker-end="url(#dc-arrow)"/>
+  <rect class="dc-out" x="480" y="394" width="220" height="96" rx="12"/>
+  <text class="dc-o" x="496" y="418">Proxy Only → direct</text>
+  <text class="dc-o" x="496" y="440">Silent → allow or block</text>
+  <text class="dc-o" x="496" y="462">Ask → prompt</text>
+  <text class="dc-o" x="496" y="484">Block All → block</text>
+
+  <rect class="dc-note" x="20" y="512" width="680" height="112" rx="12"/>
+  <text class="dc-t" x="36" y="538">If the result is “Through Proxy”</text>
+  <text class="dc-o" x="36" y="562">TCP: goes through the proxy server. Proxy down: an error, not a direct connection.</text>
+  <text class="dc-o" x="36" y="584">UDP: blocked (“Block UDP and QUIC”) or goes direct and is flagged.</text>
+  <text class="dc-o" x="36" y="606">DNS over UDP: goes direct and is flagged in the Leaks section.</text>
+</svg>
+<figcaption>The order in which an action is chosen. Rules and services are checked before the app’s route. The mode applies only if nothing else matched.</figcaption>
+</figure>
+
+<h3>The steps in order</h3>
+<ol class="steps">
+  <li><b>Routekeeper is off</b>: everything goes direct, as if Routekeeper weren’t there. The <span class="ui">Routekeeper On</span> switch is in the icon’s menu and at the bottom of the window’s sidebar.</li>
+  <li><b>A rule for the address.</b> This includes the rules from the <span class="ui">Rules</span> section (domain, IP address, subnet, port, protocol) and the services from the <span class="ui">Apps</span> section. If several match, the most specific one wins: an exact address beats <a class="term" href="../../../en/docs/glossary/#wildcard"><code>*.domain</code></a>, a domain beats a <a class="term" href="../../../en/docs/glossary/#cidr">subnet</a>, and for the same address, a rule with a port beats a rule without one. The order of lines in the list doesn’t matter. Worked examples are on the <a href="../../../en/docs/rules/#priority">Rules</a> page.</li>
+  <li><b>The app’s route</b>: what’s chosen for the app in the <span class="ui">Apps</span> section. It applies to all of the app’s traffic that more specific rules didn’t take. If <span class="ui">Include Child Processes</span> is on, the route also applies to the app’s <a class="term" href="../../../en/docs/glossary/#child-process">child processes</a>, the programs the app launches. If such a program has a route of its own, its own route wins.</li>
+  <li><b>The default mode</b>: what to do with a connection that has neither a rule nor a route. In <span class="ui">Proxy Only</span> mode (the one set right after installation), such a connection goes direct. The other modes are described in <a href="../../../en/docs/firewall/#modes">Firewall modes</a>.</li>
+</ol>
+
+<h3>Example</h3>
+<p>A browser is added to <span class="ui">Apps</span> with a route through the “Amsterdam” proxy. The <span class="ui">Rules</span> section has the rule “any app · <code>*.corp.example</code> → <span class="ui">Direct</span>” for the company portal. Terminal isn’t added anywhere, and the mode is <span class="ui">Proxy Only</span>.</p>
+<div class="table"><table>
+  <thead><tr><th>Connection</th><th>What applied</th><th>Result</th></tr></thead>
+  <tbody>
+    <tr><td>Browser → <code>portal.corp.example</code></td><td>Step 2: the rule for <code>*.corp.example</code> is more specific than the browser’s route</td><td>Direct</td></tr>
+    <tr><td>Browser → <code>example.org</code></td><td>Step 3: the browser’s route</td><td>Through “Amsterdam”</td></tr>
+    <tr><td>Terminal → <code>example.org</code></td><td>Step 4: no rule and no route, <span class="ui">Proxy Only</span> mode</td><td>Direct</td></tr>
+    <tr><td>Terminal → <code>portal.corp.example</code></td><td>Step 2: the rule for any app</td><td>Direct</td></tr>
+  </tbody>
+</table></div>
+
+<details class="deep">
+  <summary>Details: the exact order, for advanced users</summary>
+  <ul>
+    <li><b>Before rules.</b> If Routekeeper is off, the connection goes direct and isn’t recorded in the monitor. Connections to the proxy server itself (its address and port from the <span class="ui">Proxy</span> list) always go direct; otherwise the proxy couldn’t be reached.</li>
+    <li><b>Built-in rules</b> with the source <span class="ui">Default</span>: <code>127.0.0.0/8</code> and <code>::1</code> → <span class="ui">Direct</span>, Routekeeper itself → <span class="ui">Direct</span> (these are its proxy checks). They take part in the choice on equal terms with yours.</li>
+    <li><b>Comparing rules.</b> Of the enabled rules that match the app, address, port and protocol, one is chosen. They are compared in this order: how specific the address is (an exact name or IP, then <code>*.domain</code>, where longer is more specific, then a subnet, where a longer prefix is more specific, then “any address”); an address typed in by hand beats a service at the same specificity; a rule with a port wins; a rule with a protocol wins; the exact app beats its child processes, and they beat “any app”; on a full tie, <span class="ui">Block</span> wins, then <span class="ui">Through Proxy</span>, then <span class="ui">Direct</span>, then <span class="ui">Ask</span>.</li>
+    <li><b>An app’s route</b> is also a rule: the app and “any address”, with no port or protocol. So it loses to any rule with an address, port or protocol, and wins over the rule “any app · any address”.</li>
+    <li><b>Without a site name</b>, domain rules don’t match: a connection to a bare IP matches only rules with IPs and subnets. Some services include subnets (for example, Telegram’s addresses), and these match by IP too. More in <a href="../../../en/docs/limits/#hostnames">Limitations</a>.</li>
+    <li><b>Without a rule</b>, if <span class="ui">Settings</span> → <span class="ui">Network</span> → <span class="ui">Leave localhost alone</span> is on (it is by default), connections to the Mac itself go direct. Then the mode applies. In <span class="ui">Ask</span> mode, before a prompt is shown, automatic allows still apply to Apple software and to programs installed before Routekeeper.</li>
+    <li><b>Time-limited rules</b> from a prompt (“While … is running”) disappear when the process exits.</li>
+  </ul>
+</details>
+
+<h3>What happens after a “Through Proxy” decision</h3>
+<p>The TCP connection goes to the proxy server. If the proxy is down, the connection fails with an error and doesn’t go direct. This way, Routekeeper doesn’t reveal your address when the proxy is down: this is called <a class="term" href="../../../en/docs/glossary/#fail-closed">fail-closed</a>. If you’d rather have apps keep working somehow, turn on <span class="ui">Settings</span> → <span class="ui">Network</span> → <span class="ui" style="white-space: normal">If the proxy is down, go direct</span> (off by default).</p>
+<p>UDP is different: it never goes through the proxy. What happens to it is described below, in the sections <a href="#dns">on DNS</a> and <a href="#udp">on UDP</a>.</p>
+
+<h2 id="actions">Four actions</h2>
+<p>A rule, an app’s route and a service each have one of four actions.</p>
+<div class="table"><table>
+  <thead><tr><th>Action</th><th>What happens to the connection</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td><span class="ui">Through Proxy</span></td><td>It goes through the chosen proxy server. The site sees the proxy’s IP, not yours.</td><td>In lists, it’s shown by the proxy’s name, for example <span class="ui">Proxy: Amsterdam</span>. Only TCP goes through the proxy.</td></tr>
+    <tr><td><span class="ui">Direct</span></td><td>It goes through your usual connection, as it would without Routekeeper.</td><td>All the apps you haven’t added go this way by default.</td></tr>
+    <tr><td><span class="ui">Block</span></td><td>The connection is cut right away. The app sees a network error.</td><td>At equal specificity, a blocking rule beats the others.</td></tr>
+    <tr><td><span class="ui">Ask</span></td><td>The connection waits until you answer in the prompt: <span class="ui">Block</span>, <span class="ui">Through Proxy</span> or <span class="ui">Allow</span>.</td><td>With no answer, the connection is allowed after 60 seconds (you can change both values in <span class="ui">Settings</span> → <span class="ui">Firewall</span>). If the Routekeeper app isn’t running, there’s no one to ask, so the connection is allowed and an allow rule marked <span class="ui">For Review</span> is created for that app. Services don’t have this action.</td></tr>
+  </tbody>
+</table></div>
+<p>Your answer in the prompt is saved as a rule: forever, or while the program is running. The <span class="ui">Once</span> option doesn’t save a rule. For details, see <a href="../../../en/docs/firewall/#ask">Firewall modes</a>.</p>
+
+<h2 id="dns">DNS: how apps find a site’s address</h2>
+<p>Sites on the internet are found by numeric addresses, called IP addresses. People and programs find names, like <code>example.com</code>, easier to use. <a class="term" href="../../../en/docs/glossary/#dns">DNS</a> is a lookup service that turns a name into an address. Usually your internet provider or your router answers these lookups, so it sees which names your Mac asks about.</p>
+
+<h3>What “DNS through proxy” does</h3>
+<p>Each proxy has a <span class="ui">DNS through proxy</span> switch, and it’s on by default. When an app connects to a site by name, Routekeeper passes the name itself to the proxy, not the address. The proxy server looks up the address and connects to it. The site opens the same way as if you opened it from the server.</p>
+<p>There’s usually no reason to turn this switch off. Without it, the proxy gets the IP address that your Mac looked up.</p>
+
+<h3>What still goes around the proxy</h3>
+<ul>
+  <li><b>A connection without a name.</b> If an app connects straight to an IP address, the proxy gets only the address: there’s nothing to look up. Domain rules don’t match such a connection either.</li>
+  <li><b>The app’s own DNS lookups.</b> Some apps, such as browsers and messengers, send DNS lookups themselves, over UDP to port 53. For an app with a route through the proxy, these lookups go direct. Routekeeper doesn’t block them, so that the app doesn’t break. It only flags them in the <span class="ui">Leaks</span> section as “DNS around the proxy”.</li>
+  <li><b>Lookups by the system’s name service.</b> Often macOS itself looks up the address for the app. Routekeeper can’t link such lookups to a specific app and doesn’t show them.</li>
+</ul>
+<div class="callout tip">
+  <p><b>Turn on “DNS over HTTPS” in your browser.</b> Chrome, Edge, Firefox and Brave have this setting. With it, the browser looks up addresses inside an ordinary HTTPS connection (<a class="term" href="../../../en/docs/glossary/#doh">DoH</a>), and if the whole browser goes through the proxy, these lookups go through the proxy too. Don’t block port 53 for the browser: without DoH, it will stop opening sites.</p>
+</div>
+<details class="deep">
+  <summary>Details: what counts as DNS and where you see it</summary>
+  <ul>
+    <li>Routekeeper treats a connection to port 53 or 853 as a DNS lookup. If such a connection goes over UDP from an app that should go through the proxy, it goes direct whatever the <span class="ui">Block UDP and QUIC</span> setting, and it’s flagged as “DNS around the proxy”. This is the least serious kind of flag.</li>
+    <li>You can block it only with an explicit rule: the <span class="ui">Block DNS</span> button in the <span class="ui">Leaks</span> section creates the rule “app · port 53 → <span class="ui">Block</span>”. Browsers don’t get this button: they need DoH.</li>
+    <li>The service names <code>ipv4only.arpa</code> and <code>_dns.resolver.arpa</code> aren’t flagged: every system asks for them in the same way, and they say nothing about you.</li>
+    <li>Flags depend on where the connection itself was supposed to go by the rules. A process slipping past its rule is flagged only for apps whose whole route goes through a proxy. DNS and UDP are flagged when that connection should have gone through the proxy by the rules. So a browser that sends only certain services or domains through the proxy is barely checked: its DNS queries go to a DNS server’s address, not to those domains. More in <a href="../../../en/docs/monitoring/#what-is-detected">what Routekeeper detects</a>.</li>
+    <li>With the switch on, a SOCKS5 proxy gets the host name in the connect request, and HTTP and HTTPS proxies get the name in the CONNECT request. With the switch off, they get the IP address.</li>
+    <li><span class="ui">Ask</span> mode has a separate setting, <span class="ui">Allow DNS queries (UDP 53)</span>: it lets DNS lookups from apps without a rule through without a prompt. It’s off by default.</li>
+  </ul>
+</details>
+
+<h2 id="udp">UDP and QUIC</h2>
+<p>Data travels over the network in two main ways. <b>TCP</b> is like a conversation with confirmations: the two sides agree on a connection and check that everything arrived. Sites, email and most apps run on it. <b>UDP</b> is like sending postcards with no confirmation: it’s faster, but there are no guarantees. Calls, real-time video, games, DNS and <a class="term" href="../../../en/docs/glossary/#quic">QUIC</a>, a newer way to load sites that browsers use, all go over UDP.</p>
+<p>In Routekeeper, SOCKS5, HTTP and HTTPS proxies carry only TCP. This means that UDP from an app sent through the proxy can’t go through the proxy. What happens to it is decided by the <span class="ui">Block UDP and QUIC</span> switch in the proxy’s settings.</p>
+<div class="table"><table>
+  <thead><tr><th>Switch</th><th>What happens to UDP</th><th>What you’ll notice</th></tr></thead>
+  <tbody>
+    <tr><td>On (default)</td><td>UDP is blocked.</td><td>Browsers switch to regular HTTPS over TCP by themselves and work through the proxy. Calls and voice chats may not work; see <a href="../../../en/docs/limits/#udp">Limitations</a>.</td></tr>
+    <tr><td>Off</td><td>UDP goes direct, around the proxy.</td><td>Each such connection is flagged in the <span class="ui">Leaks</span> section as “UDP around the proxy”.</td></tr>
+  </tbody>
+</table></div>
+<p>The exception is DNS over UDP. Whatever the switch position, it goes direct and is only flagged, as described <a href="#dns">above</a>.</p>
+
+<h3>Why a service rule may not catch QUIC</h3>
+<p>Domain and service rules recognize a site by its name. A UDP connection, including QUIC, usually has no site name, only an IP address. Such a connection doesn’t match a domain rule and follows the app’s route.</p>
+<p>Example: the browser goes direct, and the YouTube service from the <span class="ui">Services</span> list goes through the proxy. Video over QUIC will go direct: to Routekeeper, it’s just the browser’s UDP connection to port 443. The rule “browser · port 443 · UDP → <span class="ui">Block</span>” helps. QUIC stops working, the browser switches to TCP, where the site name is known, and the service rule applies. A ready-made setup is in the recipe <a href="../../../en/docs/recipes/#browser-video">on video in the browser</a>.</p>
+<details class="deep">
+  <summary>Details: how Routekeeper handles UDP</summary>
+  <ul>
+    <li>The filter sees outgoing TCP and UDP, and the proxy part takes both. If <span class="ui">Through Proxy</span> is chosen for a UDP connection, DNS (ports 53 and 853) goes direct and is flagged. Everything else is closed if <span class="ui">Block UDP and QUIC</span> is on, or goes direct and is flagged as “UDP around the proxy” if it’s off.</li>
+    <li>The switch is set for each proxy separately and applies to the apps that go through that proxy.</li>
+    <li>The <span class="ui">Block UDP</span> button in the <span class="ui">Leaks</span> section turns this switch on for the proxy that the app goes through. If the app has no route through a proxy, the button creates the rule “app · UDP → <span class="ui">Block</span>”.</li>
+    <li>Rules with the <span class="ui">Block</span> and <span class="ui">Direct</span> actions apply to UDP the same way as to TCP.</li>
+  </ul>
+</details>
+    <p class="checked">Checked against the Routekeeper code (version 0.2.1 and the one after it) on October 4, 2026.</p>
+    <nav class="pager"><a class="prev" href="../../../en/docs/start/"><span>Previous</span>Quick start</a><a class="next" href="../../../en/docs/proxies/"><span>Next</span>Proxies</a></nav>
+  </article>
+</main>
+
+<div class="wrap">
+  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span><a href="../../../en/">Routekeeper for macOS</a> · <a href="../../../en/docs/">Docs</a> · <a href="../../../en/privacy/">Privacy</a> · <a href="https://github.com/ilyabazhenov/routekeeper">GitHub</a></span></footer>
+</div>
+
+<script src="../../../docs/assets/docs.js?v=3e67278c"></script>
+</body>
+</html>

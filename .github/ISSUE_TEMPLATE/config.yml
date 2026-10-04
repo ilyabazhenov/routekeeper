@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Документация / Docs
+    url: https://getroutekeeper.app/docs/troubleshooting/
+    about: Частые проблемы и сообщения приложения / Common problems and app messages

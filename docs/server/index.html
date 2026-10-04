@@ -4,188 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Свой прокси-сервер — Routekeeper</title>
-<meta name="description" content="Как за 15 минут поднять на своём VPS HTTPS-прокси для Routekeeper одной командой: домен, установка, подключение, защита сервера.">
+<meta name="description" content="Как за 15 минут поднять свой HTTPS-прокси для Routekeeper на VPS одной командой: какой сервер заказать, домен, вход по SSH, установка, подключение в Routekeeper, защита сервера и что делать с каждым сообщением скрипта.">
 <meta name="theme-color" content="#0a0f1f">
-<link rel="icon" href="../../mark.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="../../icon.png">
+<link rel="canonical" href="https://getroutekeeper.app/docs/server/">
 <link rel="alternate" hreflang="ru" href="https://getroutekeeper.app/docs/server/">
 <link rel="alternate" hreflang="en" href="https://getroutekeeper.app/en/docs/server/">
+<link rel="alternate" hreflang="x-default" href="https://getroutekeeper.app/en/docs/server/">
+<link rel="icon" href="../../mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../../icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<style>
-:root {
-  --bg: #0a0f1f;
-  --surface: rgba(170, 190, 255, 0.035);
-  --surface-2: rgba(170, 190, 255, 0.06);
-  --line: rgba(170, 190, 255, 0.09);
-  --line-2: rgba(170, 190, 255, 0.16);
-  --text: #f3ecdf;
-  --muted: #a3abc4;
-  --faint: #6b7493;
-  --amber: #ffb547;
-  --amber-2: #ff8a3d;
-  --glow: rgba(255, 168, 76, 0.5);
-  --direct: #9cc0ff;
-  --stop: #ff7a66;
-  --ok: #7fd8a4;
-  --font: "Onest", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
-  color-scheme: dark;
-}
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; overflow-x: clip; }
-body {
-  margin: 0; color: var(--text);
-  background: radial-gradient(1500px 1000px at 50% -160px, #18234b, transparent 70%) no-repeat, var(--bg);
-  font: 400 17px/1.65 var(--font); -webkit-font-smoothing: antialiased; overflow-x: clip;
-}
-h1, h2, h3, p, ul, ol, table { margin: 0; }
-h1, h2, h3 { font-weight: 600; letter-spacing: -0.025em; text-wrap: balance; }
-a { color: inherit; text-decoration: none; }
-:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; border-radius: 8px; }
-.wrap { width: min(1180px, 100% - 32px); margin-inline: auto; }
-.warm { background: linear-gradient(100deg, #ffd58a 0%, var(--amber) 40%, var(--amber-2) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
-
-.nav-wrap { position: sticky; top: 12px; z-index: 50; margin-top: 12px; }
-.nav {
-  display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  padding: 8px 8px 8px 14px; border-radius: 16px;
-  background: rgba(12, 18, 38, 0.6); border: 1px solid var(--line);
-  backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4);
-}
-.brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 17px; letter-spacing: -0.01em; }
-.brand img { width: 28px; height: 28px; }
-.nav-end { display: flex; align-items: center; gap: 6px; }
-.lang { padding: 8px 10px; border-radius: 10px; color: var(--muted); font: 500 13px/1 var(--mono); letter-spacing: .06em; }
-.lang:hover { color: var(--text); background: var(--surface-2); }
-.btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 10px; font: 600 14px/1 var(--font); }
-.btn-primary { color: #2a1606; background: linear-gradient(180deg, #ffd27e, var(--amber) 55%, #f39a3a); box-shadow: inset 0 1px 0 rgba(255, 248, 225, .7), 0 8px 28px -8px var(--glow); }
-.btn-ghost { color: var(--text); background: var(--surface-2); border: 1px solid var(--line); }
-
-.docs-hero {
-  display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 48px; align-items: center;
-  min-height: 330px; padding-block: 34px 28px;
-}
-.hero-copy h1 { margin-top: 18px; max-width: 760px; font-size: clamp(42px, 6.2vw, 78px); line-height: 1.02; letter-spacing: -0.045em; }
-.hero-copy .lede { margin-top: 24px; max-width: 720px; font-size: 20px; color: var(--text); }
-.hero-copy .lede b { color: var(--amber); font-weight: 600; }
-.hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
-.lantern-scene {
-  position: relative; min-height: 260px; display: grid; place-items: center; overflow: hidden;
-  border: 1px solid var(--line); border-radius: 20px;
-  background:
-    radial-gradient(circle at 50% 45%, rgba(255, 181, 71, .24), rgba(255, 138, 61, .08) 35%, transparent 62%),
-    linear-gradient(180deg, rgba(170, 190, 255, .06), rgba(170, 190, 255, .02));
-}
-.lantern-scene::before {
-  content: ""; position: absolute; inset: 18px; border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(255, 181, 71, .28), transparent 72%);
-  filter: blur(16px);
-}
-.lantern-scene::after {
-  content: ""; position: absolute; inset: auto 12% 34px; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 181, 71, .55), transparent);
-  box-shadow: 0 0 34px 10px rgba(255, 181, 71, .18);
-}
-.lantern-scene img {
-  position: relative; z-index: 1; width: min(164px, 44vw); height: auto;
-  filter: drop-shadow(0 0 28px rgba(255, 181, 71, .42));
-}
-
-.docs-layout { display: grid; grid-template-columns: 220px minmax(0, 860px); gap: 52px; align-items: start; padding-block: 32px 96px; }
-.side-nav {
-  position: sticky; top: 96px; display: grid; gap: 6px; padding: 14px;
-  border: 1px solid var(--line); border-radius: 16px; background: rgba(12, 18, 38, 0.42);
-}
-.side-nav b { padding: 4px 8px 10px; color: var(--text); font-size: 14px; font-weight: 600; }
-.side-nav a { padding: 8px; border-radius: 9px; color: var(--muted); font-size: 14px; line-height: 1.25; transition: color .2s, background .2s; }
-.side-nav a:hover { color: var(--text); background: var(--surface-2); }
-.side-nav .side-action { margin-top: 8px; border-top: 1px solid var(--line); padding-top: 14px; color: var(--amber); }
-.doc { max-width: 860px; min-width: 0; }
-.eyebrow { font: 500 13px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber); }
-.lede { margin-top: 24px; max-width: 760px; font-size: 20px; color: var(--text); }
-.lede b { color: var(--amber); font-weight: 600; }
-.dated { margin-top: 14px; color: var(--faint); font-size: 14px; }
-.toc {
-  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;
-  margin-top: 36px;
-}
-.toc a, .card {
-  display: block; min-width: 0; padding: 16px 18px; border-radius: 16px;
-  background: var(--surface); border: 1px solid var(--line);
-}
-.toc a { color: var(--muted); transition: color .2s, background .2s, border-color .2s; }
-.toc a:hover { color: var(--text); background: var(--surface-2); border-color: var(--line-2); }
-.toc b, .card b { display: block; color: var(--text); font-weight: 600; }
-.toc span { display: block; margin-top: 4px; font-size: 14px; line-height: 1.45; }
-.doc h2 { margin-top: 64px; font-size: 30px; }
-.doc h3 { margin-top: 28px; font-size: 20px; }
-.doc p, .doc ul, .doc ol, .doc table { margin-top: 16px; color: var(--muted); }
-.doc p b, .doc li b { color: var(--text); font-weight: 600; }
-.doc ul, .doc ol { padding-left: 22px; }
-.doc li + li { margin-top: 10px; }
-.doc li::marker { color: var(--amber); }
-.doc code {
-  font: 500 0.88em/1 var(--mono); color: var(--text);
-  background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px; padding: 2px 6px;
-}
-.doc pre {
-  overflow-x: auto; margin: 16px 0 0; padding: 16px; border-radius: 14px;
-  background: rgba(0, 0, 0, .22); border: 1px solid var(--line);
-  color: var(--text); font: 500 14px/1.6 var(--mono);
-}
-.doc a:not(.btn):not(.card) { color: var(--amber); text-decoration: underline; text-decoration-color: rgba(255, 181, 71, .4); text-underline-offset: 3px; }
-.doc a:not(.btn):hover { text-decoration-color: var(--amber); }
-.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
-.card p { margin-top: 8px; font-size: 15px; line-height: 1.55; }
-.tagline { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
-.tag {
-  display: inline-flex; align-items: center; min-height: 30px; padding: 5px 10px; border-radius: 999px;
-  background: var(--surface-2); border: 1px solid var(--line); color: var(--muted); font: 500 13px/1.2 var(--mono);
-}
-.callout {
-  margin-top: 18px; padding: 18px 20px; border-radius: 16px;
-  background: rgba(255, 181, 71, .08); border: 1px solid rgba(255, 181, 71, .22); color: var(--text);
-}
-.table { overflow-x: auto; margin-top: 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
-.doc table { margin: 0; width: 100%; border-collapse: collapse; font-size: 15px; min-width: 640px; }
-.doc th, .doc td { padding: 12px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
-.doc tr:last-child td { border-bottom: 0; }
-.doc th { color: var(--text); font-weight: 600; font-size: 14px; background: var(--surface-2); }
-.doc td:first-child { color: var(--text); }
-.footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; padding-block: 28px 44px; border-top: 1px solid var(--line); color: var(--faint); font-size: 14px; }
-.footer a:hover { color: var(--text); }
-@media (max-width: 980px) {
-  .docs-hero { grid-template-columns: minmax(0, 1fr); gap: 24px; padding-block: 34px 14px; }
-  .lantern-scene { min-height: 220px; }
-  .docs-layout { display: block; padding-block: 56px 72px; }
-  .side-nav { display: none; }
-}
-@media (max-width: 760px) {
-  .docs-hero { min-height: 0; }
-  .hero-copy h1 { font-size: clamp(38px, 12vw, 56px); }
-  .lede { font-size: 18px; }
-  .toc, .grid { grid-template-columns: minmax(0, 1fr); }
-}
-
-.step { display: inline-grid; place-items: center; width: 34px; height: 34px; margin-right: 12px; border-radius: 10px; background: rgba(255, 181, 71, .12); color: var(--amber); font: 600 17px/1 var(--mono); vertical-align: 4px; }
-.ph { color: var(--amber); }
-.cmd { position: relative; }
-.cmd pre { padding-right: 104px; }
-.copy {
-  position: absolute; top: 10px; right: 10px; padding: 7px 10px; border-radius: 9px; cursor: pointer;
-  border: 1px solid var(--line-2); background: var(--surface-2); color: var(--muted); font: 500 13px/1 var(--font);
-}
-.copy:hover { color: var(--text); }
-.callout.warn { background: rgba(255, 122, 102, .08); border-color: rgba(255, 122, 102, .26); }
-.callout p:first-child, .callout code { margin-top: 0; }
-.flow { color: var(--muted); }
-.flow b { color: var(--amber); font-weight: 500; }
-@media (max-width: 760px) { .cmd pre { padding-right: 16px; padding-top: 52px; } }
-</style>
+<link rel="stylesheet" href="../../docs/assets/docs.css?v=891e2023">
 </head>
 <body>
+<!-- Built by Scripts/build-docs.py from site-src/docs/ru/server.html. Edit the fragment, not this file. -->
 
 <div class="wrap nav-wrap">
   <header class="nav">
@@ -194,159 +27,414 @@ a { color: inherit; text-decoration: none; }
   </header>
 </div>
 
-<section class="wrap docs-hero">
+<section class="wrap docs-hero compact">
   <div class="hero-copy">
-    <span class="eyebrow">Документация · свой сервер</span>
+    <span class="crumbs"><a href="../../docs/">Документация</a> · Настройка</span>
     <h1>Свой прокси-сервер <span class="warm">за 15 минут</span></h1>
-    <p class="lede"><b>Одна команда превращает арендованный VPS в HTTPS-прокси для Routekeeper.</b> Снаружи сервер выглядит как обычный сайт, а ключ от прокси есть только у вас.</p>
-    <p class="dated">Редакция от 4 октября 2026 года.</p>
-    <div class="hero-actions"><a class="btn btn-primary" href="#need">Начать</a><a class="btn btn-ghost" href="../../server.sh">Посмотреть скрипт</a></div>
+    <p class="lede"><b>Одна команда превращает арендованный VPS в HTTPS-прокси для Routekeeper.</b> Ключ от прокси есть только у вас, а без пароля сервер отвечает как обычный веб-сервер.</p>
   </div>
-  <div class="lantern-scene" aria-hidden="true"><img src="../../lantern.svg" alt=""></div>
 </section>
 
 <main class="wrap docs-layout">
-  <aside class="side-nav" aria-label="Навигация по инструкции">
-    <b>На этой странице</b>
-    <a href="#result">Что получится</a>
-    <a href="#need">Что понадобится</a>
-    <a href="#domain">1. Домен</a>
-    <a href="#login">2. Вход на сервер</a>
-    <a href="#install">3. Установка</a>
-    <a href="#app">4. Routekeeper</a>
-    <a href="#security">Защита сервера</a>
-    <a href="#maintenance">Обслуживание</a>
-    <a href="#troubleshooting">Если не получилось</a>
-    <a class="side-action" href="../">Вся документация</a>
-    <a href="https://github.com/ilyabazhenov/routekeeper/issues">GitHub Issues</a>
+  <aside class="side-nav" aria-label="Разделы документации">
+    <span class="group">Начало</span>
+    <a href="../../docs/">Обзор документации</a>
+    <a href="../../docs/start/">Быстрый старт</a>
+    <a href="../../docs/concepts/">Как это работает</a>
+    <span class="group">Настройка</span>
+    <a href="../../docs/proxies/">Прокси</a>
+    <a href="../../docs/apps/">Приложения и сервисы</a>
+    <a href="../../docs/rules/">Правила</a>
+    <a href="../../docs/firewall/">Режимы файрвола</a>
+    <a href="../../docs/server/" aria-current="page">Свой прокси-сервер</a>
+    <span class="group">На практике</span>
+    <a href="../../docs/recipes/">Рецепты</a>
+    <a href="../../docs/monitoring/">Проверка и мониторинг</a>
+    <span class="group">Справка</span>
+    <a href="../../docs/troubleshooting/">Если не работает</a>
+    <a href="../../docs/maintenance/">Обновление и удаление</a>
+    <a href="../../docs/limits/">Ограничения</a>
+    <a href="../../docs/glossary/">Словарь</a>
+    <a href="../../docs/changelog/">Что нового</a>
+    <a class="side-action" href="../../privacy/">Конфиденциальность</a>
+    <a href="https://github.com/ilyabazhenov/routekeeper/issues">Сообщить о проблеме</a>
   </aside>
   <article class="doc">
-    <h2 id="result" style="margin-top:0">Что получится</h2>
-    <pre class="flow"><code>Приложение → Routekeeper → <b>TLS</b> → ваш сервер :443 → интернет</code></pre>
+    <details class="mobile-nav"><summary>Все разделы документации</summary><nav>
+    <span class="group">Начало</span>
+    <a href="../../docs/">Обзор документации</a>
+    <a href="../../docs/start/">Быстрый старт</a>
+    <a href="../../docs/concepts/">Как это работает</a>
+    <span class="group">Настройка</span>
+    <a href="../../docs/proxies/">Прокси</a>
+    <a href="../../docs/apps/">Приложения и сервисы</a>
+    <a href="../../docs/rules/">Правила</a>
+    <a href="../../docs/firewall/">Режимы файрвола</a>
+    <a href="../../docs/server/" aria-current="page">Свой прокси-сервер</a>
+    <span class="group">На практике</span>
+    <a href="../../docs/recipes/">Рецепты</a>
+    <a href="../../docs/monitoring/">Проверка и мониторинг</a>
+    <span class="group">Справка</span>
+    <a href="../../docs/troubleshooting/">Если не работает</a>
+    <a href="../../docs/maintenance/">Обновление и удаление</a>
+    <a href="../../docs/limits/">Ограничения</a>
+    <a href="../../docs/glossary/">Словарь</a>
+    <a href="../../docs/changelog/">Что нового</a>
+    </nav></details>
+<p class="lead-in">Вы арендуете небольшой сервер, запускаете на нём одну команду и получаете собственный <a class="term" href="../../docs/glossary/#proxy">прокси</a>. Routekeeper отправляет на него трафик выбранных приложений, а сервер передаёт этот трафик дальше в интернет.</p>
+<pre class="flow"><code>Приложение → Routekeeper → <b>TLS</b> → ваш сервер :443 → интернет</code></pre>
+<div class="grid" id="result">
+  <div class="card"><b>HTTPS-прокси</b><p><a class="term" href="../../docs/glossary/#https-proxy">HTTPS-прокси</a>: <a class="term" href="../../docs/glossary/#http-connect">HTTP CONNECT</a> внутри <a class="term" href="../../docs/glossary/#tls">TLS</a> на веб-сервере Caddy со сборкой <a href="https://github.com/klzgrad/forwardproxy">forwardproxy@naive</a>. На Mac, кроме Routekeeper, ничего ставить не нужно.</p></div>
+  <div class="card"><b>Защита от сканеров</b><p>Без пароля сервер отвечает как обычный веб-сервер с сертификатом Let's Encrypt. Поэтому сканеры не находят открытый прокси и не могут пользоваться им чужими руками.</p></div>
+  <div class="card"><b>Сервер ваш</b><p>Пароль создаётся на самом сервере. Ни пароль, ни ваш трафик не передаются ни Routekeeper, ни его автору. Куда скрипт обращается при установке — <a href="#contacts">ниже</a>.</p></div>
+  <div class="card"><b>Только TCP</b><p>Такой прокси передаёт только <a class="term" href="../../docs/glossary/#tcp">TCP</a>. <a class="term" href="../../docs/glossary/#udp">UDP</a> приложений, идущих через него, Routekeeper по умолчанию блокирует, и браузеры переходят на TCP. Подробнее — в <a href="../../docs/limits/#udp">ограничениях</a>.</p></div>
+</div>
+
+<h2 id="need">Что понадобится</h2>
+<ul>
+  <li><b>Сервер.</b> Арендованный <a class="term" href="../../docs/glossary/#vps">VPS</a> с Debian или Ubuntu. Что именно заказать — ниже.</li>
+  <li><b>Домен.</b> Свой или бесплатный на DuckDNS: по нему Let's Encrypt выдаёт сертификат. Как его получить — в <a href="#domain">шаге 1</a>.</li>
+  <li><b>Mac с Routekeeper.</b> Если Routekeeper ещё не установлен, начните с <a href="../../docs/start/#install">быстрого старта</a>. Терминал для входа на сервер уже есть в macOS.</li>
+  <li><b>Около 15 минут.</b> Сама установка на сервере занимает 1–3 минуты.</li>
+</ul>
+
+<h3 id="vps">Какой сервер заказать</h3>
+<p>VPS — виртуальный сервер, который хостинг сдаёт в аренду помесячно. Подойдёт самый простой тариф. При заказе выберите:</p>
+<ul>
+  <li><b>Операционная система:</b> Debian 12 или 13, Ubuntu 22.04 или 24.04. На них скрипт проверен.</li>
+  <li><b>Процессор:</b> x86_64, его также называют amd64, x64 или Intel/AMD. Серверы на ARM (arm64, aarch64) не подойдут: для них нет готовой сборки Caddy с прокси.</li>
+  <li><b>Память:</b> от 1 ГБ. Диск — самый маленький из предложенных.</li>
+  <li><b>Адрес:</b> публичный IPv4. Тариф только с IPv6 не подойдёт.</li>
+  <li><b>Регион:</b> ближайший к вам. Каждое новое соединение через прокси устанавливается примерно за три пинга до сервера, поэтому чем ближе сервер, тем быстрее всё открывается.</li>
+  <li><b>Виртуализация</b>, если хостер её указывает: лучше KVM. На контейнерных VPS (OpenVZ, LXC) прокси тоже работает, но ускорение BBR там недоступно.</li>
+</ul>
+<p>Нужны свободные <a class="term" href="../../docs/glossary/#port">порты</a> 80 и 443. Если на сервере уже работает сайт, другая VPN-панель или веб-сервер, скрипт ничего не тронет и остановится. Для прокси возьмите отдельный сервер.</p>
+
+<h3 id="credentials">Где взять IP и пароль</h3>
+<p>После оплаты хостер присылает письмо с <a class="term" href="../../docs/glossary/#ip">IP-адресом</a> сервера и паролем пользователя root — главного администратора сервера. Те же данные обычно есть на странице сервера в панели управления хостера. Если пароль root при заказе можно задать самому, задайте длинный случайный.</p>
+<p>Некоторые хостеры, чаще облачные, вместо root дают обычного пользователя (например, <code>ubuntu</code>), которому разрешено выполнять команды администратора через <code>sudo</code>. Так тоже можно: команды для этого случая есть в каждом шаге.</p>
+<p>Если хостер просит SSH-ключ уже при заказе, создайте ключ на Mac, как в первом шаге <a href="#security">защиты сервера</a>, и вставьте в форму его открытую часть. Скопировать её можно командой <code>pbcopy &lt; ~/.ssh/my_server.pub</code>. Входить на сервер тогда нужно с ключом: <code>ssh -i ~/.ssh/my_server root@<span class="ph">IP</span></code>.</p>
+
+<h2 id="domain"><span class="step">1</span>Домен</h2>
+<p>Прокси нужно <a class="term" href="../../docs/glossary/#domain">доменное имя</a>. На это имя Let's Encrypt выдаёт сертификат, а Routekeeper по сертификату убеждается, что подключается именно к вашему серверу. Имя связывают с сервером <a class="term" href="../../docs/glossary/#a-record">A-записью</a> — строкой в <a class="term" href="../../docs/glossary/#dns">DNS</a> вида «имя → IPv4-адрес».</p>
+
+<h3 id="duckdns">Бесплатный домен на DuckDNS</h3>
+<ol class="steps">
+  <li>Войдите на <a href="https://www.duckdns.org">duckdns.org</a> через GitHub, Google или другой предложенный способ.</li>
+  <li>В поле <code>sub domain</code> впишите имя: латинские буквы, цифры и дефис. Нажмите <code>add domain</code>. Получится адрес вида <code>имя.duckdns.org</code>.</li>
+  <li>DuckDNS сразу подставляет в поле <code>current ip</code> адрес вашего компьютера. Замените его на IP сервера и нажмите <code>update ip</code>.</li>
+</ol>
+<p>Токен DuckDNS не понадобится: IP сервера не меняется, обновлять запись не придётся.</p>
+
+<h3 id="own-domain">Свой домен</h3>
+<p>В панели регистратора или DNS-хостинга создайте A-запись: имя — поддомен (или <code>@</code> для самого домена), значение — IP сервера. Если домен обслуживает Cloudflare, выключите у записи проксирование (серое облако, «DNS only»). Иначе домен будет указывать на адреса Cloudflare, а не на ваш сервер.</p>
+<p>Если у домена есть AAAA-запись (IPv6) на другой адрес, удалите её: Let's Encrypt может проверять домен по IPv6, и сертификат не выдадут.</p>
+
+<h3 id="dns-check">Проверить запись</h3>
+<p>Запись начинает работать через пару минут. Проверьте на Mac: команда должна напечатать IP сервера.</p>
+<div class="cmd"><pre><code>dig +short <span class="ph">имя.duckdns.org</span></code></pre></div>
+
+<h2 id="login"><span class="step">2</span>Вход на сервер</h2>
+<p>На сервер заходят по <a class="term" href="../../docs/glossary/#ssh">SSH</a> из Терминала. Откройте его: <span class="ui">Программы → Утилиты → Терминал</span>, или нажмите <kbd>⌘Пробел</kbd> и наберите «Терминал». Подключитесь, подставив IP из письма хостера:</p>
+<div class="cmd"><pre><code>ssh root@<span class="ph">IP</span></code></pre></div>
+<p>Если хостер дал не root, а пользователя с sudo, подставьте его имя:</p>
+<div class="cmd"><pre><code>ssh <span class="ph">пользователь</span>@<span class="ph">IP</span></code></pre></div>
+<p id="fingerprint">При первом подключении ssh спросит: <code>Are you sure you want to continue connecting (yes/no/[fingerprint])?</code> Так ssh сообщает, что видит этот сервер впервые, и показывает отпечаток (fingerprint) его ключа. Напечатайте <code>yes</code> и нажмите Return. ssh запомнит ключ сервера и предупредит, если по этому адресу когда-нибудь ответит другой сервер.</p>
+<p>Затем введите пароль. Символы при вводе не отображаются, так и должно быть; вставить пароль можно через <kbd>⌘V</kbd>. Вход удался, если строка в Терминале сменилась на что-то вроде <code>root@имя-сервера:~#</code>.</p>
+<p>Некоторые хостеры при первом входе просят сменить пароль: введите текущий, затем дважды новый.</p>
+
+<h2 id="install"><span class="step">3</span>Установка</h2>
+<p>На сервере выполните одну команду, подставив свой домен:</p>
+<div class="cmd"><pre><code>curl -fsSL https://getroutekeeper.app/server.sh | bash -s -- --domain <span class="ph">имя.duckdns.org</span></code></pre></div>
+<p>Если вы вошли не как root, а как пользователь с sudo, добавьте <code>sudo</code> перед <code>bash</code>. sudo может спросить пароль этого пользователя.</p>
+<div class="cmd"><pre><code>curl -fsSL https://getroutekeeper.app/server.sh | sudo bash -s -- --domain <span class="ph">имя.duckdns.org</span></code></pre></div>
+<p>Установка обычно занимает 1–3 минуты. Скрипт по порядку:</p>
+<ol>
+  <li>проверяет, что на сервере Debian или Ubuntu на x86_64 с systemd, и доставляет недостающие стандартные пакеты;</li>
+  <li>проверяет, что домен указывает на этот сервер, а порты 80 и 443 свободны; если включён файрвол ufw, открывает в нём эти порты;</li>
+  <li>скачивает Caddy со сборкой forwardproxy@naive и сверяет её контрольную сумму;</li>
+  <li>создаёт логин и длинный случайный пароль;</li>
+  <li>настраивает Caddy: прокси с паролем и простая веб-страница для всех, кто приходит без пароля; сертификат Let's Encrypt Caddy получает и продлевает сам;</li>
+  <li>включает BBR — алгоритм управления скоростью TCP, который заметно ускоряет соединения на дальних маршрутах;</li>
+  <li>ставит fail2ban: после пяти неудачных попыток войти по SSH за час адрес не пускается на сервер сутки, при повторах — дольше;</li>
+  <li>включает автоматические обновления безопасности, сам сервер при этом не перезагружается;</li>
+  <li>проверяет, что прокси работает с паролем, а без пароля сервер отвечает как обычный веб-сервер, и печатает строку для Routekeeper.</li>
+</ol>
+<p>BBR, fail2ban и обновления необязательны. Если сервер их не позволяет, скрипт пишет предупреждение и ставит прокси дальше.</p>
+
+<h3 id="output">Что вы увидите</h3>
+<p>Так выглядит вывод успешной установки. У вас будут свои домен, IP и логин, а вместо ••• — пароль из 40 символов.</p>
+<pre><code>ОС: Debian GNU/Linux 12 (bookworm) (x86_64)
+
+==&gt; Проверка домена my-name.duckdns.org
+сервер: 203.0.113.10, my-name.duckdns.org → 203.0.113.10
+
+==&gt; Caddy v2.11.2-naive
+Caddy перезапущен
+
+==&gt; BBR
+TCP: bbr
+
+==&gt; fail2ban для SSH
+5 неудачных входов за час → бан на сутки, повторно дольше
+
+==&gt; Автоматические обновления безопасности
+включены, сервер сам не перезагружается
+
+==&gt; Проверки
+  ✓ сертификат Let's Encrypt получен, сайт открывается
+  ✓ прокси с паролем работает, внешний IP 203.0.113.10
+  ✓ без пароля прокси закрыт для посторонних
+
+Готово. Скопируйте строку и вставьте её в Routekeeper: «Прокси» → ⌘V (или кнопка «Вставить») → «Добавить».
+
+  https://u3f9a1c0b7e42:•••@my-name.duckdns.org:443
+
+Или заполните вручную: тип HTTPS, сервер my-name.duckdns.org, порт 443, логин u3f9a1c0b7e42, пароль •••.
+Строка — это ключ от прокси: не публикуйте её. Посмотреть снова: cat /etc/caddy/proxy-credentials</code></pre>
+<p>Строки с <code>==&gt;</code> — этапы, с <code>✓</code> — пройденные проверки. Если на сервере включён ufw, после проверки домена появится строка <code>ufw: открыты порты 80 и 443</code>. На этапе «Проверки» скрипт может молчать до нескольких минут, пока Caddy получает сертификат.</p>
+<p>Строки с <code>!</code> — предупреждения: установка продолжается, а в конце, перед «Готово», они повторяются. Строка с <code>✗</code> — ошибка, после которой скрипт останавливается. Что делать с каждой, — в разделе <a href="#troubleshooting">Если не получилось</a>.</p>
+
+<h3 id="review">Прочитать скрипт перед запуском</h3>
+<p>Скрипт из интернета разумно прочитать до запуска. Исходник открыт: <a href="https://github.com/ilyabazhenov/routekeeper/blob/main/server.sh">посмотреть скрипт на GitHub</a>. Чтобы запустить ровно тот файл, который прочитали, скачайте его на сервер:</p>
+<div class="cmd"><pre><code>curl -fsSLO https://getroutekeeper.app/server.sh</code></pre></div>
+<p>Просмотрите его. Листайте пробелом, выход — <kbd>q</kbd>.</p>
+<div class="cmd"><pre><code>less server.sh</code></pre></div>
+<p>Затем запустите (с пользователем sudo — <code>sudo bash server.sh …</code>):</p>
+<div class="cmd"><pre><code>bash server.sh --domain <span class="ph">имя.duckdns.org</span></code></pre></div>
+
+<h3 id="contacts">Куда обращается скрипт</h3>
+<ul>
+  <li><b>api.ipify.org</b>, а если он не ответил, <b>ifconfig.me</b> — чтобы узнать внешний IPv4 сервера. Через эти же сервисы скрипт в конце проверяет сам прокси.</li>
+  <li><b>GitHub</b> — чтобы скачать сборку Caddy из релизов проекта klzgrad/forwardproxy. Её контрольная сумма SHA-256 записана в скрипте. Если скачанный файл с ней не совпадает, установка останавливается.</li>
+  <li><b>Зеркала пакетов Debian или Ubuntu</b>, настроенные на сервере, — чтобы поставить стандартные пакеты: curl, openssl, fail2ban, unattended-upgrades и другие.</li>
+  <li><b>Let's Encrypt</b> — Caddy получает у него сертификат для вашего домена и потом сам его продлевает.</li>
+</ul>
+<p>Сам скрипт скачивается с getroutekeeper.app, больше он к этому сайту не обращается. Логин и пароль создаются на сервере и хранятся только на нём. Ни пароль, ни трафик не передаются ни Routekeeper, ни его автору.</p>
+<p>После установки сервер сам обращается только к Let's Encrypt, чтобы продлевать сертификат, и к зеркалам пакетов за обновлениями безопасности.</p>
+
+<h3 id="flags">Флаги и повторный запуск</h3>
+<p>Запускать команду установки повторно безопасно. Логин и пароль сохраняются, а Caddy перезапускается, только если изменились его программа или настройки; иначе скрипт напишет «Caddy уже настроен, перезапуск не нужен». Флаги добавляются в конец команды.</p>
+<div class="table"><table>
+  <thead><tr><th>Флаг</th><th>Что делает</th></tr></thead>
+  <tbody>
+    <tr><td><code>--domain <span class="ph">имя</span></code></td><td>Домен, A-запись которого указывает на этот сервер. Обязателен для установки.</td></tr>
+    <tr><td><code>--new-password</code></td><td>Создаёт новые логин и пароль. Старые сразу перестают работать.</td></tr>
+    <tr><td><code>--no-bbr</code></td><td>Не включает BBR, настройки TCP остаются как есть.</td></tr>
+    <tr><td><code>--no-fail2ban</code></td><td>Не ставит fail2ban.</td></tr>
+    <tr><td><code>--no-auto-updates</code></td><td>Не включает автоматические обновления безопасности.</td></tr>
+    <tr><td><code>--lang ru</code>, <code>--lang en</code></td><td>Язык сообщений. По умолчанию скрипт берёт его из переменной <code>LANG</code>, а ssh обычно передаёт язык с Mac. Добавьте <code>--lang ru</code>, если сообщения на английском.</td></tr>
+    <tr><td><code>--json</code></td><td>Для скриптов и программ: итог печатается одной строкой JSON.</td></tr>
+    <tr><td><code>--uninstall</code></td><td>Удаляет прокси; пишется вместо <code>--domain</code>. BBR, fail2ban и обновления остаются.</td></tr>
+  </tbody>
+</table></div>
+<p>Флаги <code>--no-…</code> только пропускают шаг. То, что сделал прошлый запуск, они не отменяют.</p>
+
+<details class="deep"><summary>Подробнее: флаг --json</summary>
+  <p>С <code>--json</code> в стандартный вывод попадает только одна строка JSON, а сообщения о ходе установки и ошибки идут в stderr. Поля: <code>type</code> (всегда <code>https</code>), <code>host</code>, <code>port</code>, <code>username</code>, <code>password</code>, <code>url</code> (та же строка, что без флага), <code>serverIP</code>, <code>caddy</code> (версия) и <code>warnings</code> — массив предупреждений, пустой, если их не было. При ошибке JSON не печатается, а код выхода ненулевой.</p>
+</details>
+
+<details class="deep"><summary>Подробнее: что меняется на сервере</summary>
+  <ul>
+    <li><code>/usr/local/bin/caddy</code> — Caddy v2.11.2 со сборкой forwardproxy@naive из релизов klzgrad/forwardproxy. SHA-256 архива записан в скрипте.</li>
+    <li><code>/etc/caddy/Caddyfile</code> — сайт на :443 для вашего домена: TLS 1.2 и 1.3, <code>forward_proxy</code> с <code>basic_auth</code>, <code>hide_ip</code>, <code>hide_via</code> и <code>probe_resistance</code>, <code>file_server</code> со страницей из <code>/var/www/site</code>. Перед установкой файл проверяется командой <code>caddy validate</code>.</li>
+    <li><code>/etc/caddy/proxy-credentials</code> — логин и пароль, права 600.</li>
+    <li>systemd-сервис <code>caddy</code> от системного пользователя <code>caddy</code>. Сертификаты Caddy хранит в <code>/var/lib/caddy</code>.</li>
+    <li>BBR и очередь <code>fq</code>: <code>/etc/sysctl.d/99-zz-bbr.conf</code> и <code>/etc/modules-load.d/bbr.conf</code>. Префикс <code>99-zz</code> нужен, чтобы настройки хостера их не перебили.</li>
+    <li>fail2ban: <code>/etc/fail2ban/jail.d/zz-routekeeper.local</code> и <code>/etc/fail2ban/fail2ban.d/zz-routekeeper.local</code>. Бан через nftables: 5 неудачных входов за час — сутки, при повторах срок удваивается до 4 недель. В исключениях — сам сервер и адрес, с которого запущен скрипт (при запуске через sudo этот адрес может туда не попасть).</li>
+    <li>Обновления: пакет unattended-upgrades и <code>/etc/apt/apt.conf.d/20auto-upgrades</code>.</li>
+  </ul>
+  <p><code>probe_resistance</code>: на запрос к прокси без пароля Caddy отвечает как веб-сервер, а не кодом 407 «нужна авторизация». <code>hide_ip</code> и <code>hide_via</code>: Caddy не добавляет к запросам заголовки Forwarded и Via. Проверки в конце скрипт делает на самом сервере через 127.0.0.1, поэтому они не зависят от того, как хостер маршрутизирует обращения сервера к самому себе.</p>
+</details>
+
+<h2 id="app"><span class="step">4</span>Подключение в Routekeeper</h2>
+<p>В конце скрипт печатает строку вида <code>https://u3f9a1c0b7e42:…@имя.duckdns.org:443</code>. В ней всё, что нужно Routekeeper: тип, сервер, порт, логин и пароль.</p>
+<ol class="steps">
+  <li>Скопируйте строку: в Терминале трижды щёлкните по ней, чтобы выделить её целиком, и нажмите <kbd>⌘C</kbd>.</li>
+  <li>Вставьте её в Routekeeper.
     <ul>
-      <li><b>HTTPS-прокси</b>: HTTP CONNECT внутри TLS на Caddy с <a href="https://github.com/klzgrad/forwardproxy">forwardproxy@naive</a>. На Mac, кроме Routekeeper, ничего ставить не нужно.</li>
-      <li><b>Сертификат Let's Encrypt.</b> Без пароля сервер отвечает как обычный сайт-заглушка и не выдаёт, что он прокси.</li>
-      <li><b>Сервер ваш.</b> Скрипт ничего никуда не отправляет: ни трафик, ни пароль не проходят через Routekeeper или его автора.</li>
-      <li><b>Только TCP.</b> Звонки и голос через такой прокси не пойдут, подробнее — в <a href="../#limits">ограничениях</a>.</li>
+      <li><b>Первый запуск, открыт приветственный экран.</b> На шаге <span class="ui">Добавить прокси-сервер</span> нажмите <span class="ui">Вставить из буфера</span>. Этот шаг становится доступен после трёх <a href="../../docs/start/#permissions">разрешений macOS</a>.</li>
+      <li><b>Приветствие уже пройдено.</b> Откройте раздел <span class="ui">Прокси</span> и нажмите <kbd>⌘V</kbd> или кнопку <span class="ui">Вставить</span> под списком.</li>
     </ul>
+    Откроется новый прокси с заполненными полями: тип HTTPS, сервер — ваш домен, порт 443, логин и пароль.</li>
+  <li>Нажмите <span class="ui">Проверить</span>. Через пару секунд рядом появится «Работает · … мс · IP …» с IP вашего сервера. Число в миллисекундах — время установки нового соединения, оно обычно втрое больше пинга до сервера.</li>
+  <li><span class="ui">DNS через прокси</span> и <span class="ui">Блокировать UDP и QUIC</span> уже включены, не выключайте их. Нажмите <span class="ui">Добавить</span>.</li>
+  <li>Выберите приложения, которые пойдут через прокси. На приветственном экране для этого есть следующий шаг с кнопкой <span class="ui">Выбрать приложения…</span>. Позже — раздел <span class="ui">Приложения</span>: нажмите <span class="ui">Добавить</span> и выберите приложения из списка установленных. Если прокси у вас один, новые приложения сразу идут через него. Если их несколько, щёлкните маршрут справа в строке приложения и выберите этот прокси. Подробнее — в разделе <a href="../../docs/apps/">Приложения и сервисы</a>.</li>
+</ol>
+<p>Если вставка не сработала, заполните поля вручную по строке «Или заполните вручную» из вывода скрипта. В поле <span class="ui">Сервер</span> должен быть домен, а не IP: по домену проверяется сертификат. Подробнее о полях — в разделе <a href="../../docs/proxies/#add">Прокси</a>. Убедиться, что трафик приложений действительно идёт через сервер, поможет <a href="../../docs/monitoring/#server-check">проверка на сервере</a>.</p>
+<div class="callout"><p><b>Строка — это ключ от прокси.</b> Не публикуйте её и не пересылайте в чаты. Увидеть её снова можно, запустив команду установки ещё раз. Логин и пароль лежат на сервере в <code>/etc/caddy/proxy-credentials</code>.</p></div>
 
-    <h2 id="need">Что понадобится</h2>
-    <ul>
-      <li><b>VPS</b> с Debian 12 или 13 либо Ubuntu 24.04, процессор x86_64 (amd64), от 1 ГБ памяти, публичный IPv4 и доступ root по SSH. Подойдёт самый простой тариф.</li>
-      <li><b>Ближе — быстрее.</b> Каждое новое соединение занимает примерно три пинга до сервера, поэтому выбирайте ближайшую страну, где работают нужные вам сервисы.</li>
-      <li><b>Свободные порты 80 и 443.</b> Если на сервере уже работает сайт или VPN-панель (nginx, Xray, 3x-ui, Marzban), скрипт его не тронет — возьмите отдельный сервер.</li>
-      <li><b>Домен.</b> Свой или бесплатный на DuckDNS: по нему Let's Encrypt выдаёт сертификат.</li>
-    </ul>
+<h2 id="security">Защита сервера</h2>
+<p>Боты круглосуточно подбирают пароли к SSH: на нашем тестовом сервере набиралось около 11 тысяч попыток в сутки. fail2ban не пускает адрес после пяти ошибок, но надёжнее совсем отключить вход по паролю и входить по ключу.</p>
+<ol class="steps">
+  <li>На Mac создайте ключ. На вопрос о passphrase можно дважды нажать Return (ключ без пароля) или задать пароль к ключу.
+    <div class="cmd"><pre><code>ssh-keygen -t ed25519 -f ~/.ssh/my_server</code></pre></div></li>
+  <li>Передайте серверу открытую часть ключа. Пароль root понадобится в последний раз.
+    <div class="cmd"><pre><code>ssh-copy-id -i ~/.ssh/my_server.pub root@<span class="ph">IP</span></code></pre></div></li>
+  <li>Войдите по ключу. Если пароль root не спросили, ключ работает.
+    <div class="cmd"><pre><code>ssh -i ~/.ssh/my_server root@<span class="ph">IP</span></code></pre></div></li>
+  <li>В этой же сессии отключите вход по паролю:
+    <div class="cmd"><pre><code>printf 'PasswordAuthentication no\nPermitRootLogin prohibit-password\n' &gt; /etc/ssh/sshd_config.d/10-keys-only.conf
+systemctl reload ssh</code></pre></div></li>
+  <li>Не закрывая эту сессию, откройте новое окно Терминала (<kbd>⌘N</kbd>) и снова войдите командой из шага 3.</li>
+</ol>
+<p>Если вы входите как пользователь с sudo, подставьте его имя вместо <code>root</code> в шагах 2 и 3, а в шаге 4 выполните:</p>
+<div class="cmd"><pre><code>printf 'PasswordAuthentication no\nPermitRootLogin prohibit-password\n' | sudo tee /etc/ssh/sshd_config.d/10-keys-only.conf
+sudo systemctl reload ssh</code></pre></div>
+<div class="callout warn"><p>Не закрывайте сессию, пока не проверите вход по ключу в новом окне Терминала. Если сервером управляют другие приложения по паролю root, им после этого тоже понадобится ключ. Если доступ всё же потерян, войдите через веб-консоль сервера в панели хостера и удалите файл <code>/etc/ssh/sshd_config.d/10-keys-only.conf</code>.</p></div>
+<details class="deep"><summary>Подробнее: почему файл называется 10-keys-only</summary>
+  <p>sshd читает файлы из <code>/etc/ssh/sshd_config.d/</code> по алфавиту и для каждого параметра берёт первое найденное значение. Номер 10 ставит наш файл раньше файлов хостера и cloud-init (например, <code>50-cloud-init.conf</code> с <code>PasswordAuthentication yes</code>). Проверить действующее значение можно командой <code>sshd -T | grep passwordauthentication</code>: должно быть <code>passwordauthentication no</code>.</p>
+</details>
 
-    <h2 id="domain"><span class="step">1</span>Домен</h2>
-    <p>Для бесплатного домена на DuckDNS:</p>
-    <ol>
-      <li>Войдите на <a href="https://www.duckdns.org">duckdns.org</a> через GitHub или Google.</li>
-      <li>Создайте поддомен. Лучше нейтральное имя, без «proxy» и «vpn».</li>
-      <li>В поле <code>current ip</code> впишите IP сервера и нажмите <code>update ip</code>.</li>
-    </ol>
-    <p>Токен DuckDNS не понадобится: IP сервера постоянный. Для своего домена создайте у регистратора A-запись с IP сервера. Запись начинает работать через пару минут.</p>
+<h2 id="maintenance">Обслуживание</h2>
+<p>Все команды выполняются на сервере. С пользователем sudo добавляйте <code>sudo</code> в начало команды, а в команде установки — перед <code>bash</code>.</p>
+<div class="table"><table>
+  <thead><tr><th>Задача</th><th>Что сделать</th></tr></thead>
+  <tbody>
+    <tr><td>Обновить Caddy и настройки</td><td>Запустить команду установки ещё раз. Логин и пароль сохранятся, а Caddy перезапустится, только если что-то изменилось.</td></tr>
+    <tr><td>Снова увидеть строку прокси</td><td>Запустить команду установки ещё раз: строка напечатается в конце. Только логин и пароль: <code>cat /etc/caddy/proxy-credentials</code>.</td></tr>
+    <tr><td>Сменить пароль</td><td>Команда установки с <code>--new-password</code>: она создаёт новые логин и пароль. Затем в Routekeeper откройте этот прокси в разделе <span class="ui">Прокси</span>, впишите их из вывода скрипта и нажмите <span class="ui">Сохранить</span>. Маршруты приложений останутся на этом прокси.</td></tr>
+    <tr><td>Сменить домен</td><td>Направить A-запись нового имени на сервер и запустить команду установки с новым <code>--domain</code>. В Routekeeper поменять поле <span class="ui">Сервер</span> у прокси и нажать <span class="ui">Сохранить</span>.</td></tr>
+    <tr><td>Состояние и журнал</td><td><code>systemctl status caddy</code>, <code>journalctl -u caddy -n 50</code></td></tr>
+    <tr><td>Кого не пускает fail2ban</td><td><code>fail2ban-client status sshd</code>. Снять бан с адреса: <code>fail2ban-client set sshd unbanip <span class="ph">IP</span></code>.</td></tr>
+    <tr><td>Обновления системы</td><td>Обновления безопасности ставятся сами, остальные — <code>apt update &amp;&amp; apt upgrade</code>. Если появился файл <code>/var/run/reboot-required</code>, перезагрузите сервер командой <code>reboot</code>: Caddy запустится сам.</td></tr>
+    <tr><td>Удалить прокси</td><td>Команда установки с <code>--uninstall</code> вместо <code>--domain</code>, см. ниже.</td></tr>
+  </tbody>
+</table></div>
+<p>Удаление снимает Caddy, его настройки и сертификаты, страницу, логин и пароль. BBR, fail2ban и автоматические обновления остаются: они полезны и без прокси.</p>
+<div class="cmd"><pre><code>curl -fsSL https://getroutekeeper.app/server.sh | bash -s -- --uninstall</code></pre></div>
+<details class="deep"><summary>Подробнее: как убрать BBR</summary>
+  <p>Удалите <code>/etc/sysctl.d/99-zz-bbr.conf</code> и <code>/etc/modules-load.d/bbr.conf</code> и перезагрузите сервер. fail2ban выключается командой <code>systemctl disable --now fail2ban</code>, автоматические обновления — удалением <code>/etc/apt/apt.conf.d/20auto-upgrades</code>.</p>
+</details>
 
-    <h2 id="login"><span class="step">2</span>Вход на сервер</h2>
-    <p>Откройте Терминал (Программы → Утилиты) и подключитесь, подставив IP из письма хостера:</p>
-    <div class="cmd" data-copy="Копировать" data-done="Скопировано"><pre><code>ssh root@<span class="ph">IP</span></code></pre></div>
-    <p>На вопрос о «fingerprint» ответьте <code>yes</code>, затем введите пароль root. Символы пароля при вводе не отображаются — так и должно быть.</p>
+<h2 id="troubleshooting">Если не получилось</h2>
+<p>При ошибке скрипт печатает строку с <code>✗</code> и останавливается. Исправьте причину и запустите ту же команду ещё раз: уже сделанное скрипт пропустит, а логин и пароль сохранятся. Ниже — каждое сообщение скрипта и что с ним делать.</p>
 
-    <h2 id="install"><span class="step">3</span>Установка</h2>
-    <p>На сервере выполните одну команду, подставив свой домен:</p>
-    <div class="cmd" data-copy="Копировать" data-done="Скопировано"><pre><code>curl -fsSL https://getroutekeeper.app/server.sh | bash -s -- --domain <span class="ph">имя.duckdns.org</span></code></pre></div>
-    <p>Если хостер выдал не root, а пользователя с sudo, пишите <code>| sudo bash -s --</code>. Установка занимает минуту-две. Скрипт:</p>
-    <ol>
-      <li>проверяет, что домен указывает на этот сервер, а порты 80 и 443 свободны;</li>
-      <li>ставит Caddy с <code>forwardproxy@naive</code> и сверяет контрольную сумму сборки;</li>
-      <li>создаёт логин и длинный случайный пароль;</li>
-      <li>получает сертификат Let's Encrypt и ставит сайт-заглушку для всех, кто приходит без пароля;</li>
-      <li>включает BBR — он заметно ускоряет соединения на дальних маршрутах;</li>
-      <li>ставит fail2ban, который блокирует подбор паролей к SSH;</li>
-      <li>включает автоматические обновления безопасности (сервер при этом сам не перезагружается);</li>
-      <li>проверяет, что прокси работает, и печатает строку для Routekeeper.</li>
-    </ol>
-    <div class="callout">
-      <p>Скрипт из интернета разумно прочитать перед запуском. Тогда так:</p>
-      <div class="cmd" data-copy="Копировать" data-done="Скопировано"><pre><code>curl -fsSLO https://getroutekeeper.app/server.sh
-less server.sh
-bash server.sh --domain <span class="ph">имя.duckdns.org</span></code></pre></div>
-    </div>
-    <div class="table"><table>
-      <thead><tr><th>Флаг</th><th>Что делает</th></tr></thead>
-      <tbody>
-        <tr><td><code>--new-password</code></td><td>Создаёт новые логин и пароль.</td></tr>
-        <tr><td><code>--no-bbr</code></td><td>Оставляет настройки TCP как есть.</td></tr>
-        <tr><td><code>--no-fail2ban</code></td><td>Не ставит fail2ban.</td></tr>
-        <tr><td><code>--no-auto-updates</code></td><td>Не включает автоматические обновления.</td></tr>
-        <tr><td><code>--uninstall</code></td><td>Удаляет прокси. BBR, fail2ban и обновления остаются.</td></tr>
-        <tr><td><code>--lang ru</code></td><td>Сообщения на русском, если скрипт заговорил по-английски.</td></tr>
-      </tbody>
-    </table></div>
+<h3 id="t-start">Запуск</h3>
+<h4><code>curl: command not found</code></h4>
+<p>На сервере нет curl, чтобы скачать скрипт. Поставьте его и повторите команду установки (с пользователем sudo — <code>sudo</code> перед каждой из двух команд):</p>
+<div class="cmd"><pre><code>apt-get update &amp;&amp; apt-get install -y curl</code></pre></div>
+<h4><code>bash: --domain: invalid option</code></h4>
+<p>В команде пропущены два дефиса после <code>bash -s</code>. Нужно именно <code>bash -s -- --domain …</code>. Скопируйте команду со страницы целиком.</p>
+<h4><code>Usage: server.sh --domain NAME …</code></h4>
+<p>Скрипт не понял флаг: опечатка, у <code>--domain</code> или <code>--lang</code> нет значения, или у <code>--lang</code> значение не <code>ru</code> и не <code>en</code>. Сверьте команду с <a href="#flags">таблицей флагов</a>.</p>
+<h4>«Укажите домен: --domain my-name.duckdns.org»</h4>
+<p>Домен не указан или записан с ошибкой. Пишите только имя, без <code>https://</code> и косой черты в конце, латиницей: <code>--domain имя.duckdns.org</code>.</p>
+<h4>«Запустите от root: … | sudo bash -s -- --domain <span class="ph">имя</span>»</h4>
+<p>Вы вошли как обычный пользователь. Добавьте <code>sudo</code> перед <code>bash</code>, как в подсказке.</p>
+<h4>«Нужен Debian или Ubuntu, а здесь <span class="ph">название ОС</span>.»</h4>
+<p>На сервере другая система. Переустановите её в панели хостера, выбрав Debian 12 или 13 либо Ubuntu 22.04 или 24.04. Переустановка стирает всё на сервере.</p>
+<h4>«Нужен systemd.»</h4>
+<p>Так бывает на контейнерных VPS и в контейнерах Docker. Выберите тариф с виртуализацией KVM.</p>
+<h4>«Нужен сервер x86_64 (amd64): для aarch64 готовой сборки Caddy с прокси нет.»</h4>
+<p>Сервер на ARM. Закажите тариф с процессором x86_64 (amd64, Intel/AMD).</p>
+<h4>«Не удалось установить: <span class="ph">пакеты</span>»</h4>
+<p>Не поставились стандартные пакеты, без которых скрипт не работает. Над этой строкой — сообщение apt о причине. Частые причины: на диске нет места (<code>df -h</code>), недоступны зеркала пакетов, система слишком старая. Выполните <code>apt-get update</code>, исправьте то, на что он жалуется, и запустите скрипт снова.</p>
+<h4>Скрипт надолго замолчал</h4>
+<p>На свежем сервере система в первые минуты ставит свои обновления, и скрипт ждёт до 5 минут, пока она закончит. Чаще всего это видно после строки <code>==&gt; fail2ban для SSH</code>. На этапе <code>==&gt; Проверки</code> скрипт может ждать несколько минут, пока Caddy получает сертификат. Прерывать не нужно.</p>
 
-    <h2 id="app"><span class="step">4</span>Routekeeper</h2>
-    <p>В конце скрипт печатает строку вида <code>https://u1a2b3c…:…@имя.duckdns.org:443</code>.</p>
-    <ol>
-      <li>Выделите строку в Терминале и скопируйте её (⌘C).</li>
-      <li>В Routekeeper откройте «Прокси» и нажмите ⌘V или кнопку «Вставить» под списком. Откроется новый прокси с заполненными полями.</li>
-      <li>«DNS через прокси» и «Блокировать UDP и QUIC» уже включены — оставьте их и нажмите «Добавить».</li>
-      <li>«Проверить» должен показать IP вашего сервера.</li>
-      <li>В «Правилах» отправьте нужные приложения через этот прокси.</li>
-    </ol>
-    <div class="callout">Строка — это ключ от прокси: не публикуйте её и не пересылайте в чаты. Увидеть её снова можно, запустив команду установки ещё раз, а логин и пароль лежат на сервере в <code>/etc/caddy/proxy-credentials</code>.</div>
+<h3 id="t-dns">Домен и порты</h3>
+<h4>«Не удалось узнать внешний IPv4 сервера. Нужен сервер с публичным IPv4.»</h4>
+<p>У сервера нет публичного IPv4, или он не может выйти в интернет. Проверьте командой <code>curl -4 https://api.ipify.org</code>: она должна напечатать IP сервера. Если у тарифа только IPv6, закажите у хостера IPv4-адрес или другой тариф.</p>
+<h4>«A-запись <span class="ph">имя</span> должна указывать на <span class="ph">IP</span>. Исправьте её у регистратора или в DuckDNS и подождите пару минут.»</h4>
+<p>Строкой выше скрипт пишет, куда сейчас указывает домен: <code>сервер: <span class="ph">IP</span>, <span class="ph">имя</span> → <span class="ph">адрес</span></code>, или <code>нет записи</code>, если записи нет вовсе.</p>
+<ul>
+  <li>В DuckDNS проверьте поле <code>current ip</code>: там часто остаётся адрес вашего компьютера.</li>
+  <li>У своего домена в Cloudflare выключите проксирование записи («DNS only»).</li>
+  <li>Если запись только что поменяли, подождите пару минут и проверьте её на Mac командой <a href="#dns-check"><code>dig +short</code></a>.</li>
+</ul>
+<h4>«Порты 80 и 443 заняты: <span class="ph">программы</span>. Похоже, здесь уже работает веб-сервер или другая VPN-панель…»</h4>
+<p>На сервере уже работает другая VPN-панель или веб-сервер; после двоеточия — названия программ. Скрипт их не трогает. Если они вам нужны, возьмите для прокси отдельный сервер.</p>
+<p>Если это ненужный веб-сервер, который хостер поставил вместе с системой (например, apache2), выключите его и запустите скрипт снова:</p>
+<div class="cmd"><pre><code>systemctl disable --now <span class="ph">apache2</span></code></pre></div>
+<h4>«На сервере уже есть Caddy со своими сайтами (/etc/caddy/Caddyfile). Скрипт его не трогает: возьмите отдельный сервер.»</h4>
+<p>Caddy на сервере ставили не этим скриптом, и он обслуживает другие сайты. Скрипт не перезаписывает чужие настройки. Возьмите для прокси отдельный сервер. Если этот Caddy вам точно не нужен, удалите его так же, как ставили, вместе с <code>/etc/caddy/Caddyfile</code>, и запустите скрипт снова.</p>
 
-    <h2 id="security">Защита сервера</h2>
-    <p>Боты круглосуточно подбирают пароли root: на нашем тестовом сервере набиралось около 11 тысяч попыток в сутки. fail2ban блокирует каждый такой адрес после пяти ошибок, но надёжнее совсем отключить вход по паролю и входить по ключу. На Mac:</p>
-    <div class="cmd" data-copy="Копировать" data-done="Скопировано"><pre><code>ssh-keygen -t ed25519 -f ~/.ssh/my_server
-ssh-copy-id -i ~/.ssh/my_server.pub root@<span class="ph">IP</span>
-ssh -i ~/.ssh/my_server root@<span class="ph">IP</span></code></pre></div>
-    <p>Если последняя команда пустила на сервер без пароля root, в этой же сессии отключите пароли:</p>
-    <div class="cmd" data-copy="Копировать" data-done="Скопировано"><pre><code>printf 'PasswordAuthentication no\nPermitRootLogin prohibit-password\n' &gt; /etc/ssh/sshd_config.d/10-keys-only.conf
-systemctl reload ssh</code></pre></div>
-    <div class="callout warn">Не закрывайте эту сессию, пока не проверите вход по ключу в новом окне Терминала. Если сервером управляют другие приложения по паролю root (например, клиент Amnezia), им после этого тоже понадобится ключ.</div>
+<h3 id="t-caddy">Caddy и сертификат</h3>
+<h4>Остановился после <code>==&gt; Caddy v2.11.2-naive</code> с ошибкой <code>curl: (…)</code></h4>
+<p>Сервер не смог скачать Caddy с GitHub. Обычно это временная неполадка сети или GitHub. Проверьте командой <code>curl -I https://github.com</code> и запустите скрипт снова через несколько минут.</p>
+<h4>«Контрольная сумма Caddy не совпала, установка остановлена.»</h4>
+<p>Скачанный файл отличается от того, контрольная сумма которого записана в скрипте: он повреждён при скачивании или изменён по пути. Caddy не установлен. Запустите скрипт ещё раз позже. Если сообщение повторяется, не отключайте проверку, а <a href="https://github.com/ilyabazhenov/routekeeper/issues">сообщите о проблеме</a>.</p>
+<h4>«В сборке Caddy нет forward_proxy.»</h4>
+<p>В <code>/usr/local/bin/caddy</code> уже лежит Caddy той же версии, но обычная сборка, без прокси, и скрипт её не заменил. Если этот Caddy больше ничем не используется, переименуйте его и запустите скрипт снова:</p>
+<div class="cmd"><pre><code>mv /usr/local/bin/caddy /usr/local/bin/caddy.old</code></pre></div>
+<h4>«Caddy не принял конфигурацию.»</h4>
+<p>Перед этой строкой — причина от самого Caddy. Со стандартной установкой такого быть не должно. Запустите скрипт ещё раз; если сообщение повторяется, <a href="https://github.com/ilyabazhenov/routekeeper/issues">сообщите о проблеме</a> и приложите вывод.</p>
+<h4>«Caddy не запустился, подробности: journalctl -u caddy -n 50»</h4>
+<p>Над этой строкой — последние сообщения Caddy, полный журнал покажет <code>journalctl -u caddy -n 50</code>. Частые причины:</p>
+<ul>
+  <li><code>address already in use</code> — порт 80 или 443 занял другой сервис. Найдите его командой <code>ss -tlnp</code>.</li>
+  <li>На сервере кончилась память или место на диске: проверьте <code>free -m</code> и <code>df -h</code>.</li>
+</ul>
+<p>Исправьте причину и запустите скрипт снова.</p>
+<h4>«Caddy не получил сертификат Let's Encrypt. Чаще всего порты 80 и 443 закрыты в панели хостера (firewall, security group)…»</h4>
+<p>Строкой выше бывает уточнение: <code>Let's Encrypt: <span class="ph">причина</span></code>.</p>
+<ul>
+  <li><b>Порты закрыты снаружи.</b> Самая частая причина, особенно с <code>Timeout during connect</code> в уточнении. В панели хостера найдите файрвол (firewall, security group, «сетевые правила») и разрешите входящие TCP 80 и 443. Держите их открытыми и дальше: через них Caddy продлевает сертификат.</li>
+  <li><b>Домен только что поменяли.</b> Let's Encrypt ещё видит старый адрес или старую AAAA-запись (IPv6). Подождите несколько минут; лишнюю AAAA-запись удалите.</li>
+  <li><b>Лимит Let's Encrypt</b>, в уточнении <code>rateLimited</code> или <code>too many certificates</code>. Так бывает, если на одно имя много раз ставили и удаляли прокси: удаление стирает сертификат, и каждая установка просит новый. Подождите (от часа до недели, смотря какой лимит) или возьмите на DuckDNS другое имя и запустите скрипт с ним.</li>
+</ul>
+<p>Затем запустите скрипт ещё раз.</p>
 
-    <h2 id="maintenance">Обслуживание</h2>
-    <div class="table"><table>
-      <thead><tr><th>Задача</th><th>Что сделать</th></tr></thead>
-      <tbody>
-        <tr><td>Обновить Caddy и настройки</td><td>Запустить команду установки ещё раз. Логин и пароль сохранятся, а Caddy перезапустится, только если что-то изменилось.</td></tr>
-        <tr><td>Сменить пароль</td><td>Та же команда с <code>--new-password</code>, затем вставить новую строку в Routekeeper и удалить старый прокси.</td></tr>
-        <tr><td>Состояние и журнал</td><td><code>systemctl status caddy</code>, <code>journalctl -u caddy -n 50</code></td></tr>
-        <tr><td>Кого заблокировал fail2ban</td><td><code>fail2ban-client status sshd</code></td></tr>
-        <tr><td>Удалить прокси</td><td>Команда установки с <code>--uninstall</code> вместо <code>--domain</code>.</td></tr>
-      </tbody>
-    </table></div>
+<h3 id="t-checks">Проверки</h3>
+<h4>«Прокси с паролем не работает (ответ: '<span class="ph">…</span>').»</h4>
+<p>Сертификат получен, но запрос через прокси с паролем не вернул IP сервера. В скобках — что пришло вместо него.</p>
+<ul>
+  <li><b>Пусто.</b> Сервер не смог выйти в интернет через прокси: исходящие соединения закрыты у хостера, или api.ipify.org и ifconfig.me временно не ответили (скрипт пробует оба по три раза). Проверьте <code>curl -4 https://api.ipify.org</code> на сервере и запустите скрипт снова через пару минут.</li>
+  <li><b>Другой IP.</b> У сервера несколько внешних адресов, и наружу он ходит не с того, на который указывает домен. Прокси при этом может работать. Добавьте его в Routekeeper вручную (логин и пароль: <code>cat /etc/caddy/proxy-credentials</code>) и нажмите <span class="ui">Проверить</span>.</li>
+</ul>
+<h4>«Без пароля прокси отвечает 407, а должен отвечать как обычный веб-сервер.»</h4>
+<p>Скрипт проверяет, что на запрос без пароля сервер отвечает как обычный веб-сервер. Здесь он ответил кодом 407 «нужна авторизация», то есть сообщил, что на нём прокси, и сканеры смогут его найти.</p>
+<p>Со стандартной установкой такого быть не должно: обычно это значит, что настройки Caddy меняли вручную. Запустите скрипт ещё раз, он перезапишет настройки. Если сообщение повторяется, <a href="https://github.com/ilyabazhenov/routekeeper/issues">сообщите о проблеме</a>.</p>
 
-    <h2 id="troubleshooting">Если не получилось</h2>
-    <ul>
-      <li><b>«A-запись … должна указывать на …»</b> — домен ещё не обновился или указывает не туда. Проверьте IP в DuckDNS, подождите пару минут и запустите команду снова.</li>
-      <li><b>«Порты 80 и 443 заняты»</b> — на сервере уже работает сайт или VPN-панель. Возьмите отдельный сервер.</li>
-      <li><b>«Caddy не получил сертификат»</b> — чаще всего порты 80 и 443 закрыты в панели хостера (firewall, security group). Откройте их и запустите команду снова. Если переустанавливали много раз за неделю, Let's Encrypt может временно отказывать этому домену: возьмите другое имя на DuckDNS.</li>
-      <li><b>«Нужен сервер x86_64»</b> — серверы на ARM пока не поддерживаются.</li>
-      <li><b>Routekeeper не проверяет прокси</b> — в поле «Сервер» должен быть домен, а не IP, и строка должна быть вставлена целиком.</li>
-      <li><b>Медленно</b> — выберите сервер ближе. На маршруте с пингом около 200 мс одно соединение даёт примерно 3–4 МБ/с.</li>
-      <li><b>Прокси работал, а потом перестал</b> — в некоторых сетях TLS-прокси распознают по характеру трафика. Запасной путь — sing-box или Xray на том же сервере и их локальный SOCKS5 на Mac, см. <a href="../#proxy">«Свой прокси»</a>. Правила в Routekeeper менять не придётся.</li>
-    </ul>
-    <p>Если застряли, откройте issue на <a href="https://github.com/ilyabazhenov/routekeeper/issues">GitHub</a> и приложите вывод скрипта. Строку прокси и пароль из него удалите.</p>
+<h3 id="t-warnings">Предупреждения</h3>
+<p>Эти строки начинаются с <code>!</code>. Установка после них продолжается, прокси работает. В конце, перед «Готово», они повторяются, а с флагом <code>--json</code> попадают в поле <code>warnings</code>.</p>
+<h4>«BBR на этом сервере недоступен (так бывает на VPS с контейнерной виртуализацией). Прокси работает и без него.»</h4>
+<p>На контейнерных VPS (OpenVZ, LXC) ядро общее с хостом, и менять в нём настройки TCP нельзя. Делать ничего не нужно.</p>
+<p>На дальних маршрутах одно соединение без BBR может быть заметно медленнее: при пинге около 200 мс — примерно 0,5 МБ/с вместо 3. Если скорость важна, выберите VPS на KVM. Чтобы скрипт не пробовал включать BBR, есть флаг <code>--no-bbr</code>.</p>
+<h4>«fail2ban не установился, SSH остался без защиты от подбора пароля.»</h4>
+<p>apt не смог поставить fail2ban; над предупреждением — его сообщение. Прокси это не мешает. Запустите скрипт ещё раз позже или просто <a href="#security">отключите вход по паролю</a>: тогда подбирать нечего.</p>
+<h4>«fail2ban не принял конфигурацию, SSH остался без защиты от подбора пароля.»</h4>
+<p>Установленная версия fail2ban не приняла настройки скрипта. Скрипт убрал свои файлы, чтобы fail2ban не перестал запускаться. Причину покажет <code>fail2ban-client -t</code>. Надёжная замена — <a href="#security">вход только по ключу</a>.</p>
+<h4>«fail2ban не запустил защиту SSH (journalctl -u fail2ban покажет почему).»</h4>
+<p>fail2ban установлен, но защиту SSH не включил. Так бывает на контейнерных VPS, где fail2ban не может управлять файрволом. Посмотрите <code>journalctl -u fail2ban -n 50</code>. Надёжная замена — <a href="#security">вход только по ключу</a>.</p>
+<h4>«unattended-upgrades не установился, обновления безопасности придётся ставить вручную.»</h4>
+<p>Автоматические обновления не включились. Запустите скрипт ещё раз позже или время от времени ставьте обновления сами: <code>apt update &amp;&amp; apt upgrade</code>.</p>
+
+<h3 id="t-uninstall">Удаление</h3>
+<h4>«Запустите от root.»</h4>
+<p>Вы вошли как обычный пользователь. Добавьте <code>sudo</code> перед <code>bash</code>: <code>… | sudo bash -s -- --uninstall</code>.</p>
+<h4>«Caddy на этом сервере ставил не Routekeeper, удалять его скрипт не будет.»</h4>
+<p>В настройках Caddy нет прокси Routekeeper: это чужой Caddy, со своими сайтами. Скрипт его не удаляет. Если он вам не нужен, удалите его так же, как ставили.</p>
+
+<h3 id="t-ssh">Вход на сервер</h3>
+<h4><code>WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!</code></h4>
+<p>Ключ сервера изменился. После переустановки системы на сервере так и должно быть. Удалите старый ключ на Mac и подключитесь снова:</p>
+<div class="cmd"><pre><code>ssh-keygen -R <span class="ph">IP</span></code></pre></div>
+<p>Если систему вы не переустанавливали, не продолжайте и уточните у хостера, что произошло.</p>
+<h4><code>Permission denied</code></h4>
+<p>Неверный пароль или имя пользователя. Проверьте их в письме хостера. Если хостер запретил вход root по паролю, войдите пользователем, которого он дал, и пользуйтесь <code>sudo</code>.</p>
+<h4><code>Connection refused</code> или <code>Operation timed out</code></h4>
+<p>Сервер ещё загружается, IP набран с ошибкой, или fail2ban не пускает ваш адрес после нескольких неверных паролей. В последнем случае подождите сутки или войдите через веб-консоль в панели хостера и снимите бан: <code>fail2ban-client set sshd unbanip <span class="ph">ваш IP</span></code>.</p>
+
+<h3 id="t-app">В Routekeeper</h3>
+<h4><span class="ui">Проверить</span> показывает ошибку</h4>
+<p>В поле <span class="ui">Сервер</span> должен быть домен, а не IP, а строка должна быть вставлена целиком. Что значит каждое сообщение проверки, — в разделе <a href="../../docs/troubleshooting/#errors">Если не работает</a>.</p>
+<h4>Медленно</h4>
+<p>Выберите сервер ближе. С BBR на маршруте с пингом около 200 мс одно соединение даёт примерно 3–4 МБ/с.</p>
+<h4>Прокси нестабилен в вашей сети</h4>
+<p>Можно поставить на тот же сервер другой прокси и подключаться к нему через локальный <a class="term" href="../../docs/glossary/#socks5">SOCKS5</a>-клиент, например sing-box или Xray. Как подключить такой клиент к Routekeeper, — в разделе <a href="../../docs/proxies/#local-client">Прокси</a>.</p>
+
+<p>Если застряли, <a href="https://github.com/ilyabazhenov/routekeeper/issues">откройте issue на GitHub</a> и приложите вывод скрипта. Строку прокси и пароль из него удалите.</p>
+    <p class="checked">Сверено с кодом Routekeeper (версия 0.2.1 и следующая за ней) 4 октября 2026 года.</p>
+    <nav class="pager"><a class="prev" href="../../docs/firewall/"><span>Назад</span>Режимы файрвола</a><a class="next" href="../../docs/recipes/"><span>Дальше</span>Рецепты</a></nav>
   </article>
 </main>
 
 <div class="wrap">
-  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span><a href="../../">Routekeeper для macOS</a> · <a href="../">Документация</a> · <a href="../../privacy/">Конфиденциальность</a> · <a href="https://github.com/ilyabazhenov/routekeeper">GitHub</a></span></footer>
+  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span><a href="../../">Routekeeper для macOS</a> · <a href="../../docs/">Документация</a> · <a href="../../privacy/">Конфиденциальность</a> · <a href="https://github.com/ilyabazhenov/routekeeper">GitHub</a></span></footer>
 </div>
 
-<script>
-document.querySelectorAll('.cmd').forEach(function (box) {
-  var btn = document.createElement('button');
-  btn.className = 'copy'; btn.type = 'button'; btn.textContent = box.dataset.copy;
-  btn.addEventListener('click', function () {
-    navigator.clipboard.writeText(box.querySelector('pre').innerText.trim()).then(function () {
-      btn.textContent = box.dataset.done;
-      setTimeout(function () { btn.textContent = box.dataset.copy; }, 1600);
-    });
-  });
-  box.appendChild(btn);
-});
-</script>
+<script src="../../docs/assets/docs.js?v=3e67278c"></script>
 </body>
 </html>

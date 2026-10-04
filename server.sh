@@ -1,7 +1,7 @@
 #!/bin/bash
 # Routekeeper: your own HTTPS proxy (HTTP CONNECT over TLS) on a Debian/Ubuntu server.
-# Caddy with klzgrad's forwardproxy@naive build, Let's Encrypt certificate, probe resistance,
-# decoy site, systemd service, BBR, fail2ban for SSH, automatic security updates.
+# Caddy with klzgrad's forwardproxy@naive build, Let's Encrypt certificate, proxy closed to anyone
+# without the password, placeholder site, systemd service, BBR, fail2ban for SSH, security updates.
 # Safe to re-run: keeps the login and password, restarts Caddy only when something changed.
 #
 # Usage, as root on the server:
@@ -121,8 +121,8 @@ check_ports() {
   # Ports 80 (Let's Encrypt HTTP-01) and 443 must be free or already ours.
   local busy
   busy=$(ss -tlnpH '( sport = :80 or sport = :443 )' | grep -v '"caddy"' | grep -o 'users:(("[^"]*"' | cut -d'"' -f2 | sort -u | paste -sd, - | sed 's/,/, /g' || true)
-  [ -z "$busy" ] || die "Порты 80 и 443 заняты: ${busy}. Похоже, здесь уже работает веб-сервер или VPN-панель (nginx, Xray, 3x-ui, Marzban). Освободите порты или возьмите отдельный сервер." \
-                        "Ports 80 and 443 are taken by: ${busy}. Looks like a web server or a VPN panel (nginx, Xray, 3x-ui, Marzban) already runs here. Free the ports or use a separate server."
+  [ -z "$busy" ] || die "Порты 80 и 443 заняты: ${busy}. Похоже, здесь уже работает веб-сервер или другая VPN-панель. Освободите порты или возьмите отдельный сервер." \
+                        "Ports 80 and 443 are taken by: ${busy}. Looks like a web server or another VPN panel already runs here. Free the ports or use a separate server."
   # A Caddy we didn't set up serves someone's sites: don't overwrite its config.
   if [ -f /etc/caddy/Caddyfile ] && ! grep -q forward_proxy /etc/caddy/Caddyfile; then
     die "На сервере уже есть Caddy со своими сайтами (/etc/caddy/Caddyfile). Скрипт его не трогает: возьмите отдельный сервер." \
@@ -166,7 +166,7 @@ install_caddy() {
   # shellcheck source=/dev/null
   . "$CREDS"
 
-  # Decoy page: what anyone without the password sees.
+  # Placeholder page: what anyone without the password sees.
   if [ ! -f /var/www/site/index.html ]; then
     cat > /var/www/site/index.html <<'HTML'
 <!doctype html><html lang="en"><head><meta charset="utf-8"><title>Notes</title>
@@ -363,18 +363,25 @@ verify() {
     die "Caddy не получил сертификат Let's Encrypt. Чаще всего порты 80 и 443 закрыты в панели хостера (firewall, security group): откройте их и запустите скрипт ещё раз." \
         "Caddy couldn't get a Let's Encrypt certificate. Usually ports 80 and 443 are closed in the hosting panel (firewall, security group): open them and run the script again."
   fi
-  say "  ✓ сертификат Let's Encrypt, сайт-заглушка открывается" "  ✓ Let's Encrypt certificate, decoy site is up"
+  say "  ✓ сертификат Let's Encrypt получен, сайт открывается" "  ✓ Let's Encrypt certificate obtained, the site is up"
 
-  local exit_ip
-  exit_ip=$(curl -fsS --max-time 20 "${resolve[@]}" -x "https://$DOMAIN:443" -K - https://api.ipify.org <<<"proxy-user = \"$PROXY_USER:$PROXY_PASS\"" 2>/dev/null || true)
+  # A single miss of an IP echo service shouldn't fail an install whose proxy works: retry, then fall back.
+  local exit_ip="" url
+  for _ in 1 2 3; do
+    for url in https://api.ipify.org https://ifconfig.me; do
+      exit_ip=$(curl -fsS --max-time 15 "${resolve[@]}" -x "https://$DOMAIN:443" -K - "$url" <<<"proxy-user = \"$PROXY_USER:$PROXY_PASS\"" 2>/dev/null || true)
+      [ "$exit_ip" = "$SERVER_IP" ] && break 2
+    done
+    sleep 2
+  done
   [ "$exit_ip" = "$SERVER_IP" ] || die "Прокси с паролем не работает (ответ: '${exit_ip}')." "The proxy doesn't work with the password (got '${exit_ip}')."
   say "  ✓ прокси с паролем работает, внешний IP $SERVER_IP" "  ✓ proxy works with the password, exit IP $SERVER_IP"
 
   local probe
   # %{http_connect} is the proxy's answer to CONNECT; %{http_code} stays 000 when the tunnel fails.
   probe=$(curl -s --max-time 10 -o /dev/null -w '%{http_connect}' "${resolve[@]}" -p -x "https://$DOMAIN:443" https://api.ipify.org 2>/dev/null || true)
-  [ "$probe" != 407 ] || die "Без пароля прокси выдаёт себя ответом 407." "Without the password the proxy gives itself away with 407."
-  say "  ✓ без пароля сервер выглядит как обычный сайт" "  ✓ without the password the server looks like a plain website"
+  [ "$probe" != 407 ] || die "Без пароля прокси отвечает 407, а должен отвечать как обычный веб-сервер." "Without the password the proxy answers 407 instead of a plain web server response."
+  say "  ✓ без пароля прокси закрыт для посторонних" "  ✓ without the password the proxy is closed to strangers"
 }
 
 report() {

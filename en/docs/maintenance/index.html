@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Updates and removal — Routekeeper</title>
+<meta name="description" content="Routekeeper maintenance: system requirements, updating the app and the network extension, moving from version 0.2.x, how the ways to turn it off differ, complete removal, what stays on disk and how to remove it, where data is kept and what Routekeeper connects to on its own.">
+<meta name="theme-color" content="#0a0f1f">
+<link rel="canonical" href="https://getroutekeeper.app/en/docs/maintenance/">
+<link rel="alternate" hreflang="ru" href="https://getroutekeeper.app/docs/maintenance/">
+<link rel="alternate" hreflang="en" href="https://getroutekeeper.app/en/docs/maintenance/">
+<link rel="alternate" hreflang="x-default" href="https://getroutekeeper.app/en/docs/maintenance/">
+<link rel="icon" href="../../../mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../../../icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=891e2023">
+</head>
+<body>
+<!-- Built by Scripts/build-docs.py from site-src/docs/en/maintenance.html. Edit the fragment, not this file. -->
+
+<div class="wrap nav-wrap">
+  <header class="nav">
+    <a class="brand" href="../../../en/"><img src="../../../mark.svg" alt="" width="28" height="28">Routekeeper</a>
+    <div class="nav-end"><a class="lang" href="../../../docs/maintenance/" hreflang="ru" lang="ru">RU</a><a class="btn btn-primary" href="../../../en/#download">Download</a></div>
+  </header>
+</div>
+
+<section class="wrap docs-hero compact">
+  <div class="hero-copy">
+    <span class="crumbs"><a href="../../../en/docs/">Docs</a> · Reference</span>
+    <h1>Updates <span class="warm">and removal</span></h1>
+    <p class="lede"><b>Requirements, updating the app and the extension, moving to the new version, ways to turn it off and complete removal.</b> Also where Routekeeper keeps its data and where it connects to on its own.</p>
+  </div>
+</section>
+
+<main class="wrap docs-layout">
+  <aside class="side-nav" aria-label="Docs sections">
+    <span class="group">Getting started</span>
+    <a href="../../../en/docs/">Docs overview</a>
+    <a href="../../../en/docs/start/">Quick start</a>
+    <a href="../../../en/docs/concepts/">How it works</a>
+    <span class="group">Setup</span>
+    <a href="../../../en/docs/proxies/">Proxies</a>
+    <a href="../../../en/docs/apps/">Apps and services</a>
+    <a href="../../../en/docs/rules/">Rules</a>
+    <a href="../../../en/docs/firewall/">Firewall modes</a>
+    <a href="../../../en/docs/server/">Your own proxy server</a>
+    <span class="group">In practice</span>
+    <a href="../../../en/docs/recipes/">Recipes</a>
+    <a href="../../../en/docs/monitoring/">Checking and monitoring</a>
+    <span class="group">Reference</span>
+    <a href="../../../en/docs/troubleshooting/">Troubleshooting</a>
+    <a href="../../../en/docs/maintenance/" aria-current="page">Updates and removal</a>
+    <a href="../../../en/docs/limits/">Limitations</a>
+    <a href="../../../en/docs/glossary/">Glossary</a>
+    <a href="../../../en/docs/changelog/">What's new</a>
+    <a class="side-action" href="../../../en/privacy/">Privacy</a>
+    <a href="https://github.com/ilyabazhenov/routekeeper/issues">Report a problem</a>
+  </aside>
+  <article class="doc">
+    <details class="mobile-nav"><summary>All docs sections</summary><nav>
+    <span class="group">Getting started</span>
+    <a href="../../../en/docs/">Docs overview</a>
+    <a href="../../../en/docs/start/">Quick start</a>
+    <a href="../../../en/docs/concepts/">How it works</a>
+    <span class="group">Setup</span>
+    <a href="../../../en/docs/proxies/">Proxies</a>
+    <a href="../../../en/docs/apps/">Apps and services</a>
+    <a href="../../../en/docs/rules/">Rules</a>
+    <a href="../../../en/docs/firewall/">Firewall modes</a>
+    <a href="../../../en/docs/server/">Your own proxy server</a>
+    <span class="group">In practice</span>
+    <a href="../../../en/docs/recipes/">Recipes</a>
+    <a href="../../../en/docs/monitoring/">Checking and monitoring</a>
+    <span class="group">Reference</span>
+    <a href="../../../en/docs/troubleshooting/">Troubleshooting</a>
+    <a href="../../../en/docs/maintenance/" aria-current="page">Updates and removal</a>
+    <a href="../../../en/docs/limits/">Limitations</a>
+    <a href="../../../en/docs/glossary/">Glossary</a>
+    <a href="../../../en/docs/changelog/">What's new</a>
+    </nav></details>
+<p class="lead-in">Routekeeper has two parts: the app with the menu bar icon, and the <a class="term" href="../../../en/docs/glossary/#network-extension">network extension</a>, which runs in the system and applies the rules. They are updated and removed a little differently, so each part is described separately below.</p>
+
+<h2 id="requirements">Requirements</h2>
+<ul>
+  <li><b>macOS 14 Sonoma or later.</b></li>
+  <li><b>A Mac with Apple silicon or Intel.</b> The same build works on both.</li>
+  <li><b>An administrator account.</b> Without it, macOS won’t allow the network extension.</li>
+  <li><b>The Applications folder.</b> macOS installs system extensions only for apps in <code>/Applications</code>. If you run Routekeeper from the disk image or from Downloads, the welcome screen offers <span class="ui">Move to Applications and Relaunch</span>. The old copy in Applications then goes to the Trash.</li>
+  <li><b>Language.</b> The interface is in English or Russian, depending on the system language. In the English interface, a few new labels may still be in Russian for now.</li>
+  <li><b>Other VPNs and network filters</b> can get in Routekeeper’s way: see <a href="../../../en/docs/limits/#other-vpn">Other VPNs and network extensions</a>.</li>
+</ul>
+<p>Routekeeper comes as the disk image <code>Routekeeper.dmg</code> on the <a href="../../../en/#download">website</a> and on <a href="https://github.com/ilyabazhenov/routekeeper/releases">GitHub Releases</a>. The build is signed with a developer certificate and checked by Apple (notarized). The first time you open it, macOS still asks whether to open a program from the internet. Click “Open”. Installation is described step by step in the <a href="../../../en/docs/start/#install">Quick start</a>.</p>
+
+<h2 id="update">Updates</h2>
+<h3>The app</h3>
+<ul>
+  <li>Routekeeper checks for updates by itself once a day if <span class="ui">Check for updates automatically</span> is on (<span class="ui">Settings</span> → <span class="ui">General</span>, the <span class="ui">Updates</span> section). It’s on by default.</li>
+  <li>To check yourself: <span class="ui">Settings</span> → <span class="ui">General</span> → <span class="ui">Check for Updates…</span>. Or, while the Routekeeper window is open, the Routekeeper menu at the top of the screen → <span class="ui">Check for Updates…</span>.</li>
+  <li>When a new version comes out, Routekeeper shows a window that offers to update. The new version is installed only after you confirm, and then Routekeeper restarts.</li>
+  <li>Rules, <a class="term" href="../../../en/docs/glossary/#proxy">proxies</a> and settings are kept when you update. What changed in each version is on the <a href="../../../en/docs/changelog/">What’s new</a> page.</li>
+</ul>
+
+<h3>The network extension</h3>
+<p>The extension is updated separately, when you say so. Until you update it, the previous one keeps working, and the rules apply as before.</p>
+<ol class="steps">
+  <li>After the app updates, the banner “A network extension update is available (current: …).” appears at the top of the window. The menu of the menu bar icon has the <span class="ui">Extension Update Available</span> item.</li>
+  <li>Quit the apps that must not go online around the proxy.</li>
+  <li>Click <span class="ui">Update…</span> on the banner, then <span class="ui">Update Now</span>. <span class="ui">Later</span> puts the update off.</li>
+  <li>After a few seconds, the extension restarts in the new version. Usually you don’t need to restart the Mac.</li>
+</ol>
+<div class="callout warn"><p><b>While the extension restarts,</b> connections through the proxy break, and for a couple of seconds new connections may go direct, around the proxy. That’s why the extension doesn’t update by itself. For details, see <a href="../../../en/docs/limits/#restart-gap">Limitations</a>.</p></div>
+<p>You can also update the extension in <span class="ui">Settings</span> → <span class="ui">Extension</span>: the <span class="ui">Update Extension (current: …)</span> button in the <span class="ui">Status</span> section. It updates right away, without asking again.</p>
+<p>If the “The network extension isn’t responding” banner appears after the update, click <span class="ui">Reinstall Extension</span>. If that doesn’t help, restart your Mac. For details, see <a href="../../../en/docs/troubleshooting/#extension">Reinstalling and stopping the extension</a>.</p>
+<div class="callout"><p><b>From version 0.2.x to the next one,</b> a normal update won’t work: the old version only tells you about the new one and gives a link to the website. How to move to it is described in the next section.</p></div>
+
+<h2 id="migrate">Moving from 0.2.x to the next version</h2>
+<div class="callout"><p><b>This section is about the version that comes out after 0.2.1.</b> Until it’s on <a href="https://github.com/ilyabazhenov/routekeeper/releases">GitHub Releases</a>, you don’t need to do anything.</p></div>
+<p>In the next version, Routekeeper’s system app identifier (bundle ID) changes from <code>dev.ilyabazenov.appproxy</code> to <code>app.getroutekeeper.mac</code>. For macOS, this is a different app. Permissions, opening at login, notifications and window settings are tied to the identifier, and only the old app can remove the old extension. That’s why version 0.2.x won’t install the new version over itself: it only tells you about it and gives a link to the website.</p>
+<h3>Steps</h3>
+<ol class="steps">
+  <li>If you like, save your rules to a file: <span class="ui">Rules</span> → <span class="ui">Import and Export</span> → <span class="ui">Export…</span>. Usually you don’t need this, since the rules move over by themselves, but this way you’ll have a copy. Proxy passwords aren’t saved to the file.</li>
+  <li>In the old Routekeeper, open <span class="ui">Settings</span> → <span class="ui">Extension</span> and click <span class="ui">Delete…</span> → <span class="ui">Delete</span>. The old extension and its filter and proxy are removed from the system, and the rules stay on disk.</li>
+  <li>Click the menu bar icon → <span class="ui">Quit Routekeeper</span>. Move the old Routekeeper from Applications to the Trash.</li>
+  <li>Download the new version from the <a href="../../../en/#download">website</a>, drag Routekeeper to Applications and open it from there.</li>
+  <li>Go through the welcome screen: allow the network extension, network content filtering and the proxy configuration again (<a href="../../../en/docs/start/#permissions">how to do it</a>). Allow notifications when macOS asks.</li>
+  <li>If Routekeeper used to open at login, turn this on again: <span class="ui">Settings</span> → <span class="ui">General</span> → <span class="ui">Open at login</span>.</li>
+</ol>
+<p>On first launch, the new extension moves your rules, proxies with passwords and mode settings by itself. If you had apps or services going through a proxy, then after the three permissions the window opens straight to your sections, without the proxy and app steps.</p>
+
+<h3>If the old extension is still there</h3>
+<p>If you skip step 2, the old extension keeps running and handling traffic next to the new one. The rules of the two versions will get in each other’s way. The new version notices this and shows the banner “An extension from an old version of Routekeeper is running”.</p>
+<ul>
+  <li><b>macOS 15 and later.</b> Click <span class="ui">Open System Settings</span> on the banner, or open System Settings → General → Login Items &amp; Extensions → Network Extensions. Turn off “Routekeeper Network Extension”: this is the old extension. “Routekeeper Extension” is the new one. Leave it alone.</li>
+  <li><b>macOS 14.</b> macOS 14 has no “Login Items &amp; Extensions” section, so there’s nowhere to turn off the old extension. That’s why on macOS 14 you must do step 2 before you install the new version. If the new version is already installed and the banner has appeared, <a href="../../../en/docs/troubleshooting/#report">report a problem</a> and attach diagnostics.</li>
+</ul>
+<p>You can check whether the old extension is on with a command in Terminal. The line with <code>dev.ilyabazenov.appproxy.extension</code> must not have the <code>[activated enabled]</code> mark.</p>
+<div class="cmd"><pre><code>systemextensionsctl list</code></pre></div>
+
+<h3>What moves over and what doesn’t</h3>
+<div class="table"><table>
+  <thead><tr><th>Moves over by itself</th><th>Needs to be set up again</th></tr></thead>
+  <tbody>
+    <tr><td>Rules, proxies with logins and passwords, the mode, the firewall and network settings, downloaded service lists</td><td>The three macOS permissions, opening at login, permission for notifications, window settings: notification switches, automatic update checks, the selected settings tab</td></tr>
+  </tbody>
+</table></div>
+<p>The new version deletes the old version’s caches in <code>~/Library</code> on first launch: traffic map data (about 55 MB) and downloaded service lists. The old version’s window settings file stays, and you can delete it: see <a href="#leftovers">What stays on disk</a>.</p>
+<details class="deep"><summary>Details: how the settings move</summary>
+  <p>Versions 0.2.x keep settings in <code>/Library/Application Support/AppProxy</code>, the new version in <code>/Library/Application Support/Routekeeper</code>. On first launch, the new extension moves the files from the old folder to the new one, if the new folder doesn’t have its own settings yet, and deletes the emptied old folder. Rules for Routekeeper itself are switched to the new identifier.</p>
+  <p>It’s better not to go back to 0.2.x after the move: the old version looks for its settings in the old folder, which no longer exists, and starts with clean settings. If you must go back, export your rules first.</p>
+  <p>The extension’s identifier changed too: <code>dev.ilyabazenov.appproxy.extension</code> → <code>app.getroutekeeper.mac.extension</code>. The subsystem of the internal log is now <code>app.getroutekeeper.mac</code>.</p>
+</details>
+
+<h2 id="turn-off">How to turn it off</h2>
+<p>There are four ways to “turn off” Routekeeper, and they do different things.</p>
+<div class="table"><table>
+  <thead><tr><th>Way</th><th>Where</th><th>What happens</th><th>How to undo it</th></tr></thead>
+  <tbody>
+    <tr><td>The <span class="ui">Routekeeper On</span> switch</td><td>The menu of the menu bar icon; the panel at the bottom of the window’s sidebar</td><td>Rules don’t apply, and all connections go direct. The filter and proxy stay in the system. The monitor doesn’t record.</td><td>Turn the switch on.</td></tr>
+    <tr><td><span class="ui">Quit Routekeeper</span></td><td>The icon’s menu</td><td>Only the window and the icon close. The extension keeps applying the rules. There are no notifications. In <span class="ui">Ask</span> mode, no prompts are shown: connections are allowed, and Routekeeper records “For Review” rules.</td><td>Open Routekeeper from Applications.</td></tr>
+    <tr><td><span class="ui">Stop…</span></td><td><span class="ui">Settings</span> → <span class="ui">Extension</span></td><td>The filter and proxy are turned off in the system: everything goes direct, and firewall rules don’t apply. The extension and the rules stay.</td><td><span class="ui">Settings</span> → <span class="ui">Extension</span> → <span class="ui">Reinstall</span>: the filter and proxy turn on by themselves. The switch won’t bring them back.</td></tr>
+    <tr><td><span class="ui">Delete…</span></td><td><span class="ui">Settings</span> → <span class="ui">Extension</span></td><td>The network extension and both of its configurations are removed from the system. The rules stay on disk.</td><td>Go through the welcome screen again: three permissions. The rules come back by themselves.</td></tr>
+  </tbody>
+</table></div>
+<p>For an everyday “turn it off for a minute”, use the switch. For more about stopping and reinstalling, see <a href="../../../en/docs/troubleshooting/#extension">Troubleshooting</a>.</p>
+
+<h2 id="uninstall">Remove Routekeeper</h2>
+<ol class="steps">
+  <li>If opening at login is on, turn it off: <span class="ui">Settings</span> → <span class="ui">General</span> → <span class="ui">Open at login</span>.</li>
+  <li>Open <span class="ui">Settings</span> → <span class="ui">Extension</span>, and in the <span class="ui">Danger Zone</span> section click <span class="ui">Delete…</span>, then <span class="ui">Delete</span>. Routekeeper’s network extension, filter and proxy are removed from the system. macOS may ask for the administrator password.</li>
+  <li>Click the menu bar icon → <span class="ui">Quit Routekeeper</span>.</li>
+  <li>Move Routekeeper from the Applications folder to the Trash.</li>
+</ol>
+<p>Rules and proxies stay on disk and come back if you install Routekeeper again. To delete them too, see the <a href="#leftovers">next section</a>.</p>
+<p>If you move the app straight to the Trash without step 2, macOS usually removes the extension by itself, sometimes after a restart. Check with the command from the next section, and check in System Settings → Network that no Routekeeper configurations are left there.</p>
+
+<h2 id="leftovers">What stays on disk</h2>
+<div class="table"><table>
+  <thead><tr><th>Where</th><th>What</th></tr></thead>
+  <tbody>
+    <tr><td><code>/Library/Application Support/Routekeeper</code></td><td>Rules, proxies with passwords, settings, service lists for the extension, <code>config.broken-…json</code> backups. Only an administrator can open it. In versions 0.2.x: <code>/Library/Application Support/AppProxy</code>.</td></tr>
+    <tr><td><code>~/Library/Application Support/app.getroutekeeper.mac</code></td><td>Downloaded lists of service addresses.</td></tr>
+    <tr><td><code>~/Library/Caches/app.getroutekeeper.mac</code></td><td>Traffic map data (about 55 MB; it appears after you first open the map) and the download cache.</td></tr>
+    <tr><td><code>~/Library/HTTPStorages/app.getroutekeeper.mac</code></td><td>Internal storage for the app’s network requests. macOS creates it.</td></tr>
+    <tr><td><code>~/Library/Preferences/app.getroutekeeper.mac.plist</code></td><td>Window settings: notifications, updates, whether you’ve finished the welcome screen.</td></tr>
+    <tr><td>System Settings → General → Login Items (Login Items &amp; Extensions on macOS 15 and later)</td><td>Opening at login, if you turned it on.</td></tr>
+  </tbody>
+</table></div>
+<p>You can delete all of this with commands in Terminal. Run them after you’ve removed Routekeeper with the steps above. Copy and run each command separately.</p>
+<div class="callout warn"><p><b>The first command deletes your rules and proxy passwords for good.</b> If you might need them, export your rules first and save the passwords somewhere else.</p></div>
+<p>Rules, proxies and passwords (macOS asks for the administrator password):</p>
+<div class="cmd"><pre><code>sudo rm -rf "/Library/Application Support/Routekeeper"</code></pre></div>
+<p>Service lists, caches and the app’s internal files:</p>
+<div class="cmd"><pre><code>rm -rf ~/Library/Application\ Support/app.getroutekeeper.mac ~/Library/Caches/app.getroutekeeper.mac ~/Library/HTTPStorages/app.getroutekeeper.mac</code></pre></div>
+<p>Window settings:</p>
+<div class="cmd"><pre><code>defaults delete app.getroutekeeper.mac</code></pre></div>
+<details class="deep"><summary>Details: leftovers from versions 0.2.x</summary>
+  <p>Versions up to and including 0.2.1 used the old identifier. If you installed them, delete these files too:</p>
+  <div class="cmd"><pre><code>sudo rm -rf "/Library/Application Support/AppProxy"</code></pre></div>
+  <div class="cmd"><pre><code>rm -rf ~/Library/Application\ Support/dev.ilyabazenov.appproxy ~/Library/Caches/dev.ilyabazenov.appproxy ~/Library/HTTPStorages/dev.ilyabazenov.appproxy</code></pre></div>
+  <div class="cmd"><pre><code>defaults delete dev.ilyabazenov.appproxy</code></pre></div>
+  <p>If a folder doesn’t exist, the command simply does nothing. In that case, <code>defaults delete</code> says that the domain doesn’t exist. This isn’t an error.</p>
+</details>
+<h3>Check that the extension is removed</h3>
+<div class="cmd"><pre><code>systemextensionsctl list</code></pre></div>
+<p>The output must not have a line with <code>app.getroutekeeper.mac.extension</code> (or with <code>dev.ilyabazenov.appproxy.extension</code> from versions 0.2.x). If there is such a line, marked to be removed after a restart (<code>waiting to uninstall on reboot</code>), restart your Mac.</p>
+
+<h2 id="data">Data and network</h2>
+<h3>Where the settings are kept</h3>
+<ul>
+  <li><b>Rules, proxies with passwords and settings</b> are in the extension’s file <code>/Library/Application Support/Routekeeper/config.json</code>. Only an administrator can read it. The Routekeeper window gets the settings without passwords, and the extension itself runs the proxy checks.</li>
+  <li><b>The connection log for the monitor</b> is kept only in the extension’s memory: the last few thousand entries. It isn’t written to disk and is lost when the extension restarts.</li>
+  <li><b>The internal log</b> goes to the macOS system log and is kept as long as macOS keeps it, usually a few days.</li>
+  <li><b>Service lists, map data and window settings</b> are in <code>~/Library</code>: see <a href="#leftovers">What stays on disk</a>.</li>
+</ul>
+<h3>Opening at login</h3>
+<p><span class="ui">Open at login</span> (<span class="ui">Settings</span> → <span class="ui">General</span>) is off by default. When it’s on, Routekeeper is listed in System Settings → General → Login Items (Login Items &amp; Extensions on macOS 15 and later).</p>
+<p>Even without it, after a restart the extension, filter and proxy start by themselves, and the rules work. Until you open Routekeeper, there’s no menu bar icon, no notifications and no prompts in <span class="ui">Ask</span> mode, and Routekeeper doesn’t check for updates or new service lists.</p>
+<h3>Where Routekeeper connects on its own</h3>
+<ul>
+  <li><b>To your proxies:</b> to pass on the traffic of the apps you sent there.</li>
+  <li><b>To ipinfo.io through your proxy:</b> to find out the external IP, the country and the response time. This happens when you click <span class="ui">Check</span>, save a proxy or open the list of proxies. The main proxy is also checked when you open the menu or the window (no more than once a minute), a few seconds after the network changes, and once a minute while the check keeps failing. ipinfo.io sees the proxy’s address, not yours.</li>
+  <li><b>To getroutekeeper.app for updates:</b> once a day and when you click <span class="ui">Check for Updates…</span>. If you agree to update, the build itself is downloaded from GitHub Releases.</li>
+  <li><b>To getroutekeeper.app for service lists:</b> every 12 hours and when you click <span class="ui">Check Lists</span> (<span class="ui">Settings</span> → <span class="ui">General</span> → <span class="ui">Service Addresses</span>).</li>
+</ul>
+<p>Nowhere else: no analytics, no telemetry, no crash reports. Routekeeper finds the country and network for the traffic map in a built-in database, without going online. For details, see the <a href="../../../en/privacy/">privacy policy</a>.</p>
+<details class="deep"><summary>Details: addresses and signatures</summary>
+  <ul>
+    <li>The list of versions: <code>getroutekeeper.app/appcast.xml</code> over HTTPS.</li>
+    <li>The builds themselves: <a href="https://github.com/ilyabazhenov/routekeeper/releases">GitHub Releases</a>. Each build is signed with the update key, and Routekeeper won’t install a file whose signature doesn’t match.</li>
+    <li>Service lists: the file <code>domainsets/v1.json</code> from getroutekeeper.app over HTTPS. The file is signed too, and both the app and the extension check its signature.</li>
+    <li>External IP: a <code>GET /json</code> request to <code>ipinfo.io</code> on port 80, through the proxy being checked.</li>
+  </ul>
+  <p>Routekeeper’s own connections aren’t covered by your rules: the app itself has a built-in “direct” rule, and the extension runs the proxy check through the proxy itself.</p>
+</details>
+    <p class="checked">Checked against the Routekeeper code (version 0.2.1 and the one after it) on October 4, 2026.</p>
+    <nav class="pager"><a class="prev" href="../../../en/docs/troubleshooting/"><span>Previous</span>Troubleshooting</a><a class="next" href="../../../en/docs/limits/"><span>Next</span>Limitations</a></nav>
+  </article>
+</main>
+
+<div class="wrap">
+  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span><a href="../../../en/">Routekeeper for macOS</a> · <a href="../../../en/docs/">Docs</a> · <a href="../../../en/privacy/">Privacy</a> · <a href="https://github.com/ilyabazhenov/routekeeper">GitHub</a></span></footer>
+</div>
+
+<script src="../../../docs/assets/docs.js?v=3e67278c"></script>
+</body>
+</html>

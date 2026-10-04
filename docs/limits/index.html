@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ограничения — Routekeeper</title>
+<meta name="description" content="Ограничения Routekeeper: UDP, звонки и игры через прокси, правила по доменам без имени сайта, профили браузера, пауза при перезапуске расширения, другие VPN, авторизация рабочего HTTP-прокси.">
+<meta name="theme-color" content="#0a0f1f">
+<link rel="canonical" href="https://getroutekeeper.app/docs/limits/">
+<link rel="alternate" hreflang="ru" href="https://getroutekeeper.app/docs/limits/">
+<link rel="alternate" hreflang="en" href="https://getroutekeeper.app/en/docs/limits/">
+<link rel="alternate" hreflang="x-default" href="https://getroutekeeper.app/en/docs/limits/">
+<link rel="icon" href="../../mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../../icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../docs/assets/docs.css?v=891e2023">
+</head>
+<body>
+<!-- Built by Scripts/build-docs.py from site-src/docs/ru/limits.html. Edit the fragment, not this file. -->
+
+<div class="wrap nav-wrap">
+  <header class="nav">
+    <a class="brand" href="../../"><img src="../../mark.svg" alt="" width="28" height="28">Routekeeper</a>
+    <div class="nav-end"><a class="lang" href="../../en/docs/limits/" hreflang="en" lang="en">EN</a><a class="btn btn-primary" href="../../#download">Скачать</a></div>
+  </header>
+</div>
+
+<section class="wrap docs-hero compact">
+  <div class="hero-copy">
+    <span class="crumbs"><a href="../../docs/">Документация</a> · Справка</span>
+    <h1>Ограничения: <span class="warm">что не получится</span></h1>
+    <p class="lede"><b>Честный список того, чего Routekeeper не умеет или умеет с оговорками.</b> Для каждого пункта — что вы заметите, почему так и что можно сделать.</p>
+  </div>
+</section>
+
+<main class="wrap docs-layout">
+  <aside class="side-nav" aria-label="Разделы документации">
+    <span class="group">Начало</span>
+    <a href="../../docs/">Обзор документации</a>
+    <a href="../../docs/start/">Быстрый старт</a>
+    <a href="../../docs/concepts/">Как это работает</a>
+    <span class="group">Настройка</span>
+    <a href="../../docs/proxies/">Прокси</a>
+    <a href="../../docs/apps/">Приложения и сервисы</a>
+    <a href="../../docs/rules/">Правила</a>
+    <a href="../../docs/firewall/">Режимы файрвола</a>
+    <a href="../../docs/server/">Свой прокси-сервер</a>
+    <span class="group">На практике</span>
+    <a href="../../docs/recipes/">Рецепты</a>
+    <a href="../../docs/monitoring/">Проверка и мониторинг</a>
+    <span class="group">Справка</span>
+    <a href="../../docs/troubleshooting/">Если не работает</a>
+    <a href="../../docs/maintenance/">Обновление и удаление</a>
+    <a href="../../docs/limits/" aria-current="page">Ограничения</a>
+    <a href="../../docs/glossary/">Словарь</a>
+    <a href="../../docs/changelog/">Что нового</a>
+    <a class="side-action" href="../../privacy/">Конфиденциальность</a>
+    <a href="https://github.com/ilyabazhenov/routekeeper/issues">Сообщить о проблеме</a>
+  </aside>
+  <article class="doc">
+    <details class="mobile-nav"><summary>Все разделы документации</summary><nav>
+    <span class="group">Начало</span>
+    <a href="../../docs/">Обзор документации</a>
+    <a href="../../docs/start/">Быстрый старт</a>
+    <a href="../../docs/concepts/">Как это работает</a>
+    <span class="group">Настройка</span>
+    <a href="../../docs/proxies/">Прокси</a>
+    <a href="../../docs/apps/">Приложения и сервисы</a>
+    <a href="../../docs/rules/">Правила</a>
+    <a href="../../docs/firewall/">Режимы файрвола</a>
+    <a href="../../docs/server/">Свой прокси-сервер</a>
+    <span class="group">На практике</span>
+    <a href="../../docs/recipes/">Рецепты</a>
+    <a href="../../docs/monitoring/">Проверка и мониторинг</a>
+    <span class="group">Справка</span>
+    <a href="../../docs/troubleshooting/">Если не работает</a>
+    <a href="../../docs/maintenance/">Обновление и удаление</a>
+    <a href="../../docs/limits/" aria-current="page">Ограничения</a>
+    <a href="../../docs/glossary/">Словарь</a>
+    <a href="../../docs/changelog/">Что нового</a>
+    </nav></details>
+    <p class="lead-in">Коротко, а ниже — подробно по каждому пункту.</p>
+    <div class="table"><table>
+      <thead><tr><th>Ограничение</th><th>Коротко</th></tr></thead>
+      <tbody>
+        <tr><td><a href="#udp">UDP, звонки и игры</a></td><td>Через прокси идёт только TCP. UDP приложения на прокси блокируется или идёт напрямую.</td></tr>
+        <tr><td><a href="#hostnames">Правила по доменам</a></td><td>Срабатывают, только когда приложение называет имя сайта. Соединения на голый IP идут по маршруту приложения.</td></tr>
+        <tr><td><a href="#browser-profiles">Профили браузера</a></td><td>Все профили одного браузера идут одним маршрутом.</td></tr>
+        <tr><td><a href="#restart-gap">Перезапуск расширения</a></td><td>Пару секунд новые соединения могут уйти напрямую.</td></tr>
+        <tr><td><a href="#other-vpn">Другие VPN и расширения</a></td><td>Routekeeper о них не знает и конфликты не проверяет.</td></tr>
+        <tr><td><a href="#http-auth">Рабочий HTTP-прокси</a></td><td>Только Basic-авторизация, без NTLM, Kerberos и PAC.</td></tr>
+        <tr><td><a href="#proxy-types">Типы прокси</a></td><td>Только SOCKS5, HTTP и HTTPS. Остальные протоколы — через локальный клиент.</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="udp">UDP: звонки, голос и игры</h2>
+    <p><b>Что вы заметите.</b></p>
+    <ul>
+      <li>В приложении, которое идёт через <a class="term" href="../../docs/glossary/#proxy">прокси</a>, не соединяются или обрываются аудио- и видеозвонки, не работают голосовые каналы.</li>
+      <li>Онлайн-игры через прокси не подключаются или сильно задерживаются.</li>
+      <li>Браузер на прокси открывает сайты как обычно, но без QUIC (HTTP/3). Обычно этого не видно.</li>
+    </ul>
+    <p><b>Почему.</b> Прокси, с которыми работает Routekeeper (SOCKS5, HTTP и HTTPS), передают только <a class="term" href="../../docs/glossary/#tcp">TCP</a>. <a class="term" href="../../docs/glossary/#udp">UDP</a> приложения, у которого маршрут через прокси, в прокси не попадает никогда:</p>
+    <ul>
+      <li>по умолчанию он блокируется: у прокси включён переключатель <span class="ui">Блокировать UDP и QUIC</span>;</li>
+      <li>если переключатель выключить, UDP идёт напрямую, и монитор отмечает его как <span class="ui">UDP мимо прокси</span>.</li>
+    </ul>
+    <p>Звонкам и играм обычно нужен UDP. Браузеры, увидев, что <a class="term" href="../../docs/glossary/#quic">QUIC</a> закрыт, сами переходят на TCP. Карточка сервиса (ⓘ в разделе <span class="ui">Приложения</span>) предупреждает об этом, например: «Звонки идут по UDP и через прокси не работают».</p>
+    <p><b>Что можно сделать.</b></p>
+    <ul>
+      <li>Оставьте приложения для звонков и игры на маршруте <span class="ui">Напрямую</span>.</li>
+      <li>Если приложению нужен прокси, но и звонки тоже, выключите у его прокси <span class="ui">Блокировать UDP и QUIC</span>. Переписка и файлы пойдут через прокси, а звонки — напрямую, с вашим обычным адресом. Монитор будет отмечать их как <span class="ui">UDP мимо прокси</span>. Переключатель относится к прокси, поэтому действует на все приложения, которые через него идут. Подробно — <a href="../../docs/proxies/#toggles">«DNS через прокси и блокировка UDP»</a>.</li>
+      <li>Если через сервер должны идти и звонки, нужен инструмент, который передаёт UDP, например VPN. Routekeeper этого не делает.</li>
+    </ul>
+    <details class="deep">
+      <summary>Подробнее: UDP и DNS у приложения на прокси</summary>
+      <ul>
+        <li>Передачу UDP через SOCKS5 (UDP ASSOCIATE) Routekeeper не использует.</li>
+        <li>Запросы <a class="term" href="../../docs/glossary/#dns">DNS</a> по UDP (порты 53 и 853) у приложения на прокси не блокируются, а идут напрямую и отмечаются как <span class="ui">DNS мимо прокси</span>. Заблокировать их можно правилом. Как это работает — в разделе <a href="../../docs/concepts/#dns">«DNS: как приложения узнают адрес сайта»</a>.</li>
+        <li>Для TCP-соединений через прокси имя сайта узнаёт сам прокси, если включено <span class="ui">DNS через прокси</span> (включено по умолчанию).</li>
+      </ul>
+    </details>
+
+    <h2 id="hostnames">Правилам по доменам нужно имя сайта</h2>
+    <p><b>Что вы заметите.</b> Правило вроде <code>*.example.com</code> → <span class="ui">Через прокси</span> или правило сервиса ловит не весь трафик: часть соединений идёт по маршруту приложения, например напрямую. В мониторе у таких соединений в столбце <span class="ui">Хост</span> стоит голый IP, а в поле <span class="ui">Решение</span> — маршрут приложения, а не ваше правило.</p>
+    <p><b>Почему.</b> Правила по доменам и сервисам сравнивают имя сайта, которое приложение называет при соединении. У соединений на голый <a class="term" href="../../docs/glossary/#ip">IP</a> имени нет, у большинства соединений UDP и QUIC тоже. Некоторые приложения сами узнают адреса и соединяются только по IP. Без имени правило не срабатывает, и соединение идёт по маршруту приложения. Исключение — сервисы, в списке которых есть подсети (сейчас это Telegram): они срабатывают и по IP.</p>
+    <p><b>Что можно сделать.</b></p>
+    <ul>
+      <li>Если через прокси должно идти всё приложение, задайте маршрут в разделе <span class="ui">Приложения</span>, а не правила по доменам.</li>
+      <li>Если вы знаете адреса, добавьте правило по IP или подсети (<a class="term" href="../../docs/glossary/#cidr">CIDR</a>). Как записать — в разделе <a href="../../docs/rules/#syntax">«Поля правила»</a>.</li>
+      <li>Для браузера и видеосервиса заблокируйте браузеру UDP на <a class="term" href="../../docs/glossary/#port">порт</a> 443. Тогда браузер перейдёт на TCP, где имя сайта есть. Пошагово — в рецепте <a href="../../docs/recipes/#browser-video">«Один видеосервис в браузере через прокси»</a>.</li>
+    </ul>
+    <p>Подробнее — в разделе <a href="../../docs/rules/#hostnames">«Правила по именам сайтов»</a>.</p>
+
+    <h2 id="browser-profiles">Два профиля одного браузера</h2>
+    <p><b>Что вы заметите.</b> Вы хотите, чтобы профиль «Работа» шёл через один прокси, а «Личное» — через другой. Оба идут одинаково.</p>
+    <p><b>Почему.</b> Routekeeper узнаёт приложения по <a class="term" href="../../docs/glossary/#code-signature">подписи кода</a> и процессам. Все профили одного браузера — это одно приложение и одни процессы, а профиль на уровне сети не виден.</p>
+    <p><b>Что можно сделать.</b></p>
+    <ul>
+      <li>Используйте разные браузеры, например Chrome для работы и Firefox для личного. Каждому можно задать свой маршрут.</li>
+      <li>Внутри одного браузера делите трафик по сайтам: правила по доменам или сервисы. Подробно — в разделе <a href="../../docs/apps/#services">«Сервисы»</a>.</li>
+    </ul>
+    <details class="deep">
+      <summary>Подробнее: бета-версии браузеров</summary>
+      <p>Chrome Beta, Dev и Canary — отдельные приложения со своей подписью, им можно задать свой маршрут. Но если у Chrome включено <span class="ui">Вместе с дочерними процессами</span>, его маршрут покрывает и их: их signing ID начинается с signing ID Chrome, а разработчик тот же. Чтобы бета-версия шла отдельно, добавьте её в <span class="ui">Приложения</span> со своим маршрутом. Правило для точного приложения важнее правила для дочерних процессов. Так же устроены бета-версии Edge.</p>
+    </details>
+
+    <h2 id="restart-gap">Пауза при перезапуске расширения</h2>
+    <p><b>Что вы заметите.</b> После <span class="ui">Обновить…</span> в баннере об обновлении расширения, после <span class="ui">Переустановить</span> или если macOS перезапустила расширение, соединения через прокси обрываются, и приложения подключаются заново. В течение пары секунд новые соединения могут пойти напрямую, мимо прокси. В мониторе их нет.</p>
+    <p><b>Почему.</b> Routekeeper принимает решения внутри <a class="term" href="../../docs/glossary/#network-extension">сетевого расширения</a>. Пока оно перезапускается, соединения никто не проверяет, и macOS пропускает их как обычно. Перед обновлением Routekeeper предупреждает об этом в окне подтверждения.</p>
+    <p><b>Что можно сделать.</b></p>
+    <ul>
+      <li>Обновляйте расширение, когда закрыты приложения, которым важно идти только через прокси. Само оно не обновляется: в баннере нажмите <span class="ui">Обновить…</span>, затем <span class="ui">Обновить сейчас</span> или <span class="ui">Позже</span>. Как обновлять Routekeeper — на странице <a href="../../docs/maintenance/#update">«Обновление и удаление»</a>.</li>
+      <li>После обновления или переустановки перезапустите такие приложения: завершите и откройте снова. Уже открытые соединения маршрут не меняют. Соединение, открытое напрямую во время паузы, так и останется прямым, пока не закроется.</li>
+      <li>Проверьте в <a href="../../docs/monitoring/#monitor">мониторе</a>, что новые соединения приложения идут через прокси.</li>
+    </ul>
+    <details class="deep">
+      <summary>Подробнее: когда соединения не уходят напрямую</summary>
+      <p>Если фильтр Routekeeper уже работает, а часть, которая отправляет трафик через прокси, ещё нет (например, сразу после запуска Mac), соединения на прокси блокируются, а не уходят напрямую. Приложение получит ошибку и повторит попытку. Это поведение <a class="term" href="../../docs/glossary/#fail-closed">без ухода напрямую</a>.</p>
+      <p>Тумблер <span class="ui">Routekeeper включён</span> и <span class="ui">Остановить…</span> пускают всё напрямую намеренно — чем отличаются способы выключить, написано на странице <a href="../../docs/maintenance/#turn-off">«Обновление и удаление»</a>.</p>
+    </details>
+
+    <h2 id="other-vpn">Другие VPN и сетевые расширения</h2>
+    <p>Routekeeper не проверяет, есть ли на Mac другие VPN, клиенты прокси или файрволы, и не предупреждает о них. Что происходит рядом с ними, следует из того, как Routekeeper устроен:</p>
+    <ul>
+      <li>Соединения, которые не идут через прокси (маршрут <span class="ui">Напрямую</span> или нет правила), Routekeeper отдаёт macOS нетронутыми. Дальше они идут так, как их направит система, — через другой VPN, если он включён.</li>
+      <li>Соединение самого Routekeeper с прокси-сервером тоже идёт так, как направит система. Если включён VPN на весь трафик, соединение с прокси пойдёт внутри него, и прокси-сервер увидит адрес VPN, а не ваш.</li>
+      <li><span class="ui">Напрямую</span> в мониторе значит «не через прокси Routekeeper». Если система потом отправит такое соединение в VPN, Routekeeper об этом не знает.</li>
+    </ul>
+    <p><b>Что вы заметите при конфликте.</b> Приложение идёт не туда, куда показывает монитор. Сайты видят неожиданный IP. Приложения на прокси теряют сеть, когда другой VPN подключается или отключается. Проверка прокси не проходит.</p>
+    <p><b>Почему.</b> Несколько программ, которые перехватывают соединения, могут работать одновременно. Это клиент прокси в режиме TUN или «системного прокси», другой файрвол, другой маршрутизатор приложений. В каком порядке они видят соединение, Routekeeper не управляет.</p>
+    <p><b>Что можно сделать.</b></p>
+    <ul>
+      <li>Держите одного «маршрутизатора». Если пользуетесь sing-box, Xray или Clash, выключите в клиенте режим TUN и системный прокси, а его локальный порт SOCKS5 добавьте в Routekeeper. Подробно — рецепт <a href="../../docs/recipes/#local-client">«Поверх sing-box, Xray или Clash»</a>.</li>
+      <li>Если стоит другой файрвол, разрешите в нём соединения сетевого расширения Routekeeper (Routekeeper Extension) с прокси-сервером. Иначе приложения на прокси останутся без сети.</li>
+      <li>Чтобы понять, мешает ли другой VPN, временно выключите его и проверьте IP в строке меню и монитор — см. <a href="../../docs/monitoring/">«Проверка и мониторинг»</a>.</li>
+    </ul>
+
+    <h2 id="http-auth">Рабочий HTTP-прокси: только Basic</h2>
+    <p><b>Что вы заметите.</b> <span class="ui">Проверить</span> показывает <span class="ui">HTTP: прокси требует авторизацию (407)</span>, хотя логин и пароль верные. Или браузер через рабочий прокси работает (он настроен автоматически), а Routekeeper — нет. Или соединения на порты, кроме 443, получают ошибку вида «HTTP-прокси ответил 403 …».</p>
+    <p><b>Почему.</b></p>
+    <ul>
+      <li>Логин и пароль HTTP- и HTTPS-прокси Routekeeper передаёт только способом Basic. NTLM, Kerberos (Negotiate) и файлы автонастройки (PAC) он не поддерживает.</li>
+      <li>Каждое соединение Routekeeper открывает командой CONNECT, даже обычный HTTP на порт 80. Некоторые рабочие прокси разрешают CONNECT только на порт 443.</li>
+    </ul>
+    <p><b>Что можно сделать.</b></p>
+    <ul>
+      <li>Спросите администраторов, есть ли вход с Basic-авторизацией или адрес SOCKS5.</li>
+      <li>Запустите на Mac программу-посредник, которая умеет NTLM или Kerberos (например, Px или Cntlm). Добавьте её в Routekeeper как HTTP-прокси с адресом 127.0.0.1 и её портом.</li>
+      <li>Подробно — рецепт <a href="../../docs/recipes/#work-proxy">«Рабочий прокси для внутренних адресов»</a> и раздел <a href="../../docs/proxies/#work-proxy">«Рабочий прокси»</a> о полях.</li>
+    </ul>
+    <details class="deep">
+      <summary>Подробнее: авторизация SOCKS5</summary>
+      <p>SOCKS5 работает без пароля или с логином и паролем (способ username/password). Логин — от 1 до 255 байт, пароль — до 255 байт. Другие способы авторизации SOCKS5 не поддерживаются: проверка покажет <span class="ui">SOCKS5: прокси не принял ни один способ авторизации</span>.</p>
+    </details>
+
+    <h2 id="proxy-types">Только SOCKS5, HTTP и HTTPS</h2>
+    <p><b>Что вы заметите.</b> Ссылку на сервер VLESS, Shadowsocks, WireGuard и подобных добавить в Routekeeper нельзя.</p>
+    <p><b>Почему.</b> Routekeeper говорит с прокси только по <a class="term" href="../../docs/glossary/#socks5">SOCKS5</a>, <a class="term" href="../../docs/glossary/#http-connect">HTTP CONNECT</a> и <a class="term" href="../../docs/glossary/#https-proxy">HTTPS</a> (CONNECT внутри <a class="term" href="../../docs/glossary/#tls">TLS</a>). Цепочек из нескольких прокси тоже нет.</p>
+    <p><b>Что можно сделать.</b> Запустите на Mac клиент этого протокола (sing-box, Xray, Clash и другие) с локальным портом SOCKS5 и добавьте его в Routekeeper. Подробно — рецепт <a href="../../docs/recipes/#local-client">«Поверх sing-box, Xray или Clash»</a>. Если своего сервера нет, его можно поставить по инструкции <a href="../../docs/server/">«Свой прокси-сервер»</a>.</p>
+
+    <h2 id="also">Что ещё стоит знать</h2>
+    <ul>
+      <li><b>Только исходящие соединения.</b> Routekeeper решает, куда идут соединения, которые открывают программы на Mac. Входящие соединения, например к серверу, запущенному на этом Mac, он не фильтрует.</li>
+      <li><b>Открытые соединения не переезжают.</b> Новый маршрут или правило действует на новые соединения. Мессенджеры и другие программы с долгими соединениями перезапустите или дождитесь, пока они переподключатся.</li>
+      <li><b>Процессор Mac не важен.</b> Нужна macOS 14 или новее. Приложение универсальное: работает и на Intel, и на Apple Silicon. Требования к серверу — отдельные: скрипт из инструкции <a href="../../docs/server/#need">«Свой прокси-сервер»</a> ставится только на сервер x86_64 (amd64).</li>
+    </ul>
+    <p class="checked">Сверено с кодом Routekeeper (версия 0.2.1 и следующая за ней) 4 октября 2026 года.</p>
+    <nav class="pager"><a class="prev" href="../../docs/maintenance/"><span>Назад</span>Обновление и удаление</a><a class="next" href="../../docs/glossary/"><span>Дальше</span>Словарь</a></nav>
+  </article>
+</main>
+
+<div class="wrap">
+  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span><a href="../../">Routekeeper для macOS</a> · <a href="../../docs/">Документация</a> · <a href="../../privacy/">Конфиденциальность</a> · <a href="https://github.com/ilyabazhenov/routekeeper">GitHub</a></span></footer>
+</div>
+
+<script src="../../docs/assets/docs.js?v=3e67278c"></script>
+</body>
+</html>

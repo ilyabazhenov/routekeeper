@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Словарь — Routekeeper</title>
+<meta name="description" content="Словарь Routekeeper: прокси, SOCKS5, HTTPS-прокси, VPS, SSH, домен, A-запись, IP, порт, DNS, DoH, TCP, UDP, QUIC, TLS, сетевое расширение, дочерний процесс, подпись кода, подсеть, шаблон домена, localhost, fail-closed.">
+<meta name="theme-color" content="#0a0f1f">
+<link rel="canonical" href="https://getroutekeeper.app/docs/glossary/">
+<link rel="alternate" hreflang="ru" href="https://getroutekeeper.app/docs/glossary/">
+<link rel="alternate" hreflang="en" href="https://getroutekeeper.app/en/docs/glossary/">
+<link rel="alternate" hreflang="x-default" href="https://getroutekeeper.app/en/docs/glossary/">
+<link rel="icon" href="../../mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../../icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../docs/assets/docs.css?v=891e2023">
+</head>
+<body>
+<!-- Built by Scripts/build-docs.py from site-src/docs/ru/glossary.html. Edit the fragment, not this file. -->
+
+<div class="wrap nav-wrap">
+  <header class="nav">
+    <a class="brand" href="../../"><img src="../../mark.svg" alt="" width="28" height="28">Routekeeper</a>
+    <div class="nav-end"><a class="lang" href="../../en/docs/glossary/" hreflang="en" lang="en">EN</a><a class="btn btn-primary" href="../../#download">Скачать</a></div>
+  </header>
+</div>
+
+<section class="wrap docs-hero compact">
+  <div class="hero-copy">
+    <span class="crumbs"><a href="../../docs/">Документация</a> · Справка</span>
+    <h1>Словарь: <span class="warm">термины простыми словами</span></h1>
+    <p class="lede"><b>Короткие объяснения слов, которые встречаются в документации.</b> Для каждого — что это такое и как оно касается Routekeeper.</p>
+  </div>
+</section>
+
+<main class="wrap docs-layout">
+  <aside class="side-nav" aria-label="Разделы документации">
+    <span class="group">Начало</span>
+    <a href="../../docs/">Обзор документации</a>
+    <a href="../../docs/start/">Быстрый старт</a>
+    <a href="../../docs/concepts/">Как это работает</a>
+    <span class="group">Настройка</span>
+    <a href="../../docs/proxies/">Прокси</a>
+    <a href="../../docs/apps/">Приложения и сервисы</a>
+    <a href="../../docs/rules/">Правила</a>
+    <a href="../../docs/firewall/">Режимы файрвола</a>
+    <a href="../../docs/server/">Свой прокси-сервер</a>
+    <span class="group">На практике</span>
+    <a href="../../docs/recipes/">Рецепты</a>
+    <a href="../../docs/monitoring/">Проверка и мониторинг</a>
+    <span class="group">Справка</span>
+    <a href="../../docs/troubleshooting/">Если не работает</a>
+    <a href="../../docs/maintenance/">Обновление и удаление</a>
+    <a href="../../docs/limits/">Ограничения</a>
+    <a href="../../docs/glossary/" aria-current="page">Словарь</a>
+    <a href="../../docs/changelog/">Что нового</a>
+    <a class="side-action" href="../../privacy/">Конфиденциальность</a>
+    <a href="https://github.com/ilyabazhenov/routekeeper/issues">Сообщить о проблеме</a>
+  </aside>
+  <article class="doc">
+    <details class="mobile-nav"><summary>Все разделы документации</summary><nav>
+    <span class="group">Начало</span>
+    <a href="../../docs/">Обзор документации</a>
+    <a href="../../docs/start/">Быстрый старт</a>
+    <a href="../../docs/concepts/">Как это работает</a>
+    <span class="group">Настройка</span>
+    <a href="../../docs/proxies/">Прокси</a>
+    <a href="../../docs/apps/">Приложения и сервисы</a>
+    <a href="../../docs/rules/">Правила</a>
+    <a href="../../docs/firewall/">Режимы файрвола</a>
+    <a href="../../docs/server/">Свой прокси-сервер</a>
+    <span class="group">На практике</span>
+    <a href="../../docs/recipes/">Рецепты</a>
+    <a href="../../docs/monitoring/">Проверка и мониторинг</a>
+    <span class="group">Справка</span>
+    <a href="../../docs/troubleshooting/">Если не работает</a>
+    <a href="../../docs/maintenance/">Обновление и удаление</a>
+    <a href="../../docs/limits/">Ограничения</a>
+    <a href="../../docs/glossary/" aria-current="page">Словарь</a>
+    <a href="../../docs/changelog/">Что нового</a>
+    </nav></details>
+<p class="lead-in">Термины собраны по темам. Другие страницы документации ссылаются сюда, когда термин встречается впервые.</p>
+<p><a href="#proxy">Прокси</a> · <a href="#socks5">SOCKS5</a> · <a href="#http-connect">HTTP CONNECT</a> · <a href="#https-proxy">HTTPS-прокси</a> · <a href="#fail-closed">Fail-closed</a> · <a href="#vps">VPS</a> · <a href="#ssh">SSH</a> · <a href="#domain">Домен</a> · <a href="#a-record">A&#8209;запись</a> · <a href="#ip">IP-адрес</a> · <a href="#port">Порт</a> · <a href="#tcp">TCP</a> · <a href="#udp">UDP</a> · <a href="#quic">QUIC</a> · <a href="#dns">DNS</a> · <a href="#doh">DoH</a> · <a href="#tls">TLS</a> · <a href="#network-extension">Сетевое расширение</a> · <a href="#child-process">Дочерний процесс</a> · <a href="#code-signature">Подпись кода</a> · <a href="#loopback">localhost</a> · <a href="#cidr">Подсеть (CIDR)</a> · <a href="#wildcard">Шаблон *.домен</a></p>
+
+<h2 id="g-proxy">Прокси</h2>
+
+<h3 id="proxy">Прокси (прокси-сервер)</h3>
+<p>Сервер-посредник между вашим Mac и сайтом. Приложение отправляет соединение прокси, а тот подключается к сайту от своего имени. Поэтому сайт видит IP-адрес прокси, а не ваш. В отличие от VPN, прокси работает не для всего Mac, а только для соединений, которые к нему направили.</p>
+<p><b>В Routekeeper:</b> вы решаете, какие приложения и сервисы идут через прокси; сами прокси добавляются в разделе <span class="ui">Прокси</span> — см. <a href="../../docs/proxies/">«Прокси»</a>.</p>
+
+<h3 id="socks5">SOCKS5</h3>
+<p>Универсальный протокол прокси: передаёт любое TCP-соединение, не вникая в его содержимое. Его часто открывают клиенты, работающие на этом же Mac, например на адресе <code>127.0.0.1:1080</code>. Сам SOCKS5 соединение с прокси не шифрует, поэтому для прокси где-то в интернете удобнее <a href="#https-proxy">HTTPS-прокси</a>.</p>
+<p><b>В Routekeeper:</b> тип SOCKS5, порт по умолчанию 1080. Строки <code>socks5://</code>, <code>socks5h://</code>, <code>socks://</code> и строка без схемы считаются SOCKS5.</p>
+
+<h3 id="http-connect">HTTP-прокси (HTTP CONNECT)</h3>
+<p>Прокси, с которым приложение разговаривает по HTTP. Командой CONNECT оно просит прокси открыть туннель к нужному сайту и порту, а дальше данные идут как есть. Сайты по HTTPS остаются зашифрованными, но само соединение с прокси не шифруется: логин, пароль и имена сайтов видны по пути. Такие прокси часто стоят в офисных сетях.</p>
+<p><b>В Routekeeper:</b> тип HTTP, порт по умолчанию 8080. Авторизация — только по логину и паролю (Basic); NTLM, Kerberos и PAC-файлы не поддерживаются.</p>
+
+<h3 id="https-proxy">HTTPS-прокси</h3>
+<p>Тот же HTTP CONNECT, но соединение с прокси защищено <a href="#tls">TLS</a>, как сайт с <code>https://</code>. По пути не видны ни логин с паролем, ни имена сайтов, которые вы открываете. Сервер подтверждает, что он настоящий, сертификатом, выданным на его <a href="#domain">доменное имя</a>.</p>
+<p><b>В Routekeeper:</b> тип HTTPS, порт по умолчанию 443. В поле <span class="ui">Сервер</span> указывайте домен, а не IP: по нему проверяется сертификат. Такой прокси на своём сервере ставит скрипт со страницы <a href="../../docs/server/">«Свой прокси-сервер»</a>.</p>
+
+<h3 id="fail-closed">Fail-closed: прокси недоступен — соединения не уходят напрямую</h3>
+<p>Так называют поведение, при котором сбой ничего не открывает. Если прокси недоступен, соединение обрывается, а не уходит напрямую. Приложение покажет ошибку сети, зато ваш настоящий адрес не раскроется. Обратное поведение называют fail-open.</p>
+<p><b>В Routekeeper:</b> так устроено по умолчанию; пускать напрямую при недоступном прокси можно включить в <span class="ui">Настройки</span> → <span class="ui">Сеть</span> → <span class="ui" style="white-space: normal">Если прокси недоступен — пускать напрямую</span>. Исключения: DNS по UDP, UDP при выключенном <span class="ui">Блокировать UDP и QUIC</span> и пара секунд при перезапуске или обновлении расширения — см. <a href="../../docs/limits/#restart-gap">ограничения</a>.</p>
+
+<h2 id="g-server">Сервер и адреса</h2>
+
+<h3 id="vps">VPS</h3>
+<p>Виртуальный сервер, который арендуют у хостинг-провайдера, обычно помесячно. У него свой постоянный публичный IP-адрес и, как правило, Linux, например Debian или Ubuntu. Управляют им удалённо, через <a href="#ssh">SSH</a>.</p>
+<p><b>В Routekeeper:</b> на VPS можно поставить свой HTTPS-прокси одним скриптом — см. <a href="../../docs/server/#need">«Свой прокси-сервер»</a>.</p>
+
+<h3 id="ssh">SSH</h3>
+<p>Защищённый способ управлять сервером из Терминала на Mac: вы вводите команды, а выполняются они на сервере. Подключение выглядит так: <code>ssh root@203.0.113.7</code> — имя пользователя, <code>@</code> и адрес сервера. При первом подключении SSH показывает отпечаток ключа сервера и спрашивает, доверять ли ему.</p>
+<p><b>В Routekeeper:</b> SSH нужен один раз, чтобы запустить на сервере скрипт установки прокси — см. <a href="../../docs/server/#login">«Свой прокси-сервер»</a>.</p>
+
+<h3 id="domain">Домен (доменное имя)</h3>
+<p>Имя сайта или сервера, удобное для людей, например <code>example.com</code>. Поддомен — имя внутри домена: <code>proxy.example.com</code>. Домены покупают у регистратора, бывают и бесплатные имена вида <code>my-name.duckdns.org</code>.</p>
+<p><b>В Routekeeper:</b> HTTPS-прокси нужен домен, а правила можно писать по доменам — см. <a href="../../docs/server/#domain">домен для своего сервера</a> и <a href="../../docs/rules/#syntax">как записать адрес в правиле</a>.</p>
+
+<h3 id="a-record">A-запись</h3>
+<p>Запись в <a href="#dns">DNS</a>, которая связывает доменное имя с IPv4-адресом. По ней компьютеры узнают, что <code>proxy.example.com</code> — это, например, <code>203.0.113.7</code>. Её создают там, где управляют доменом; новая запись обычно начинает работать за несколько минут.</p>
+<p><b>В Routekeeper:</b> для своего сервера A-запись домена должна указывать на IP вашего VPS, иначе сервер не получит сертификат — см. <a href="../../docs/server/#domain">«Свой прокси-сервер»</a>.</p>
+
+<h3 id="ip">IP-адрес</h3>
+<p>Числовой адрес устройства в сети: IPv4 вида <code>203.0.113.7</code> или IPv6 вида <code>2001:db8::1</code>. Внешний IP — адрес, с которым ваше подключение видят сайты; дома это обычно адрес провайдера. Через прокси сайты видят IP прокси.</p>
+<p><b>В Routekeeper:</b> внешний IP прокси показан в меню значка и после кнопки <span class="ui">Проверить</span>; в правилах можно указать IP-адрес или <a href="#cidr">подсеть</a>.</p>
+
+<h3 id="port">Порт</h3>
+<p>Номер, по которому на одном адресе различают разные службы, как номер квартиры в доме. Сайты по HTTPS работают на порту 443, по HTTP — на 80, DNS — на 53.</p>
+<p><b>В Routekeeper:</b> у прокси есть порт (по умолчанию 1080 для SOCKS5, 8080 для HTTP, 443 для HTTPS), а правило можно ограничить портом, например «порт 443 · UDP».</p>
+
+<h2 id="g-network">Как ходят данные</h2>
+
+<h3 id="tcp">TCP</h3>
+<p>Способ передачи данных с установкой соединения и подтверждением доставки: если кусочек потерялся, его отправят снова. На TCP работают сайты, почта и большинство приложений.</p>
+<p><b>В Routekeeper:</b> через прокси идёт именно TCP.</p>
+
+<h3 id="udp">UDP</h3>
+<p>Способ передачи без соединения и подтверждений: данные просто отправляются. Это быстрее, поэтому UDP используют звонки, видео в реальном времени, игры, <a href="#dns">DNS</a> и <a href="#quic">QUIC</a>.</p>
+<p><b>В Routekeeper:</b> прокси SOCKS5, HTTP и HTTPS не передают UDP, поэтому у приложений через прокси он блокируется или идёт напрямую с пометкой — см. <a href="../../docs/concepts/#udp">«UDP и QUIC»</a>.</p>
+
+<h3 id="quic">QUIC</h3>
+<p>Современный способ загружать сайты поверх UDP, на нём работает HTTP/3. Браузеры используют его там, где сайт это поддерживает. Если QUIC недоступен, браузер незаметно переходит на обычный HTTPS по TCP.</p>
+<p><b>В Routekeeper:</b> переключатель <span class="ui">Блокировать UDP и QUIC</span> выключает QUIC у приложений через прокси, и браузеры переходят на TCP, который идёт через прокси.</p>
+
+<h3 id="dns">DNS</h3>
+<p>Справочная служба интернета: переводит имя вроде <code>example.com</code> в IP-адрес. Обычно запросы уходят провайдеру или роутеру, и они видят, какие имена спрашивает ваш Mac. Обычные DNS-запросы идут по UDP на порт 53 и не шифруются.</p>
+<p><b>В Routekeeper:</b> <span class="ui">DNS через прокси</span> передаёт прокси имя сайта, чтобы адрес узнал он; что при этом идёт мимо прокси — см. <a href="../../docs/concepts/#dns">«DNS»</a>.</p>
+
+<h3 id="doh">DoH (DNS через HTTPS)</h3>
+<p>DNS-запросы внутри обычного зашифрованного HTTPS-соединения. По пути не видно, какие имена вы спрашиваете. В браузерах это включается в настройках, параметр называется «DNS через HTTPS» или «безопасный DNS».</p>
+<p><b>В Routekeeper:</b> если браузер целиком идёт через прокси, его DoH-запросы идут через прокси вместе с остальным трафиком; так пропадают пометки «DNS мимо прокси» у браузера — см. <a href="../../docs/recipes/#browser-dns">рецепт</a>.</p>
+
+<h3 id="tls">TLS</h3>
+<p>Шифрование соединения, на котором работает <code>https://</code> в адресной строке. Оно скрывает содержимое от всех по пути и с помощью сертификата подтверждает, что вы говорите именно с тем сервером, чьё имя указано. Сертификат выдаётся на доменное имя, например бесплатно от Let's Encrypt.</p>
+<p><b>В Routekeeper:</b> HTTPS-прокси шифрует TLS соединение с прокси; если сертификат не совпадает с именем в поле <span class="ui">Сервер</span>, проверка покажет «Не удалось подключиться к прокси: TLS: сертификат прокси не прошёл проверку».</p>
+
+<h2 id="g-mac">Mac и приложения</h2>
+
+<h3 id="network-extension">Сетевое расширение</h3>
+<p>Модуль, через который программа может фильтровать и направлять сетевые соединения в macOS. Он устанавливается как системное расширение: отдельно от окна приложения и только с разрешения пользователя. Расширение работает от имени системы, поэтому продолжает работать, даже когда окно закрыто.</p>
+<p><b>В Routekeeper:</b> расширение называется Routekeeper Extension (в версии 0.2.1 — Routekeeper Network Extension), его состояние видно в <span class="ui">Настройки</span> → <span class="ui">Расширение</span> — см. <a href="../../docs/concepts/#parts">«Из чего состоит Routekeeper»</a>.</p>
+
+<h3 id="child-process">Дочерний процесс</h3>
+<p>Программа, которую запустила другая программа. Терминал запускает <code>git</code>, <code>curl</code> и <code>npm</code>. Браузеры и мессенджеры запускают вспомогательные процессы, и через них идёт почти весь их трафик.</p>
+<p><b>В Routekeeper:</b> <span class="ui">Вместе с дочерними процессами</span> включено по умолчанию: маршрут приложения действует на его вспомогательные процессы и на всё, что оно запускает — см. <a href="../../docs/apps/#child-processes">«Приложения и сервисы»</a>.</p>
+
+<h3 id="code-signature">Подпись кода</h3>
+<p>Цифровая подпись, которую разработчик ставит на свою программу. По ней видно, кто выпустил программу (Team ID разработчика) и что это за программа (идентификатор вида <code>com.example.app</code>). Если программу изменить после подписи, подпись перестанет сходиться.</p>
+<p><b>В Routekeeper:</b> приложения узнаются по подписи, а не по имени файла: переименованная программа не попадёт под чужое правило, а правило переживает обновление приложения. Программы без подписи узнаются по пути к файлу.</p>
+
+<h3 id="loopback">localhost (loopback)</h3>
+<p>Адреса, по которым Mac обращается сам к себе: <code>127.0.0.1</code>, <code>::1</code> и имя <code>localhost</code>. Такие соединения не выходят в сеть. Например, по ним приложения подключаются к клиенту прокси, запущенному на этом же Mac.</p>
+<p><b>В Routekeeper:</b> соединения с самим Mac идут напрямую — так задают встроенные правила и настройка <span class="ui">Настройки</span> → <span class="ui">Сеть</span> → <span class="ui">Не трогать localhost</span>.</p>
+
+<h2 id="g-rules">Адреса в правилах</h2>
+
+<h3 id="cidr">Подсеть (CIDR)</h3>
+<p>Запись диапазона IP-адресов: адрес, косая черта и длина префикса. <code>10.0.0.0/8</code> — все адреса от <code>10.0.0.0</code> до <code>10.255.255.255</code>, <code>192.168.1.0/24</code> — от <code>192.168.1.0</code> до <code>192.168.1.255</code>. Чем больше число после черты, тем уже диапазон.</p>
+<p><b>В Routekeeper:</b> подсеть можно указать в правиле, а в некоторые сервисы подсети уже входят, например адреса Telegram — см. <a href="../../docs/rules/#syntax">как записать адрес в правиле</a>.</p>
+
+<h3 id="wildcard">Шаблон *.домен</h3>
+<p>Звёздочка вместо любого поддомена. Без звёздочки правило подходит только для одного имени, со звёздочкой — для целого семейства имён.</p>
+<p><b>В Routekeeper:</b> <code>*.example.com</code> подходит и для самого <code>example.com</code>, и для всех его поддоменов любой глубины, например <code>a.b.example.com</code>; более длинный шаблон точнее, поэтому <code>*.mail.example.com</code> важнее <code>*.example.com</code>.</p>
+    <p class="checked">Сверено с кодом Routekeeper (версия 0.2.1 и следующая за ней) 4 октября 2026 года.</p>
+    <nav class="pager"><a class="prev" href="../../docs/limits/"><span>Назад</span>Ограничения</a><a class="next" href="../../docs/changelog/"><span>Дальше</span>Что нового</a></nav>
+  </article>
+</main>
+
+<div class="wrap">
+  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span><a href="../../">Routekeeper для macOS</a> · <a href="../../docs/">Документация</a> · <a href="../../privacy/">Конфиденциальность</a> · <a href="https://github.com/ilyabazhenov/routekeeper">GitHub</a></span></footer>
+</div>
+
+<script src="../../docs/assets/docs.js?v=3e67278c"></script>
+</body>
+</html>

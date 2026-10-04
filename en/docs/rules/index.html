@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rules — Routekeeper</title>
+<meta name="description" content="Routekeeper rules: when you need them, rule fields and destination syntax (name, *.domain, IP, subnet, @service), port and protocol, the exact priority order with worked examples, connections without a site name, sources, built-in rules, import and export.">
+<meta name="theme-color" content="#0a0f1f">
+<link rel="canonical" href="https://getroutekeeper.app/en/docs/rules/">
+<link rel="alternate" hreflang="ru" href="https://getroutekeeper.app/docs/rules/">
+<link rel="alternate" hreflang="en" href="https://getroutekeeper.app/en/docs/rules/">
+<link rel="alternate" hreflang="x-default" href="https://getroutekeeper.app/en/docs/rules/">
+<link rel="icon" href="../../../mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../../../icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=891e2023">
+</head>
+<body>
+<!-- Built by Scripts/build-docs.py from site-src/docs/en/rules.html. Edit the fragment, not this file. -->
+
+<div class="wrap nav-wrap">
+  <header class="nav">
+    <a class="brand" href="../../../en/"><img src="../../../mark.svg" alt="" width="28" height="28">Routekeeper</a>
+    <div class="nav-end"><a class="lang" href="../../../docs/rules/" hreflang="ru" lang="ru">RU</a><a class="btn btn-primary" href="../../../en/#download">Download</a></div>
+  </header>
+</div>
+
+<section class="wrap docs-hero compact">
+  <div class="hero-copy">
+    <span class="crumbs"><a href="../../../en/docs/">Docs</a> · Setup</span>
+    <h1>Rules: <span class="warm">exceptions by address</span></h1>
+    <p class="lede"><b>A rule decides where connections to certain addresses, ports or protocols go.</b> The route of a whole app is set in Apps; rules are for exceptions and for addresses shared by all apps.</p>
+  </div>
+</section>
+
+<main class="wrap docs-layout">
+  <aside class="side-nav" aria-label="Docs sections">
+    <span class="group">Getting started</span>
+    <a href="../../../en/docs/">Docs overview</a>
+    <a href="../../../en/docs/start/">Quick start</a>
+    <a href="../../../en/docs/concepts/">How it works</a>
+    <span class="group">Setup</span>
+    <a href="../../../en/docs/proxies/">Proxies</a>
+    <a href="../../../en/docs/apps/">Apps and services</a>
+    <a href="../../../en/docs/rules/" aria-current="page">Rules</a>
+    <a href="../../../en/docs/firewall/">Firewall modes</a>
+    <a href="../../../en/docs/server/">Your own proxy server</a>
+    <span class="group">In practice</span>
+    <a href="../../../en/docs/recipes/">Recipes</a>
+    <a href="../../../en/docs/monitoring/">Checking and monitoring</a>
+    <span class="group">Reference</span>
+    <a href="../../../en/docs/troubleshooting/">Troubleshooting</a>
+    <a href="../../../en/docs/maintenance/">Updates and removal</a>
+    <a href="../../../en/docs/limits/">Limitations</a>
+    <a href="../../../en/docs/glossary/">Glossary</a>
+    <a href="../../../en/docs/changelog/">What's new</a>
+    <a class="side-action" href="../../../en/privacy/">Privacy</a>
+    <a href="https://github.com/ilyabazhenov/routekeeper/issues">Report a problem</a>
+  </aside>
+  <article class="doc">
+    <details class="mobile-nav"><summary>All docs sections</summary><nav>
+    <span class="group">Getting started</span>
+    <a href="../../../en/docs/">Docs overview</a>
+    <a href="../../../en/docs/start/">Quick start</a>
+    <a href="../../../en/docs/concepts/">How it works</a>
+    <span class="group">Setup</span>
+    <a href="../../../en/docs/proxies/">Proxies</a>
+    <a href="../../../en/docs/apps/">Apps and services</a>
+    <a href="../../../en/docs/rules/" aria-current="page">Rules</a>
+    <a href="../../../en/docs/firewall/">Firewall modes</a>
+    <a href="../../../en/docs/server/">Your own proxy server</a>
+    <span class="group">In practice</span>
+    <a href="../../../en/docs/recipes/">Recipes</a>
+    <a href="../../../en/docs/monitoring/">Checking and monitoring</a>
+    <span class="group">Reference</span>
+    <a href="../../../en/docs/troubleshooting/">Troubleshooting</a>
+    <a href="../../../en/docs/maintenance/">Updates and removal</a>
+    <a href="../../../en/docs/limits/">Limitations</a>
+    <a href="../../../en/docs/glossary/">Glossary</a>
+    <a href="../../../en/docs/changelog/">What's new</a>
+    </nav></details>
+<p class="lead-in">A rule answers the question “which app, where to, on which port and over which protocol, and what to do with it”. The <span class="ui">Rules</span> section (<kbd>⌘3</kbd>) shows all rules, including the rows from <span class="ui">Apps</span>.</p>
+
+<h2 id="when">When you need a rule</h2>
+<p>Most of the time, you don’t need to write rules:</p>
+<ul>
+  <li>where <b>a whole app</b> goes is set in <a href="../../../en/docs/apps/#route">Apps</a>;</li>
+  <li>where <b>a well-known site or messenger</b> goes from all apps is set by a <a href="../../../en/docs/apps/#services">service</a>.</li>
+</ul>
+<p>Rules are for exceptions and fine-tuning:</p>
+<ul>
+  <li><b>an exception inside an app</b>: the browser goes through the proxy, but company sites go direct;</li>
+  <li><b>addresses for all apps</b>: “Any App · <code>*.corp.example</code> → Through Proxy ‘Office’”;</li>
+  <li><b>a port or protocol</b>: block QUIC in the browser (“browser · port 443 · UDP → Block”), let SSH (port 22) go direct;</li>
+  <li><b>a single address</b>: block a server that an app sends statistics to.</li>
+</ul>
+<p>How to create a rule:</p>
+<ul>
+  <li>in the <span class="ui">Rules</span> section, click <span class="ui">New Rule</span> (<span class="ui">+</span> in the toolbar) or press <kbd>⌘N</kbd>. <kbd>⌘N</kbd> works from any section: <span class="ui">File</span> → <span class="ui">New Rule…</span>;</li>
+  <li>in <a href="../../../en/docs/monitoring/#monitor"><span class="ui">Monitor</span></a>, choose <span class="ui">Create Rule…</span> for a connection, in the context menu or in the details: the app and address are already filled in;</li>
+  <li>in <span class="ui">Ask</span> mode, your answer in the prompt creates a rule; see <a href="../../../en/docs/firewall/#ask">Ask</a>.</li>
+</ul>
+<div class="callout warn"><p><b>A new rule starts as “Any App · any address → <a href="../../../en/docs/proxies/#several">main proxy</a>”.</b> If you save it without changing anything, all apps that don’t have their own row will go through the proxy. Fill in <span class="ui">Destination</span> or choose an app. If there’s no proxy yet, a new rule’s action is <span class="ui">Direct</span>.</p></div>
+
+<h2 id="syntax">Rule fields</h2>
+<p>A double-click on a rule, or <span class="ui">New Rule</span>, opens a window with these fields:</p>
+<div class="table"><table>
+  <thead><tr><th>Field</th><th>What it sets</th></tr></thead>
+  <tbody>
+    <tr><td><span class="ui">App</span></td><td><span class="ui">Any App</span> or a specific one. The <span class="ui">Change</span> button offers <span class="ui">Any App</span>, <span class="ui">Choose…</span> (a file picker) or one of the apps that are already in your rules.</td></tr>
+    <tr><td><span class="ui">Include Child Processes</span></td><td>Appears when a specific app is chosen. What it does is explained in <a href="../../../en/docs/apps/#child-processes">Child processes</a>.</td></tr>
+    <tr><td><span class="ui">Destination</span></td><td>Where the connection goes; see the table below. The <span class="ui">Service</span> menu next to it fills in a service.</td></tr>
+    <tr><td><span class="ui">Port</span></td><td>A single number from 1 to 65535: the server’s <a class="term" href="../../../en/docs/glossary/#port">port</a>. Empty means any port. For example, 443 is HTTPS and QUIC, 80 is HTTP, 22 is SSH, 53 is DNS.</td></tr>
+    <tr><td><span class="ui">Protocol</span></td><td><span class="ui">TCP and UDP</span> (any), <span class="ui">TCP</span> or <span class="ui">UDP</span>. Almost all connections are <a class="term" href="../../../en/docs/glossary/#tcp">TCP</a>; <a class="term" href="../../../en/docs/glossary/#udp">UDP</a> is used by <a class="term" href="../../../en/docs/glossary/#quic">QUIC</a>, calls and DNS.</td></tr>
+    <tr><td><span class="ui">Action</span></td><td>A proxy from the <span class="ui">Through Proxy</span> section, <span class="ui">Direct</span>, <span class="ui">Block</span> or <span class="ui">Ask</span>. For more, see <a href="../../../en/docs/concepts/#actions">How it works</a>.</td></tr>
+    <tr><td><span class="ui">Note</span></td><td>Any text for yourself. It’s shown under the destination, and search looks through it.</td></tr>
+  </tbody>
+</table></div>
+<p>Buttons: <span class="ui">Save</span>, <span class="ui">Cancel</span> and, for an existing rule, <span class="ui">Delete</span>. The window has no duration setting: a rule made in it stays in effect until you turn it off or delete it.</p>
+
+<h3 id="destination">How to write an address</h3>
+<div class="table"><table>
+  <thead><tr><th>What to enter</th><th>What it matches</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr><td>Empty</td><td>Any address. <code>*</code> and <code>any</code> mean the same.</td><td>—</td></tr>
+    <tr><td>A name</td><td>Only this name, without subdomains.</td><td><code>files.example.com</code> matches neither <code>example.com</code> nor <code>a.files.example.com</code></td></tr>
+    <tr><td><code>*.</code>name</td><td>The name itself and all its subdomains (a <a class="term" href="../../../en/docs/glossary/#wildcard">wildcard</a>).</td><td><code>*.example.com</code> matches <code>example.com</code>, <code>www.example.com</code>, <code>a.b.example.com</code></td></tr>
+    <tr><td>An IP address</td><td>Only this <a class="term" href="../../../en/docs/glossary/#ip">address</a>, IPv4 or IPv6.</td><td><code>203.0.113.10</code>, <code>2001:db8::1</code></td></tr>
+    <tr><td>A subnet</td><td>All addresses in the <a class="term" href="../../../en/docs/glossary/#cidr">subnet</a>.</td><td><code>10.0.0.0/8</code>, <code>192.168.1.0/24</code>, <code>fd00::/8</code></td></tr>
+    <tr><td><code>@</code>service</td><td>All addresses of the <a href="../../../en/docs/apps/#services">service</a>.</td><td><code>@youtube</code>, <code>@github</code>, <code>@ru-banks</code></td></tr>
+  </tbody>
+</table></div>
+<ul>
+  <li>Upper and lower case don’t matter.</li>
+  <li>Only the server name: no <code>https://</code>, no path and no port. The port has its own field. Routekeeper sees the server name, but not the page address.</li>
+  <li>The asterisk works only at the start and followed by a dot: <code>*.example.com</code>. Entries like <code>*example.com</code> or <code>ex*.com</code> won’t work.</li>
+  <li>If Routekeeper doesn’t understand the destination, it replies “Can’t parse the destination ‘…’”. For a wrong port, it replies “The port must be a number from 1 to 65535”.</li>
+</ul>
+<details class="deep"><summary>Details: service codes for <code>@</code></summary>
+  <p>The <span class="ui">Service</span> menu fills in the code for you. If you’d rather type it:</p>
+  <ul>
+    <li><code>youtube</code>, <code>telegram</code>, <code>discord</code>, <code>tiktok</code>, <code>reddit</code>, <code>twitch</code>, <code>x</code>, <code>linkedin</code>, <code>signal</code>, <code>viber</code>, <code>slack</code>, <code>zoom</code>, <code>proton</code>, <code>spotify</code>, <code>notion</code>, <code>github</code>, <code>figma</code>, <code>jetbrains</code>;</li>
+    <li><code>instagram</code>, <code>facebook</code>, <code>whatsapp</code>, <code>threads</code>;</li>
+    <li><code>chatgpt</code>, <code>claude</code>, <code>gemini</code>, <code>copilot</code>, <code>cursor</code>, <code>perplexity</code>, <code>grok</code>;</li>
+    <li><code>ru-gov</code>, <code>ru-banks</code>, <code>ru-sites</code>.</li>
+  </ul>
+  <p>Version 0.2.1 doesn’t have <code>tiktok</code>, <code>reddit</code>, <code>twitch</code>, <code>slack</code>, <code>zoom</code>, <code>github</code> and <code>figma</code>.</p>
+</details>
+<p>The <span class="ui">Through Proxy</span> action for UDP: UDP can’t go through a proxy, so what happens to it is decided by the proxy’s <a href="../../../en/docs/proxies/#toggles"><span class="ui">Block UDP and QUIC</span></a> toggle.</p>
+
+<h2 id="priority">Which rule wins</h2>
+<p>What decides is precision, not the order in the list. For each connection, Routekeeper takes all enabled rules that match it and picks the most precise one. Rules are compared step by step until a difference is found:</p>
+<ol>
+  <li><b>A more precise destination.</b> An exact name or IP address wins over a <code>*.</code> wildcard, a wildcard wins over a subnet, and a subnet wins over any address. Of two wildcards, the longer one wins (<code>*.cdn.example.com</code> wins over <code>*.example.com</code>); of two subnets, the smaller one does (<code>/24</code> wins over <code>/8</code>).</li>
+  <li><b>An address typed in by hand wins over a service</b> if both are equally precise.</li>
+  <li><b>A rule with a port</b> wins over a rule without a port.</li>
+  <li><b>A rule with a protocol</b> wins over a rule without a protocol.</li>
+  <li><b>A specific app</b> wins over its child processes, and they win over “Any App”.</li>
+  <li><b>Action:</b> <span class="ui">Block</span> wins over <span class="ui">Through Proxy</span>, which wins over <span class="ui">Direct</span>, which wins over <span class="ui">Ask</span>.</li>
+</ol>
+<p>If no rule matches, the <a href="../../../en/docs/firewall/#modes">mode</a> decides. In <span class="ui">Proxy Only</span> mode, the connection goes direct.</p>
+<div class="callout"><p><b>Address first, then app.</b> That’s why the rule “Any App · <code>*.corp.example</code> → Direct” for company sites wins over the route “Browser → Through Proxy”, even though the browser is named specifically. For the same reason, a service wins over an app’s route.</p></div>
+
+<h3 id="examples">Worked examples</h3>
+<h4>1. Browser through the proxy, company sites direct</h4>
+<ul>
+  <li>Browser → Through Proxy “Amsterdam” (a row in <span class="ui">Apps</span>);</li>
+  <li>Any App · <code>*.corp.example</code> → Direct.</li>
+</ul>
+<div class="table"><table>
+  <thead><tr><th>Connection</th><th>Result</th><th>Why</th></tr></thead>
+  <tbody>
+    <tr><td>Browser → <code>news.example.org</code></td><td>Through “Amsterdam”</td><td>Only the browser’s route matches.</td></tr>
+    <tr><td>Browser → <code>wiki.corp.example</code></td><td>Direct</td><td>Both match. A wildcard is more precise than any address, and the destination is compared before the app.</td></tr>
+  </tbody>
+</table></div>
+
+<h4>2. Two wildcards</h4>
+<ul>
+  <li>Any App · <code>*.example.com</code> → Through Proxy “Amsterdam”;</li>
+  <li>Any App · <code>*.cdn.example.com</code> → Direct.</li>
+</ul>
+<div class="table"><table>
+  <thead><tr><th>Connection</th><th>Result</th><th>Why</th></tr></thead>
+  <tbody>
+    <tr><td><code>img.cdn.example.com</code></td><td>Direct</td><td>Both match; the longer wildcard is more precise.</td></tr>
+    <tr><td><code>www.example.com</code></td><td>Through “Amsterdam”</td><td>The second wildcard doesn’t match here.</td></tr>
+  </tbody>
+</table></div>
+
+<h4>3. A service and your own domain</h4>
+<ul>
+  <li>The Slack service → Through Proxy “Amsterdam”;</li>
+  <li>Any App · <code>*.slack.com</code> → Through Proxy “Office”.</li>
+</ul>
+<div class="table"><table>
+  <thead><tr><th>Connection</th><th>Result</th><th>Why</th></tr></thead>
+  <tbody>
+    <tr><td><code>app.slack.com</code></td><td>Through “Office”</td><td>The service matched on <code>slack.com</code>, which is just as precise as <code>*.slack.com</code>. With equal precision, an address typed in by hand wins over a service.</td></tr>
+    <tr><td><code>slack-edge.com</code></td><td>Through “Amsterdam”</td><td>This name is only in the service.</td></tr>
+  </tbody>
+</table></div>
+
+<h4>4. Port, app and child processes</h4>
+<ul>
+  <li>Terminal → Through Proxy “Amsterdam”, with child processes;</li>
+  <li>Any App · port 22 · TCP → Direct;</li>
+  <li><code>curl</code> → Direct.</li>
+</ul>
+<div class="table"><table>
+  <thead><tr><th>Connection</th><th>Result</th><th>Why</th></tr></thead>
+  <tbody>
+    <tr><td><code>ssh</code> from Terminal → a server, port 22</td><td>Direct</td><td>Both rules have any address as the destination. The rule with a port wins, and the port is compared before the app.</td></tr>
+    <tr><td><code>curl</code> from Terminal → any site</td><td>Direct</td><td>The row for <code>curl</code> itself wins over the row for Terminal, which launched it.</td></tr>
+    <tr><td><code>git</code> from Terminal → <code>github.com</code>, port 443</td><td>Through “Amsterdam”</td><td>Only Terminal’s row matches: <code>git</code> is its child process.</td></tr>
+  </tbody>
+</table></div>
+
+<details class="deep"><summary>Details: the exact algorithm</summary>
+  <ol>
+    <li>If Routekeeper is turned off with the <span class="ui">Routekeeper On</span> switch, everything goes direct.</li>
+    <li>A connection to the address and port of any proxy in the list goes direct, and rules aren’t checked.</li>
+    <li>The candidates are enabled, unexpired rules whose app, destination and, if set, port and protocol match. The app matches exactly, as a child process (if the rule has the setting on) or as “Any App”.</li>
+    <li>Each candidate gets a weight: six numbers that are compared in order:
+      <ul>
+        <li>destination: an exact name or IP address is 4000; a <code>*.name</code> wildcard is 3000 plus the length of the wildcard in characters; a subnet is 2000 plus the prefix length; any address is 0. A service gets the weight of the entry that matched: a “this name only” name from its list counts as an exact name, a “with subdomains” name as a <code>*.name</code> wildcard, and a subnet as a subnet;</li>
+        <li>address typed in by hand: 1, service: 0;</li>
+        <li>port set: 1, not set: 0;</li>
+        <li>protocol set: 1, not set: 0;</li>
+        <li>app: exact 3, child process 2, any 1;</li>
+        <li>action: <span class="ui">Block</span> 3, <span class="ui">Through Proxy</span> 2, <span class="ui">Direct</span> 1, <span class="ui">Ask</span> 0.</li>
+      </ul>
+    </li>
+    <li>The higher weight wins. If everything is equal, the rule that appeared earlier in the list of rules wins. Sorting the table doesn’t affect this.</li>
+    <li>If there are no candidates: a connection to this same Mac (<code>127.0.0.0/8</code>, <code>::1</code>, <code>localhost</code>) goes direct if the <span class="ui">Leave localhost alone</span> setting is on; everything else is decided by the mode.</li>
+  </ol>
+  <p>What follows from this:</p>
+  <ul>
+    <li>A rule with a port but any address loses to a rule with an address but no port: address precision is compared first.</li>
+    <li>If a service’s list has an exact name, the service wins over your <code>*.</code> wildcard for that name: a wildcard loses to an exact name, no matter who typed it. To override the service, type the exact name.</li>
+    <li>A wildcard always wins over a subnet. <code>*.corp.example</code> beats <code>10.0.0.0/8</code> for a name in that domain, even if its address is in the subnet.</li>
+    <li>The rule “Any App · any address” applies before the mode: the mode decides only when no rule matches.</li>
+  </ul>
+</details>
+
+<h2 id="hostnames">Rules by site name</h2>
+<p>Rules with a name (<code>example.com</code>, <code>*.example.com</code>) and services compare the server name. Routekeeper knows the name when the app asked macOS to connect by name. Browsers and most apps do this.</p>
+<p>There’s no name when:</p>
+<ul>
+  <li>the app connects to a bare IP address: some messengers and games do this, and so do <code>ssh 203.0.113.10</code> and programs with their own way of looking up addresses;</li>
+  <li>the connection goes over UDP, including QUIC in browsers: most often it has no name.</li>
+</ul>
+<p>Then name rules and services don’t match the connection. It follows rules with an IP address or subnet and the app’s route. The exception is services that include subnets, such as Telegram: their connections are recognized by IP too. For more, see <a href="../../../en/docs/limits/#hostnames">Limitations</a>.</p>
+
+<h3 id="quic-fix">Example: video in the browser goes around the proxy</h3>
+<p>The browser goes <span class="ui">Direct</span> or isn’t in the list, and the YouTube service goes <span class="ui">Through Proxy</span>. Pages open through the proxy: regular HTTPS goes over TCP and carries the name. But the browser often loads video over QUIC, which is UDP to port 443, usually without a name. Such a connection follows the browser’s route, that is, it goes direct.</p>
+<p>The fix is to block QUIC for the browser:</p>
+<ol class="steps">
+  <li>In the <span class="ui">Rules</span> section, press <kbd>⌘N</kbd>.</li>
+  <li><span class="ui">App</span>: <span class="ui">Change</span> → choose the browser.</li>
+  <li>Leave <span class="ui">Destination</span> empty. <span class="ui">Port</span>: <code>443</code>. <span class="ui">Protocol</span>: <span class="ui">UDP</span>. <span class="ui">Action</span>: <span class="ui">Block</span>.</li>
+  <li>Click <span class="ui">Save</span>.</li>
+</ol>
+<p>The browser switches to regular HTTPS over TCP. Such a connection carries the name and follows the service’s rule, through the proxy. Sites keep working. A detailed recipe: <a href="../../../en/docs/recipes/#browser-video">One video service in the browser through a proxy</a>.</p>
+<p>If the browser itself goes <span class="ui">Through Proxy</span>, you don’t need this rule: its UDP is already blocked by the proxy’s <a href="../../../en/docs/proxies/#toggles"><span class="ui">Block UDP and QUIC</span></a> toggle.</p>
+<p><span class="ui">Monitor</span> shows connections without a name only with their IP address; see <a href="../../../en/docs/monitoring/#monitor">Monitor</a>.</p>
+
+<h2 id="sources">The list of rules</h2>
+<h3>Columns</h3>
+<ul>
+  <li><span class="ui">App</span>: the app, or <span class="ui">All Apps</span>.</li>
+  <li><span class="ui">Destination</span>: the address, “Any address” or “Service: YouTube”; after the colon comes the port, after the “·” the protocol. The note is below.</li>
+  <li><span class="ui">Action</span>: “Proxy: Amsterdam”, “Direct”, “Block” or “Ask”.</li>
+  <li><span class="ui">Duration</span>: <span class="ui">Forever</span>, or <span class="ui">Until Quit</span> for a temporary rule from the prompt, which is deleted when the app quits.</li>
+  <li><span class="ui">Source</span>: where the rule came from; see below.</li>
+  <li><span class="ui">On</span>: a toggle. A turned-off rule has no effect: connections follow the other rules and the mode.</li>
+</ul>
+<p>Clicking a column header sorts the list. Search in the toolbar looks through the app, the address and the note.</p>
+
+<h3>Sources</h3>
+<div class="table"><table>
+  <thead><tr><th>Source</th><th>Where the rule comes from</th></tr></thead>
+  <tbody>
+    <tr><td><span class="ui">Manual</span></td><td>You created it yourself: in the rule window, in <span class="ui">Apps</span>, by adding a service, or from <span class="ui">Monitor</span>.</td></tr>
+    <tr><td><span class="ui">From Prompt</span></td><td>Your answer in the prompt with the “While … is running” or <span class="ui">Forever</span> duration. An answer with the <span class="ui">Once</span> duration doesn’t create a rule. See <a href="../../../en/docs/firewall/#ask">Ask</a>.</td></tr>
+    <tr><td><span class="ui">Apple</span></td><td><span class="ui">Ask</span> mode allowed an Apple program by itself.</td></tr>
+    <tr><td><span class="ui">Installed Before</span></td><td><span class="ui">Ask</span> mode allowed an app installed before Routekeeper by itself.</td></tr>
+    <tr><td><span class="ui">For Review</span></td><td>Routekeeper let the connection through without asking and left a rule for you to review. This happens in <span class="ui">Ask</span> mode when there was no one to answer (the Routekeeper app wasn’t running), and in <a href="../../../en/docs/firewall/#silent"><span class="ui">Silent</span></a> mode with the <span class="ui">Create rules “for review”</span> setting.</td></tr>
+    <tr><td><span class="ui">Default</span></td><td>Built-in rules; see <a href="#built-in">below</a>.</td></tr>
+  </tbody>
+</table></div>
+<p>The <span class="ui">Source</span> menu in the toolbar shows the rules from one source, with their number in parentheses. To go through the <span class="ui">For Review</span> rules, choose this source, open a rule with a double-click, choose an action and click <span class="ui">Save</span>. Or select several rules and set the action from the context menu. After that, the source becomes <span class="ui">Manual</span>.</p>
+
+<h3>Working with the list</h3>
+<ul>
+  <li><b>A double-click</b> opens a rule.</li>
+  <li><b>The context menu</b>: <span class="ui">Edit…</span>, <span class="ui">Duplicate</span>, <span class="ui">Action</span>, <span class="ui">Enable</span> or <span class="ui">Disable</span>, <span class="ui">Delete</span>. You can select several rules and change them all at once.</li>
+  <li><b>Delete</b> deletes the selected rules without asking.</li>
+  <li><b><kbd>⌘Z</kbd></b> (<span class="ui">Edit</span> → <span class="ui">Undo</span>) undoes the last change: a new rule, an edit, enabling or disabling, deleting, <a href="../../../en/docs/proxies/#switch">moving to another proxy</a>. Deleting a proxy and importing can’t be undone, and the undo history is cleared after them.</li>
+  <li><b><kbd>⌘N</kbd></b>: a new rule.</li>
+</ul>
+
+<h3 id="built-in">Built-in rules</h3>
+<p>Three rules with the <span class="ui">Default</span> source are there from the first launch:</p>
+<ul>
+  <li><b>All Apps · <code>127.0.0.0/8</code> → Direct</b> and <b>All Apps · <code>::1/128</code> → Direct</b>, with the note “Loopback”. Connections to this same Mac (<a class="term" href="../../../en/docs/glossary/#loopback">loopback</a>) never go to the proxy: local development servers, a local proxy client.</li>
+  <li><b>Routekeeper → Direct</b>, with the note “Само приложение (проверка прокси)”, which is Russian for “the app itself (proxy check)”. Routekeeper’s own connections, such as checking for updates and downloading service lists, go direct. In version 0.2.1, this rule is called AppProxy.</li>
+</ul>
+<div class="callout warn"><p><b>Don’t delete or turn off the built-in rules.</b> Without the first two, an app routed through a proxy would also send its connections to this same Mac to the proxy: the app’s route wins over the <span class="ui">Leave localhost alone</span> setting, which applies only when no rule matches.</p></div>
+<p>Two more exceptions work outside the list: connections to the address and port of the proxies themselves always go direct, and the proxy check is run by the network extension, so rules don’t apply to it.</p>
+
+<h2 id="import-export">Import and export</h2>
+<h3>Export</h3>
+<ol class="steps">
+  <li>In the <span class="ui">Rules</span> section, click <span class="ui">Import and Export</span> in the toolbar and choose <span class="ui">Export…</span>. From any section: <span class="ui">File</span> → <span class="ui">Export Rules…</span>.</li>
+  <li>Choose where to save the file. By default, it’s called <code>Routekeeper-rules.json</code>.</li>
+</ol>
+<p>The file contains all rules, including the built-in ones, and all proxies: server addresses, ports and logins. <b>Proxy passwords aren’t saved in the file.</b> Settings (the mode, the <span class="ui">Settings</span> tabs) aren’t saved either. Keep the file private: it has the addresses and logins of your proxies.</p>
+
+<h3>Import</h3>
+<ol class="steps">
+  <li><span class="ui">Import and Export</span> → <span class="ui">Import…</span>, or <span class="ui">File</span> → <span class="ui">Import Rules…</span>. Choose the file.</li>
+  <li>Routekeeper asks: <span class="ui">Replace all rules and proxies?</span> It also shows how many rules and proxies you have now and how many are in the file.</li>
+  <li>Click <span class="ui">Replace</span>.</li>
+  <li>Open the <a href="../../../en/docs/proxies/#add"><span class="ui">Proxy</span></a> section, enter the passwords for proxies that have a login, and click <span class="ui">Check</span>.</li>
+</ol>
+<div class="callout warn"><p><b>Import replaces; it doesn’t add.</b> All current rules and proxies are deleted, and the rules and proxies from the file take their place. This can’t be undone, and <kbd>⌘Z</kbd> won’t help. Before you import, export your current rules so you keep a copy.</p></div>
+<ul>
+  <li>If you import a file that was exported on this same Mac, proxies that are still there keep their saved passwords.</li>
+  <li>Rules that refer to a proxy that isn’t in the file are turned off after import.</li>
+  <li>If the file can’t be read, Routekeeper replies “Couldn’t read the rules file”.</li>
+</ul>
+<p><b>Moving to another Mac:</b> export the rules, copy the file over, import it on the other Mac and enter the proxy passwords. Apps with a developer signature are recognized there too. Programs without a signature are recognized by their file path, so if they’re in a different place on the other Mac, add them again; see <a href="../../../en/docs/apps/#cli">Command-line programs</a>.</p>
+    <p class="checked">Checked against the Routekeeper code (version 0.2.1 and the one after it) on October 4, 2026.</p>
+    <nav class="pager"><a class="prev" href="../../../en/docs/apps/"><span>Previous</span>Apps and services</a><a class="next" href="../../../en/docs/firewall/"><span>Next</span>Firewall modes</a></nav>
+  </article>
+</main>
+
+<div class="wrap">
+  <footer class="footer"><span>© 2026 Ilya Bazhenov</span><span><a href="../../../en/">Routekeeper for macOS</a> · <a href="../../../en/docs/">Docs</a> · <a href="../../../en/privacy/">Privacy</a> · <a href="https://github.com/ilyabazhenov/routekeeper">GitHub</a></span></footer>
+</div>
+
+<script src="../../../docs/assets/docs.js?v=3e67278c"></script>
+</body>
+</html>
