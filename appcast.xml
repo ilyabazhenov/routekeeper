@@ -3,13 +3,16 @@
     <channel>
         <title>Routekeeper</title>
         <item>
-            <title>0.2.1</title>
-            <pubDate>Sat, 03 Oct 2026 22:21:37 +0400</pubDate>
+            <title>0.3.0</title>
+            <pubDate>Mon, 05 Oct 2026 18:39:50 +0400</pubDate>
             <link>https://getroutekeeper.app/</link>
-            <sparkle:version>10</sparkle:version>
-            <sparkle:shortVersionString>0.2.1</sparkle:shortVersionString>
+            <sparkle:informationalUpdate>
+                <sparkle:belowVersion>11</sparkle:belowVersion>
+            </sparkle:informationalUpdate>
+            <sparkle:version>11</sparkle:version>
+            <sparkle:shortVersionString>0.3.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-            <enclosure url="https://github.com/ilyabazhenov/routekeeper/releases/download/v0.2.1/Routekeeper.dmg" length="22425857" type="application/octet-stream" sparkle:edSignature="krtH7OO1nsOjhpfF7E9kkxT7WflPK0ItDtNusEoQ9QV6k2FeYTNj7zQIaGCnFS7rmCQH9bJp1y0ih37s+zTFAg=="/>
+            <enclosure url="https://github.com/ilyabazhenov/routekeeper/releases/download/v0.3.0/Routekeeper.dmg" length="23455894" type="application/octet-stream" sparkle:edSignature="iBvdH9MHoF1f7kiUo5Ya7212sFVdlwRVy9cf30zI+gz/U4e4VD50ogvgkPniVs8Im1c2NYv3MK+xinAQn4a0AQ=="/>
         </item>
     </channel>
 </rss>
