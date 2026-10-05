@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="../../../docs/assets/docs.css?v=904b8bd7">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=19efe7ca">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/en/start.html. Edit the fragment, not this file. -->
@@ -40,6 +40,7 @@
     <span class="group">Getting started</span>
     <a href="../../../en/docs/">Docs overview</a>
     <a href="../../../en/docs/start/" aria-current="page">Quick start</a>
+    <a href="../../../en/docs/license/">License</a>
     <a href="../../../en/docs/concepts/">How it works</a>
     <span class="group">Setup</span>
     <a href="../../../en/docs/proxies/">Proxies</a>
@@ -64,6 +65,7 @@
     <span class="group">Getting started</span>
     <a href="../../../en/docs/">Docs overview</a>
     <a href="../../../en/docs/start/" aria-current="page">Quick start</a>
+    <a href="../../../en/docs/license/">License</a>
     <a href="../../../en/docs/concepts/">How it works</a>
     <span class="group">Setup</span>
     <a href="../../../en/docs/proxies/">Proxies</a>
@@ -87,6 +89,7 @@
   <div class="card"><b>A Mac with macOS 14 Sonoma or later</b><p>Macs with Apple silicon and with Intel both work.</p></div>
   <div class="card"><b>An administrator account</b><p>macOS asks for an administrator password when you allow the <a class="term" href="../../../en/docs/glossary/#network-extension">network extension</a>.</p></div>
   <div class="card"><b>A proxy server</b><p>The address, port and, if needed, the login and password of your <a class="term" href="../../../en/docs/glossary/#proxy">proxy</a>. If you don’t have a proxy yet, see <a href="#first-proxy">where to get one</a> below.</p></div>
+  <div class="card"><b>A license</b><p>Without one Routekeeper doesn’t route traffic, but you can set everything up in advance. <a href="../../../en/docs/license/">How to get one</a>.</p></div>
   <div class="card"><b>About ten minutes</b><p>Sometimes macOS asks you to restart the Mac after the extension is installed.</p></div>
 </div>
 
@@ -166,7 +169,7 @@
         <span class="mock-btn" style="width: 20px; height: 20px; padding: 0; justify-content: center; border-radius: 50%">4</span>
         <div class="grow" style="display: grid; gap: 4px">
           <b>Add a proxy server</b>
-          <div class="mock-sub">SOCKS5, HTTP or HTTPS, with or without a login. If you’ve copied a proxy string (like socks5://user:pass@host:1080), paste it.</div>
+          <div class="mock-sub">SOCKS5, HTTP or HTTPS, with or without a login. If you’ve copied a proxy string (like socks5://user:pass@host:1080), paste it. Have your own server (VPS)? Routekeeper can set up a proxy on it.</div>
         </div>
       </div>
       <div class="mock-group" style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; opacity: .6">
@@ -366,7 +369,7 @@
 
 <h3>Where to get a proxy</h3>
 <div class="grid">
-  <div class="card"><b>Your own server</b><p>Rent a <a class="term" href="../../../en/docs/glossary/#vps">VPS</a> and install an HTTPS proxy on it with one command. At the end, the script prints a ready line for Routekeeper. Step by step: <a href="../../../en/docs/server/">Your own proxy server</a>.</p></div>
+  <div class="card"><b>Your own server</b><p>Rent a <a class="term" href="../../../en/docs/glossary/#vps">VPS</a>, click <span class="ui">Your Own Server…</span> and enter the server’s IP and password: Routekeeper sets up an HTTPS proxy on it and adds it by itself. Step by step: <a href="../../../en/docs/server/">Your own proxy server</a>.</p></div>
   <div class="card"><b>A client on this Mac</b><p>Clients such as sing-box, Xray or Clash usually open a local <a class="term" href="../../../en/docs/glossary/#socks5">SOCKS5</a> port on the Mac, for example <code>127.0.0.1:1080</code>. Add that port. Details: <a href="../../../en/docs/proxies/#local-client">local client</a>.</p></div>
   <div class="card"><b>A work proxy</b><p>Your network administrator gives you the address, port, login and password. Details: <a href="../../../en/docs/proxies/#work-proxy">work proxy</a>.</p></div>
   <div class="card"><b>A ready-made string</b><p>If you were given a string like <code>socks5://login:password@server:1080</code>, just copy and paste it.</p></div>
@@ -382,6 +385,7 @@
   <li>If you want to check the proxy before saving it, click <span class="ui">Check</span>. After a couple of seconds, “Working · 48 ms · IP 203.0.113.7” or an error message appears next to it.</li>
   <li>Click <span class="ui">Add</span>. Routekeeper saves the proxy and checks it right away.</li>
 </ol>
+<p>Have a rented server but no proxy? Click <span class="ui">Your Own Server…</span>: a wizard opens that sets up a proxy on the server, see <a href="../../../en/docs/server/#wizard">Setting it up from Routekeeper</a>.</p>
 <p>No string? Click <span class="ui">Enter Manually…</span> and fill in the fields yourself:</p>
 <ul>
   <li><span class="ui">Type</span>: SOCKS5, HTTP or HTTPS.</li>
@@ -502,7 +506,7 @@
   <a class="card" href="../../../en/docs/monitoring/"><b>Checking and monitoring</b><p>Overview, the connection monitor and the <span class="ui">Leaks</span> section.</p></a>
 </div>
     <p class="checked">Checked against the Routekeeper code (version 0.2.1 and the one after it) on October 4, 2026.</p>
-    <nav class="pager"><a class="prev" href="../../../en/docs/"><span>Previous</span>Docs overview</a><a class="next" href="../../../en/docs/concepts/"><span>Next</span>How it works</a></nav>
+    <nav class="pager"><a class="prev" href="../../../en/docs/"><span>Previous</span>Docs overview</a><a class="next" href="../../../en/docs/license/"><span>Next</span>License</a></nav>
   </article>
 </main>
 

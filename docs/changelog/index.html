@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Что нового — Routekeeper</title>
-<meta name="description" content="История версий Routekeeper: что изменилось в 0.2.1, 0.2.0 и 0.1.0 и что готовится в следующей версии — новый идентификатор приложения, раздел «Мимо прокси», блокировка при нечитаемых настройках, новые сервисы.">
+<meta name="description" content="История версий Routekeeper: что изменилось в 0.3.0, 0.2.1, 0.2.0 и 0.1.0: лицензии, свой прокси-сервер из приложения, новый идентификатор приложения, раздел «Мимо прокси», блокировка при нечитаемых настройках, новые сервисы.">
 <meta name="theme-color" content="#0a0f1f">
 <link rel="canonical" href="https://getroutekeeper.app/docs/changelog/">
 <link rel="alternate" hreflang="ru" href="https://getroutekeeper.app/docs/changelog/">
@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="../../docs/assets/docs.css?v=904b8bd7">
+<link rel="stylesheet" href="../../docs/assets/docs.css?v=19efe7ca">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/ru/changelog.html. Edit the fragment, not this file. -->
@@ -40,6 +40,7 @@
     <span class="group">Начало</span>
     <a href="../../docs/">Обзор документации</a>
     <a href="../../docs/start/">Быстрый старт</a>
+    <a href="../../docs/license/">Лицензия</a>
     <a href="../../docs/concepts/">Как это работает</a>
     <span class="group">Настройка</span>
     <a href="../../docs/proxies/">Прокси</a>
@@ -64,6 +65,7 @@
     <span class="group">Начало</span>
     <a href="../../docs/">Обзор документации</a>
     <a href="../../docs/start/">Быстрый старт</a>
+    <a href="../../docs/license/">Лицензия</a>
     <a href="../../docs/concepts/">Как это работает</a>
     <span class="group">Настройка</span>
     <a href="../../docs/proxies/">Прокси</a>
@@ -83,9 +85,12 @@
     </nav></details>
 <p class="lead-in">Routekeeper сам предлагает обновиться, когда выходит новая версия: см. <a href="../../docs/maintenance/#update">«Обновления»</a>. Все сборки лежат в <a href="https://github.com/ilyabazhenov/routekeeper/releases">GitHub Releases</a>.</p>
 
-<h2 id="next">В следующей версии</h2>
-<div class="callout"><p><b>Эта версия ещё не вышла.</b> Изменения ниже уже готовы и войдут в следующий выпуск (сборка 11). Переход на неё с 0.2.x делается вручную, один раз: <a href="../../docs/maintenance/#migrate">«Переход с 0.2.x»</a>.</p></div>
+<h2 id="v0-3-0">0.3.0 — 5 октября 2026</h2>
+<p>Сборка 11.</p>
+<div class="callout"><p><b>Переход с 0.2.x делается вручную, один раз:</b> <a href="../../docs/maintenance/#migrate">«Переход с 0.2.x на 0.3.0»</a>.</p></div>
 <ul>
+  <li><b>Лицензия.</b> Routekeeper направляет трафик только с действующей лицензией. Она привязана к одному Mac и обычно действует год. Без неё всё остальное работает: можно заранее настроить прокси, приложения и правила. Код Mac и поле для лицензии — в <span class="ui">Настройки</span> → <span class="ui">Лицензия</span>. За две недели до конца срока Routekeeper напоминает о продлении. Подробнее — <a href="../../docs/license/">«Лицензия»</a>.</li>
+  <li><b>Свой прокси-сервер из приложения.</b> Кнопка <span class="ui">Свой сервер…</span> в разделе <span class="ui">Прокси</span> и на приветственном экране открывает мастер: впишите IP и пароль арендованного сервера и домен, и Routekeeper сам поставит на сервер HTTPS-прокси и добавит его. Терминал не нужен. Пароль сервера не сохраняется: Routekeeper входит по своему ключу из связки ключей. В карточке такого прокси появляется блок <span class="ui">Сервер</span>: проверить и обновить сервер, сменить пароль прокси, закрыть вход на сервер по паролю, удалить прокси с сервера. Подробнее — <a href="../../docs/server/#wizard">«Установка из Routekeeper»</a>.</li>
   <li><b>Новый идентификатор приложения.</b> Системный идентификатор меняется с <code>dev.ilyabazenov.appproxy</code> на <code>app.getroutekeeper.mac</code>. Для macOS это новое приложение, поэтому версии 0.2.x только сообщат о нём и дадут ссылку на сайт. Старую версию нужно удалить её же кнопкой <span class="ui">Удалить…</span>, а новую — установить и заново дать три разрешения. Правила, прокси с паролями и настройки переезжают сами. Если старое <a class="term" href="../../docs/glossary/#network-extension">расширение</a> осталось включённым, новая версия покажет плашку и подскажет, как его выключить. В Системных настройках расширение теперь называется «Routekeeper Extension».</li>
   <li><b>«Мимо прокси» вместо «Утечки».</b> Раздел переименован. У каждого вида записей теперь своя важность: <span class="ui">Процесс мимо правила</span> — самое серьёзное (красный), <span class="ui">UDP мимо прокси</span> — оранжевый, <span class="ui">DNS мимо прокси</span> — наименее важное (жёлтый). Если напрямую идут только <a class="term" href="../../docs/glossary/#dns">DNS</a>-запросы, <span class="ui">Обзор</span> не поднимает тревогу, а спокойно пишет «DNS-запросы идут напрямую». Подсказка к такой записи объясняет, что при этом видит DNS-провайдер.</li>
   <li><b>Блокировка при нечитаемых настройках.</b> Если расширение не может прочитать файл настроек — его повредили или поверх новых настроек поставили более старую версию, — Routekeeper больше не начинает с чистых настроек, отправляя все приложения напрямую. Вместо этого он блокирует все соединения, кроме соединений внутри Mac, самого Routekeeper и системной службы DNS. Плашка предлагает <span class="ui">Проверить обновления</span> или <span class="ui">Сбросить настройки…</span>, старый файл при сбросе сохраняется. Подробнее — в <a href="../../docs/troubleshooting/#locked">«Все соединения заблокированы»</a>.</li>

@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="../../docs/assets/docs.css?v=904b8bd7">
+<link rel="stylesheet" href="../../docs/assets/docs.css?v=19efe7ca">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/ru/maintenance.html. Edit the fragment, not this file. -->
@@ -40,6 +40,7 @@
     <span class="group">Начало</span>
     <a href="../../docs/">Обзор документации</a>
     <a href="../../docs/start/">Быстрый старт</a>
+    <a href="../../docs/license/">Лицензия</a>
     <a href="../../docs/concepts/">Как это работает</a>
     <span class="group">Настройка</span>
     <a href="../../docs/proxies/">Прокси</a>
@@ -64,6 +65,7 @@
     <span class="group">Начало</span>
     <a href="../../docs/">Обзор документации</a>
     <a href="../../docs/start/">Быстрый старт</a>
+    <a href="../../docs/license/">Лицензия</a>
     <a href="../../docs/concepts/">Как это работает</a>
     <span class="group">Настройка</span>
     <a href="../../docs/proxies/">Прокси</a>
@@ -114,11 +116,11 @@
 <div class="callout warn"><p><b>Пока расширение перезапускается,</b> соединения через прокси обрываются, а новые соединения в течение пары секунд могут пойти напрямую, мимо прокси. Поэтому расширение не обновляется само. Подробнее — в <a href="../../docs/limits/#restart-gap">ограничениях</a>.</p></div>
 <p>Обновить расширение можно и в <span class="ui">Настройки</span> → <span class="ui">Расширение</span>: кнопка <span class="ui">Обновить расширение (сейчас …)</span> в разделе <span class="ui">Состояние</span>. Она обновляет сразу, без дополнительного вопроса.</p>
 <p>Если после обновления появилась плашка «Сетевое расширение не отвечает», нажмите <span class="ui">Переустановить расширение</span>. Не помогло — перезагрузите Mac. Подробнее — в <a href="../../docs/troubleshooting/#extension">«Переустановить и остановить расширение»</a>.</p>
-<div class="callout"><p><b>С версии 0.2.x на следующую</b> обычное обновление не сработает: старая версия только сообщит о новой и даст ссылку на сайт. Как перейти — в следующем разделе.</p></div>
+<div class="callout"><p><b>С версии 0.2.x на 0.3.0</b> обычное обновление не сработает: старая версия только сообщит о новой и даст ссылку на сайт. Как перейти — в следующем разделе.</p></div>
 
-<h2 id="migrate">Переход с 0.2.x на следующую версию</h2>
+<h2 id="migrate">Переход с 0.2.x на 0.3.0</h2>
 <div class="callout"><p><b>Этот раздел — про версию, которая выйдет после 0.2.1.</b> Пока её нет в <a href="https://github.com/ilyabazhenov/routekeeper/releases">GitHub Releases</a>, ничего делать не нужно.</p></div>
-<p>В следующей версии у Routekeeper меняется системный идентификатор приложения (bundle ID): был <code>dev.ilyabazenov.appproxy</code>, станет <code>app.getroutekeeper.mac</code>. Для macOS это другое приложение. Разрешения, запуск при входе, уведомления и настройки окна привязаны к идентификатору, а старое расширение может удалить только старое приложение. Поэтому версия 0.2.x не станет ставить новую поверх себя, а только сообщит о ней и даст ссылку на сайт.</p>
+<p>В версии 0.3.0 у Routekeeper поменялся системный идентификатор приложения (bundle ID): был <code>dev.ilyabazenov.appproxy</code>, стал <code>app.getroutekeeper.mac</code>. Для macOS это другое приложение. Разрешения, запуск при входе, уведомления и настройки окна привязаны к идентификатору, а старое расширение может удалить только старое приложение. Поэтому версия 0.2.x не станет ставить новую поверх себя, а только сообщит о ней и даст ссылку на сайт.</p>
 <h3>Шаги</h3>
 <ol class="steps">
   <li>По желанию сохраните правила в файл: <span class="ui">Правила</span> → <span class="ui">Импорт и экспорт</span> → <span class="ui">Экспортировать…</span>. Обычно это не нужно, правила переедут сами, но так у вас будет копия. Пароли прокси в файл не попадают.</li>
@@ -181,11 +183,12 @@
   <thead><tr><th>Где</th><th>Что</th></tr></thead>
   <tbody>
     <tr><td><code>/Library/Application Support/Routekeeper</code></td><td>Правила, прокси с паролями, настройки, списки сервисов для расширения, резервные копии <code>config.broken-…json</code>. Доступно только администратору. В версиях 0.2.x — <code>/Library/Application Support/AppProxy</code>.</td></tr>
-    <tr><td><code>~/Library/Application Support/app.getroutekeeper.mac</code></td><td>Скачанный каталог сервисов.</td></tr>
+    <tr><td><code>~/Library/Application Support/app.getroutekeeper.mac</code></td><td>Скачанный каталог сервисов, список серверов из мастера настройки, время последней проверки лицензии.</td></tr>
     <tr><td><code>~/Library/Caches/app.getroutekeeper.mac</code></td><td>Данные карты трафика (около 55 МБ, появляются после первого открытия карты) и кеш загрузок.</td></tr>
     <tr><td><code>~/Library/HTTPStorages/app.getroutekeeper.mac</code></td><td>Служебное хранилище сетевых запросов приложения, его создаёт macOS.</td></tr>
     <tr><td><code>~/Library/Preferences/app.getroutekeeper.mac.plist</code></td><td>Настройки окна: уведомления, обновления, пройден ли приветственный экран.</td></tr>
     <tr><td>Системные настройки → Основные → Объекты входа (в macOS 15 и новее — Объекты входа и расширения)</td><td>Запуск при входе, если вы его включали.</td></tr>
+    <tr><td>Связка ключей, записи «Routekeeper license» и «Routekeeper server key»</td><td><a href="../../docs/license/">Лицензия</a> и ключи SSH <a href="../../docs/server/">своих серверов</a>.</td></tr>
   </tbody>
 </table></div>
 <p>Удалить всё это можно командами в Терминале. Выполняйте их после того, как Routekeeper удалён по шагам выше. Каждую команду копируйте и запускайте отдельно.</p>
@@ -196,6 +199,7 @@
 <div class="cmd"><pre><code>rm -rf ~/Library/Application\ Support/app.getroutekeeper.mac ~/Library/Caches/app.getroutekeeper.mac ~/Library/HTTPStorages/app.getroutekeeper.mac</code></pre></div>
 <p>Настройки окна:</p>
 <div class="cmd"><pre><code>defaults delete app.getroutekeeper.mac</code></pre></div>
+<p>Лицензию и ключи серверов удалите в приложении «Связка ключей»: найдите «Routekeeper» и удалите найденные записи. Лицензию удаляйте, только если не будете возвращаться к Routekeeper на этом Mac: иначе её придётся вводить заново.</p>
 <details class="deep"><summary>Подробнее: остатки версий 0.2.x</summary>
   <p>Версии до 0.2.1 включительно пользовались прежним идентификатором. Если вы ставили их, удалите и эти файлы:</p>
   <div class="cmd"><pre><code>sudo rm -rf "/Library/Application Support/AppProxy"</code></pre></div>

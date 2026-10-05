@@ -99,7 +99,7 @@ a { color: inherit; text-decoration: none; }
     <span class="eyebrow">Privacy</span>
     <h1>What Routekeeper knows <span class="warm">and where it doesn’t go</span></h1>
     <p class="lede"><b>Routekeeper doesn’t collect data about you or your traffic and doesn’t send it anywhere.</b> Everything it knows about your connections stays on your Mac.</p>
-    <p class="dated">In effect from the first public version of Routekeeper. Revised October 4, 2026.</p>
+    <p class="dated">In effect from the first public version of Routekeeper. Revised October 5, 2026.</p>
 
     <h2>What Routekeeper sees</h2>
     <p>To decide where a connection goes, the Routekeeper system extension sees, for every outgoing connection:</p>
@@ -118,6 +118,7 @@ a { color: inherit; text-decoration: none; }
         <tr><td>Rules, proxy list, settings, proxy passwords</td><td>The system extension’s configuration file, readable only by root</td><td>Until you delete them. Kept when the app is removed, so your rules come back if you reinstall.</td></tr>
         <tr><td>Service logs</td><td>The macOS system log (unified logging)</td><td>As long as macOS keeps them, usually a few days.</td></tr>
         <tr><td>Service catalog</td><td>The app’s folder in <code>~/Library/Application Support</code></td><td>Until you delete it. Updated every 6 hours.</td></tr>
+        <tr><td>License: a name, an email if given, the Mac’s code and the term</td><td>The macOS keychain; the time of the last check is in the app’s folder in <code>~/Library/Application Support</code></td><td>Until you delete it. Checked on the Mac, with no network requests.</td></tr>
         <tr><td>Unpacked country and network database for the traffic map</td><td><code>~/Library/Caches</code>, about 55 MB</td><td>Until you delete it. If you do, the app unpacks it again.</td></tr>
       </tbody>
     </table></div>

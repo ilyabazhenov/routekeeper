@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Your own proxy server — Routekeeper</title>
-<meta name="description" content="How to set up your own HTTPS proxy for Routekeeper on a VPS in 15 minutes with one command: which server to order, a domain, SSH login, installation, adding it to Routekeeper, protecting the server, and what to do about each script message.">
+<meta name="description" content="How to set up your own HTTPS proxy for Routekeeper on a VPS in 15 minutes: the Your Own Server… wizard in the app, or one command in Terminal. Which server to order, a domain, installation, managing the server from Routekeeper, protecting the server, and what to do about each message.">
 <meta name="theme-color" content="#0a0f1f">
 <link rel="canonical" href="https://getroutekeeper.app/en/docs/server/">
 <link rel="alternate" hreflang="ru" href="https://getroutekeeper.app/docs/server/">
@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="../../../docs/assets/docs.css?v=904b8bd7">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=19efe7ca">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/en/server.html. Edit the fragment, not this file. -->
@@ -31,7 +31,7 @@
   <div class="hero-copy">
     <span class="crumbs"><a href="../../../en/docs/">Docs</a> · Setup</span>
     <h1>Your own proxy server <span class="warm">in 15 minutes</span></h1>
-    <p class="lede"><b>One command turns a rented VPS into an HTTPS proxy for Routekeeper.</b> Only you have the key to the proxy, and without the password the server answers like an ordinary web server.</p>
+    <p class="lede"><b>Routekeeper turns a rented VPS into an HTTPS proxy by itself: all it needs is the server’s IP and password.</b> Only you have the key to the proxy, and without the password the server answers like an ordinary web server.</p>
   </div>
 </section>
 
@@ -40,6 +40,7 @@
     <span class="group">Getting started</span>
     <a href="../../../en/docs/">Docs overview</a>
     <a href="../../../en/docs/start/">Quick start</a>
+    <a href="../../../en/docs/license/">License</a>
     <a href="../../../en/docs/concepts/">How it works</a>
     <span class="group">Setup</span>
     <a href="../../../en/docs/proxies/">Proxies</a>
@@ -64,6 +65,7 @@
     <span class="group">Getting started</span>
     <a href="../../../en/docs/">Docs overview</a>
     <a href="../../../en/docs/start/">Quick start</a>
+    <a href="../../../en/docs/license/">License</a>
     <a href="../../../en/docs/concepts/">How it works</a>
     <span class="group">Setup</span>
     <a href="../../../en/docs/proxies/">Proxies</a>
@@ -81,7 +83,7 @@
     <a href="../../../en/docs/glossary/">Glossary</a>
     <a href="../../../en/docs/changelog/">What's new</a>
     </nav></details>
-<p class="lead-in">You rent a small server, run one command on it, and get your own <a class="term" href="../../../en/docs/glossary/#proxy">proxy</a>. Routekeeper sends the traffic of the apps you choose to this server, and the server passes that traffic on to the internet.</p>
+<p class="lead-in">You rent a small server, enter its IP and password in Routekeeper, and get your own <a class="term" href="../../../en/docs/glossary/#proxy">proxy</a>. One command in Terminal on the server gives the same result. Routekeeper sends the traffic of the apps you choose to this server, and the server passes that traffic on to the internet.</p>
 <pre class="flow"><code>App → Routekeeper → <b>TLS</b> → your server :443 → internet</code></pre>
 <div class="grid" id="result">
   <div class="card"><b>HTTPS proxy</b><p>An <a class="term" href="../../../en/docs/glossary/#https-proxy">HTTPS proxy</a>: <a class="term" href="../../../en/docs/glossary/#http-connect">HTTP CONNECT</a> inside <a class="term" href="../../../en/docs/glossary/#tls">TLS</a> on the Caddy web server with the <a href="https://github.com/klzgrad/forwardproxy">forwardproxy@naive</a> build. You don’t need to install anything on your Mac except Routekeeper.</p></div>
@@ -94,7 +96,7 @@
 <ul>
   <li><b>A server.</b> A rented <a class="term" href="../../../en/docs/glossary/#vps">VPS</a> with Debian or Ubuntu. What exactly to order is described below.</li>
   <li><b>A domain.</b> Your own, or a free one from DuckDNS: Let’s Encrypt issues the certificate for it. How to get one is in <a href="#domain">step 1</a>.</li>
-  <li><b>A Mac with Routekeeper.</b> If Routekeeper isn’t installed yet, start with the <a href="../../../en/docs/start/#install">Quick start</a>. macOS already has Terminal, which you’ll use to log in to the server.</li>
+  <li><b>A Mac with Routekeeper.</b> If Routekeeper isn’t installed yet, start with the <a href="../../../en/docs/start/#install">Quick start</a>. Terminal is needed only for <a href="#manual">setting it up by hand</a>, and macOS already has it.</li>
   <li><b>About 15 minutes.</b> The installation on the server itself takes 1–3 minutes.</li>
 </ul>
 
@@ -115,6 +117,149 @@
 <p>Some providers, more often cloud ones, give you a regular user instead of root (for example, <code>ubuntu</code>). This user can run administrator commands with <code>sudo</code>. That works too: every step has commands for this case.</p>
 <p>If the provider asks for an SSH key when you order, create a key on your Mac as in the first step of <a href="#security">Protecting the server</a>, and paste its public part into the form. You can copy it with <code>pbcopy &lt; ~/.ssh/my_server.pub</code>. Then log in to the server with the key: <code>ssh -i ~/.ssh/my_server root@<span class="ph">IP</span></code>.</p>
 
+<h2 id="wizard">Setting it up from Routekeeper</h2>
+<p>Routekeeper logs in to the server over <a class="term" href="../../../en/docs/glossary/#ssh">SSH</a> itself, runs the same <a href="#install">installation script</a> as the Terminal command, and adds the finished proxy to the list. Open the wizard in one of these ways:</p>
+<ul>
+  <li>the <span class="ui">Proxy</span> section → the <span class="ui">Your Own Server…</span> button in the toolbar (the server icon);</li>
+  <li>an empty proxy list → <span class="ui">Your Own Server…</span> under <span class="ui">Add a proxy</span>;</li>
+  <li>the welcome screen → the <span class="ui">Add a proxy server</span> step → <span class="ui">Your Own Server…</span>.</li>
+</ul>
+<ol class="steps">
+  <li><b>Server.</b> Enter the server’s IP address and the root password from the hosting provider’s email, and click <span class="ui">Connect</span>. If you log in to the server with an SSH key, choose <span class="ui">SSH key</span> and pick the key file. A user other than root who may use <code>sudo</code> without a password, and a non-standard port, are set under <span class="ui">User and port</span>.
+    <p>Routekeeper creates its own key for the server, adds the public part to the user’s <code>~/.ssh/authorized_keys</code> on the server, and checks that logging in with the key works. From then on Routekeeper logs in only with the key and forgets the password. Then it checks the server without changing anything: the system, the processor, free ports 80 and 443.</p></li>
+  <li><b>Domain.</b> Routekeeper shows the system, the public IP and the fingerprint of the server’s key. Choose a domain:
+    <ul>
+      <li><b>A free one on DuckDNS.</b> Create a name on duckdns.org as in <a href="#duckdns">step 1</a> and enter it. If you also enter the DuckDNS token (it’s at the top of the same page), Routekeeper points the name at the server’s IP itself, and you don’t need to change <code>current ip</code> on the site. The token isn’t saved.</li>
+      <li><b>My own domain.</b> Create an A record with the server’s IP as in <a href="#own-domain">Your own domain</a>, and enter the name.</li>
+    </ul>
+    Click <span class="ui">Install</span>. If the record hasn’t reached DNS yet, Routekeeper waits up to three minutes, checking every 10 seconds.</li>
+  <li><b>Install.</b> The wizard shows the script’s stages as they run. The installation usually takes 1–3 minutes.</li>
+  <li><b>Done.</b> The proxy is already added to Routekeeper, named after the domain, and checked. If you want, turn on <span class="ui">Turn off password logins to the server</span> (see <a href="#wizard-passwords">below</a>) and click <span class="ui">Done</span>. Then choose the <a href="../../../en/docs/apps/">apps</a> that will go through the proxy.</li>
+</ol>
+<figure class="mock-fig">
+  <div class="mock-scroll"><div class="mock-pair">
+    <div class="mock mock-win sheet" aria-hidden="true">
+      <div class="mock-main">
+        <div class="mock-h">Your Own Proxy Server</div>
+        <div class="mock-steps"><span class="on"><span class="n">1</span>Server</span><span><span class="n">2</span>Domain</span><span><span class="n">3</span>Install</span><span><span class="n">4</span>Done</span></div>
+        <div class="mock-group">
+          <div class="mock-row"><div class="mock-note">Routekeeper connects to your server over SSH, sets up an HTTPS proxy on it and adds it to the list. Any VPS with Debian or Ubuntu (x86_64), a public IPv4 address and root access will do.</div></div>
+          <div class="mock-row"><span class="mock-link">Which server will do, and where to find its IP and password</span></div>
+        </div>
+        <div class="mock-group">
+          <div class="mock-row"><span class="grow">Server IP address</span><b class="mk">1</b><span class="mock-input" style="width: 120px">203.0.113.7</span></div>
+          <div class="mock-row"><span class="grow">Log in with</span><b class="mk">2</b><span class="mock-seg"><span class="on">Password</span><span>SSH key</span></span></div>
+          <div class="mock-row"><span class="grow">Password</span><span class="mock-input" style="width: 120px">••••••••••</span></div>
+          <div class="mock-row"><div class="mock-note">The password is needed only once: Routekeeper puts its own key on the server and logs in with it from then on. The password isn’t saved anywhere.</div></div>
+          <div class="mock-row"><span class="grow">› User and port</span><b class="mk">3</b></div>
+        </div>
+        <div class="mock-btns end"><span class="mock-btn">Cancel</span><span class="mock-btn primary">Connect</span></div>
+      </div>
+    </div>
+    <div class="mock mock-win sheet" aria-hidden="true">
+      <div class="mock-main">
+        <div class="mock-h">Your Own Proxy Server</div>
+        <div class="mock-steps"><span><span class="mock-check"></span>Server</span><span class="on"><span class="n">2</span>Domain</span><span><span class="n">3</span>Install</span><span><span class="n">4</span>Done</span></div>
+        <div class="mock-cap">Server</div>
+        <div class="mock-group">
+          <div class="mock-row"><span class="grow">System</span><span class="muted">Debian GNU/Linux 12</span></div>
+          <div class="mock-row"><span class="grow">Public IP</span><span class="muted">203.0.113.7</span></div>
+          <div class="mock-row"><span class="grow">Server key</span><b class="mk">4</b><span class="muted" style="font-family: ui-monospace, Menlo, monospace; font-size: 11px">SHA256:q3Lb…x7Zk</span></div>
+        </div>
+        <div class="mock-cap">Domain</div>
+        <div class="mock-group">
+          <div class="mock-row"><span class="grow">A free one on DuckDNS</span><span class="mock-radio on"></span></div>
+          <div class="mock-row"><span class="grow">My own domain</span><b class="mk">5</b><span class="mock-radio"></span></div>
+          <div class="mock-row"><span class="grow">Name</span><span class="mock-input" style="width: 90px">my-proxy</span><span class="muted">.duckdns.org</span></div>
+          <div class="mock-row"><span class="grow">DuckDNS token</span><b class="mk">6</b><span class="mock-input dim" style="width: 120px">optional</span></div>
+        </div>
+        <div class="mock-group">
+          <div class="mock-row"><span class="grow">Proxy name</span><span class="mock-input dim" style="width: 150px">my-proxy.duckdns.org</span></div>
+        </div>
+        <div class="mock-btns"><span class="mock-btn">Back</span><span class="grow"></span><span class="mock-btn">Cancel</span><span class="mock-btn primary">Install</span></div>
+      </div>
+    </div>
+  </div></div>
+  <figcaption>
+    <ol class="mk-legend">
+      <li>The IP address from the hosting provider’s email. The server’s host name works too.</li>
+      <li>Log in with the root password, or with the SSH key you already use for the server (<span class="ui">Choose Key…</span> opens the <code>~/.ssh</code> folder).</li>
+      <li>This is where you change the SSH user and port. A user other than root works if <code>sudo</code> lets it in without a password.</li>
+      <li>The fingerprint of the server’s key. Routekeeper remembers the key on the first login and refuses to connect if a different server answers at this address.</li>
+      <li>Your own domain: Routekeeper shows which A record to create.</li>
+      <li>With a DuckDNS token, Routekeeper points the name at the server’s IP itself. Without one, do it on the DuckDNS site. The token isn’t saved.</li>
+    </ol>
+    A diagram of the first two steps of the <span class="ui">Your Own Server…</span> wizard. The data is made up.
+  </figcaption>
+</figure>
+<figure class="mock-fig">
+  <div class="mock-scroll"><div class="mock-pair">
+    <div class="mock mock-win sheet" aria-hidden="true">
+      <div class="mock-main">
+        <div class="mock-h">Your Own Proxy Server</div>
+        <div class="mock-steps"><span><span class="mock-check"></span>Server</span><span><span class="mock-check"></span>Domain</span><span class="on"><span class="n">3</span>Install</span><span><span class="n">4</span>Done</span></div>
+        <div class="mock-group">
+          <div class="mock-row"><span class="mock-check"></span><span>Checking the server</span></div>
+          <div class="mock-row"><span class="mock-check"></span><span>Checking the domain my-proxy.duckdns.org</span></div>
+          <div class="mock-row"><span class="mock-check"></span><span>Caddy v2.11.2-naive</span></div>
+          <div class="mock-row"><span class="mock-check"></span><span>BBR</span></div>
+          <div class="mock-row"><span class="mock-spin"></span><span class="grow">fail2ban for SSH</span><b class="mk">1</b></div>
+          <div class="mock-row"><span class="mock-note">Setup usually takes 1–3 minutes.</span></div>
+        </div>
+        <div class="mock-btns end"><b class="mk">2</b><span class="mock-btn">Stop</span></div>
+      </div>
+    </div>
+    <div class="mock mock-win sheet" aria-hidden="true">
+      <div class="mock-main">
+        <div class="mock-h">Your Own Proxy Server</div>
+        <div class="mock-steps"><span><span class="mock-check"></span>Server</span><span><span class="mock-check"></span>Domain</span><span><span class="mock-check"></span>Install</span><span class="on"><span class="n">4</span>Done</span></div>
+        <div class="mock-group">
+          <div class="mock-row"><span class="mock-check"></span><b>Proxy “my-proxy.duckdns.org” added</b></div>
+          <div class="mock-row"><span class="mock-ok">✓ Working · 182 ms · IP 203.0.113.7</span><b class="mk">3</b></div>
+          <div class="mock-row"><div class="mock-note">Now choose the apps that will go through this proxy.</div></div>
+        </div>
+        <div class="mock-group">
+          <div class="mock-row"><span class="grow">Turn off password logins to the server</span><b class="mk">4</b><span class="mock-toggle"></span></div>
+          <div class="mock-row"><div class="mock-note">Bots guess SSH passwords around the clock. Routekeeper already logs in with its own key and no longer needs the password. You and any programs that log in to the server with the root password will need a key too: you can save Routekeeper’s key from the proxy card, More → Save SSH Key….</div></div>
+        </div>
+        <div class="mock-btns end"><span class="mock-btn primary">Done</span></div>
+      </div>
+    </div>
+  </div></div>
+  <figcaption>
+    <ol class="mk-legend">
+      <li>The installation stages are the same ones the script prints in Terminal. If a stage fails, it turns red, and below it appear the message, <span class="ui">Details</span> and a <span class="ui">What to do about it</span> link.</li>
+      <li><span class="ui">Stop</span> interrupts the installation. The server stays as far as the script got. Running the installation again is safe: it finishes the rest. After an error, the buttons here are <span class="ui">Back</span> and <span class="ui">Try Again</span>.</li>
+      <li>The proxy is already added to Routekeeper and checked: you see the check time and the IP address websites will see.</li>
+      <li>Off by default. If you turn it on, after <span class="ui">Done</span> the server stops accepting passwords and lets in only keys.</li>
+    </ol>
+    A diagram of the <span class="ui">Install</span> and <span class="ui">Done</span> steps. The data is made up.
+  </figcaption>
+</figure>
+<p>If a step fails, the wizard shows the message, <span class="ui">Details</span> under it, and a <span class="ui">What to do about it</span> link to the right part of <a href="#troubleshooting">If something goes wrong</a>. The messages are the same ones the script prints. Fix the cause and click <span class="ui">Try Again</span>: the script skips what’s already done.</p>
+<p>If a Routekeeper proxy is already installed on the server, the wizard says so on the <span class="ui">Domain</span> step and fills in the domain. The button then says <span class="ui">Update</span>: the login and password are kept, and the proxy with this domain in Routekeeper is updated rather than added a second time.</p>
+
+<h3 id="wizard-passwords">Password logins to the server</h3>
+<p>Bots try to guess SSH passwords around the clock. fail2ban blocks an address after five failures, but it’s safer to turn off password logins completely. The <span class="ui">Turn off password logins to the server</span> switch on the last step does this: Routekeeper creates <code>/etc/ssh/sshd_config.d/10-routekeeper-keys-only.conf</code> and reloads the SSH settings. If <code>sshd -t</code> finds an error in the settings, the file is removed and nothing changes. The switch is off by default. You can do the same later in the proxy card.</p>
+<div class="callout warn"><p>After that, the server lets in only keys. To log in yourself from Terminal, save Routekeeper’s key: in the proxy card, <span class="ui">More</span> → <span class="ui">Save SSH Key…</span>, then <code>ssh -i ~/.ssh/<span class="ph">file</span> root@<span class="ph">IP</span></code>. Programs that log in to the server with the root password (VPN panels, for example) will need a key too. If you lose access, log in through the server’s web console in the hosting provider’s panel and delete this file.</p></div>
+
+<h3 id="wizard-manage">Managing the server</h3>
+<p>A proxy set up by the wizard has a <span class="ui">Server</span> block in its card in the <span class="ui">Proxy</span> section: whether the proxy is running on the server, when the certificate expires, how many addresses fail2ban is blocking. It also has buttons to update the server, change the proxy password, turn off password logins, save the SSH key and remove the proxy from the server. See <a href="../../../en/docs/proxies/#server">Proxies</a> for details.</p>
+
+<details class="deep"><summary>More: what Routekeeper keeps and what it does on the server</summary>
+  <ul>
+    <li>Routekeeper’s key is ed25519, one per server. The private part is in the macOS keychain (service <code>app.getroutekeeper.mac.server-key</code>), the public part in <code>authorized_keys</code> on the server, labelled <code>routekeeper@<span class="ph">IP</span></code>.</li>
+    <li>Routekeeper keeps the server’s address, user, port and domain in <code>~/Library/Application Support/app.getroutekeeper.mac/servers.json</code>, and the server key it saw on the first login next to it, in the <code>servers</code> folder. The server password and the DuckDNS token aren’t saved.</li>
+    <li>The installation script is built into the app: it’s the same <code>server.sh</code> the site has for this version of Routekeeper. The wizard hands it to the server over SSH; the server doesn’t download anything from the Routekeeper site.</li>
+    <li>The proxy’s login and password are created on the server and go to Routekeeper’s network extension, as when you <a href="../../../en/docs/proxies/#paste">paste a proxy string</a>. The Routekeeper window doesn’t keep them.</li>
+    <li>Routekeeper runs the system <code>/usr/bin/ssh</code> without your settings from <code>~/.ssh/config</code> and without ssh-agent.</li>
+    <li>Removing the proxy from the server and <span class="ui">Forget Server…</span> don’t remove Routekeeper’s key from <code>authorized_keys</code>: with password logins off, it may be the only one. You can remove it by hand — it’s the line ending in <code>routekeeper@<span class="ph">IP</span></code>.</li>
+  </ul>
+</details>
+
+<h2 id="manual">Setting it up by hand</h2>
+<p>If you’d rather do everything yourself, or set up the proxy from another computer, follow the four steps below: the domain, logging in to the server, the install command and adding the proxy to Routekeeper.</p>
+
 <h2 id="domain"><span class="step">1</span>Domain</h2>
 <p>The proxy needs a <a class="term" href="../../../en/docs/glossary/#domain">domain name</a>. Let’s Encrypt issues the certificate for this name, and Routekeeper uses the certificate to make sure it is connecting to your server. The name is linked to the server by an <a class="term" href="../../../en/docs/glossary/#a-record">A record</a>: a line in <a class="term" href="../../../en/docs/glossary/#dns">DNS</a> of the form “name → IPv4 address”.</p>
 
@@ -124,7 +269,7 @@
   <li>In the <code>sub domain</code> field, type a name: letters a–z, digits and hyphens. Click <code>add domain</code>. You get an address like <code>name.duckdns.org</code>.</li>
   <li>DuckDNS puts your computer’s address into the <code>current ip</code> field right away. Replace it with the server’s IP and click <code>update ip</code>.</li>
 </ol>
-<p>You won’t need the DuckDNS token: the server’s IP doesn’t change, so the record never needs updating.</p>
+<p>When you set things up by hand, you won’t need the DuckDNS token: the server’s IP doesn’t change, so the record never needs updating. The Routekeeper wizard doesn’t need it either, but with it Routekeeper does the third step itself.</p>
 
 <h3 id="own-domain">Your own domain</h3>
 <p>In your registrar’s or DNS host’s panel, create an A record. The name is a subdomain (or <code>@</code> for the domain itself), and the value is the server’s IP. If Cloudflare serves the domain, turn off proxying for the record (gray cloud, “DNS only”). Otherwise the domain will point to Cloudflare’s addresses, not to your server.</p>
@@ -266,6 +411,7 @@ The line is the key to your proxy: keep it private. To see it again: cat /etc/ca
 
 <h2 id="security">Protecting the server</h2>
 <p>Bots try to guess SSH passwords around the clock: our test server got about 11,000 attempts a day. fail2ban blocks an address after five failures, but it’s safer to turn off password login completely and log in with a key.</p>
+<p>If the Routekeeper wizard set up the proxy, the <span class="ui">Turn off password logins to the server</span> switch does this, see <a href="#wizard-passwords">above</a>. By hand:</p>
 <ol class="steps">
   <li>Create a key on your Mac. When asked for a passphrase, you can press Return twice (a key without a password) or set a password for the key.
     <div class="cmd"><pre><code>ssh-keygen -t ed25519 -f ~/.ssh/my_server</code></pre></div></li>
@@ -287,6 +433,7 @@ sudo systemctl reload ssh</code></pre></div>
 </details>
 
 <h2 id="maintenance">Maintenance</h2>
+<p>If the Routekeeper wizard set up the proxy, it’s easier to update the server, change the password and remove the proxy with the buttons in the proxy card, in the <a href="../../../en/docs/proxies/#server">Server</a> block. Below is the same by hand.</p>
 <p>All commands run on the server. As a sudo user, add <code>sudo</code> at the start of each command, and in the install command, before <code>bash</code>.</p>
 <div class="table"><table>
   <thead><tr><th>Task</th><th>What to do</th></tr></thead>
@@ -308,6 +455,7 @@ sudo systemctl reload ssh</code></pre></div>
 </details>
 
 <h2 id="troubleshooting">If something goes wrong</h2>
+<p>The Routekeeper wizard shows the same messages as the script, and its <span class="ui">What to do about it</span> link leads to the right section below. Messages about logging in to the server are under <a href="#t-ssh">Logging in to the server</a>.</p>
 <p>When there is an error, the script prints a line with <code>✗</code> and stops. Fix the cause and run the same command again. The script skips what’s already done, and the login and password are kept. Below is every script message and what to do about it.</p>
 
 <h3 id="t-start">Starting the script</h3>
@@ -408,6 +556,19 @@ sudo systemctl reload ssh</code></pre></div>
 <p>Caddy’s settings have no Routekeeper proxy: this is someone else’s Caddy with its own sites. The script doesn’t remove it. If you don’t need it, remove it the same way it was installed.</p>
 
 <h3 id="t-ssh">Logging in to the server</h3>
+<p>Messages from the Routekeeper wizard about logging in to the server:</p>
+<div class="table"><table>
+  <thead><tr><th>Message</th><th>What to do</th></tr></thead>
+  <tbody>
+    <tr><td>The server didn’t accept the user name, password or key</td><td>As with <code>Permission denied</code> below: check the password and user in the hosting provider’s email.</td></tr>
+    <tr><td>The server’s key has changed since the last login</td><td>As with <code>REMOTE HOST IDENTIFICATION HAS CHANGED</code> below. If the system on the server was reinstalled, the proxy is gone too: run the wizard again, and the proxy in Routekeeper will be updated.</td></tr>
+    <tr><td>The server refused the SSH connection, The server doesn’t answer, The server can’t be reached from your network</td><td>As with <code>Connection refused</code> below.</td></tr>
+    <tr><td>There’s no such address</td><td>The IP field has a typo, or the server’s name isn’t found in DNS.</td></tr>
+    <tr><td>sudo asks “…” for a password</td><td>Log in as root, or let this user use <code>sudo</code> without a password. The wizard doesn’t support <code>sudo</code> with a password yet.</td></tr>
+    <tr><td>The key for this server isn’t in the keychain</td><td>Routekeeper’s key was deleted from the keychain. Run the wizard again with the password or your own key.</td></tr>
+  </tbody>
+</table></div>
+<p>ssh messages in Terminal:</p>
 <h4><code>WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!</code></h4>
 <p>The server’s key has changed. This is expected after you reinstall the system on the server. Remove the old key on your Mac and connect again:</p>
 <div class="cmd"><pre><code>ssh-keygen -R <span class="ph">IP</span></code></pre></div>

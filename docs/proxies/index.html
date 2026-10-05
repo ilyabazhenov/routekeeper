@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Прокси — Routekeeper</title>
-<meta name="description" content="Прокси в Routekeeper: типы SOCKS5, HTTP и HTTPS, поля и вставка строкой, DNS через прокси и блокировка UDP и QUIC, проверка и сообщения об ошибках, несколько прокси и перевод маршрутов, локальный клиент sing-box, Xray или Clash, рабочий прокси.">
+<meta name="description" content="Прокси в Routekeeper: типы SOCKS5, HTTP и HTTPS, поля и вставка строкой, DNS через прокси и блокировка UDP и QUIC, проверка и сообщения об ошибках, прокси на своём сервере, несколько прокси и перевод маршрутов, локальный клиент sing-box, Xray или Clash, рабочий прокси.">
 <meta name="theme-color" content="#0a0f1f">
 <link rel="canonical" href="https://getroutekeeper.app/docs/proxies/">
 <link rel="alternate" hreflang="ru" href="https://getroutekeeper.app/docs/proxies/">
@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="../../docs/assets/docs.css?v=904b8bd7">
+<link rel="stylesheet" href="../../docs/assets/docs.css?v=19efe7ca">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/ru/proxies.html. Edit the fragment, not this file. -->
@@ -40,6 +40,7 @@
     <span class="group">Начало</span>
     <a href="../../docs/">Обзор документации</a>
     <a href="../../docs/start/">Быстрый старт</a>
+    <a href="../../docs/license/">Лицензия</a>
     <a href="../../docs/concepts/">Как это работает</a>
     <span class="group">Настройка</span>
     <a href="../../docs/proxies/" aria-current="page">Прокси</a>
@@ -64,6 +65,7 @@
     <span class="group">Начало</span>
     <a href="../../docs/">Обзор документации</a>
     <a href="../../docs/start/">Быстрый старт</a>
+    <a href="../../docs/license/">Лицензия</a>
     <a href="../../docs/concepts/">Как это работает</a>
     <span class="group">Настройка</span>
     <a href="../../docs/proxies/" aria-current="page">Прокси</a>
@@ -83,7 +85,7 @@
     </nav></details>
 <p class="lead-in">У Routekeeper нет своих серверов. Трафик приложений он отправляет на <a class="term" href="../../docs/glossary/#proxy">прокси</a>, который укажете вы: свой сервер, клиент другой программы на этом Mac, рабочий прокси или прокси от провайдера.</p>
 <pre class="flow"><code>Приложение → Routekeeper → <b>прокси</b> → сайт</code></pre>
-<p>Своего прокси нет? Его можно поднять на арендованном сервере одной командой: <a href="../../docs/server/">Свой прокси-сервер</a>.</p>
+<p>Своего прокси нет? Routekeeper поставит его на арендованный сервер сам: нужны только IP и пароль от сервера. Как — в разделе <a href="../../docs/server/">Свой прокси-сервер</a>.</p>
 
 <h2 id="types">Какой тип выбрать</h2>
 <p>Routekeeper работает с прокси трёх типов. Тип определяет, как Routekeeper договаривается с сервером. Приложения разницы не замечают.</p>
@@ -118,7 +120,7 @@
 <ol class="steps">
   <li>В окне Routekeeper откройте раздел <span class="ui">Прокси</span> (<kbd>⌘4</kbd>).</li>
   <li>Нажмите <span class="ui">+</span> под списком прокси или кнопку <span class="ui">+</span> (<span class="ui">Добавить прокси</span>) на панели инструментов — там только значок. Из любого раздела то же делает <kbd>⌥⌘N</kbd>. Справа откроются пустые поля.</li>
-  <li>Заполните поля по таблице ниже.</li>
+  <li>Заполните поля по таблице ниже. Если прокси ещё нет, а есть арендованный сервер, вместо этого нажмите <span class="ui">Свой сервер…</span> на панели инструментов (значок сервера): Routekeeper поставит прокси на сервер и добавит его сам, см. <a href="../../docs/server/#wizard">Свой прокси-сервер</a>.</li>
   <li>Нажмите <span class="ui">Проверить</span>. Проверять можно до сохранения: Routekeeper возьмёт то, что вписано в поля. Что означает результат, написано в разделе <a href="#check">Проверка</a>.</li>
   <li>Нажмите <span class="ui">Добавить</span>. Прокси появится в списке слева, и Routekeeper сразу проверит его ещё раз.</li>
 </ol>
@@ -298,6 +300,53 @@
 </table></div>
 <p>Остальные сообщения Routekeeper и что с ними делать — в разделе <a href="../../docs/troubleshooting/#errors">Если не работает</a>.</p>
 
+<h2 id="server">Прокси на своём сервере</h2>
+<p>Прокси, который Routekeeper поставил мастером <a href="../../docs/server/#wizard">Свой сервер…</a>, получает внизу карточки блок <span class="ui">Сервер</span>. Routekeeper входит на сервер по своему ключу из связки ключей, делает одно действие и выходит.</p>
+<figure class="mock-fig">
+  <div class="mock-scroll"><div class="mock mock-win narrow" aria-hidden="true" style="width: 460px">
+    <div class="mock-main">
+      <div class="mock-group">
+        <div class="mock-row" style="flex-wrap: wrap"><span class="mock-btn">ϟ Проверить</span><span class="mock-ok">✓ Работает · 182 мс · IP 203.0.113.7</span></div>
+      </div>
+      <div class="mock-btns end"><span class="mock-btn">Отменить изменения</span><span class="mock-btn primary">Сохранить</span></div>
+      <div class="mock-cap">Сервер</div>
+      <div class="mock-group">
+        <div class="mock-row"><span class="grow">Вход SSH</span><span class="muted">root@203.0.113.7</span></div>
+        <div class="mock-row"><span class="grow">Прокси на сервере</span><b class="mk">1</b><span class="mock-ok">✓ работает</span></div>
+        <div class="mock-row"><span class="grow">Сертификат до</span><span class="muted">2 янв. 2027 г.</span></div>
+        <div class="mock-row"><span class="grow">Заблокировано подборщиков паролей</span><b class="mk">2</b><span class="muted">14</span></div>
+        <div class="mock-row"><span class="grow">Проверен</span><span class="muted">2 часа назад</span></div>
+        <div class="mock-row"><span class="grow">Вход по паролю</span><span class="muted">открыт</span></div>
+        <div class="mock-row"><span class="mock-btn">Проверить сервер</span><b class="mk">3</b><span class="mock-btn">Переустановить</span><b class="mk">4</b><span class="grow"></span><b class="mk">5</b><span class="mock-btn mock-select">Ещё</span></div>
+      </div>
+    </div>
+  </div></div>
+  <figcaption>
+    <ol class="mk-legend">
+      <li>Работает ли Caddy с прокси на сервере. Если <span class="ui">остановлен</span>, нажмите <span class="ui">Переустановить</span>.</li>
+      <li>Сколько адресов сейчас заблокировал fail2ban за подбор пароля к SSH.</li>
+      <li><span class="ui">Проверить сервер</span> заходит на сервер и обновляет эти строки. Routekeeper делает это и сам, когда открывается карточка, если последней проверке больше шести часов.</li>
+      <li>Запускает установку ещё раз с тем же доменом. Если в новой версии Routekeeper установка новее, кнопка называется <span class="ui">Обновить сервер</span>, а выше появляется строка <span class="ui">Есть обновление установки на сервере</span>. Логин и пароль прокси не меняются.</li>
+      <li>В меню: <span class="ui">Сменить пароль прокси…</span>, <span class="ui">Закрыть вход на сервер по паролю…</span>, <span class="ui">Сохранить ключ SSH…</span>, <span class="ui">Удалить прокси с сервера…</span> и <span class="ui">Забыть сервер…</span>.</li>
+    </ol>
+    Схема нижней части карточки прокси, который Routekeeper поставил на сервер. Данные выдуманные.
+  </figcaption>
+</figure>
+<div class="table"><table>
+  <thead><tr><th>Кнопка</th><th>Что делает</th></tr></thead>
+  <tbody>
+    <tr><td><span class="ui">Проверить сервер</span></td><td>Узнаёт, работает ли прокси на сервере, до какого числа действует сертификат и сколько адресов не пускает fail2ban. Сертификат Caddy продлевает сам, за месяц до срока.</td></tr>
+    <tr><td><span class="ui">Переустановить</span> или <span class="ui">Обновить сервер</span></td><td>Запускает установку ещё раз с тем же доменом. Так чинят остановленный прокси и обновляют Caddy и настройки до версии из этого Routekeeper. Логин и пароль не меняются.</td></tr>
+    <tr><td><span class="ui">Ещё</span> → <span class="ui">Сменить пароль прокси…</span></td><td>Создаёт на сервере новые логин и пароль и сразу сохраняет их в этом прокси. Маршруты и правила остаются на нём. Если этот прокси настроен ещё где-то, там старый пароль перестанет подходить.</td></tr>
+    <tr><td><span class="ui">Ещё</span> → <span class="ui">Закрыть вход на сервер по паролю…</span></td><td>Сервер начинает пускать по SSH только по ключу. Подробнее — в разделе <a href="../../docs/server/#wizard-passwords">Вход на сервер по паролю</a>.</td></tr>
+    <tr><td><span class="ui">Ещё</span> → <span class="ui">Сохранить ключ SSH…</span></td><td>Сохраняет в файл закрытый ключ, которым Routekeeper входит на сервер. С ним можно войти на сервер из Терминала: <code>ssh -i <span class="ph">файл</span> root@<span class="ph">IP</span></code>.</td></tr>
+    <tr><td><span class="ui">Ещё</span> → <span class="ui">Удалить прокси с сервера…</span></td><td>Удаляет на сервере Caddy, сертификат, логин и пароль. Сервер и остальное на нём остаются. В диалоге можно удалить прокси и в Routekeeper или оставить его.</td></tr>
+    <tr><td><span class="ui">Ещё</span> → <span class="ui">Забыть сервер…</span></td><td>Routekeeper удаляет ключ этого сервера и перестаёт им управлять. Прокси на сервере и в Routekeeper продолжает работать, блок <span class="ui">Сервер</span> исчезает.</td></tr>
+  </tbody>
+</table></div>
+<p>Если блок показывает ошибку, ссылка <span class="ui">Что с этим делать</span> под ней ведёт в нужный раздел страницы <a href="../../docs/server/#troubleshooting">Свой прокси-сервер</a>.</p>
+<div class="callout warn"><p>Если вход на сервер по паролю закрыт, ключ Routekeeper может быть единственным, с которым сервер пускает. <span class="ui">Забыть сервер…</span> и удаление прокси удаляют этот ключ из связки ключей, поэтому сначала сохраните его: <span class="ui">Ещё</span> → <span class="ui">Сохранить ключ SSH…</span>.</p></div>
+
 <h2 id="several">Несколько прокси</h2>
 <p>Прокси можно добавить сколько угодно. Каждое приложение, сервис и правило выбирает свой: в меню маршрута есть раздел <span class="ui">Через прокси</span> со всеми прокси по названию. Например, браузер идёт через «Амстердам», а рабочий мессенджер — через «Офис». Как выбрать маршрут, описано в разделе <a href="../../docs/apps/#route">Приложения</a>.</p>
 <p>Если у двух прокси одинаковые названия, в меню к ним добавляются тип и порт. Понятнее дать им разные названия.</p>
@@ -314,6 +363,7 @@
 <h3 id="delete">Удаление прокси</h3>
 <p>Выберите прокси в списке и нажмите <span class="ui">−</span> под списком или клавишу Delete. Ещё можно щёлкнуть по прокси правой кнопкой и выбрать <span class="ui">Удалить…</span>. Routekeeper спросит подтверждение и скажет, сколько правил идёт через этот прокси. Удаление отменить нельзя: <kbd>⌘Z</kbd> его не вернёт, логин и пароль удаляются вместе с прокси.</p>
 <p>Маршруты и правила, которые шли через удалённый прокси, выключаются.</p>
+<p>Если прокси поставил мастер <span class="ui">Свой сервер…</span>, в диалоге две кнопки: <span class="ui">Удалить и с сервера</span> снимает прокси с сервера и затем удаляет его в Routekeeper, <span class="ui">Удалить только из Routekeeper</span> оставляет прокси на сервере работать, а Routekeeper забывает сервер и его ключ.</p>
 <div class="callout warn"><p><b>Выключенное правило не действует.</b> Приложения, которые шли через удалённый прокси, пойдут по остальным правилам и по <a href="../../docs/firewall/#modes">режиму</a>. В режиме <span class="ui">Только прокси</span> это значит напрямую, с вашим настоящим IP, и в <span class="ui">Мимо прокси</span> такие соединения не попадут. Поэтому сначала <a href="#switch">переведите маршруты</a> на другой прокси, а потом удаляйте.</p></div>
 
 <h2 id="switch">Перевод на другой прокси</h2>

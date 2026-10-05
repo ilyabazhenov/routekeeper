@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="../../../docs/assets/docs.css?v=904b8bd7">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=19efe7ca">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/en/recipes.html. Edit the fragment, not this file. -->
@@ -40,6 +40,7 @@
     <span class="group">Getting started</span>
     <a href="../../../en/docs/">Docs overview</a>
     <a href="../../../en/docs/start/">Quick start</a>
+    <a href="../../../en/docs/license/">License</a>
     <a href="../../../en/docs/concepts/">How it works</a>
     <span class="group">Setup</span>
     <a href="../../../en/docs/proxies/">Proxies</a>
@@ -64,6 +65,7 @@
     <span class="group">Getting started</span>
     <a href="../../../en/docs/">Docs overview</a>
     <a href="../../../en/docs/start/">Quick start</a>
+    <a href="../../../en/docs/license/">License</a>
     <a href="../../../en/docs/concepts/">How it works</a>
     <span class="group">Setup</span>
     <a href="../../../en/docs/proxies/">Proxies</a>
@@ -118,7 +120,7 @@
   <li><b>Another build of the same messenger</b> (a beta, a copy from another store) is a different app for Routekeeper if it has a different <a class="term" href="../../../en/docs/glossary/#code-signature">signature</a>. Add it separately.</li>
 </ul>
 <details class="deep"><summary>Details: a service instead of an app</summary>
-  <p>If the messenger is in the <span class="ui">Services</span> list, you can add the service too: <span class="ui">Apps</span> → <span class="ui">Add</span> → <span class="ui">Service</span>. A service rule sends this service’s addresses through the proxy in any app, including the web version in a browser. Starting with the next version, Routekeeper also adds the service’s Mac app along with the service, if the app is installed now or gets installed later. In 0.2.1, you need to add the app yourself, as in the steps above.</p>
+  <p>If the messenger is in the <span class="ui">Services</span> list, you can add the service too: <span class="ui">Apps</span> → <span class="ui">Add</span> → <span class="ui">Service</span>. A service rule sends this service’s addresses through the proxy in any app, including the web version in a browser. Starting with version 0.3.0, Routekeeper also adds the service’s Mac app along with the service, if the app is installed now or gets installed later. In 0.2.1, you need to add the app yourself, as in the steps above.</p>
   <p>A service rule recognizes connections by site name, and for some services (for example, Telegram) also by subnet. A route for the whole app is more reliable: it doesn’t depend on whether Routekeeper knows the name. For more about services, see <a href="../../../en/docs/apps/#services">Services</a>.</p>
 </details>
 
@@ -216,7 +218,7 @@
 </ul>
 <details class="deep"><summary>Details: services for AI tools</summary>
   <p>The <span class="ui">Services</span> list has ChatGPT, Claude, Gemini, GitHub Copilot, Cursor, Perplexity and Grok, as well as GitHub and JetBrains. A service sends its addresses through the proxy in any app: in a browser, in an editor and in command-line programs, even if they aren’t started from the terminal.</p>
-  <p>Starting with the next version, Routekeeper also adds a service’s apps along with the service: for example, ChatGPT, Claude, Cursor, JetBrains IDEs, and for Claude also the <code>claude</code> command-line program. An app installed later is added by itself. In 0.2.1, you need to add the apps separately.</p>
+  <p>Starting with version 0.3.0, Routekeeper also adds a service’s apps along with the service: for example, ChatGPT, Claude, Cursor, JetBrains IDEs, and for Claude also the <code>claude</code> command-line program. An app installed later is added by itself. In 0.2.1, you need to add the apps separately.</p>
   <p>A child process is matched to Terminal by its chain of parents. <code>curl</code> started from Terminal falls under Terminal’s rule, even though <code>curl</code> itself is signed by Apple. For details, see <a href="../../../en/docs/apps/#child-processes">Child processes</a>.</p>
 </details>
 

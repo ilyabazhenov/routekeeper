@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="../../../docs/assets/docs.css?v=904b8bd7">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=19efe7ca">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/en/maintenance.html. Edit the fragment, not this file. -->
@@ -40,6 +40,7 @@
     <span class="group">Getting started</span>
     <a href="../../../en/docs/">Docs overview</a>
     <a href="../../../en/docs/start/">Quick start</a>
+    <a href="../../../en/docs/license/">License</a>
     <a href="../../../en/docs/concepts/">How it works</a>
     <span class="group">Setup</span>
     <a href="../../../en/docs/proxies/">Proxies</a>
@@ -64,6 +65,7 @@
     <span class="group">Getting started</span>
     <a href="../../../en/docs/">Docs overview</a>
     <a href="../../../en/docs/start/">Quick start</a>
+    <a href="../../../en/docs/license/">License</a>
     <a href="../../../en/docs/concepts/">How it works</a>
     <span class="group">Setup</span>
     <a href="../../../en/docs/proxies/">Proxies</a>
@@ -114,11 +116,11 @@
 <div class="callout warn"><p><b>While the extension restarts,</b> connections through the proxy break, and for a couple of seconds new connections may go direct, around the proxy. That’s why the extension doesn’t update by itself. For details, see <a href="../../../en/docs/limits/#restart-gap">Limitations</a>.</p></div>
 <p>You can also update the extension in <span class="ui">Settings</span> → <span class="ui">Extension</span>: the <span class="ui">Update Extension (current: …)</span> button in the <span class="ui">Status</span> section. It updates right away, without asking again.</p>
 <p>If the “The network extension isn’t responding” banner appears after the update, click <span class="ui">Reinstall Extension</span>. If that doesn’t help, restart your Mac. For details, see <a href="../../../en/docs/troubleshooting/#extension">Reinstalling and stopping the extension</a>.</p>
-<div class="callout"><p><b>From version 0.2.x to the next one,</b> a normal update won’t work: the old version only tells you about the new one and gives a link to the website. How to move to it is described in the next section.</p></div>
+<div class="callout"><p><b>From version 0.2.x to 0.3.0,</b> a normal update won’t work: the old version only tells you about the new one and gives a link to the website. How to move to it is described in the next section.</p></div>
 
-<h2 id="migrate">Moving from 0.2.x to the next version</h2>
+<h2 id="migrate">Moving from 0.2.x to 0.3.0</h2>
 <div class="callout"><p><b>This section is about the version that comes out after 0.2.1.</b> Until it’s on <a href="https://github.com/ilyabazhenov/routekeeper/releases">GitHub Releases</a>, you don’t need to do anything.</p></div>
-<p>In the next version, Routekeeper’s system app identifier (bundle ID) changes from <code>dev.ilyabazenov.appproxy</code> to <code>app.getroutekeeper.mac</code>. For macOS, this is a different app. Permissions, opening at login, notifications and window settings are tied to the identifier, and only the old app can remove the old extension. That’s why version 0.2.x won’t install the new version over itself: it only tells you about it and gives a link to the website.</p>
+<p>In version 0.3.0, Routekeeper’s system app identifier (bundle ID) changed from <code>dev.ilyabazenov.appproxy</code> to <code>app.getroutekeeper.mac</code>. For macOS, this is a different app. Permissions, opening at login, notifications and window settings are tied to the identifier, and only the old app can remove the old extension. That’s why version 0.2.x won’t install the new version over itself: it only tells you about it and gives a link to the website.</p>
 <h3>Steps</h3>
 <ol class="steps">
   <li>If you like, save your rules to a file: <span class="ui">Rules</span> → <span class="ui">Import and Export</span> → <span class="ui">Export…</span>. Usually you don’t need this, since the rules move over by themselves, but this way you’ll have a copy. Proxy passwords aren’t saved to the file.</li>
@@ -181,11 +183,12 @@
   <thead><tr><th>Where</th><th>What</th></tr></thead>
   <tbody>
     <tr><td><code>/Library/Application Support/Routekeeper</code></td><td>Rules, proxies with passwords, settings, service lists for the extension, <code>config.broken-…json</code> backups. Only an administrator can open it. In versions 0.2.x: <code>/Library/Application Support/AppProxy</code>.</td></tr>
-    <tr><td><code>~/Library/Application Support/app.getroutekeeper.mac</code></td><td>The downloaded service catalog.</td></tr>
+    <tr><td><code>~/Library/Application Support/app.getroutekeeper.mac</code></td><td>The downloaded service catalog, the servers from the setup wizard, when the license was last checked.</td></tr>
     <tr><td><code>~/Library/Caches/app.getroutekeeper.mac</code></td><td>Traffic map data (about 55 MB; it appears after you first open the map) and the download cache.</td></tr>
     <tr><td><code>~/Library/HTTPStorages/app.getroutekeeper.mac</code></td><td>Internal storage for the app’s network requests. macOS creates it.</td></tr>
     <tr><td><code>~/Library/Preferences/app.getroutekeeper.mac.plist</code></td><td>Window settings: notifications, updates, whether you’ve finished the welcome screen.</td></tr>
     <tr><td>System Settings → General → Login Items (Login Items &amp; Extensions on macOS 15 and later)</td><td>Opening at login, if you turned it on.</td></tr>
+    <tr><td>The keychain, items “Routekeeper license” and “Routekeeper server key”</td><td>The <a href="../../../en/docs/license/">license</a> and the SSH keys of <a href="../../../en/docs/server/">your servers</a>.</td></tr>
   </tbody>
 </table></div>
 <p>You can delete all of this with commands in Terminal. Run them after you’ve removed Routekeeper with the steps above. Copy and run each command separately.</p>
@@ -196,6 +199,7 @@
 <div class="cmd"><pre><code>rm -rf ~/Library/Application\ Support/app.getroutekeeper.mac ~/Library/Caches/app.getroutekeeper.mac ~/Library/HTTPStorages/app.getroutekeeper.mac</code></pre></div>
 <p>Window settings:</p>
 <div class="cmd"><pre><code>defaults delete app.getroutekeeper.mac</code></pre></div>
+<p>Delete the license and the server keys in the Keychain Access app: search for “Routekeeper” and delete the items it finds. Delete the license only if you won’t come back to Routekeeper on this Mac: otherwise you’ll have to enter it again.</p>
 <details class="deep"><summary>Details: leftovers from versions 0.2.x</summary>
   <p>Versions up to and including 0.2.1 used the old identifier. If you installed them, delete these files too:</p>
   <div class="cmd"><pre><code>sudo rm -rf "/Library/Application Support/AppProxy"</code></pre></div>

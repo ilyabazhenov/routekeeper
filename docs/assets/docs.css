@@ -243,6 +243,18 @@ kbd { display: inline-block; min-width: 1.6em; padding: 1px 6px; border-radius: 
 .mock * { box-sizing: border-box; }
 .mock-win { min-width: 660px; max-width: 760px; border-radius: 12px; background: var(--m-bg); border: 1px solid var(--m-line2); box-shadow: 0 24px 60px -24px rgba(0, 0, 0, .75); overflow: hidden; }
 .mock-win.narrow { min-width: 0; width: 420px; max-width: 100%; }
+/* The server wizard: sheets side by side, its step line, install stages. */
+.mock-pair { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
+.mock-win.sheet { min-width: 0; width: 352px; max-width: 100%; }
+.mock-steps { display: flex; flex-wrap: wrap; gap: 4px 12px; color: var(--m-muted); font-size: 12px; }
+.mock-steps > span { display: inline-flex; align-items: center; gap: 4px; }
+.mock-steps .on { color: var(--m-text); }
+.mock-steps .n { display: inline-grid; place-items: center; width: 15px; height: 15px; border-radius: 50%; border: 1.2px solid currentColor; font-size: 9.5px; }
+.mock-steps .on .n { color: var(--m-accent); }
+.mock-steps .mock-check { width: 15px; height: 15px; font-size: 9px; }
+.mock-spin { flex: none; width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgba(255, 255, 255, .18); border-top-color: var(--m-text); }
+.mock-radio { flex: none; width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid var(--m-line2); }
+.mock-radio.on { border: 4px solid var(--m-accent); background: #fff; }
 .mock-titlebar { display: flex; align-items: center; gap: 7px; height: 34px; padding: 0 12px; background: var(--m-bg2); border-bottom: 1px solid var(--m-line); }
 .mock-titlebar i { width: 11px; height: 11px; border-radius: 50%; background: #ff5f57; flex: none; }
 .mock-titlebar i:nth-child(2) { background: #febc2e; }

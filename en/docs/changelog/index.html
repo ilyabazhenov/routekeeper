@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>What’s new — Routekeeper</title>
-<meta name="description" content="Routekeeper version history: what changed in 0.2.1, 0.2.0 and 0.1.0, and what’s coming in the next version: a new app identifier, severity levels in the Leaks section, a lock when the settings can’t be read, new services.">
+<meta name="description" content="Routekeeper version history: what changed in 0.3.0, 0.2.1, 0.2.0 and 0.1.0: licenses, your own proxy server from the app, a new app identifier, severity levels in the Leaks section, a lock when the settings can’t be read, new services.">
 <meta name="theme-color" content="#0a0f1f">
 <link rel="canonical" href="https://getroutekeeper.app/en/docs/changelog/">
 <link rel="alternate" hreflang="ru" href="https://getroutekeeper.app/docs/changelog/">
@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="../../../docs/assets/docs.css?v=904b8bd7">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=19efe7ca">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/en/changelog.html. Edit the fragment, not this file. -->
@@ -40,6 +40,7 @@
     <span class="group">Getting started</span>
     <a href="../../../en/docs/">Docs overview</a>
     <a href="../../../en/docs/start/">Quick start</a>
+    <a href="../../../en/docs/license/">License</a>
     <a href="../../../en/docs/concepts/">How it works</a>
     <span class="group">Setup</span>
     <a href="../../../en/docs/proxies/">Proxies</a>
@@ -64,6 +65,7 @@
     <span class="group">Getting started</span>
     <a href="../../../en/docs/">Docs overview</a>
     <a href="../../../en/docs/start/">Quick start</a>
+    <a href="../../../en/docs/license/">License</a>
     <a href="../../../en/docs/concepts/">How it works</a>
     <span class="group">Setup</span>
     <a href="../../../en/docs/proxies/">Proxies</a>
@@ -83,9 +85,12 @@
     </nav></details>
 <p class="lead-in">Routekeeper offers to update by itself when a new version comes out: see <a href="../../../en/docs/maintenance/#update">Updates</a>. All builds are on <a href="https://github.com/ilyabazhenov/routekeeper/releases">GitHub Releases</a>.</p>
 
-<h2 id="next">In the next version</h2>
-<div class="callout"><p><b>This version isn’t out yet.</b> The changes below are ready and will be in the next release (build 11). You move to it from 0.2.x by hand, once: see <a href="../../../en/docs/maintenance/#migrate">Moving from 0.2.x</a>.</p></div>
+<h2 id="v0-3-0">0.3.0 — October 5, 2026</h2>
+<p>Build 11.</p>
+<div class="callout"><p><b>You move to it from 0.2.x by hand, once:</b> see <a href="../../../en/docs/maintenance/#migrate">Moving from 0.2.x to 0.3.0</a>.</p></div>
 <ul>
+  <li><b>License.</b> Routekeeper routes traffic only with a valid license. It’s tied to one Mac and usually lasts a year. Everything else works without it, so you can set up proxies, apps and rules in advance. The Mac code and the license field are in <span class="ui">Settings</span> → <span class="ui">License</span>. Two weeks before the license ends, Routekeeper reminds you to renew it. See <a href="../../../en/docs/license/">License</a>.</li>
+  <li><b>Your own proxy server from the app.</b> The <span class="ui">Your Own Server…</span> button in the <span class="ui">Proxy</span> section and on the welcome screen opens a wizard: enter the IP and password of a rented server and a domain, and Routekeeper sets up an HTTPS proxy on the server and adds it by itself. No Terminal needed. The server password isn’t saved: Routekeeper logs in with its own key from the keychain. The card of such a proxy gets a <span class="ui">Server</span> block to check and update the server, change the proxy password, turn off password logins to the server and remove the proxy from it. See <a href="../../../en/docs/server/#wizard">Setting it up from Routekeeper</a>.</li>
   <li><b>A new app identifier.</b> The system identifier changes from <code>dev.ilyabazenov.appproxy</code> to <code>app.getroutekeeper.mac</code>. For macOS, this is a new app, so versions 0.2.x only tell you about it and give a link to the website. Remove the old version with its own <span class="ui">Delete…</span> button, then install the new one and give the three permissions again. Rules, proxies with passwords and settings move over by themselves. If the old <a class="term" href="../../../en/docs/glossary/#network-extension">extension</a> is still on, the new version shows a banner and explains how to turn it off. In System Settings, the extension is now called “Routekeeper Extension”.</li>
   <li><b>Severity levels in <span class="ui">Leaks</span>.</b> Each kind of entry now has its own severity: <span class="ui">Process outside the rule</span> is the most serious (red), <span class="ui">UDP around the proxy</span> is orange, and <span class="ui">DNS around the proxy</span> is the least serious (yellow). If only <a class="term" href="../../../en/docs/glossary/#dns">DNS</a> queries go direct, <span class="ui">Overview</span> doesn’t raise the alarm and simply says “DNS queries go direct”. The tip for such an entry explains what the DNS provider sees in this case.</li>
   <li><b>A lock when the settings can’t be read.</b> Sometimes the extension can’t read the settings file: the file is damaged, or an older version was installed over newer settings. Routekeeper no longer starts with clean settings and sends all apps direct. Instead, it blocks all connections except connections within the Mac, Routekeeper itself and the system DNS service. The banner offers <span class="ui">Check for Updates</span> or <span class="ui">Reset Settings…</span>, and a reset keeps the old file. For details, see <a href="../../../en/docs/troubleshooting/#locked">All connections are blocked</a>.</li>

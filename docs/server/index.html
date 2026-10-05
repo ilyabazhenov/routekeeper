@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Свой прокси-сервер — Routekeeper</title>
-<meta name="description" content="Как за 15 минут поднять свой HTTPS-прокси для Routekeeper на VPS одной командой: какой сервер заказать, домен, вход по SSH, установка, подключение в Routekeeper, защита сервера и что делать с каждым сообщением скрипта.">
+<meta name="description" content="Как за 15 минут поднять свой HTTPS-прокси для Routekeeper на VPS: мастер «Свой сервер…» в приложении или одна команда в Терминале. Какой сервер заказать, домен, установка, управление сервером из Routekeeper, защита сервера и что делать с каждым сообщением.">
 <meta name="theme-color" content="#0a0f1f">
 <link rel="canonical" href="https://getroutekeeper.app/docs/server/">
 <link rel="alternate" hreflang="ru" href="https://getroutekeeper.app/docs/server/">
@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="../../docs/assets/docs.css?v=904b8bd7">
+<link rel="stylesheet" href="../../docs/assets/docs.css?v=19efe7ca">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/ru/server.html. Edit the fragment, not this file. -->
@@ -31,7 +31,7 @@
   <div class="hero-copy">
     <span class="crumbs"><a href="../../docs/">Документация</a> · Настройка</span>
     <h1>Свой прокси-сервер <span class="warm">за 15 минут</span></h1>
-    <p class="lede"><b>Одна команда превращает арендованный VPS в HTTPS-прокси для Routekeeper.</b> Ключ от прокси есть только у вас, а без пароля сервер отвечает как обычный веб-сервер.</p>
+    <p class="lede"><b>Routekeeper сам превращает арендованный VPS в HTTPS-прокси: нужны только IP и пароль от сервера.</b> Ключ от прокси есть только у вас, а без пароля сервер отвечает как обычный веб-сервер.</p>
   </div>
 </section>
 
@@ -40,6 +40,7 @@
     <span class="group">Начало</span>
     <a href="../../docs/">Обзор документации</a>
     <a href="../../docs/start/">Быстрый старт</a>
+    <a href="../../docs/license/">Лицензия</a>
     <a href="../../docs/concepts/">Как это работает</a>
     <span class="group">Настройка</span>
     <a href="../../docs/proxies/">Прокси</a>
@@ -64,6 +65,7 @@
     <span class="group">Начало</span>
     <a href="../../docs/">Обзор документации</a>
     <a href="../../docs/start/">Быстрый старт</a>
+    <a href="../../docs/license/">Лицензия</a>
     <a href="../../docs/concepts/">Как это работает</a>
     <span class="group">Настройка</span>
     <a href="../../docs/proxies/">Прокси</a>
@@ -81,7 +83,7 @@
     <a href="../../docs/glossary/">Словарь</a>
     <a href="../../docs/changelog/">Что нового</a>
     </nav></details>
-<p class="lead-in">Вы арендуете небольшой сервер, запускаете на нём одну команду и получаете собственный <a class="term" href="../../docs/glossary/#proxy">прокси</a>. Routekeeper отправляет на него трафик выбранных приложений, а сервер передаёт этот трафик дальше в интернет.</p>
+<p class="lead-in">Вы арендуете небольшой сервер, вводите в Routekeeper его IP и пароль и получаете собственный <a class="term" href="../../docs/glossary/#proxy">прокси</a>. Тот же результат даёт одна команда в Терминале на сервере. Routekeeper отправляет на него трафик выбранных приложений, а сервер передаёт этот трафик дальше в интернет.</p>
 <pre class="flow"><code>Приложение → Routekeeper → <b>TLS</b> → ваш сервер :443 → интернет</code></pre>
 <div class="grid" id="result">
   <div class="card"><b>HTTPS-прокси</b><p><a class="term" href="../../docs/glossary/#https-proxy">HTTPS-прокси</a>: <a class="term" href="../../docs/glossary/#http-connect">HTTP CONNECT</a> внутри <a class="term" href="../../docs/glossary/#tls">TLS</a> на веб-сервере Caddy со сборкой <a href="https://github.com/klzgrad/forwardproxy">forwardproxy@naive</a>. На Mac, кроме Routekeeper, ничего ставить не нужно.</p></div>
@@ -94,7 +96,7 @@
 <ul>
   <li><b>Сервер.</b> Арендованный <a class="term" href="../../docs/glossary/#vps">VPS</a> с Debian или Ubuntu. Что именно заказать — ниже.</li>
   <li><b>Домен.</b> Свой или бесплатный на DuckDNS: по нему Let's Encrypt выдаёт сертификат. Как его получить — в <a href="#domain">шаге 1</a>.</li>
-  <li><b>Mac с Routekeeper.</b> Если Routekeeper ещё не установлен, начните с <a href="../../docs/start/#install">быстрого старта</a>. Терминал для входа на сервер уже есть в macOS.</li>
+  <li><b>Mac с Routekeeper.</b> Если Routekeeper ещё не установлен, начните с <a href="../../docs/start/#install">быстрого старта</a>. Терминал нужен только для <a href="#manual">установки вручную</a>, он уже есть в macOS.</li>
   <li><b>Около 15 минут.</b> Сама установка на сервере занимает 1–3 минуты.</li>
 </ul>
 
@@ -115,6 +117,149 @@
 <p>Некоторые хостеры, чаще облачные, вместо root дают обычного пользователя (например, <code>ubuntu</code>), которому разрешено выполнять команды администратора через <code>sudo</code>. Так тоже можно: команды для этого случая есть в каждом шаге.</p>
 <p>Если хостер просит SSH-ключ уже при заказе, создайте ключ на Mac, как в первом шаге <a href="#security">защиты сервера</a>, и вставьте в форму его открытую часть. Скопировать её можно командой <code>pbcopy &lt; ~/.ssh/my_server.pub</code>. Входить на сервер тогда нужно с ключом: <code>ssh -i ~/.ssh/my_server root@<span class="ph">IP</span></code>.</p>
 
+<h2 id="wizard">Установка из Routekeeper</h2>
+<p>Routekeeper сам входит на сервер по <a class="term" href="../../docs/glossary/#ssh">SSH</a>, запускает на нём тот же <a href="#install">скрипт установки</a>, что и команда в Терминале, и добавляет готовый прокси в список. Откройте мастер одним из способов:</p>
+<ul>
+  <li>раздел <span class="ui">Прокси</span> → кнопка <span class="ui">Свой сервер…</span> на панели инструментов (значок сервера);</li>
+  <li>пустой список прокси → <span class="ui">Свой сервер…</span> под надписью <span class="ui">Добавьте прокси</span>;</li>
+  <li>приветственный экран → шаг <span class="ui">Добавить прокси-сервер</span> → <span class="ui">Свой сервер…</span>.</li>
+</ul>
+<ol class="steps">
+  <li><b>Сервер.</b> Впишите IP-адрес сервера и пароль root из письма хостера и нажмите <span class="ui">Подключиться</span>. Если вы входите на сервер по SSH-ключу, выберите <span class="ui">Ключ SSH</span> и укажите файл ключа. Пользователь не root, которому <code>sudo</code> разрешён без пароля, и нестандартный порт задаются в <span class="ui">Пользователь и порт</span>.
+    <p>Routekeeper создаёт для сервера собственный ключ, добавляет его открытую часть в <code>~/.ssh/authorized_keys</code> пользователя на сервере и проверяет, что вход по ключу работает. Дальше Routekeeper входит только по ключу, а пароль забывает. Затем он проверяет сервер, ничего не меняя: систему, процессор, свободные порты 80 и 443.</p></li>
+  <li><b>Домен.</b> Routekeeper показывает систему, внешний IP и отпечаток ключа сервера. Выберите домен:
+    <ul>
+      <li><b>Бесплатный на DuckDNS.</b> Создайте имя на duckdns.org, как в <a href="#duckdns">шаге 1</a>, и впишите его. Если вписать и токен DuckDNS (он на той же странице, вверху), Routekeeper сам пропишет имени IP сервера, и поле <code>current ip</code> на сайте менять не нужно. Токен не сохраняется.</li>
+      <li><b>Свой домен.</b> Создайте A-запись с IP сервера, как в разделе <a href="#own-domain">Свой домен</a>, и впишите имя.</li>
+    </ul>
+    Нажмите <span class="ui">Установить</span>. Если запись ещё не дошла до DNS, Routekeeper подождёт до трёх минут, проверяя её каждые 10 секунд.</li>
+  <li><b>Установка.</b> Мастер показывает этапы скрипта по мере выполнения. Обычно установка занимает 1–3 минуты.</li>
+  <li><b>Готово.</b> Прокси уже добавлен в Routekeeper с названием по домену и проверен. Если нужно, включите <span class="ui">Закрыть вход на сервер по паролю</span> (о нём <a href="#wizard-passwords">ниже</a>) и нажмите <span class="ui">Готово</span>. Затем выберите <a href="../../docs/apps/">приложения</a>, которые пойдут через прокси.</li>
+</ol>
+<figure class="mock-fig">
+  <div class="mock-scroll"><div class="mock-pair">
+    <div class="mock mock-win sheet" aria-hidden="true">
+      <div class="mock-main">
+        <div class="mock-h">Свой прокси-сервер</div>
+        <div class="mock-steps"><span class="on"><span class="n">1</span>Сервер</span><span><span class="n">2</span>Домен</span><span><span class="n">3</span>Установка</span><span><span class="n">4</span>Готово</span></div>
+        <div class="mock-group">
+          <div class="mock-row"><div class="mock-note">Routekeeper подключится к вашему серверу по SSH, поставит на него HTTPS-прокси и добавит его в список. Подойдёт VPS с Debian или Ubuntu (x86_64), публичным IPv4 и доступом root.</div></div>
+          <div class="mock-row"><span class="mock-link">Какой сервер подойдёт и где взять IP и пароль</span></div>
+        </div>
+        <div class="mock-group">
+          <div class="mock-row"><span class="grow">IP-адрес сервера</span><b class="mk">1</b><span class="mock-input" style="width: 120px">203.0.113.7</span></div>
+          <div class="mock-row"><span class="grow">Вход</span><b class="mk">2</b><span class="mock-seg"><span class="on">Пароль</span><span>Ключ SSH</span></span></div>
+          <div class="mock-row"><span class="grow">Пароль</span><span class="mock-input" style="width: 120px">••••••••••</span></div>
+          <div class="mock-row"><div class="mock-note">Пароль нужен один раз: Routekeeper положит на сервер свой ключ и дальше будет входить по нему. Пароль нигде не сохраняется.</div></div>
+          <div class="mock-row"><span class="grow">› Пользователь и порт</span><b class="mk">3</b></div>
+        </div>
+        <div class="mock-btns end"><span class="mock-btn">Отмена</span><span class="mock-btn primary">Подключиться</span></div>
+      </div>
+    </div>
+    <div class="mock mock-win sheet" aria-hidden="true">
+      <div class="mock-main">
+        <div class="mock-h">Свой прокси-сервер</div>
+        <div class="mock-steps"><span><span class="mock-check"></span>Сервер</span><span class="on"><span class="n">2</span>Домен</span><span><span class="n">3</span>Установка</span><span><span class="n">4</span>Готово</span></div>
+        <div class="mock-cap">Сервер</div>
+        <div class="mock-group">
+          <div class="mock-row"><span class="grow">Система</span><span class="muted">Debian GNU/Linux 12</span></div>
+          <div class="mock-row"><span class="grow">Внешний IP</span><span class="muted">203.0.113.7</span></div>
+          <div class="mock-row"><span class="grow">Ключ сервера</span><b class="mk">4</b><span class="muted" style="font-family: ui-monospace, Menlo, monospace; font-size: 11px">SHA256:q3Lb…x7Zk</span></div>
+        </div>
+        <div class="mock-cap">Домен</div>
+        <div class="mock-group">
+          <div class="mock-row"><span class="grow">Бесплатный на DuckDNS</span><span class="mock-radio on"></span></div>
+          <div class="mock-row"><span class="grow">Свой домен</span><b class="mk">5</b><span class="mock-radio"></span></div>
+          <div class="mock-row"><span class="grow">Имя</span><span class="mock-input" style="width: 90px">my-proxy</span><span class="muted">.duckdns.org</span></div>
+          <div class="mock-row"><span class="grow">Токен DuckDNS</span><b class="mk">6</b><span class="mock-input dim" style="width: 120px">необязательно</span></div>
+        </div>
+        <div class="mock-group">
+          <div class="mock-row"><span class="grow">Название прокси</span><span class="mock-input dim" style="width: 150px">my-proxy.duckdns.org</span></div>
+        </div>
+        <div class="mock-btns"><span class="mock-btn">Назад</span><span class="grow"></span><span class="mock-btn">Отмена</span><span class="mock-btn primary">Установить</span></div>
+      </div>
+    </div>
+  </div></div>
+  <figcaption>
+    <ol class="mk-legend">
+      <li>IP-адрес из письма хостера. Имя сервера тоже подойдёт.</li>
+      <li>Вход по паролю root или по SSH-ключу, которым вы уже входите на сервер (кнопка <span class="ui">Выбрать ключ…</span> откроет папку <code>~/.ssh</code>).</li>
+      <li>Здесь меняют пользователя и порт SSH. Пользователь не root подойдёт, если <code>sudo</code> пускает его без пароля.</li>
+      <li>Отпечаток ключа сервера. Routekeeper запоминает ключ при первом входе и откажется подключаться, если по этому адресу ответит другой сервер.</li>
+      <li>Свой домен: Routekeeper покажет, какую A-запись создать.</li>
+      <li>С токеном DuckDNS Routekeeper сам пропишет имени IP сервера. Без токена сделайте это на сайте DuckDNS. Токен не сохраняется.</li>
+    </ol>
+    Схема первых двух шагов мастера <span class="ui">Свой сервер…</span>. Данные выдуманные.
+  </figcaption>
+</figure>
+<figure class="mock-fig">
+  <div class="mock-scroll"><div class="mock-pair">
+    <div class="mock mock-win sheet" aria-hidden="true">
+      <div class="mock-main">
+        <div class="mock-h">Свой прокси-сервер</div>
+        <div class="mock-steps"><span><span class="mock-check"></span>Сервер</span><span><span class="mock-check"></span>Домен</span><span class="on"><span class="n">3</span>Установка</span><span><span class="n">4</span>Готово</span></div>
+        <div class="mock-group">
+          <div class="mock-row"><span class="mock-check"></span><span>Проверка сервера</span></div>
+          <div class="mock-row"><span class="mock-check"></span><span>Проверка домена my-proxy.duckdns.org</span></div>
+          <div class="mock-row"><span class="mock-check"></span><span>Caddy v2.11.2-naive</span></div>
+          <div class="mock-row"><span class="mock-check"></span><span>BBR</span></div>
+          <div class="mock-row"><span class="mock-spin"></span><span class="grow">fail2ban для SSH</span><b class="mk">1</b></div>
+          <div class="mock-row"><span class="mock-note">Обычно установка занимает 1–3 минуты.</span></div>
+        </div>
+        <div class="mock-btns end"><b class="mk">2</b><span class="mock-btn">Остановить</span></div>
+      </div>
+    </div>
+    <div class="mock mock-win sheet" aria-hidden="true">
+      <div class="mock-main">
+        <div class="mock-h">Свой прокси-сервер</div>
+        <div class="mock-steps"><span><span class="mock-check"></span>Сервер</span><span><span class="mock-check"></span>Домен</span><span><span class="mock-check"></span>Установка</span><span class="on"><span class="n">4</span>Готово</span></div>
+        <div class="mock-group">
+          <div class="mock-row"><span class="mock-check"></span><b>Прокси «my-proxy.duckdns.org» добавлен</b></div>
+          <div class="mock-row"><span class="mock-ok">✓ Работает · 182 мс · IP 203.0.113.7</span><b class="mk">3</b></div>
+          <div class="mock-row"><div class="mock-note">Теперь выберите приложения, которые пойдут через этот прокси.</div></div>
+        </div>
+        <div class="mock-group">
+          <div class="mock-row"><span class="grow">Закрыть вход на сервер по паролю</span><b class="mk">4</b><span class="mock-toggle"></span></div>
+          <div class="mock-row"><div class="mock-note">Боты круглосуточно подбирают пароли к SSH. Routekeeper уже входит по своему ключу, и пароль ему больше не нужен. Вам и программам, которые заходят на сервер по паролю root, тоже понадобится ключ: ключ Routekeeper можно сохранить в карточке прокси, «Ещё → Сохранить ключ SSH…».</div></div>
+        </div>
+        <div class="mock-btns end"><span class="mock-btn primary">Готово</span></div>
+      </div>
+    </div>
+  </div></div>
+  <figcaption>
+    <ol class="mk-legend">
+      <li>Этапы установки — те же, что печатает скрипт в Терминале. Если этап не удался, он станет красным, ниже появятся сообщение, <span class="ui">Подробности</span> и ссылка <span class="ui">Что с этим делать</span>.</li>
+      <li><span class="ui">Остановить</span> прерывает установку. Сервер остаётся в том состоянии, до которого дошёл скрипт. Запускать установку повторно безопасно: она доделает остальное. После ошибки здесь кнопки <span class="ui">Назад</span> и <span class="ui">Повторить</span>.</li>
+      <li>Прокси уже добавлен в Routekeeper и проверен: видно время проверки и IP-адрес, который увидят сайты.</li>
+      <li>По умолчанию выключено. Если включить, после <span class="ui">Готово</span> сервер перестанет пускать по паролю, только по ключу.</li>
+    </ol>
+    Схема шагов <span class="ui">Установка</span> и <span class="ui">Готово</span>. Данные выдуманные.
+  </figcaption>
+</figure>
+<p>Если шаг не удался, мастер показывает сообщение, под ним <span class="ui">Подробности</span> и ссылку <span class="ui">Что с этим делать</span> — она ведёт в нужный раздел <a href="#troubleshooting">Если не получилось</a>. Сообщения те же, что печатает скрипт. Исправьте причину и нажмите <span class="ui">Повторить</span>: уже сделанное скрипт пропустит.</p>
+<p>Если на сервере уже стоит прокси Routekeeper, мастер скажет об этом на шаге <span class="ui">Домен</span> и подставит домен. Кнопка тогда называется <span class="ui">Обновить</span>: логин и пароль сохранятся, а прокси с этим доменом в Routekeeper обновится, а не появится второй раз.</p>
+
+<h3 id="wizard-passwords">Вход на сервер по паролю</h3>
+<p>Боты круглосуточно подбирают пароли к SSH. fail2ban не пускает адрес после пяти ошибок, но надёжнее совсем выключить вход по паролю. Флажок <span class="ui">Закрыть вход на сервер по паролю</span> на последнем шаге делает это: Routekeeper создаёт файл <code>/etc/ssh/sshd_config.d/10-routekeeper-keys-only.conf</code> и перезагружает настройки SSH. Если <code>sshd -t</code> находит в настройках ошибку, файл удаляется и ничего не меняется. По умолчанию флажок выключен. То же можно сделать позже в карточке прокси.</p>
+<div class="callout warn"><p>После этого на сервер пускают только по ключу. Чтобы входить самому из Терминала, сохраните ключ Routekeeper: в карточке прокси <span class="ui">Ещё</span> → <span class="ui">Сохранить ключ SSH…</span>, затем <code>ssh -i ~/.ssh/<span class="ph">файл</span> root@<span class="ph">IP</span></code>. Программам, которые заходят на сервер по паролю root (например, VPN-панелям), тоже понадобится ключ. Если доступ потерян, войдите через веб-консоль сервера в панели хостера и удалите этот файл.</p></div>
+
+<h3 id="wizard-manage">Управление сервером</h3>
+<p>У прокси, поставленного мастером, в карточке в разделе <span class="ui">Прокси</span> есть блок <span class="ui">Сервер</span>: работает ли прокси на сервере, до какого числа действует сертификат, сколько адресов не пускает fail2ban. Там же — обновить сервер, сменить пароль прокси, закрыть вход по паролю, сохранить ключ SSH и удалить прокси с сервера. Подробнее — в разделе <a href="../../docs/proxies/#server">Прокси</a>.</p>
+
+<details class="deep"><summary>Подробнее: что Routekeeper хранит и что делает на сервере</summary>
+  <ul>
+    <li>Ключ Routekeeper — ed25519, свой для каждого сервера. Закрытая часть лежит в связке ключей macOS (служба <code>app.getroutekeeper.mac.server-key</code>), открытая — в <code>authorized_keys</code> на сервере, с подписью <code>routekeeper@<span class="ph">IP</span></code>.</li>
+    <li>Адрес, пользователь, порт и домен сервера Routekeeper хранит в <code>~/Library/Application Support/app.getroutekeeper.mac/servers.json</code>, а ключ сервера, увиденный при первом входе, — рядом, в папке <code>servers</code>. Пароль от сервера и токен DuckDNS не сохраняются.</li>
+    <li>Скрипт установки встроен в приложение, это тот же <code>server.sh</code>, что лежит на сайте для этой версии Routekeeper. Мастер передаёт его серверу по SSH, на сервере он ничего не скачивает с сайта Routekeeper.</li>
+    <li>Логин и пароль прокси создаются на сервере и попадают в сетевое расширение Routekeeper, как при <a href="../../docs/proxies/#paste">вставке строки</a>. Окно Routekeeper их не хранит.</li>
+    <li>Routekeeper запускает системный <code>/usr/bin/ssh</code> без ваших настроек из <code>~/.ssh/config</code> и без ssh-agent.</li>
+    <li>Удаление прокси с сервера и <span class="ui">Забыть сервер…</span> не убирают ключ Routekeeper из <code>authorized_keys</code>: если вход по паролю закрыт, он может оказаться единственным. Убрать его можно вручную — это строка, которая заканчивается на <code>routekeeper@<span class="ph">IP</span></code>.</li>
+  </ul>
+</details>
+
+<h2 id="manual">Установка вручную</h2>
+<p>Если удобнее сделать всё самому или ставить прокси не с этого Mac, пройдите четыре шага ниже: домен, вход на сервер, команда установки и подключение в Routekeeper.</p>
+
 <h2 id="domain"><span class="step">1</span>Домен</h2>
 <p>Прокси нужно <a class="term" href="../../docs/glossary/#domain">доменное имя</a>. На это имя Let's Encrypt выдаёт сертификат, а Routekeeper по сертификату убеждается, что подключается именно к вашему серверу. Имя связывают с сервером <a class="term" href="../../docs/glossary/#a-record">A-записью</a> — строкой в <a class="term" href="../../docs/glossary/#dns">DNS</a> вида «имя → IPv4-адрес».</p>
 
@@ -124,7 +269,7 @@
   <li>В поле <code>sub domain</code> впишите имя: латинские буквы, цифры и дефис. Нажмите <code>add domain</code>. Получится адрес вида <code>имя.duckdns.org</code>.</li>
   <li>DuckDNS сразу подставляет в поле <code>current ip</code> адрес вашего компьютера. Замените его на IP сервера и нажмите <code>update ip</code>.</li>
 </ol>
-<p>Токен DuckDNS не понадобится: IP сервера не меняется, обновлять запись не придётся.</p>
+<p>При установке вручную токен DuckDNS не понадобится: IP сервера не меняется, обновлять запись не придётся. Мастеру Routekeeper токен тоже необязателен: с ним Routekeeper сам выполнит третий пункт.</p>
 
 <h3 id="own-domain">Свой домен</h3>
 <p>В панели регистратора или DNS-хостинга создайте A-запись: имя — поддомен (или <code>@</code> для самого домена), значение — IP сервера. Если домен обслуживает Cloudflare, выключите у записи проксирование (серое облако, «DNS only»). Иначе домен будет указывать на адреса Cloudflare, а не на ваш сервер.</p>
@@ -266,6 +411,7 @@ TCP: bbr
 
 <h2 id="security">Защита сервера</h2>
 <p>Боты круглосуточно подбирают пароли к SSH: на нашем тестовом сервере набиралось около 11 тысяч попыток в сутки. fail2ban не пускает адрес после пяти ошибок, но надёжнее совсем отключить вход по паролю и входить по ключу.</p>
+<p>Если прокси ставил мастер Routekeeper, это делает флажок <span class="ui">Закрыть вход на сервер по паролю</span>, см. <a href="#wizard-passwords">выше</a>. Вручную — так:</p>
 <ol class="steps">
   <li>На Mac создайте ключ. На вопрос о passphrase можно дважды нажать Return (ключ без пароля) или задать пароль к ключу.
     <div class="cmd"><pre><code>ssh-keygen -t ed25519 -f ~/.ssh/my_server</code></pre></div></li>
@@ -287,6 +433,7 @@ sudo systemctl reload ssh</code></pre></div>
 </details>
 
 <h2 id="maintenance">Обслуживание</h2>
+<p>Если прокси поставил мастер Routekeeper, обновить сервер, сменить пароль и удалить прокси проще кнопками в карточке прокси, в блоке <a href="../../docs/proxies/#server">Сервер</a>. Ниже — то же самое вручную.</p>
 <p>Все команды выполняются на сервере. С пользователем sudo добавляйте <code>sudo</code> в начало команды, а в команде установки — перед <code>bash</code>.</p>
 <div class="table"><table>
   <thead><tr><th>Задача</th><th>Что сделать</th></tr></thead>
@@ -308,6 +455,7 @@ sudo systemctl reload ssh</code></pre></div>
 </details>
 
 <h2 id="troubleshooting">Если не получилось</h2>
+<p>Мастер Routekeeper показывает те же сообщения, что и скрипт, а ссылка <span class="ui">Что с этим делать</span> ведёт в нужный раздел ниже. Сообщения о входе на сервер собраны в разделе <a href="#t-ssh">Вход на сервер</a>.</p>
 <p>При ошибке скрипт печатает строку с <code>✗</code> и останавливается. Исправьте причину и запустите ту же команду ещё раз: уже сделанное скрипт пропустит, а логин и пароль сохранятся. Ниже — каждое сообщение скрипта и что с ним делать.</p>
 
 <h3 id="t-start">Запуск</h3>
@@ -408,6 +556,19 @@ sudo systemctl reload ssh</code></pre></div>
 <p>В настройках Caddy нет прокси Routekeeper: это чужой Caddy, со своими сайтами. Скрипт его не удаляет. Если он вам не нужен, удалите его так же, как ставили.</p>
 
 <h3 id="t-ssh">Вход на сервер</h3>
+<p>Сообщения мастера Routekeeper о входе на сервер:</p>
+<div class="table"><table>
+  <thead><tr><th>Сообщение</th><th>Что делать</th></tr></thead>
+  <tbody>
+    <tr><td>Сервер не принял логин, пароль или ключ</td><td>Как <code>Permission denied</code> ниже: проверьте пароль и пользователя в письме хостера.</td></tr>
+    <tr><td>Ключ сервера изменился с прошлого входа</td><td>Как <code>REMOTE HOST IDENTIFICATION HAS CHANGED</code> ниже. Если систему на сервере переустанавливали, прокси на нём тоже больше нет: пройдите мастер заново, прокси в Routekeeper обновится.</td></tr>
+    <tr><td>Сервер отказал в подключении по SSH, Сервер не отвечает, Сервер недоступен из вашей сети</td><td>Как <code>Connection refused</code> ниже.</td></tr>
+    <tr><td>Такого адреса нет</td><td>В поле IP опечатка, или имя сервера не находится в DNS.</td></tr>
+    <tr><td>Пользователю «…» sudo требует пароль</td><td>Войдите как root или разрешите этому пользователю <code>sudo</code> без пароля. <code>sudo</code> с паролем мастер пока не поддерживает.</td></tr>
+    <tr><td>Ключ для этого сервера не найден в связке ключей</td><td>Ключ Routekeeper удалили из связки ключей. Пройдите мастер заново с паролем или своим ключом.</td></tr>
+  </tbody>
+</table></div>
+<p>Сообщения ssh в Терминале:</p>
 <h4><code>WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!</code></h4>
 <p>Ключ сервера изменился. После переустановки системы на сервере так и должно быть. Удалите старый ключ на Mac и подключитесь снова:</p>
 <div class="cmd"><pre><code>ssh-keygen -R <span class="ph">IP</span></code></pre></div>

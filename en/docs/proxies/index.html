@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Proxies — Routekeeper</title>
-<meta name="description" content="Proxies in Routekeeper: the SOCKS5, HTTP and HTTPS types, the fields and pasting a proxy line, DNS through proxy and blocking UDP and QUIC, checking and error messages, several proxies and moving routes, a local sing-box, Xray or Clash client, a work proxy.">
+<meta name="description" content="Proxies in Routekeeper: the SOCKS5, HTTP and HTTPS types, the fields and pasting a proxy line, DNS through proxy and blocking UDP and QUIC, checking and error messages, a proxy on your own server, several proxies and moving routes, a local sing-box, Xray or Clash client, a work proxy.">
 <meta name="theme-color" content="#0a0f1f">
 <link rel="canonical" href="https://getroutekeeper.app/en/docs/proxies/">
 <link rel="alternate" hreflang="ru" href="https://getroutekeeper.app/docs/proxies/">
@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="../../../docs/assets/docs.css?v=904b8bd7">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=19efe7ca">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/en/proxies.html. Edit the fragment, not this file. -->
@@ -40,6 +40,7 @@
     <span class="group">Getting started</span>
     <a href="../../../en/docs/">Docs overview</a>
     <a href="../../../en/docs/start/">Quick start</a>
+    <a href="../../../en/docs/license/">License</a>
     <a href="../../../en/docs/concepts/">How it works</a>
     <span class="group">Setup</span>
     <a href="../../../en/docs/proxies/" aria-current="page">Proxies</a>
@@ -64,6 +65,7 @@
     <span class="group">Getting started</span>
     <a href="../../../en/docs/">Docs overview</a>
     <a href="../../../en/docs/start/">Quick start</a>
+    <a href="../../../en/docs/license/">License</a>
     <a href="../../../en/docs/concepts/">How it works</a>
     <span class="group">Setup</span>
     <a href="../../../en/docs/proxies/" aria-current="page">Proxies</a>
@@ -83,7 +85,7 @@
     </nav></details>
 <p class="lead-in">Routekeeper has no servers of its own. It sends app traffic to the <a class="term" href="../../../en/docs/glossary/#proxy">proxy</a> you give it: your own server, a client of another program on this Mac, a work proxy or a proxy from a provider.</p>
 <pre class="flow"><code>App → Routekeeper → <b>proxy</b> → site</code></pre>
-<p>Don’t have a proxy? You can set one up on a rented server with one command: <a href="../../../en/docs/server/">Your own proxy server</a>.</p>
+<p>Don’t have a proxy? Routekeeper can set one up on a rented server by itself: all it needs is the server’s IP and password. See <a href="../../../en/docs/server/">Your own proxy server</a>.</p>
 
 <h2 id="types">Which type to choose</h2>
 <p>Routekeeper works with three types of proxy. The type sets how Routekeeper talks to the server. Apps don’t notice the difference.</p>
@@ -118,7 +120,7 @@
 <ol class="steps">
   <li>In the Routekeeper window, open the <span class="ui">Proxy</span> section (<kbd>⌘4</kbd>).</li>
   <li>Click <span class="ui">+</span> below the list of proxies or the <span class="ui">+</span> (<span class="ui">Add Proxy</span>) button in the toolbar, which shows only an icon. <kbd>⌥⌘N</kbd> does the same from any section. Empty fields open on the right.</li>
-  <li>Fill in the fields as shown in the table below.</li>
+  <li>Fill in the fields as shown in the table below. If you have a rented server but no proxy yet, click <span class="ui">Your Own Server…</span> in the toolbar (the server icon) instead: Routekeeper sets up a proxy on the server and adds it, see <a href="../../../en/docs/server/#wizard">Your own proxy server</a>.</li>
   <li>Click <span class="ui">Check</span>. You can check before you save: Routekeeper uses what’s in the fields. What the result means is explained in <a href="#check">Checking</a>.</li>
   <li>Click <span class="ui">Add</span>. The proxy appears in the list on the left, and Routekeeper checks it again right away.</li>
 </ol>
@@ -298,6 +300,53 @@
 </table></div>
 <p>Other Routekeeper messages and what to do about them are in <a href="../../../en/docs/troubleshooting/#errors">Troubleshooting</a>.</p>
 
+<h2 id="server">A proxy on your own server</h2>
+<p>A proxy that Routekeeper set up with the <a href="../../../en/docs/server/#wizard">Your Own Server…</a> wizard gets a <span class="ui">Server</span> block at the bottom of its card. Routekeeper logs in to the server with its own key from the keychain, does one thing and logs out.</p>
+<figure class="mock-fig">
+  <div class="mock-scroll"><div class="mock mock-win narrow" aria-hidden="true" style="width: 460px">
+    <div class="mock-main">
+      <div class="mock-group">
+        <div class="mock-row" style="flex-wrap: wrap"><span class="mock-btn">ϟ Check</span><span class="mock-ok">✓ Working · 182 ms · IP 203.0.113.7</span></div>
+      </div>
+      <div class="mock-btns end"><span class="mock-btn">Revert Changes</span><span class="mock-btn primary">Save</span></div>
+      <div class="mock-cap">Server</div>
+      <div class="mock-group">
+        <div class="mock-row"><span class="grow">SSH login</span><span class="muted">root@203.0.113.7</span></div>
+        <div class="mock-row"><span class="grow">Proxy on the server</span><b class="mk">1</b><span class="mock-ok">✓ running</span></div>
+        <div class="mock-row"><span class="grow">Certificate valid until</span><span class="muted">Jan 2, 2027</span></div>
+        <div class="mock-row"><span class="grow">Password guessers blocked</span><b class="mk">2</b><span class="muted">14</span></div>
+        <div class="mock-row"><span class="grow">Checked</span><span class="muted">2 hours ago</span></div>
+        <div class="mock-row"><span class="grow">Password login</span><span class="muted">on</span></div>
+        <div class="mock-row"><span class="mock-btn">Check Server</span><b class="mk">3</b><span class="mock-btn">Reinstall</span><b class="mk">4</b><span class="grow"></span><b class="mk">5</b><span class="mock-btn mock-select">More</span></div>
+      </div>
+    </div>
+  </div></div>
+  <figcaption>
+    <ol class="mk-legend">
+      <li>Whether Caddy with the proxy is running on the server. If it says <span class="ui">stopped</span>, click <span class="ui">Reinstall</span>.</li>
+      <li>How many addresses fail2ban is currently blocking for guessing the SSH password.</li>
+      <li><span class="ui">Check Server</span> logs in to the server and refreshes these rows. Routekeeper also does this itself when the card opens, if the last check is more than six hours old.</li>
+      <li>Runs the installation again with the same domain. If this version of Routekeeper has a newer setup, the button says <span class="ui">Update Server</span>, and the row <span class="ui">An update for the server setup is available</span> appears above. The proxy’s login and password don’t change.</li>
+      <li>In the menu: <span class="ui">Change Proxy Password…</span>, <span class="ui">Turn Off Password Logins to the Server…</span>, <span class="ui">Save SSH Key…</span>, <span class="ui">Remove Proxy from the Server…</span> and <span class="ui">Forget Server…</span>.</li>
+    </ol>
+    A diagram of the bottom of the card of a proxy that Routekeeper set up on a server. The data is made up.
+  </figcaption>
+</figure>
+<div class="table"><table>
+  <thead><tr><th>Button</th><th>What it does</th></tr></thead>
+  <tbody>
+    <tr><td><span class="ui">Check Server</span></td><td>Finds out whether the proxy is running on the server, when the certificate expires and how many addresses fail2ban is blocking. Caddy renews the certificate itself, a month before it expires.</td></tr>
+    <tr><td><span class="ui">Reinstall</span> or <span class="ui">Update Server</span></td><td>Runs the installation again with the same domain. This fixes a stopped proxy and brings Caddy and the settings up to the version in this Routekeeper. The login and password don’t change.</td></tr>
+    <tr><td><span class="ui">More</span> → <span class="ui">Change Proxy Password…</span></td><td>Creates a new login and password on the server and saves them in this proxy right away. Routes and rules stay on it. If this proxy is set up anywhere else, the old password stops working there.</td></tr>
+    <tr><td><span class="ui">More</span> → <span class="ui">Turn Off Password Logins to the Server…</span></td><td>The server starts accepting only keys for SSH. See <a href="../../../en/docs/server/#wizard-passwords">Password logins to the server</a>.</td></tr>
+    <tr><td><span class="ui">More</span> → <span class="ui">Save SSH Key…</span></td><td>Saves the private key Routekeeper logs in to the server with to a file. With it you can log in to the server from Terminal: <code>ssh -i <span class="ph">file</span> root@<span class="ph">IP</span></code>.</td></tr>
+    <tr><td><span class="ui">More</span> → <span class="ui">Remove Proxy from the Server…</span></td><td>Removes Caddy, the certificate, the login and the password on the server. The server and everything else on it stay. In the dialog you choose whether to delete the proxy in Routekeeper too.</td></tr>
+    <tr><td><span class="ui">More</span> → <span class="ui">Forget Server…</span></td><td>Routekeeper deletes its key for this server and stops managing it. The proxy keeps working on the server and in Routekeeper; the <span class="ui">Server</span> block disappears.</td></tr>
+  </tbody>
+</table></div>
+<p>If the block shows an error, the <span class="ui">What to do about it</span> link under it leads to the right part of <a href="../../../en/docs/server/#troubleshooting">Your own proxy server</a>.</p>
+<div class="callout warn"><p>With password logins to the server off, Routekeeper’s key may be the only one the server accepts. <span class="ui">Forget Server…</span> and deleting the proxy delete this key from the keychain, so save it first: <span class="ui">More</span> → <span class="ui">Save SSH Key…</span>.</p></div>
+
 <h2 id="several">Several proxies</h2>
 <p>You can add as many proxies as you like. Each app, service and rule chooses its own: the route menu has a <span class="ui">Through Proxy</span> section with all proxies by name. For example, the browser goes through “Amsterdam”, and the work messenger through “Office”. How to choose a route is described in <a href="../../../en/docs/apps/#route">An app’s route</a>.</p>
 <p>If two proxies have the same name, the menu adds the type and port to them. It’s clearer to give them different names.</p>
@@ -314,6 +363,7 @@
 <h3 id="delete">Deleting a proxy</h3>
 <p>Select the proxy in the list and click <span class="ui">−</span> below the list, or press Delete. You can also right-click the proxy and choose <span class="ui">Delete…</span>. Routekeeper asks you to confirm and tells you how many rules go through this proxy. Deleting can’t be undone: <kbd>⌘Z</kbd> won’t bring the proxy back, and its login and password are deleted with it.</p>
 <p>Routes and rules that went through the deleted proxy are turned off.</p>
+<p>If the <span class="ui">Your Own Server…</span> wizard set up the proxy, the dialog has two buttons: <span class="ui">Delete, Also from the Server</span> removes the proxy from the server and then deletes it in Routekeeper; <span class="ui">Delete Only from Routekeeper</span> leaves the proxy running on the server, and Routekeeper forgets the server and its key.</p>
 <div class="callout warn"><p><b>A turned-off rule has no effect.</b> Apps that went through the deleted proxy will follow the other rules and the <a href="../../../en/docs/firewall/#modes">mode</a>. In <span class="ui">Proxy Only</span> mode, this means they go direct, with your real IP, and these connections won’t show up in <span class="ui">Leaks</span>. So first <a href="#switch">move the routes</a> to another proxy, and only then delete.</p></div>
 
 <h2 id="switch">Switching to another proxy</h2>

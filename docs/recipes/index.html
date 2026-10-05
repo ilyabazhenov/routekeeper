@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="../../docs/assets/docs.css?v=904b8bd7">
+<link rel="stylesheet" href="../../docs/assets/docs.css?v=19efe7ca">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/ru/recipes.html. Edit the fragment, not this file. -->
@@ -40,6 +40,7 @@
     <span class="group">Начало</span>
     <a href="../../docs/">Обзор документации</a>
     <a href="../../docs/start/">Быстрый старт</a>
+    <a href="../../docs/license/">Лицензия</a>
     <a href="../../docs/concepts/">Как это работает</a>
     <span class="group">Настройка</span>
     <a href="../../docs/proxies/">Прокси</a>
@@ -64,6 +65,7 @@
     <span class="group">Начало</span>
     <a href="../../docs/">Обзор документации</a>
     <a href="../../docs/start/">Быстрый старт</a>
+    <a href="../../docs/license/">Лицензия</a>
     <a href="../../docs/concepts/">Как это работает</a>
     <span class="group">Настройка</span>
     <a href="../../docs/proxies/">Прокси</a>
@@ -118,7 +120,7 @@
   <li><b>Другая сборка того же мессенджера</b> (бета-версия, копия из другого магазина) — для Routekeeper другое приложение, если у неё другая <a class="term" href="../../docs/glossary/#code-signature">подпись</a>. Добавьте её отдельно.</li>
 </ul>
 <details class="deep"><summary>Подробнее: сервис вместо приложения</summary>
-  <p>Если мессенджер есть в списке <span class="ui">Сервисы</span>, можно добавить и сервис: <span class="ui">Приложения</span> → <span class="ui">Добавить</span> → <span class="ui">Сервис</span>. Правило сервиса отправляет адреса этого сервиса через прокси в любом приложении, включая веб-версию в браузере. Начиная со следующей версии вместе с сервисом Routekeeper добавляет и приложение сервиса для Mac, если оно установлено или будет установлено позже. В 0.2.1 приложение нужно добавить самому, как в шагах выше.</p>
+  <p>Если мессенджер есть в списке <span class="ui">Сервисы</span>, можно добавить и сервис: <span class="ui">Приложения</span> → <span class="ui">Добавить</span> → <span class="ui">Сервис</span>. Правило сервиса отправляет адреса этого сервиса через прокси в любом приложении, включая веб-версию в браузере. Начиная с версии 0.3.0 вместе с сервисом Routekeeper добавляет и приложение сервиса для Mac, если оно установлено или будет установлено позже. В 0.2.1 приложение нужно добавить самому, как в шагах выше.</p>
   <p>Правило сервиса узнаёт соединения по имени сайта, а у некоторых сервисов (например, Telegram) ещё и по подсетям. Маршрут приложения целиком надёжнее: он не зависит от того, знает ли Routekeeper имя. Подробнее о сервисах — в разделе <a href="../../docs/apps/#services">«Сервисы»</a>.</p>
 </details>
 
@@ -216,7 +218,7 @@
 </ul>
 <details class="deep"><summary>Подробнее: сервисы для AI-инструментов</summary>
   <p>В списке <span class="ui">Сервисы</span> есть ChatGPT, Claude, Gemini, GitHub Copilot, Cursor, Perplexity и Grok, а также GitHub и JetBrains. Сервис отправляет свои адреса через прокси в любом приложении: в браузере, в редакторе и в консольных программах, даже если они запущены не из терминала.</p>
-  <p>Начиная со следующей версии вместе с сервисом Routekeeper добавляет и его приложения: например, ChatGPT, Claude, Cursor, IDE JetBrains, а для Claude ещё и консольную программу <code>claude</code>. Приложение, установленное позже, добавится само. В 0.2.1 приложения нужно добавлять отдельно.</p>
+  <p>Начиная с версии 0.3.0 вместе с сервисом Routekeeper добавляет и его приложения: например, ChatGPT, Claude, Cursor, IDE JetBrains, а для Claude ещё и консольную программу <code>claude</code>. Приложение, установленное позже, добавится само. В 0.2.1 приложения нужно добавлять отдельно.</p>
   <p>Терминал «узнаёт» дочерний процесс по цепочке родителей: <code>curl</code>, запущенный из Терминала, попадает под правило Терминала, даже если сам <code>curl</code> подписан Apple. Подробнее — в разделе <a href="../../docs/apps/#child-processes">«Дочерние процессы»</a>.</p>
 </details>
 

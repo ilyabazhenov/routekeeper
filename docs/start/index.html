@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="../../docs/assets/docs.css?v=904b8bd7">
+<link rel="stylesheet" href="../../docs/assets/docs.css?v=19efe7ca">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/ru/start.html. Edit the fragment, not this file. -->
@@ -40,6 +40,7 @@
     <span class="group">Начало</span>
     <a href="../../docs/">Обзор документации</a>
     <a href="../../docs/start/" aria-current="page">Быстрый старт</a>
+    <a href="../../docs/license/">Лицензия</a>
     <a href="../../docs/concepts/">Как это работает</a>
     <span class="group">Настройка</span>
     <a href="../../docs/proxies/">Прокси</a>
@@ -64,6 +65,7 @@
     <span class="group">Начало</span>
     <a href="../../docs/">Обзор документации</a>
     <a href="../../docs/start/" aria-current="page">Быстрый старт</a>
+    <a href="../../docs/license/">Лицензия</a>
     <a href="../../docs/concepts/">Как это работает</a>
     <span class="group">Настройка</span>
     <a href="../../docs/proxies/">Прокси</a>
@@ -87,6 +89,7 @@
   <div class="card"><b>Mac с macOS 14 Sonoma или новее</b><p>Подходят Mac на Apple Silicon и на Intel.</p></div>
   <div class="card"><b>Учётная запись администратора</b><p>macOS спросит пароль администратора, когда вы будете разрешать <a class="term" href="../../docs/glossary/#network-extension">сетевое расширение</a>.</p></div>
   <div class="card"><b>Прокси-сервер</b><p>Адрес, порт и, если нужно, логин с паролем вашего <a class="term" href="../../docs/glossary/#proxy">прокси</a>. Если прокси пока нет, ниже написано, <a href="#first-proxy">где его взять</a>.</p></div>
+  <div class="card"><b>Лицензия</b><p>Без неё Routekeeper не направляет трафик, но настроить всё можно заранее. <a href="../../docs/license/">Как её получить</a>.</p></div>
   <div class="card"><b>Около десяти минут</b><p>Иногда после установки расширения macOS просит перезагрузить Mac.</p></div>
 </div>
 
@@ -166,7 +169,7 @@
         <span class="mock-btn" style="width: 20px; height: 20px; padding: 0; justify-content: center; border-radius: 50%">4</span>
         <div class="grow" style="display: grid; gap: 4px">
           <b>Добавить прокси-сервер</b>
-          <div class="mock-sub">SOCKS5, HTTP или HTTPS, с логином и паролем или без. Если строка прокси уже скопирована (например, socks5://user:pass@host:1080), её можно вставить.</div>
+          <div class="mock-sub">SOCKS5, HTTP или HTTPS, с логином и паролем или без. Если строка прокси уже скопирована (например, socks5://user:pass@host:1080), её можно вставить. Есть свой сервер (VPS) — Routekeeper сам поставит на него прокси.</div>
         </div>
       </div>
       <div class="mock-group" style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; opacity: .6">
@@ -366,7 +369,7 @@
 
 <h3>Где взять прокси</h3>
 <div class="grid">
-  <div class="card"><b>Свой сервер</b><p>Арендуйте <a class="term" href="../../docs/glossary/#vps">VPS</a> и поставьте на него HTTPS-прокси одной командой. В конце скрипт напечатает готовую строку для Routekeeper. Пошагово — на странице <a href="../../docs/server/">«Свой прокси-сервер»</a>.</p></div>
+  <div class="card"><b>Свой сервер</b><p>Арендуйте <a class="term" href="../../docs/glossary/#vps">VPS</a>, нажмите <span class="ui">Свой сервер…</span> и впишите IP и пароль сервера: Routekeeper сам поставит на него HTTPS-прокси и добавит его. Пошагово — на странице <a href="../../docs/server/">«Свой прокси-сервер»</a>.</p></div>
   <div class="card"><b>Клиент на этом Mac</b><p>Клиенты вроде sing-box, Xray или Clash обычно открывают на Mac локальный <a class="term" href="../../docs/glossary/#socks5">SOCKS5</a>-порт, например <code>127.0.0.1:1080</code>. Его и добавьте. Подробно — <a href="../../docs/proxies/#local-client">локальный клиент</a>.</p></div>
   <div class="card"><b>Рабочий прокси</b><p>Адрес, порт, логин и пароль выдаёт администратор сети. Подробно — <a href="../../docs/proxies/#work-proxy">рабочий прокси</a>.</p></div>
   <div class="card"><b>Готовая строка</b><p>Если вам дали строку вида <code>socks5://логин:пароль@сервер:1080</code>, её достаточно скопировать и вставить.</p></div>
@@ -382,6 +385,7 @@
   <li>Если хотите проверить прокси до сохранения, нажмите <span class="ui">Проверить</span>. Через пару секунд рядом появится «Работает · 48 мс · IP 203.0.113.7» или текст ошибки.</li>
   <li>Нажмите <span class="ui">Добавить</span>. Routekeeper сохранит прокси и сразу проверит его.</li>
 </ol>
+<p>Есть арендованный сервер, но нет прокси? Нажмите <span class="ui">Свой сервер…</span>: откроется мастер, который поставит прокси на сервер, см. <a href="../../docs/server/#wizard">Установка из Routekeeper</a>.</p>
 <p>Строки нет? Нажмите <span class="ui">Ввести вручную…</span> и заполните поля сами:</p>
 <ul>
   <li><span class="ui">Тип</span> — SOCKS5, HTTP или HTTPS.</li>
@@ -502,7 +506,7 @@
   <a class="card" href="../../docs/monitoring/"><b>Проверка и мониторинг</b><p>Обзор, монитор соединений и раздел <span class="ui">Мимо прокси</span>.</p></a>
 </div>
     <p class="checked">Сверено с кодом Routekeeper (версия 0.2.1 и следующая за ней) 4 октября 2026 года.</p>
-    <nav class="pager"><a class="prev" href="../../docs/"><span>Назад</span>Обзор документации</a><a class="next" href="../../docs/concepts/"><span>Дальше</span>Как это работает</a></nav>
+    <nav class="pager"><a class="prev" href="../../docs/"><span>Назад</span>Обзор документации</a><a class="next" href="../../docs/license/"><span>Дальше</span>Лицензия</a></nav>
   </article>
 </main>
 
