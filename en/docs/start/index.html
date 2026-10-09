@@ -27,17 +27,46 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="../../../docs/assets/docs.css?v=19efe7ca">
+<link rel="stylesheet" href="../../../assets/nav.css?v=c53c1160">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=f665767d">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/en/start.html. Edit the fragment, not this file. -->
 
 <div class="wrap nav-wrap">
   <header class="nav">
-    <a class="brand" href="../../../en/"><img src="../../../mark.svg" alt="" width="28" height="28">Routekeeper</a>
-    <div class="nav-end"><a class="lang" href="../../../docs/start/" hreflang="ru" lang="ru">RU</a><a class="btn btn-primary" href="../../../en/#download">Download</a></div>
+    <a class="brand" href="../../"><img src="../../../mark.svg" alt="" width="28" height="28">Routekeeper</a>
+    <nav class="nav-links" aria-label="Site sections">
+      <a href="../../#how">How it works</a>
+      <a href="../../#features">Features</a>
+      <a href="../../#modes">Modes</a>
+      <a href="../../docs/" aria-current="true">Docs</a>
+      <a href="../../#faq">FAQ</a>
+    </nav>
+    <div class="nav-end">
+      <a class="lang" href="../../../docs/start/" hreflang="ru" lang="ru">RU</a>
+      <a class="btn btn-primary btn-sm" href="../../#download">Download</a>
+      <details class="nav-menu">
+        <summary aria-label="Menu"><svg class="open" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg><svg class="close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></summary>
+        <nav aria-label="Site sections">
+      <a href="../../#how">How it works</a>
+      <a href="../../#features">Features</a>
+      <a href="../../#modes">Modes</a>
+      <a href="../../docs/" aria-current="true">Docs</a>
+      <a href="../../#faq">FAQ</a>
+        </nav>
+      </details>
+    </div>
   </header>
 </div>
+<script>
+(function () { // the phone menu closes on a pick, a click elsewhere and Esc
+  var menu = document.querySelector('.nav-menu');
+  menu.addEventListener('click', function (e) { if (e.target.closest('a')) menu.open = false; });
+  document.addEventListener('click', function (e) { if (menu.open && !menu.contains(e.target)) menu.open = false; });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && menu.open) { menu.open = false; menu.querySelector('summary').focus(); } });
+})();
+</script>
 
 <section class="wrap docs-hero compact">
   <div class="hero-copy">

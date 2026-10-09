@@ -28,6 +28,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/nav.css?v=c53c1160">
 <style>
 :root {
   --bg: #0a0f1f;
@@ -59,18 +60,6 @@ a { color: inherit; text-decoration: none; }
 .wrap { width: min(1180px, 100% - 32px); margin-inline: auto; }
 .warm { background: linear-gradient(100deg, #ffd58a 0%, var(--amber) 40%, var(--amber-2) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
-.nav-wrap { position: sticky; top: 12px; z-index: 50; margin-top: 12px; }
-.nav {
-  display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  padding: 8px 8px 8px 14px; border-radius: 16px;
-  background: rgba(12, 18, 38, 0.6); border: 1px solid var(--line);
-  backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4);
-}
-.brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 17px; letter-spacing: -0.01em; }
-.brand img { width: 28px; height: 28px; }
-.nav-end { display: flex; align-items: center; gap: 6px; }
-.lang { padding: 8px 10px; border-radius: 10px; color: var(--muted); font: 500 13px/1 var(--mono); letter-spacing: .06em; }
-.lang:hover { color: var(--text); background: var(--surface-2); }
 .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 10px; font: 600 14px/1 var(--font); }
 .btn-primary { color: #2a1606; background: linear-gradient(180deg, #ffd27e, var(--amber) 55%, #f39a3a); box-shadow: inset 0 1px 0 rgba(255, 248, 225, .7), 0 8px 28px -8px var(--glow); }
 
@@ -102,12 +91,42 @@ a { color: inherit; text-decoration: none; }
 </head>
 <body>
 
+<!-- nav -->
 <div class="wrap nav-wrap">
   <header class="nav">
     <a class="brand" href="../"><img src="../mark.svg" alt="" width="28" height="28">Routekeeper</a>
-    <div class="nav-end"><a class="lang" href="../en/privacy/" hreflang="en" lang="en">EN</a><a class="btn" href="../docs/">Документация</a><a class="btn btn-primary" href="../#download">Скачать</a></div>
+    <nav class="nav-links" aria-label="Разделы сайта">
+      <a href="../#how">Как работает</a>
+      <a href="../#features">Возможности</a>
+      <a href="../#modes">Режимы</a>
+      <a href="../docs/">Документация</a>
+      <a href="../#faq">Вопросы</a>
+    </nav>
+    <div class="nav-end">
+      <a class="lang" href="../en/privacy/" hreflang="en" lang="en">EN</a>
+      <a class="btn btn-primary btn-sm" href="../#download">Скачать</a>
+      <details class="nav-menu">
+        <summary aria-label="Меню"><svg class="open" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg><svg class="close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></summary>
+        <nav aria-label="Разделы сайта">
+      <a href="../#how">Как работает</a>
+      <a href="../#features">Возможности</a>
+      <a href="../#modes">Режимы</a>
+      <a href="../docs/">Документация</a>
+      <a href="../#faq">Вопросы</a>
+        </nav>
+      </details>
+    </div>
   </header>
 </div>
+<script>
+(function () { // the phone menu closes on a pick, a click elsewhere and Esc
+  var menu = document.querySelector('.nav-menu');
+  menu.addEventListener('click', function (e) { if (e.target.closest('a')) menu.open = false; });
+  document.addEventListener('click', function (e) { if (menu.open && !menu.contains(e.target)) menu.open = false; });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && menu.open) { menu.open = false; menu.querySelector('summary').focus(); } });
+})();
+</script>
+<!-- /nav -->
 
 <main class="wrap">
   <article class="doc">
