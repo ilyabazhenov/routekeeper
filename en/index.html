@@ -663,7 +663,7 @@ section { padding-top: 128px; }
         <div class="node n-apps">
           <div class="node-h"><svg><use href="#i-grid"/></svg><b>Apps</b></div>
           <ul class="mini">
-            <li><span class="ico" style="background:linear-gradient(135deg,#47b4f0,#2283cf)">T</span>Telegram</li>
+            <li><span class="ico" style="background:linear-gradient(135deg,#8a63d2,#3b2a6b)">G</span>GitHub Desktop</li>
             <li><span class="ico" style="background:linear-gradient(135deg,#5fb3ff,#2a6fe0)">S</span>Safari</li>
             <li><span class="ico" style="background:linear-gradient(135deg,#6a7280,#3c424c)">›_</span>curl, git, node</li>
             <li><span class="ico" style="background:linear-gradient(135deg,#ff6a5a,#c8322a)">A</span>Adobe Updater</li>
@@ -702,7 +702,7 @@ section { padding-top: 128px; }
 
       <div class="steps">
         <div class="step rv"><h3>Add a proxy</h3><p>SOCKS5, HTTP or HTTPS, with or without a password. Add several: work, home, another country. If one goes down, move your apps to another with one click from the menu bar.</p></div>
-        <div class="step rv"><h3>Set the routes</h3><p>Telegram via Amsterdam, Safari direct, that pushy updater to a dead end. One click per app.</p></div>
+        <div class="step rv"><h3>Set the routes</h3><p>GitHub via Amsterdam, Safari direct, that pushy updater to a dead end. One click per app.</p></div>
         <div class="step rv"><h3>The keeper keeps watch</h3><p>The monitor shows every connection, and the leak detector flags anything that strayed from its route.</p></div>
       </div>
     </div>
@@ -720,7 +720,7 @@ section { padding-top: 128px; }
           <h3>Rules by destination</h3>
           <p>A wildcard domain, an IP, a subnet or a port. One route per app, plus exceptions where you need them.</p>
           <div class="viz rules">
-            <div class="rule"><span class="ico" style="background:linear-gradient(135deg,#47b4f0,#2283cf)">T</span><span>*.telegram.org</span><em class="tag proxy">proxy</em></div>
+            <div class="rule"><span class="ico" style="background:linear-gradient(135deg,#8a63d2,#3b2a6b)">G</span><span>*.github.com</span><em class="tag proxy">proxy</em></div>
             <div class="rule"><span class="ico" style="background:linear-gradient(135deg,#e05a8a,#7b2d6b)">S</span><span>*.corp.example</span><em class="tag proxy">office</em></div>
             <div class="rule"><span class="ico" style="background:linear-gradient(135deg,#6a7280,#3c424c)">›_</span><span>10.0.0.0/8</span><em class="tag direct">direct</em></div>
             <div class="rule"><span class="ico" style="background:linear-gradient(135deg,#ff6a5a,#c8322a)">A</span><span>any address</span><em class="tag stop">dead end</em></div>
@@ -756,8 +756,8 @@ section { padding-top: 128px; }
           <div class="viz yard" id="yard">
             <div class="yard-layer dark">
               <span class="trk" style="top:22%"></span><span class="trk" style="top:52%"></span><span class="trk" style="top:82%"></span>
-              <span class="it bad" style="right:5%;top:22%"><svg><use href="#i-warn"/></svg><span>Zoom bypassed the proxy<small>52.84.12.7:443</small></span></span>
-              <span class="it ok proxy" style="left:8%;top:52%">Telegram</span>
+              <span class="it bad" style="right:5%;top:22%"><svg><use href="#i-warn"/></svg><span>Zoom went around the proxy<small>52.84.12.7:443</small></span></span>
+              <span class="it ok proxy" style="left:8%;top:52%">GitHub</span>
               <span class="it ok direct" style="right:10%;top:52%">Safari</span>
               <span class="it bad" style="left:5%;top:82%"><svg><use href="#i-warn"/></svg><span>DNS sent to your ISP<small>Chrome · example.org</small></span></span>
               <span class="it ok proxy" style="right:7%;top:82%">Slack</span>
@@ -770,8 +770,8 @@ section { padding-top: 128px; }
           <h3>By signature, not by name</h3>
           <p>A renamed copy will not inherit someone else’s route.</p>
           <div class="viz sig">
-            <div><span>Telegram.app</span><span class="ok">✓ signed</span></div>
-            <div><span>Telegram copy</span><span class="bad">✕ mismatch</span></div>
+            <div><span>GitHub Desktop.app</span><span class="ok">✓ signed</span></div>
+            <div><span>GitHub Desktop copy</span><span class="bad">✕ mismatch</span></div>
             <div><span>+ helpers</span><span class="ok">same route</span></div>
           </div>
         </article>
@@ -959,7 +959,7 @@ section { padding-top: 128px; }
 
   // Hero: apps and their routes.
   const APPS = [
-    ['Telegram', 'org.telegram.desktop', 'T', '#47b4f0', '#2283cf', 'proxy'],
+    ['GitHub Desktop', 'com.github.GitHubClient', 'G', '#8a63d2', '#3b2a6b', 'proxy'],
     ['Slack', 'com.tinyspeck.slackmacgap', 'S', '#e05a8a', '#7b2d6b', 'proxy'],
     ['Safari', 'com.apple.Safari', 'S', '#5fb3ff', '#2a6fe0', 'direct'],
     ['Zoom', 'us.zoom.xos', 'Z', '#5aa0ff', '#2a5fd6', 'direct'],
@@ -1190,10 +1190,10 @@ section { padding-top: 128px; }
 
   // Live monitor feed.
   const FEED = [
-    ['Telegram', '149.154.167.50:443', 'proxy', 'AMS'],
+    ['GitHub Desktop', 'api.github.com:443', 'proxy', 'AMS'],
     ['Safari', 'apple.com:443', 'direct', 'direct'],
     ['Slack', 'wss-primary.slack.com', 'proxy', 'office'],
-    ['curl', 'github.com:443', 'proxy', 'AMS'],
+    ['curl', 'ipinfo.io:443', 'proxy', 'AMS'],
     ['Adobe Updater', 'ims-na1.adobelogin.com', 'stop', 'blocked'],
     ['Zoom', 'zoom.us:443', 'direct', 'direct'],
     ['node', 'registry.npmjs.org', 'proxy', 'AMS'],

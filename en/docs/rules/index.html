@@ -181,7 +181,7 @@
   <figcaption>
     <ol class="mk-legend">
       <li><span class="ui">Any App</span> or a specific one, picked from the <span class="ui">Change</span> menu. For a specific app, <span class="ui">Include Child Processes</span> appears below.</li>
-      <li>Where the connection goes: a name (<code>files.example.com</code>), a wildcard (<code>*.corp.example</code>: the domain itself and all its subdomains), an IP, a subnet or <code>@service</code>. An empty field means any address and shows the hint “Any address · *.example.com · 10.0.0.0/8 · @youtube”. The <span class="ui">Service</span> menu fills in a service. How to write an address is in <a href="#destination">the table below</a>.</li>
+      <li>Where the connection goes: a name (<code>files.example.com</code>), a wildcard (<code>*.corp.example</code>: the domain itself and all its subdomains), an IP, a subnet or <code>@service</code>. An empty field means any address and shows the hint “Any address · *.example.com · 10.0.0.0/8 · @github”. The <span class="ui">Service</span> menu fills in a service. How to write an address is in <a href="#destination">the table below</a>.</li>
       <li><span class="ui">Port</span> is a single number; empty means any port. <span class="ui">Protocol</span> is a menu: <span class="ui">TCP and UDP</span>, <span class="ui">TCP</span> or <span class="ui">UDP</span>.</li>
       <li>What to do with the connection: a proxy, <span class="ui">Direct</span>, <span class="ui">Block</span> or <span class="ui">Ask</span>.</li>
       <li>A short reminder of which rule wins. The details are in <a href="#priority">Which rule wins</a>.</li>
@@ -199,7 +199,7 @@
     <tr><td><code>*.</code>name</td><td>The name itself and all its subdomains (a <a class="term" href="../../../en/docs/glossary/#wildcard">wildcard</a>).</td><td><code>*.example.com</code> matches <code>example.com</code>, <code>www.example.com</code>, <code>a.b.example.com</code></td></tr>
     <tr><td>An IP address</td><td>Only this <a class="term" href="../../../en/docs/glossary/#ip">address</a>, IPv4 or IPv6.</td><td><code>203.0.113.10</code>, <code>2001:db8::1</code></td></tr>
     <tr><td>A subnet</td><td>All addresses in the <a class="term" href="../../../en/docs/glossary/#cidr">subnet</a>.</td><td><code>10.0.0.0/8</code>, <code>192.168.1.0/24</code>, <code>fd00::/8</code></td></tr>
-    <tr><td><code>@</code>service</td><td>All addresses of the <a href="../../../en/docs/apps/#services">service</a>.</td><td><code>@youtube</code>, <code>@github</code>, <code>@ru-banks</code></td></tr>
+    <tr><td><code>@</code>service</td><td>All addresses of the <a href="../../../en/docs/apps/#services">service</a>.</td><td><code>@github</code>, <code>@chatgpt</code>, <code>@ru-banks</code></td></tr>
   </tbody>
 </table></div>
 <ul>
@@ -211,12 +211,11 @@
 <details class="deep"><summary>Details: service codes for <code>@</code></summary>
   <p>The <span class="ui">Service</span> menu fills in the code for you. If you’d rather type it:</p>
   <ul>
-    <li><code>youtube</code>, <code>telegram</code>, <code>discord</code>, <code>tiktok</code>, <code>reddit</code>, <code>twitch</code>, <code>x</code>, <code>linkedin</code>, <code>signal</code>, <code>viber</code>, <code>slack</code>, <code>zoom</code>, <code>proton</code>, <code>spotify</code>, <code>notion</code>, <code>github</code>, <code>figma</code>, <code>jetbrains</code>;</li>
-    <li><code>instagram</code>, <code>facebook</code>, <code>whatsapp</code>, <code>threads</code>;</li>
+    <li><code>github</code>, <code>slack</code>, <code>zoom</code>, <code>notion</code>, <code>figma</code>, <code>jetbrains</code>, <code>spotify</code>;</li>
     <li><code>chatgpt</code>, <code>claude</code>, <code>gemini</code>, <code>copilot</code>, <code>cursor</code>, <code>perplexity</code>, <code>grok</code>;</li>
     <li><code>ru-gov</code>, <code>ru-banks</code>, <code>ru-sites</code>.</li>
   </ul>
-  <p>Version 0.2.1 doesn’t have <code>tiktok</code>, <code>reddit</code>, <code>twitch</code>, <code>slack</code>, <code>zoom</code>, <code>github</code> and <code>figma</code>.</p>
+  <p>For the other codes, it’s easier to pick the service from the <span class="ui">Service</span> menu than to type it. Version 0.2.1 doesn’t have <code>slack</code>, <code>zoom</code>, <code>github</code>, <code>figma</code> and three more services.</p>
 </details>
 <p>The <span class="ui">Through Proxy</span> action for UDP: UDP can’t go through a proxy, so what happens to it is decided by the proxy’s <a href="../../../en/docs/proxies/#toggles"><span class="ui">Block UDP and QUIC</span></a> toggle.</p>
 
@@ -322,10 +321,10 @@
   <li>the app connects to a bare IP address: some messengers and games do this, and so do <code>ssh 203.0.113.10</code> and programs with their own way of looking up addresses;</li>
   <li>the connection goes over UDP, including QUIC in browsers: most often it has no name.</li>
 </ul>
-<p>Then name rules and services don’t match the connection. It follows rules with an IP address or subnet and the app’s route. The exception is services that include subnets, such as Telegram: their connections are recognized by IP too. For more, see <a href="../../../en/docs/limits/#hostnames">Limitations</a>.</p>
+<p>Then name rules and services don’t match the connection. It follows rules with an IP address or subnet and the app’s route. The exception is services that include subnets: their connections are recognized by IP too. For more, see <a href="../../../en/docs/limits/#hostnames">Limitations</a>.</p>
 
-<h3 id="quic-fix">Example: video in the browser goes around the proxy</h3>
-<p>The browser goes <span class="ui">Direct</span> or isn’t in the list, and the YouTube service goes <span class="ui">Through Proxy</span>. Pages open through the proxy: regular HTTPS goes over TCP and carries the name. But the browser often loads video over QUIC, which is UDP to port 443, usually without a name. Such a connection follows the browser’s route, that is, it goes direct.</p>
+<h3 id="quic-fix">Example: part of a site in the browser goes around the proxy</h3>
+<p>The browser goes <span class="ui">Direct</span> or isn’t in the list, and the GitHub service goes <span class="ui">Through Proxy</span>. Pages open through the proxy: regular HTTPS goes over TCP and carries the name. But the browser often sends some requests over QUIC, which is UDP to port 443, usually without a name. Such a connection follows the browser’s route, that is, it goes direct.</p>
 <p>The fix is to block QUIC for the browser:</p>
 <ol class="steps">
   <li>In the <span class="ui">Rules</span> section, press <kbd>⌘N</kbd>.</li>
@@ -333,7 +332,7 @@
   <li>Leave <span class="ui">Destination</span> empty. <span class="ui">Port</span>: <code>443</code>. <span class="ui">Protocol</span>: <span class="ui">UDP</span>. <span class="ui">Action</span>: <span class="ui">Block</span>.</li>
   <li>Click <span class="ui">Save</span>.</li>
 </ol>
-<p>The browser switches to regular HTTPS over TCP. Such a connection carries the name and follows the service’s rule, through the proxy. Sites keep working. A detailed recipe: <a href="../../../en/docs/recipes/#browser-video">One video service in the browser through a proxy</a>.</p>
+<p>The browser switches to regular HTTPS over TCP. Such a connection carries the name and follows the service’s rule, through the proxy. Sites keep working. A detailed recipe: <a href="../../../en/docs/recipes/#browser-video">One service in the browser through a proxy</a>.</p>
 <p>If the browser itself goes <span class="ui">Through Proxy</span>, you don’t need this rule: its UDP is already blocked by the proxy’s <a href="../../../en/docs/proxies/#toggles"><span class="ui">Block UDP and QUIC</span></a> toggle.</p>
 <p><span class="ui">Monitor</span> shows connections without a name only with their IP address; see <a href="../../../en/docs/monitoring/#monitor">Monitor</a>.</p>
 
@@ -341,7 +340,7 @@
 <h3>Columns</h3>
 <ul>
   <li><span class="ui">App</span>: the app, or <span class="ui">All Apps</span>.</li>
-  <li><span class="ui">Destination</span>: the address, “Any address” or “Service: YouTube”; after the colon comes the port, after the “·” the protocol. The note is below.</li>
+  <li><span class="ui">Destination</span>: the address, “Any address” or “Service: GitHub”; after the colon comes the port, after the “·” the protocol. The note is below.</li>
   <li><span class="ui">Action</span>: “Proxy: Amsterdam”, “Direct”, “Block” or “Ask”.</li>
   <li><span class="ui">Duration</span>: <span class="ui">Forever</span>, or <span class="ui">Until Quit</span> for a temporary rule from the prompt, which is deleted when the app quits.</li>
   <li><span class="ui">Source</span>: where the rule came from; see below.</li>

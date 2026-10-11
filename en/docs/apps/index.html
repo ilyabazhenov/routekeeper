@@ -204,7 +204,7 @@
             <span class="mock-pill mock-select mock-ok">Proxy: Amsterdam</span>
             <span class="mock-toggle on"></span>
           </div>
-          <div class="mock-row"><div class="mock-btns" style="gap: 6px"><span class="mock-btn">▶︎ YouTube</span><span class="mock-btn">✈︎ Telegram</span><span class="mock-btn">✦ ChatGPT</span><span class="mock-btn">✦ Claude</span><span class="mock-btn">All Services…</span></div></div>
+          <div class="mock-row"><div class="mock-btns" style="gap: 6px"><span class="mock-btn">✦ ChatGPT</span><span class="mock-btn">✦ Claude</span><span class="mock-btn">‹/› GitHub</span><span class="mock-btn"># Slack</span><span class="mock-btn">All Services…</span></div></div>
         </div>
         <div class="mock-note">A service takes this route in every app. A rule for a specific domain in Rules beats the service.</div>
         <div class="mock-cap">Through Proxy<b class="mk">3</b></div>
@@ -265,7 +265,7 @@
   <li><b>The toggle</b> on the right turns a row off without deleting it. A turned-off row has no effect: the app follows the other rules and the <a href="../../../en/docs/firewall/#modes">mode</a>. In <span class="ui">Proxy Only</span> mode, that means it goes direct.</li>
   <li><b>The context menu</b> (right-click): <span class="ui">Route</span>, <span class="ui">Enable</span> or <span class="ui">Disable</span>, <span class="ui">Include Child Processes</span>, <span class="ui">Show in Finder</span>, <span class="ui">Delete</span>. Route, enabling and deleting also work for several selected rows at once.</li>
   <li>You can also <b>delete</b> with the Delete key. <kbd>⌘Z</kbd> undoes the last change.</li>
-  <li><b>Search</b> in the toolbar looks through app names and identifiers, and for services also through domains: <code>googlevideo.com</code> finds YouTube.</li>
+  <li><b>Search</b> in the toolbar looks through app names and identifiers, and for services also through domains: <code>githubusercontent.com</code> finds GitHub.</li>
 </ul>
 <p>An app that isn’t in the list follows the mode. In <span class="ui">Proxy Only</span> mode, it goes direct.</p>
 <div class="callout tip"><p>An app row sets where <b>all</b> of the app’s traffic goes. Each such row is a rule, and you can also see it in the <span class="ui">Rules</span> section with the destination “Any address”. To send some of the app’s addresses another way, add a rule: <a href="../../../en/docs/rules/#when">When you need a rule</a>.</p></div>
@@ -320,7 +320,7 @@
 
 <h2 id="services">Services</h2>
 <p>A service is a ready-made set of addresses of one well-known site or messenger: domains with all their subdomains, and sometimes subnets. A service row applies in all apps at once: in browsers, in desktop clients and in command-line programs.</p>
-<p>For example, take the YouTube service with the <span class="ui">Through Proxy</span> route: any app that connects to <code>youtube.com</code> or <code>googlevideo.com</code> goes through the proxy. The rest of the browser’s traffic follows the browser’s own route.</p>
+<p>For example, take the GitHub service with the <span class="ui">Through Proxy</span> route: any app that connects to <code>github.com</code> or <code>githubusercontent.com</code> goes through the proxy. The rest of the browser’s traffic follows the browser’s own route.</p>
 
 <h3>How to add a service</h3>
 <ul>
@@ -332,14 +332,14 @@
 <p>A new service gets a route through the main proxy, or <span class="ui">Direct</span> if there’s no proxy. A service’s route menu has the proxies, <span class="ui">Direct</span> and <span class="ui">Block</span>. Services don’t have the <span class="ui">Ask</span> option.</p>
 
 <h3>Which services there are</h3>
-<p>32 services in four groups (version 0.2.1 has 25: there are no TikTok, Reddit, Twitch, Slack, Zoom, GitHub and Figma):</p>
+<p>32 services in several groups (version 0.2.1 has 25: Slack, Zoom, GitHub, Figma and three more aren’t there). For example:</p>
 <ul>
-  <li><b>Popular</b>: for example, YouTube, Telegram, GitHub, Slack, Zoom, Notion, Figma, JetBrains, Spotify.</li>
-  <li><b>Meta</b>: Instagram, Facebook, WhatsApp, Threads.</li>
-  <li><b>AI assistants</b>: for example, ChatGPT, Claude, Gemini, GitHub Copilot, Cursor.</li>
+  <li><b>Popular</b>: GitHub, Slack, Zoom, Notion, Figma, JetBrains, Spotify.</li>
+  <li><b>AI assistants</b>: ChatGPT, Claude, Gemini, GitHub Copilot, Cursor.</li>
   <li><b>Russian services</b>: Gosuslugi and government sites, Russian banks, Russian sites.</li>
 </ul>
-<p>The full list is in the <span class="ui">All Services…</span> window. Services in the <span class="ui">Russian services</span> group are added with the <span class="ui">Direct</span> route. They’re handy to add if the whole browser goes through a proxy, but these sites need to open from your usual address.</p>
+<p>And others: the full list is in the <span class="ui">All Services…</span> window.</p>
+<p>Services in the <span class="ui">Russian services</span> group are added with the <span class="ui">Direct</span> route. Banks, government services and marketplaces check where you sign in from: from an unfamiliar IP, they may ask you to confirm the sign-in or not let you in. So it’s handy to keep them direct, even if the whole browser goes through a proxy.</p>
 <p>If the service you need isn’t there, add a rule with the site’s domains in <a href="../../../en/docs/rules/#syntax">Rules</a>.</p>
 
 <h3 id="service-priority">A service wins over an app’s route</h3>
@@ -349,7 +349,7 @@
   <li>The browser isn’t in the list or has the <span class="ui">Direct</span> route, and the GitHub service goes <span class="ui">Through Proxy</span>. Only GitHub goes through the proxy.</li>
 </ul>
 <p>But a service can be overridden too. Your rule for a specific domain from the service’s list wins over the service. So does a rule for the same service with a specific app, port or protocol. The exact order is in <a href="../../../en/docs/rules/#priority">Which rule wins</a>.</p>
-<div class="callout"><p><b>A service needs a site name.</b> Connections to a bare IP address and most UDP, including QUIC in browsers, carry no name, so they follow the app’s route. If a service goes through the proxy and the browser goes direct, video may go around the proxy over QUIC. The fix is the rule “browser · port 443 · UDP → Block”: <a href="../../../en/docs/rules/#hostnames">how to make it</a>. Some services also include subnets, for example Telegram: the service recognizes such connections by IP as well.</p></div>
+<div class="callout"><p><b>A service needs a site name.</b> Connections to a bare IP address and most UDP, including QUIC in browsers, carry no name, so they follow the app’s route. If a service goes through the proxy and the browser goes direct, some connections may go around the proxy over QUIC. The fix is the rule “browser · port 443 · UDP → Block”: <a href="../../../en/docs/rules/#hostnames">how to make it</a>. Some services also include subnets: the service recognizes such connections by IP as well.</p></div>
 
 <h3 id="service-apps">A service’s apps are added automatically</h3>
 <p>With some services, Routekeeper also adds rows for their desktop apps and command-line programs, with the same route as the service. For example:</p>
@@ -370,7 +370,7 @@
 <h3 id="service-card">The service card</h3>
 <p>The <span class="ui">ⓘ</span> button in a service’s row opens its card. A double-click on the row and the <span class="ui">More Info…</span> item in the context menu open it too. The card has:</p>
 <ul>
-  <li><b>at the top</b>: the name, the number of addresses in the set, and a toggle; the group is shown only for sets in the Meta, AI assistants and Russian services groups;</li>
+  <li><b>at the top</b>: the name, the number of addresses in the set, and a toggle; the group is shown only for some sets, such as AI assistants and Russian services;</li>
   <li><b><span class="ui">What the rule does</span></b>: the <span class="ui">Route</span> menu, the rule in words, and caveats. For example, for messengers: “Calls use UDP and don’t work through a proxy”. Below that, <span class="ui">These rules come first:</span> lists your rules that take part of the service’s traffic before the service does;</li>
   <li><b><span class="ui">What went through the rule</span></b>: apps and addresses from recent connections in <a href="../../../en/docs/monitoring/#monitor"><span class="ui">Monitor</span></a> that this service decided on;</li>
   <li><b><span class="ui">What’s included</span></b>: all names and subnets in the set. In the <span class="ui">Check an address or search the list</span> field, type a name, for example <code>i.ytimg.com</code>, and the card tells you whether it’s part of the service. The answer appears once the text contains a dot. The list below shows only entries that contain what you typed, so for a subdomain it may go empty: look at the answer line instead;</li>
@@ -423,7 +423,7 @@
 </figure>
 
 <h3 id="service-updates">Service updates</h3>
-<p>Routekeeper takes the list of services, their addresses and the apps added along with them from its service catalog. The addresses come from the open v2fly/domain-list-community project, and Telegram’s subnets come from the list that Telegram publishes.</p>
+<p>Routekeeper takes the list of services, their addresses and the apps added along with them from its service catalog. The addresses come from the open v2fly/domain-list-community project, and subnets come from the lists the services publish themselves.</p>
 <p>Every 6 hours, Routekeeper checks getroutekeeper.app for a newer catalog and installs it without an app update. This is how new services appear, addresses change and new apps of a service are added. The catalog file is signed, and the network extension checks the signature. If a check fails, for example with no network, Routekeeper tries again within the hour.</p>
 <p>The date of the catalog and a manual check are in <span class="ui">Settings</span> → <span class="ui">General</span> → <span class="ui">Service Catalog</span> (<span class="ui">Service Addresses</span> in version 0.2.1): the <span class="ui">Lists from</span> and <span class="ui">Last check</span> lines and the <span class="ui">Check Lists</span> button. What Routekeeper sends over the network for this is described on the <a href="../../../en/privacy/">Privacy</a> page.</p>
     <p class="checked">Checked against the Routekeeper code (version 0.2.1 and the one after it) on October 4, 2026.</p>

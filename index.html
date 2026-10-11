@@ -604,7 +604,7 @@ section { padding-top: 128px; }
               <div><svg><use href="#i-list"/></svg>Правила</div>
               <div><svg><use href="#i-server"/></svg>Прокси</div>
               <div><svg><use href="#i-pulse"/></svg>Монитор</div>
-              <div><svg><use href="#i-warn"/></svg>Утечки<span class="badge">2</span></div>
+              <div><svg><use href="#i-warn"/></svg>Мимо прокси<span class="badge">2</span></div>
             </div>
             <div class="list" id="apps">
               <div class="list-head"><h4>Приложения</h4><span>попробуйте переключить путь</span></div>
@@ -636,7 +636,7 @@ section { padding-top: 128px; }
           <span class="eyebrow">Откуда название</span>
           <h2>Смотритель путей</h2>
           <p>На старых железнодорожных узлах был человек, без которого ничего не работало. Он стоял у развилки, знал каждый маршрут и переводил стрелки: этот состав направо, тот налево, подозрительный на запасной путь.</p>
-          <p>А ночью обходил пути с фонарём и искал, где что-то просочилось.</p>
+          <p>А ночью ходил вдоль путей с фонарём и искал, где что-то просочилось.</p>
           <p class="em">Routekeeper делает то же самое для вашего Mac.</p>
           <ul class="story-map">
             <li><i class="fork"></i><span><b>Стрелки</b> — это правила: какое приложение каким путём пойдёт.</span></li>
@@ -663,7 +663,7 @@ section { padding-top: 128px; }
         <div class="node n-apps">
           <div class="node-h"><svg><use href="#i-grid"/></svg><b>Приложения</b></div>
           <ul class="mini">
-            <li><span class="ico" style="background:linear-gradient(135deg,#47b4f0,#2283cf)">T</span>Telegram</li>
+            <li><span class="ico" style="background:linear-gradient(135deg,#8a63d2,#3b2a6b)">G</span>GitHub Desktop</li>
             <li><span class="ico" style="background:linear-gradient(135deg,#5fb3ff,#2a6fe0)">S</span>Safari</li>
             <li><span class="ico" style="background:linear-gradient(135deg,#6a7280,#3c424c)">›_</span>curl, git, node</li>
             <li><span class="ico" style="background:linear-gradient(135deg,#ff6a5a,#c8322a)">A</span>Adobe Updater</li>
@@ -702,7 +702,7 @@ section { padding-top: 128px; }
 
       <div class="steps">
         <div class="step rv"><h3>Добавьте прокси</h3><p>SOCKS5, HTTP или HTTPS, с паролем или без. Можно несколько: рабочий, домашний, в другой стране. Если один упал, приложения переезжают на другой в один клик из меню-бара.</p></div>
-        <div class="step rv"><h3>Назначьте пути</h3><p>Telegram через Амстердам, Safari напрямую, назойливый апдейтер в тупик. Один клик на приложение.</p></div>
+        <div class="step rv"><h3>Назначьте пути</h3><p>GitHub через Амстердам, Safari напрямую, назойливый апдейтер в тупик. Один клик на приложение.</p></div>
         <div class="step rv"><h3>Смотритель следит</h3><p>Монитор показывает каждое соединение, а детектор утечек отмечает всё, что прошло мимо назначенного пути.</p></div>
       </div>
     </div>
@@ -720,7 +720,7 @@ section { padding-top: 128px; }
           <h3>Правила по адресам</h3>
           <p>Домен со звёздочкой, IP, подсеть или порт. Общий путь приложения плюс исключения там, где нужно.</p>
           <div class="viz rules">
-            <div class="rule"><span class="ico" style="background:linear-gradient(135deg,#47b4f0,#2283cf)">T</span><span>*.telegram.org</span><em class="tag proxy">прокси</em></div>
+            <div class="rule"><span class="ico" style="background:linear-gradient(135deg,#8a63d2,#3b2a6b)">G</span><span>*.github.com</span><em class="tag proxy">прокси</em></div>
             <div class="rule"><span class="ico" style="background:linear-gradient(135deg,#e05a8a,#7b2d6b)">S</span><span>*.corp.example</span><em class="tag proxy">офис</em></div>
             <div class="rule"><span class="ico" style="background:linear-gradient(135deg,#6a7280,#3c424c)">›_</span><span>10.0.0.0/8</span><em class="tag direct">напрямую</em></div>
             <div class="rule"><span class="ico" style="background:linear-gradient(135deg,#ff6a5a,#c8322a)">A</span><span>любой адрес</span><em class="tag stop">тупик</em></div>
@@ -757,7 +757,7 @@ section { padding-top: 128px; }
             <div class="yard-layer dark">
               <span class="trk" style="top:22%"></span><span class="trk" style="top:52%"></span><span class="trk" style="top:82%"></span>
               <span class="it bad" style="right:5%;top:22%"><svg><use href="#i-warn"/></svg><span>Zoom мимо прокси<small>52.84.12.7:443</small></span></span>
-              <span class="it ok proxy" style="left:8%;top:52%">Telegram</span>
+              <span class="it ok proxy" style="left:8%;top:52%">GitHub</span>
               <span class="it ok direct" style="right:10%;top:52%">Safari</span>
               <span class="it bad" style="left:5%;top:82%"><svg><use href="#i-warn"/></svg><span>DNS к провайдеру<small>Chrome · example.org</small></span></span>
               <span class="it ok proxy" style="right:7%;top:82%">Slack</span>
@@ -770,8 +770,8 @@ section { padding-top: 128px; }
           <h3>По подписи, не по имени</h3>
           <p>Переименованная копия не получит чужой путь.</p>
           <div class="viz sig">
-            <div><span>Telegram.app</span><span class="ok">✓ подпись</span></div>
-            <div><span>Telegram копия</span><span class="bad">✕ чужая</span></div>
+            <div><span>GitHub Desktop.app</span><span class="ok">✓ подпись</span></div>
+            <div><span>GitHub Desktop копия</span><span class="bad">✕ чужая</span></div>
             <div><span>+ помощники</span><span class="ok">тем же путём</span></div>
           </div>
         </article>
@@ -955,7 +955,7 @@ section { padding-top: 128px; }
 
   // Hero: apps and their routes.
   const APPS = [
-    ['Telegram', 'org.telegram.desktop', 'T', '#47b4f0', '#2283cf', 'proxy'],
+    ['GitHub Desktop', 'com.github.GitHubClient', 'G', '#8a63d2', '#3b2a6b', 'proxy'],
     ['Slack', 'com.tinyspeck.slackmacgap', 'S', '#e05a8a', '#7b2d6b', 'proxy'],
     ['Safari', 'com.apple.Safari', 'S', '#5fb3ff', '#2a6fe0', 'direct'],
     ['Zoom', 'us.zoom.xos', 'Z', '#5aa0ff', '#2a5fd6', 'direct'],
@@ -1186,10 +1186,10 @@ section { padding-top: 128px; }
 
   // Live monitor feed.
   const FEED = [
-    ['Telegram', '149.154.167.50:443', 'proxy', 'АМС'],
+    ['GitHub Desktop', 'api.github.com:443', 'proxy', 'АМС'],
     ['Safari', 'apple.com:443', 'direct', 'прямо'],
     ['Slack', 'wss-primary.slack.com', 'proxy', 'офис'],
-    ['curl', 'github.com:443', 'proxy', 'АМС'],
+    ['curl', 'ipinfo.io:443', 'proxy', 'АМС'],
     ['Adobe Updater', 'ims-na1.adobelogin.com', 'stop', 'тупик'],
     ['Zoom', 'zoom.us:443', 'direct', 'прямо'],
     ['node', 'registry.npmjs.org', 'proxy', 'АМС'],

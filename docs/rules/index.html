@@ -181,7 +181,7 @@
   <figcaption>
     <ol class="mk-legend">
       <li><span class="ui">Любое приложение</span> или конкретное, выбор — в меню <span class="ui">Изменить</span>. Для конкретного приложения ниже появляется <span class="ui">Вместе с дочерними процессами</span>.</li>
-      <li>Куда идёт соединение: имя (<code>files.example.com</code>), шаблон (<code>*.corp.example</code> — сам домен и все его поддомены), IP, подсеть или <code>@сервис</code>. Пустое поле — любой адрес, в нём видна подсказка «Любой адрес · *.example.com · 10.0.0.0/8 · @youtube». Меню <span class="ui">Сервис</span> вписывает сервис. Как записать адрес — <a href="#destination">в таблице ниже</a>.</li>
+      <li>Куда идёт соединение: имя (<code>files.example.com</code>), шаблон (<code>*.corp.example</code> — сам домен и все его поддомены), IP, подсеть или <code>@сервис</code>. Пустое поле — любой адрес, в нём видна подсказка «Любой адрес · *.example.com · 10.0.0.0/8 · @github». Меню <span class="ui">Сервис</span> вписывает сервис. Как записать адрес — <a href="#destination">в таблице ниже</a>.</li>
       <li><span class="ui">Порт</span> — одно число, пусто — любой порт. <span class="ui">Протокол</span> — меню: <span class="ui">TCP и UDP</span>, <span class="ui">TCP</span> или <span class="ui">UDP</span>.</li>
       <li>Что делать с соединением: прокси, <span class="ui">Напрямую</span>, <span class="ui">Блокировать</span> или <span class="ui">Спрашивать</span>.</li>
       <li>Короткая памятка о том, какое правило важнее. Подробно — <a href="#priority">«Какое правило важнее»</a>.</li>
@@ -199,7 +199,7 @@
     <tr><td><code>*.</code>имя</td><td>Само имя и все его поддомены (<a class="term" href="../../docs/glossary/#wildcard">шаблон</a>).</td><td><code>*.example.com</code> — подходит для <code>example.com</code>, <code>www.example.com</code>, <code>a.b.example.com</code></td></tr>
     <tr><td>IP-адрес</td><td>Только этот <a class="term" href="../../docs/glossary/#ip">адрес</a>, IPv4 или IPv6.</td><td><code>203.0.113.10</code>, <code>2001:db8::1</code></td></tr>
     <tr><td>Подсеть</td><td>Все адреса <a class="term" href="../../docs/glossary/#cidr">подсети</a>.</td><td><code>10.0.0.0/8</code>, <code>192.168.1.0/24</code>, <code>fd00::/8</code></td></tr>
-    <tr><td><code>@</code>сервис</td><td>Все адреса <a href="../../docs/apps/#services">сервиса</a>.</td><td><code>@youtube</code>, <code>@github</code>, <code>@ru-banks</code></td></tr>
+    <tr><td><code>@</code>сервис</td><td>Все адреса <a href="../../docs/apps/#services">сервиса</a>.</td><td><code>@github</code>, <code>@chatgpt</code>, <code>@ru-banks</code></td></tr>
   </tbody>
 </table></div>
 <ul>
@@ -211,12 +211,11 @@
 <details class="deep"><summary>Подробнее: коды сервисов для <code>@</code></summary>
   <p>Меню <span class="ui">Сервис</span> вписывает код само. Если удобнее набрать руками:</p>
   <ul>
-    <li><code>youtube</code>, <code>telegram</code>, <code>discord</code>, <code>tiktok</code>, <code>reddit</code>, <code>twitch</code>, <code>x</code>, <code>linkedin</code>, <code>signal</code>, <code>viber</code>, <code>slack</code>, <code>zoom</code>, <code>proton</code>, <code>spotify</code>, <code>notion</code>, <code>github</code>, <code>figma</code>, <code>jetbrains</code>;</li>
-    <li><code>instagram</code>, <code>facebook</code>, <code>whatsapp</code>, <code>threads</code>;</li>
+    <li><code>github</code>, <code>slack</code>, <code>zoom</code>, <code>notion</code>, <code>figma</code>, <code>jetbrains</code>, <code>spotify</code>;</li>
     <li><code>chatgpt</code>, <code>claude</code>, <code>gemini</code>, <code>copilot</code>, <code>cursor</code>, <code>perplexity</code>, <code>grok</code>;</li>
     <li><code>ru-gov</code>, <code>ru-banks</code>, <code>ru-sites</code>.</li>
   </ul>
-  <p>В версии 0.2.1 нет <code>tiktok</code>, <code>reddit</code>, <code>twitch</code>, <code>slack</code>, <code>zoom</code>, <code>github</code> и <code>figma</code>.</p>
+  <p>Остальные коды проще не набирать, а выбрать в меню <span class="ui">Сервис</span>. В версии 0.2.1 нет <code>slack</code>, <code>zoom</code>, <code>github</code>, <code>figma</code> и ещё трёх сервисов.</p>
 </details>
 <p>Действие <span class="ui">Через прокси</span> для UDP: UDP через прокси не проходит, его судьбу решает переключатель прокси <a href="../../docs/proxies/#toggles"><span class="ui">Блокировать UDP и QUIC</span></a>.</p>
 
@@ -322,10 +321,10 @@
   <li>приложение подключается к голому IP-адресу: так делают некоторые мессенджеры и игры, <code>ssh 203.0.113.10</code>, программы со своим способом узнавать адреса;</li>
   <li>соединение идёт по UDP, в том числе QUIC в браузерах: чаще всего имени у него нет.</li>
 </ul>
-<p>Тогда правила по имени и сервисы к соединению не подходят. Оно идёт по правилам с IP-адресом или подсетью и по маршруту приложения. Исключение — сервисы, в которых есть подсети, например Telegram: их соединения узнаются и по IP. Подробнее — в разделе <a href="../../docs/limits/#hostnames">Ограничения</a>.</p>
+<p>Тогда правила по имени и сервисы к соединению не подходят. Оно идёт по правилам с IP-адресом или подсетью и по маршруту приложения. Исключение — сервисы, в которых есть подсети: их соединения узнаются и по IP. Подробнее — в разделе <a href="../../docs/limits/#hostnames">Ограничения</a>.</p>
 
-<h3 id="quic-fix">Пример: видео в браузере идёт мимо прокси</h3>
-<p>Браузер идёт <span class="ui">Напрямую</span> или его нет в списке, а сервис YouTube — <span class="ui">Через прокси</span>. Страницы открываются через прокси: обычный HTTPS идёт по TCP и несёт имя. А видео браузер часто грузит по QUIC — это UDP на порт 443, обычно без имени. Такое соединение идёт по маршруту браузера, то есть напрямую.</p>
+<h3 id="quic-fix">Пример: часть сайта в браузере идёт мимо прокси</h3>
+<p>Браузер идёт <span class="ui">Напрямую</span> или его нет в списке, а сервис GitHub — <span class="ui">Через прокси</span>. Страницы открываются через прокси: обычный HTTPS идёт по TCP и несёт имя. А часть запросов браузер часто шлёт по QUIC — это UDP на порт 443, обычно без имени. Такое соединение идёт по маршруту браузера, то есть напрямую.</p>
 <p>Решение — заблокировать браузеру QUIC:</p>
 <ol class="steps">
   <li>В разделе <span class="ui">Правила</span> нажмите <kbd>⌘N</kbd>.</li>
@@ -333,7 +332,7 @@
   <li><span class="ui">Назначение</span> оставьте пустым. <span class="ui">Порт</span>: <code>443</code>. <span class="ui">Протокол</span>: <span class="ui">UDP</span>. <span class="ui">Действие</span>: <span class="ui">Блокировать</span>.</li>
   <li>Нажмите <span class="ui">Сохранить</span>.</li>
 </ol>
-<p>Браузер перейдёт на обычный HTTPS по TCP. Такое соединение несёт имя и идёт по правилу сервиса, через прокси. Сайты продолжают работать. Подробный рецепт — <a href="../../docs/recipes/#browser-video">Один видеосервис в браузере через прокси</a>.</p>
+<p>Браузер перейдёт на обычный HTTPS по TCP. Такое соединение несёт имя и идёт по правилу сервиса, через прокси. Сайты продолжают работать. Подробный рецепт — <a href="../../docs/recipes/#browser-video">Один сервис в браузере через прокси</a>.</p>
 <p>Если сам браузер идёт <span class="ui">Через прокси</span>, такое правило не нужно: его UDP и так блокирует переключатель прокси <a href="../../docs/proxies/#toggles"><span class="ui">Блокировать UDP и QUIC</span></a>.</p>
 <p>Соединения без имени <span class="ui">Монитор</span> показывает только с IP-адресом, см. <a href="../../docs/monitoring/#monitor">Монитор</a>.</p>
 
@@ -341,7 +340,7 @@
 <h3>Столбцы</h3>
 <ul>
   <li><span class="ui">Приложение</span> — приложение или <span class="ui">Все приложения</span>.</li>
-  <li><span class="ui">Назначение</span> — адрес, «Любой адрес» или «Сервис: YouTube»; после двоеточия — порт, после точки — протокол. Ниже — заметка.</li>
+  <li><span class="ui">Назначение</span> — адрес, «Любой адрес» или «Сервис: GitHub»; после двоеточия — порт, после точки — протокол. Ниже — заметка.</li>
   <li><span class="ui">Действие</span> — «Прокси: Амстердам», «Напрямую», «Блокировать» или «Спрашивать».</li>
   <li><span class="ui">Срок</span> — <span class="ui">Навсегда</span> или <span class="ui">До выхода</span>: временное правило из окна вопроса, оно удаляется, когда приложение завершит работу.</li>
   <li><span class="ui">Источник</span> — откуда правило, см. ниже.</li>

@@ -27,7 +27,7 @@ A per-app proxy router and firewall for macOS that keeps traffic from slipping p
 
 <br>
 
-<a href="https://getroutekeeper.app/en/"><img src=".github/readme/app-en.png" alt="Routekeeper window: Telegram and Slack go through the proxy, Safari and Zoom go direct, Adobe Updater is blocked" width="100%"></a>
+<a href="https://getroutekeeper.app/en/"><img src=".github/readme/app-en.png" alt="Routekeeper window: GitHub Desktop and Slack go through the proxy, Safari and Zoom go direct, Adobe Updater is blocked" width="100%"></a>
 
 </div>
 
@@ -37,7 +37,7 @@ Routekeeper sends the apps you choose through your proxy server, leaves the rest
 
 | | Action | For example |
 |:-:|---|---|
-| 🟢 | **Through proxy** — via the SOCKS5, HTTP or HTTPS proxy you picked | Telegram, Slack, `git` and `curl` in the terminal |
+| 🟢 | **Through proxy** — via the SOCKS5, HTTP or HTTPS proxy you picked | GitHub, Slack, `git` and `curl` in the terminal |
 | ⚪ | **Direct** — as if Routekeeper weren't there | Your bank, local services |
 | 🔴 | **Dead end** — the connection is dropped | An unknown program trying to phone home |
 | 🟡 | **Ask** — a prompt with the signature, path and parent processes | Anything without a rule yet |
@@ -46,7 +46,7 @@ Routekeeper sends the apps you choose through your proxy server, leaves the rest
 
 **Routes**
 - **One click per app:** through a proxy, direct, dead end or ask. Apps are recognized by their developer signature together with their helper processes, so a rule for your terminal also covers `git`, `npm` and `curl`.
-- **Services:** ready-made address sets — video, messengers, AI services, developer tools — so you can send just those through the proxy instead of the whole app. The catalog updates from the website, no new app version needed.
+- **Services:** ready-made address sets — work services, AI services, developer tools — so you can send just those through the proxy instead of the whole app. Russian banks and government services check where you sign in from, so they go direct by default. The catalog updates from the website, no new app version needed.
 - **Exception rules** by domain, `*.` pattern, IP, subnet, port and protocol. The most specific rule wins, not the first one in the list.
 
 **Doesn't leak**

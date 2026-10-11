@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Recipes — Routekeeper</title>
-<meta name="description" content="Step-by-step Routekeeper recipes: a messenger through a proxy, one video service in the browser, DNS over HTTPS, the terminal and AI apps, working on top of a local client, a work proxy for internal addresses, and what to do if the proxy stops answering.">
+<meta name="description" content="Step-by-step Routekeeper recipes: a messenger through a proxy, one service in the browser, DNS over HTTPS, the terminal and AI apps, working on top of a local client, a work proxy for internal addresses, and what to do if the proxy stops answering.">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Routekeeper">
 <meta property="og:url" content="https://getroutekeeper.app/en/docs/recipes/">
 <meta property="og:title" content="Recipes — Routekeeper">
-<meta property="og:description" content="Step-by-step Routekeeper recipes: a messenger through a proxy, one video service in the browser, DNS over HTTPS, the terminal and AI apps, working on top of a local client, a work proxy for internal addresses, and what to do if the proxy stops answering.">
+<meta property="og:description" content="Step-by-step Routekeeper recipes: a messenger through a proxy, one service in the browser, DNS over HTTPS, the terminal and AI apps, working on top of a local client, a work proxy for internal addresses, and what to do if the proxy stops answering.">
 <meta property="og:image" content="https://getroutekeeper.app/og-en.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -127,7 +127,7 @@
 <p class="lead-in">The recipes assume that Routekeeper is already installed, the macOS permissions are given and at least one <a class="term" href="../../../en/docs/glossary/#proxy">proxy</a> is added. If not, start with the <a href="../../../en/docs/start/">Quick start</a>.</p>
 <div class="grid">
   <a class="card" href="#messenger"><b>A messenger through a proxy</b><p>The whole app, and how to make sure it really goes through the proxy.</p></a>
-  <a class="card" href="#browser-video"><b>One video service in the browser</b><p>The service through a proxy, other sites direct.</p></a>
+  <a class="card" href="#browser-video"><b>One service in the browser</b><p>The service through a proxy, other sites direct.</p></a>
   <a class="card" href="#browser-dns"><b>DNS over HTTPS in the browser</b><p>So that the browser doesn’t look up site addresses around the proxy.</p></a>
   <a class="card" href="#developer"><b>Terminal and AI apps</b><p>git, npm, pip, brew, curl and Mac apps.</p></a>
   <a class="card" href="#local-client"><b>On top of sing-box, Xray or Clash</b><p>Routekeeper sends apps to the client’s local port.</p></a>
@@ -162,14 +162,14 @@
 </ul>
 <details class="deep"><summary>Details: a service instead of an app</summary>
   <p>If the messenger is in the <span class="ui">Services</span> list, you can add the service too: <span class="ui">Apps</span> → <span class="ui">Add</span> → <span class="ui">Service</span>. A service rule sends this service’s addresses through the proxy in any app, including the web version in a browser. Starting with version 0.3.0, Routekeeper also adds the service’s Mac app along with the service, if the app is installed now or gets installed later. In 0.2.1, you need to add the app yourself, as in the steps above.</p>
-  <p>A service rule recognizes connections by site name, and for some services (for example, Telegram) also by subnet. A route for the whole app is more reliable: it doesn’t depend on whether Routekeeper knows the name. For more about services, see <a href="../../../en/docs/apps/#services">Services</a>.</p>
+  <p>A service rule recognizes connections by site name, and for some services also by subnet. A route for the whole app is more reliable: it doesn’t depend on whether Routekeeper knows the name. For more about services, see <a href="../../../en/docs/apps/#services">Services</a>.</p>
 </details>
 
-<h2 id="browser-video">One video service in the browser through a proxy</h2>
-<p><b>Who it’s for:</b> you want only one service to go through the proxy, for example YouTube from the <span class="ui">Services</span> list. Your bank, the work portal and other sites in the same browser should open directly.</p>
+<h2 id="browser-video">One service in the browser through a proxy</h2>
+<p><b>Who it’s for:</b> you want only one service to go through the proxy, for example GitHub from the <span class="ui">Services</span> list. Your bank, the work portal and other sites in the same browser should open directly.</p>
 <h3>Steps</h3>
 <ol class="steps">
-  <li>Open <span class="ui">Apps</span> and click <span class="ui">Add</span> → <span class="ui">Service</span> → YouTube. If the service you need isn’t in the short menu, choose <span class="ui">All Services…</span>, select it and click <span class="ui">Add</span>. The service appears in the <span class="ui">Services</span> group with a route through the main proxy.</li>
+  <li>Open <span class="ui">Apps</span> and click <span class="ui">Add</span> → <span class="ui">Service</span> → GitHub. If the service you need isn’t in the short menu, choose <span class="ui">All Services…</span>, select it and click <span class="ui">Add</span>. The service appears in the <span class="ui">Services</span> group with a route through the main proxy.</li>
   <li>Don’t add the browser itself to the list of apps. If it’s already there with a route through a proxy, the whole browser already goes through the proxy, and you don’t need this recipe.</li>
   <li>Go to <span class="ui">Rules</span> and click <span class="ui">New Rule</span> (<kbd>⌘N</kbd>). Fill in the window like this:
     <ul>
@@ -184,23 +184,23 @@
   <li>Quit the browser completely and open it again, so that old connections don’t stay on the previous route.</li>
 </ol>
 <h3>Why the UDP rule</h3>
-<p>Browsers often open video over <a class="term" href="../../../en/docs/glossary/#quic">QUIC</a>, a protocol on top of UDP. A service rule recognizes a connection by site name, but Routekeeper doesn’t always see that name in QUIC connections. Without the name, the service rule doesn’t apply, and the connection follows the browser’s route, that is, goes direct.</p>
+<p>Browsers often open sites over <a class="term" href="../../../en/docs/glossary/#quic">QUIC</a>, a protocol on top of UDP. A service rule recognizes a connection by site name, but Routekeeper doesn’t always see that name in QUIC connections. Without the name, the service rule doesn’t apply, and the connection follows the browser’s route, that is, goes direct.</p>
 <p>The rule “browser · 443 · UDP → <span class="ui">Block</span>” closes QUIC for the browser. The browser then switches by itself to ordinary HTTPS over TCP, where the site name is known, and the service rule applies. Other sites won’t notice a difference: they also open over TCP.</p>
 <h3>How to check</h3>
 <ul>
-  <li>Open a video. In <span class="ui">Monitor</span>, type <code>googlevideo</code> in the search field: these connections should show the proxy’s name in the <span class="ui">Route</span> column.</li>
+  <li>Open github.com. In <span class="ui">Monitor</span>, type <code>github</code> in the search field: these connections should show the proxy’s name in the <span class="ui">Route</span> column.</li>
   <li>The browser’s UDP connections to port 443 are marked <span class="ui">Blocked</span> in the monitor. That’s expected.</li>
-  <li>Open the service card: in <span class="ui">Apps</span>, right-click the YouTube row → <span class="ui">More Info…</span>. It shows what the rule matched, and in the <span class="ui">Check an address or search the list</span> field you can check any site name.</li>
+  <li>Open the service card: in <span class="ui">Apps</span>, right-click the GitHub row → <span class="ui">More Info…</span>. It shows what the rule matched, and in the <span class="ui">Check an address or search the list</span> field you can check any site name.</li>
 </ul>
 <h3>Pitfalls</h3>
 <ul>
-  <li><b>A service includes only the addresses on its list.</b> For example, signing in to a Google account isn’t on the YouTube list, so it follows the browser’s route. Check the address you need in the service card.</li>
+  <li><b>A service includes only the addresses on its list.</b> For example, project sites on their own domains and external CI aren’t on the GitHub list, so they follow the browser’s route. Check the address you need in the service card.</li>
   <li><b>Connections around the proxy aren’t tracked for such a browser.</b> Routekeeper checks this only for apps that go through the proxy as a whole. For details, see <a href="../../../en/docs/monitoring/#what-is-detected">What Routekeeper notices and what it doesn’t</a>.</li>
-  <li><b>The rule applies to one app.</b> If you watch video in two browsers, create a UDP rule for each. You can’t send two profiles of one browser different ways: see <a href="../../../en/docs/limits/#browser-profiles">Limitations</a>.</li>
+  <li><b>The rule applies to one app.</b> If you use the service in two browsers, create a UDP rule for each. You can’t send two profiles of one browser different ways: see <a href="../../../en/docs/limits/#browser-profiles">Limitations</a>.</li>
   <li><b>Don’t turn off <span class="ui">Block UDP and QUIC</span> for the proxy.</b> With this switch on, UDP connections that still fall under the service rule are blocked instead of going direct.</li>
 </ul>
 <details class="deep"><summary>Details: why the right rule wins</summary>
-  <p>Routekeeper picks one rule, the most specific one. The order in the list doesn’t matter. The address is compared first. The service rule matches by site name, so for connections to YouTube it wins over the browser’s route, whose address is “any”. The UDP rule’s address is also “any”, but it has a port and a protocol, so for UDP connections to port 443 it wins over the browser’s route.</p>
+  <p>Routekeeper picks one rule, the most specific one. The order in the list doesn’t matter. The address is compared first. The service rule matches by site name, so for connections to GitHub it wins over the browser’s route, whose address is “any”. The UDP rule’s address is also “any”, but it has a port and a protocol, so for UDP connections to port 443 it wins over the browser’s route.</p>
   <p>If a UDP connection still arrives with a site name from the list, the service rule applies, and its route goes through the proxy. But UDP isn’t carried through a proxy, so the <span class="ui">Block UDP and QUIC</span> switch blocks it. The full order is described in <a href="../../../en/docs/rules/#priority">Which rule wins</a>, and site names in <a href="../../../en/docs/rules/#hostnames">Rules by site name</a>.</p>
 </details>
 

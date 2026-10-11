@@ -168,12 +168,12 @@
 
     <h2 id="hostnames">Domain rules need a site name</h2>
     <p><b>What you’ll notice.</b> A rule like <code>*.example.com</code> → <span class="ui">Through Proxy</span>, or a service rule, doesn’t catch all the traffic. Some connections follow the app’s route, for example going direct. In the monitor, such connections have a bare IP in the <span class="ui">Host</span> column, and the <span class="ui">Decision</span> field shows the app’s route, not your rule.</p>
-    <p><b>Why.</b> Domain and service rules compare the site name that the app gives when it connects. Connections to a bare <a class="term" href="../../../en/docs/glossary/#ip">IP</a> have no name, and neither do most UDP and QUIC connections. Some apps look up addresses themselves and connect only by IP. Without a name, the rule doesn’t apply, and the connection follows the app’s route. The exception is services whose lists include subnets (currently Telegram): they also match by IP.</p>
+    <p><b>Why.</b> Domain and service rules compare the site name that the app gives when it connects. Connections to a bare <a class="term" href="../../../en/docs/glossary/#ip">IP</a> have no name, and neither do most UDP and QUIC connections. Some apps look up addresses themselves and connect only by IP. Without a name, the rule doesn’t apply, and the connection follows the app’s route. The exception is services whose lists include subnets: they also match by IP.</p>
     <p><b>What you can do.</b></p>
     <ul>
       <li>If the whole app should go through the proxy, set its route in the <span class="ui">Apps</span> section instead of using domain rules.</li>
       <li>If you know the addresses, add a rule by IP or subnet (<a class="term" href="../../../en/docs/glossary/#cidr">CIDR</a>). How to write one is explained in <a href="../../../en/docs/rules/#syntax">Rule fields</a>.</li>
-      <li>For a browser and a video service, block UDP to <a class="term" href="../../../en/docs/glossary/#port">port</a> 443 for the browser. Then the browser switches to TCP, where the site name is available. For step-by-step instructions, see the recipe <a href="../../../en/docs/recipes/#browser-video">One video service in the browser through a proxy</a>.</li>
+      <li>For a browser and a service, block UDP to <a class="term" href="../../../en/docs/glossary/#port">port</a> 443 for the browser. Then the browser switches to TCP, where the site name is available. For step-by-step instructions, see the recipe <a href="../../../en/docs/recipes/#browser-video">One service in the browser through a proxy</a>.</li>
     </ul>
     <p>For more, see <a href="../../../en/docs/rules/#hostnames">Rules by site name</a>.</p>
 

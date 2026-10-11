@@ -204,7 +204,7 @@
               <div class="mock-row"><span class="grow">DNS through proxy</span><b class="mk">3</b><span class="mock-toggle on"></span></div>
               <div class="mock-row"><div class="mock-note">The site name goes to the proxy, which looks up the address itself, so your ISP doesn’t see which sites apps open.</div></div>
               <div class="mock-row"><span class="grow">Block UDP and QUIC</span><b class="mk">4</b><span class="mock-toggle on"></span></div>
-              <div class="mock-row"><div class="mock-note">SOCKS5, HTTP and HTTPS proxies carry TCP only. Unless UDP is blocked, UDP traffic (such as QUIC in browsers) bypasses the proxy.</div></div>
+              <div class="mock-row"><div class="mock-note">SOCKS5, HTTP and HTTPS proxies carry TCP only. Unless UDP is blocked, UDP traffic (such as QUIC in browsers) goes around the proxy.</div></div>
             </div>
             <div class="mock-group">
               <div class="mock-row" style="flex-wrap: wrap"><span class="mock-btn">ϟ Check</span><b class="mk">5</b><span class="mock-ok">✓ Working · 48 ms · IP 203.0.113.7 (NL)</span></div>
@@ -221,7 +221,7 @@
       <li><span class="ui">Paste</span> opens a new proxy from the line on the clipboard, for example <code>https://user:pass@nl.example.net:443</code>. <kbd>⌘V</kbd> in the list does the same. <span class="ui">+</span> opens empty fields; <span class="ui">−</span> deletes the selected proxy.</li>
       <li>An HTTPS proxy needs a domain name in the <span class="ui">Server</span> field, not an IP address: the certificate is checked against it. The note under the password appears only for the HTTPS type.</li>
       <li><span class="ui">DNS through proxy</span>: the proxy gets the site name and looks up its address itself. On by default.</li>
-      <li><span class="ui">Block UDP and QUIC</span>: UDP from this proxy’s apps is blocked instead of bypassing the proxy. On by default.</li>
+      <li><span class="ui">Block UDP and QUIC</span>: UDP from this proxy’s apps is blocked instead of going around the proxy. On by default.</li>
       <li><span class="ui">Check</span> opens a connection through the proxy and shows the time, the IP address websites see, and the country code. You can check before you save.</li>
     </ol>
     A sketch of the <span class="ui">Proxy</span> section of the Routekeeper window, with the Amsterdam proxy selected. The data is made up.
