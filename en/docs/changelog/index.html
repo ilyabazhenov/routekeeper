@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>What’s new — Routekeeper</title>
-<meta name="description" content="Routekeeper version history: what changed in 0.3.0, 0.2.1, 0.2.0 and 0.1.0: licenses, your own proxy server from the app, a new app identifier, severity levels in the Leaks section, a lock when the settings can’t be read, new services.">
+<meta name="description" content="Routekeeper version history: what changed in 0.4.0 (local networks go direct, quick retry of a stalled connection to the proxy, a link to share a proxy, proxy latency history, connections through an HTTPS proxy no longer pile up, turning off drops connections through a proxy) and in 0.3.0, 0.2.1, 0.2.0 and 0.1.0: licenses, your own proxy server from the app, a new app identifier, severity levels in the Leaks section, a lock when the settings can’t be read, new services.">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Routekeeper">
 <meta property="og:url" content="https://getroutekeeper.app/en/docs/changelog/">
 <meta property="og:title" content="What’s new — Routekeeper">
-<meta property="og:description" content="Routekeeper version history: what changed in 0.3.0, 0.2.1, 0.2.0 and 0.1.0: licenses, your own proxy server from the app, a new app identifier, severity levels in the Leaks section, a lock when the settings can’t be read, new services.">
+<meta property="og:description" content="Routekeeper version history: what changed in 0.4.0 (local networks go direct, quick retry of a stalled connection to the proxy, a link to share a proxy, proxy latency history, connections through an HTTPS proxy no longer pile up, turning off drops connections through a proxy) and in 0.3.0, 0.2.1, 0.2.0 and 0.1.0: licenses, your own proxy server from the app, a new app identifier, severity levels in the Leaks section, a lock when the settings can’t be read, new services.">
 <meta property="og:image" content="https://getroutekeeper.app/og-en.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -125,6 +125,17 @@
     <a href="../../../en/docs/changelog/" aria-current="page">What's new</a>
     </nav></details>
 <p class="lead-in">Routekeeper offers to update by itself when a new version comes out: see <a href="../../../en/docs/maintenance/#update">Updates</a>. All builds are on <a href="https://github.com/ilyabazhenov/routekeeper/releases">GitHub Releases</a>.</p>
+
+<h2 id="v0-4-0">0.4.0 — October 12, 2026</h2>
+<p>Build 12.</p>
+<ul>
+  <li><b>Local networks go direct.</b> An app that goes through a proxy as a whole now reaches your home network, a corporate VPN and Tailscale directly: a remote proxy can’t reach them. This also applies to child processes: for example, <code>git</code> launched from a terminal or an AI assistant on a proxy reaches a work git server on the internal network. Rules that name an address or subnet work as before: that’s how you send an internal network through an office proxy. The switch is <span class="ui">Settings → Network → Local networks go direct</span>, on by default. More in <a href="../../../en/docs/rules/#priority">Which rule wins</a>.</li>
+  <li><b>A stalled connection to the proxy no longer holds an app for 15 seconds.</b> If the connection to the proxy isn’t ready after 1.5 seconds, Routekeeper opens a second attempt alongside it, and a third after 4 seconds, and uses whichever succeeds first. This happens on some hosting networks: one connection stalls while new ones get through. The overall limit is still 15 seconds, and a wrong password or a refusal from the proxy is reported at once.</li>
+  <li><b>Share a proxy as one link.</b> The <span class="ui">Copy Link</span> button in a proxy’s card and the <span class="ui">Copy Link with Password</span> item in its context menu put a line like <code>https://login:password@server:443#Name</code> on the clipboard. Send it on: the recipient pastes it into Routekeeper and the whole proxy fills in, name included. More in <a href="../../../en/docs/proxies/#share">Share a proxy</a>.</li>
+  <li><b>Connections through an HTTPS proxy no longer pile up.</b> When an app closed a connection, an HTTPS proxy never learned of it, and the connection stayed open until the site closed it, and some, like Telegram’s servers, keep it for hours. In a day or two hundreds of them built up, macOS stopped giving Routekeeper new ones, and every connection through the proxy failed with “Cannot allocate memory”. Now, if the site stays silent for a minute after the app closed the connection, Routekeeper closes it itself.</li>
+  <li><b>Turning Routekeeper off drops connections through a proxy.</b> Before, after you turned it off with the switch, connections already open kept going through the proxy until the app closed them, and some live for days. Now they’re dropped at once, and apps reconnect directly. See <a href="../../../en/docs/start/#turn-off">How to turn it off quickly</a>.</li>
+  <li><b>Proxy latency history.</b> In the <span class="ui">Proxy</span> section, each proxy has a latency chart for the last hour, day, 7 or 30 days: the typical time, the spread, and when the proxy didn’t open connections. In <span class="ui">Overview</span>, each route’s latency has its chart for the last hour next to it. Routekeeper records the time of real connections and checks and spends no extra traffic. The history is kept for 30 days. See <a href="../../../en/docs/proxies/#latency">Latency history</a>.</li>
+</ul>
 
 <h2 id="v0-3-0">0.3.0 — October 5, 2026</h2>
 <p>Build 11.</p>

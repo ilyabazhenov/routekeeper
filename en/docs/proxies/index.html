@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Proxies — Routekeeper</title>
-<meta name="description" content="Proxies in Routekeeper: the SOCKS5, HTTP and HTTPS types, the fields and pasting a proxy line, DNS through proxy and blocking UDP and QUIC, checking and error messages, a proxy on your own server, several proxies and moving routes, a local sing-box, Xray or Clash client, a work proxy.">
+<meta name="description" content="Proxies in Routekeeper: the SOCKS5, HTTP and HTTPS types, the fields, pasting a proxy line and a link to share a proxy, DNS through proxy and blocking UDP and QUIC, checking and error messages, a proxy on your own server, several proxies and moving routes, a local sing-box, Xray or Clash client, a work proxy.">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Routekeeper">
 <meta property="og:url" content="https://getroutekeeper.app/en/docs/proxies/">
 <meta property="og:title" content="Proxies — Routekeeper">
-<meta property="og:description" content="Proxies in Routekeeper: the SOCKS5, HTTP and HTTPS types, the fields and pasting a proxy line, DNS through proxy and blocking UDP and QUIC, checking and error messages, a proxy on your own server, several proxies and moving routes, a local sing-box, Xray or Clash client, a work proxy.">
+<meta property="og:description" content="Proxies in Routekeeper: the SOCKS5, HTTP and HTTPS types, the fields, pasting a proxy line and a link to share a proxy, DNS through proxy and blocking UDP and QUIC, checking and error messages, a proxy on your own server, several proxies and moving routes, a local sing-box, Xray or Clash client, a work proxy.">
 <meta property="og:image" content="https://getroutekeeper.app/og-en.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -243,7 +243,7 @@
 </table></div>
 <p>To change a proxy, select it in the list, edit the fields and click <span class="ui">Save</span>. <span class="ui">Revert Changes</span> brings back the saved values. The <span class="ui">Used in rules: N</span> line below the <span class="ui">Check</span> button shows how many routes and rules go through this proxy.</p>
 <details class="deep"><summary>Details: where the password is stored</summary>
-  <p>The password is stored by the Routekeeper <a class="term" href="../../../en/docs/glossary/#network-extension">network extension</a> in its settings file. Only the system (root) can read this file. The Routekeeper window doesn’t get the saved password: the <span class="ui">Password</span> field shows dots instead, and the extension itself runs the proxy check. If you don’t touch the field, the password stays the same when you save. If you clear <span class="ui">Login</span>, the password is deleted.</p>
+  <p>The password is stored by the Routekeeper <a class="term" href="../../../en/docs/glossary/#network-extension">network extension</a> in its settings file. Only the system (root) can read this file. The Routekeeper window doesn’t get the saved password: the <span class="ui">Password</span> field shows dots instead, and the extension itself runs the proxy check. The one exception is the <a href="#share"><span class="ui">Copy Link</span></a> button: for it the extension hands over the password to put the link on the clipboard. If you don’t touch the field, the password stays the same when you save. If you clear <span class="ui">Login</span>, the password is deleted.</p>
 </details>
 
 <h2 id="paste">Paste a proxy line</h2>
@@ -277,12 +277,26 @@
   <li><b>Without a prefix</b> (<code>socks5://</code>, <code>http://</code>, <code>https://</code>), you get SOCKS5. If your provider gave you an <code>address:port</code> line for an HTTP proxy, change <span class="ui">Type</span> to HTTP after you paste it.</li>
   <li><b>Special characters</b> in the login and password can be written as <code>%40</code> instead of <code>@</code> or <code>%3A</code> instead of <code>:</code>. Routekeeper decodes them.</li>
   <li>Spaces and line breaks at the start or end and a slash at the end don’t get in the way.</li>
-  <li>The <b>name</b> of a pasted proxy is the server address. You can change it in the <span class="ui">Name</span> field.</li>
+  <li>The <b>name</b> of a pasted proxy is what follows <code>#</code> at the end of the line (that’s how a <a href="#share">link from Routekeeper</a> carries it), or the server address if there’s none. You can change it in the <span class="ui">Name</span> field.</li>
 </ul>
-<p>If the clipboard doesn’t hold a proxy line, Routekeeper replies: “The clipboard has no proxy string. Expected something like socks5://user:pass@host:1080”. The <span class="ui">Copy Address</span> item in a proxy’s context menu copies back only <code>address:port</code>, without the login and password.</p>
+<p>If the clipboard doesn’t hold a proxy line, Routekeeper replies: “The clipboard has no proxy string. Expected something like socks5://user:pass@host:1080”. The <span class="ui">Copy Address</span> item in a proxy’s context menu copies only <code>address:port</code>, without the login and password. <a href="#share"><span class="ui">Copy Link</span></a> copies the whole line.</p>
 <details class="deep"><summary>Details: socks5 and socks5h</summary>
   <p>In other programs, the <code>h</code> in <code>socks5h://</code> means “the proxy looks up site names”. In Routekeeper, both prefixes give the same SOCKS5. Whether the proxy gets names is decided by the <span class="ui">DNS through proxy</span> toggle, and it’s on for a pasted proxy.</p>
 </details>
+
+<h2 id="share">Share a proxy</h2>
+<p>To send a proxy to someone else or move it to another Mac, copy it as one link:</p>
+<ol class="steps">
+  <li>Select the proxy in the list and click <span class="ui">Copy Link</span> below the fields. Or right-click the proxy in the list and choose <span class="ui">Copy Link with Password</span>.</li>
+  <li>Paste the link into a message. It looks like this: <code>https://login:password@proxy.example.net:443#Frankfurt</code>.</li>
+  <li>The recipient <a href="#paste">pastes it into Routekeeper</a>: the type, server, port, login, password and name fill in on their own. Other apps usually understand such a line too and skip the name after <code>#</code>.</li>
+</ol>
+<ul>
+  <li><b>The link has the real password.</b> Send it only to people you trust, preferably in a direct message rather than a group chat. Whoever has the link can use the proxy until you change the password.</li>
+  <li><b>What the fields show is copied</b>, unsaved edits included. If you haven’t touched the <span class="ui">Password</span> field, the saved password goes into the link.</li>
+  <li>Special characters in the login, password and name are written as codes like <code>%40</code>; Routekeeper decodes them on paste. Clipboard managers that respect the “concealed content” marker don’t keep the link in their history.</li>
+  <li>Without a connection to the <a class="term" href="../../../en/docs/glossary/#network-extension">network extension</a> the link isn’t copied: the saved password is kept only there.</li>
+</ul>
 
 <h2 id="toggles">DNS through proxy and UDP blocking</h2>
 <p>Each proxy has two toggles: <span class="ui">DNS through proxy</span> and <span class="ui">Block UDP and QUIC</span>. Both are on by default, including for a pasted proxy. They apply to connections that go through this proxy.</p>
@@ -319,12 +333,22 @@
 <p>In the list of proxies on the left, each proxy has a colored dot and a short line: green means it works (<code>SOCKS5 · 640 ms · NL</code>), red means <span class="ui">unreachable</span>, blue means <span class="ui">checking…</span>, gray means <span class="ui">not checked</span>.</p>
 <p>You don’t need to click <span class="ui">Check</span> every time. Routekeeper checks proxies by itself: after you save; when you open the <span class="ui">Proxy</span> section, if a proxy hasn’t been checked yet; and, for the main proxy, when you open the menu of the menu bar icon and after the network changes. While the main proxy isn’t answering, it’s rechecked once a minute. To check all proxies at once, use the <span class="ui">Check All</span> button in the toolbar.</p>
 
+<h3 id="latency">Latency history</h3>
+<p>Above the settings of the selected proxy is a latency chart for the last hour, day, 7 or 30 days. Routekeeper records the time of every connection through the proxy and of every check. It doesn’t make separate measurements or spend extra traffic, so there’s no data for the time when nothing went through the proxy, and the line breaks there.</p>
+<ul>
+  <li><b>The line</b> is the typical latency at that moment: half of the connections opened faster. <b>The band around it</b> is how 80% of connections opened, leaving out the fastest and the slowest. A wide band means latency jumps around.</li>
+  <li><b>Red bands</b> are times when the proxy didn’t open connections: it didn’t answer, dropped the connection or didn’t accept the password. The more such connections, the brighter the band. If the proxy opened the connection and the site behind it didn’t answer, that’s not a proxy failure and doesn’t show here.</li>
+  <li><b>The dashed “slow” line</b> is 1500 ms, the same threshold as in <a href="../../../en/docs/monitoring/#overview"><span class="ui">Overview</span></a>.</li>
+</ul>
+<p>Hover over the chart to see the time, the latency and how many connections there were at that moment. Below the chart is the summary for the period: <span class="ui">Typical</span>, <span class="ui">Spread</span>, the share of connections that <span class="ui">Opened</span>, and the number of <span class="ui">Connections</span>.</p>
+<p>The history is kept for 30 days. If you change the proxy’s server, port or type, the history starts over: it’s a different server now. Changing the login or password doesn’t reset it.</p>
+
 <h3 id="errors">Error messages</h3>
 <p>If the check fails, a message appears instead of the result. <a href="../../../en/docs/monitoring/#monitor"><span class="ui">Monitor</span></a> shows the same messages for connections that couldn’t be made through the proxy.</p>
 <div class="table"><table>
   <thead><tr><th>Message</th><th>What it means</th><th>What to do</th></tr></thead>
   <tbody>
-    <tr><td>The proxy didn’t answer in time</td><td>The proxy didn’t answer within 10 seconds during a check, or within 15 seconds for an app’s connection.</td><td>Check the server and port. Make sure the server is running and the port isn’t closed by a firewall on it.</td></tr>
+    <tr><td>The proxy didn’t answer in time</td><td>The proxy didn’t answer within 10 seconds during a check, or within 15 seconds for an app’s connection. In that time, an app’s connection makes up to three attempts: if the previous one stalls, a new one starts after 1.5 and after 4 seconds.</td><td>Check the server and port. Make sure the server is running and the port isn’t closed by a firewall on it.</td></tr>
     <tr><td>Couldn’t connect to the proxy: …</td><td>macOS couldn’t connect to the server. After the colon is the reason from macOS. <code>Connection refused</code> means nothing is running on this port.</td><td>Check <span class="ui">Server</span> and <span class="ui">Port</span>. Check that the Mac is online.</td></tr>
     <tr><td>Couldn’t connect to the proxy: TLS: the proxy’s certificate failed validation</td><td>HTTPS: the server’s certificate doesn’t fit.</td><td>The <span class="ui">Server</span> field must contain the domain name the certificate was issued for, not the IP. The certificate must not be expired or self-signed.</td></tr>
     <tr><td>Couldn’t connect to the proxy: TLS: TLS error (number)</td><td>An encrypted connection couldn’t be set up.</td><td>Most often, the HTTPS type is selected, but the server doesn’t use TLS on this port. Try HTTP or SOCKS5.</td></tr>
@@ -468,7 +492,7 @@
   <li>Click <span class="ui">Check</span>. If the answer is “The HTTP proxy answered 403 …”, read the item about port 80 below.</li>
   <li>Decide what will go through the work proxy:
     <ul>
-      <li><b>whole apps</b>, for example a work messenger: the “Office” route in <a href="../../../en/docs/apps/#route">Apps</a>;</li>
+      <li><b>whole apps</b>, for example a work messenger: the “Office” route in <a href="../../../en/docs/apps/#route">Apps</a>. Such a route leaves addresses on your <a class="term" href="../../../en/docs/glossary/#local-network">local network</a> and VPN subnets direct;</li>
       <li><b>company addresses from any app</b>: the rule “Any App · <code>*.corp.example</code> → Through Proxy ‘Office’” in <a href="../../../en/docs/rules/#syntax">Rules</a>. For internal networks, add a rule with a subnet, for example <code>10.0.0.0/8</code>. Such a rule wins over an app’s route: the browser goes through your usual proxy, and company sites through the office one.</li>
     </ul>
   </li>

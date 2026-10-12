@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Словарь — Routekeeper</title>
-<meta name="description" content="Словарь Routekeeper: прокси, SOCKS5, HTTPS-прокси, VPS, SSH, домен, A-запись, IP, порт, DNS, DoH, TCP, UDP, QUIC, TLS, сетевое расширение, дочерний процесс, подпись кода, подсеть, шаблон домена, localhost, fail-closed.">
+<meta name="description" content="Словарь Routekeeper: прокси, SOCKS5, HTTPS-прокси, VPS, SSH, домен, A-запись, IP, порт, DNS, DoH, TCP, UDP, QUIC, TLS, сетевое расширение, дочерний процесс, подпись кода, подсеть, шаблон домена, localhost, локальная сеть, fail-closed.">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Routekeeper">
 <meta property="og:url" content="https://getroutekeeper.app/docs/glossary/">
 <meta property="og:title" content="Словарь — Routekeeper">
-<meta property="og:description" content="Словарь Routekeeper: прокси, SOCKS5, HTTPS-прокси, VPS, SSH, домен, A-запись, IP, порт, DNS, DoH, TCP, UDP, QUIC, TLS, сетевое расширение, дочерний процесс, подпись кода, подсеть, шаблон домена, localhost, fail-closed.">
+<meta property="og:description" content="Словарь Routekeeper: прокси, SOCKS5, HTTPS-прокси, VPS, SSH, домен, A-запись, IP, порт, DNS, DoH, TCP, UDP, QUIC, TLS, сетевое расширение, дочерний процесс, подпись кода, подсеть, шаблон домена, localhost, локальная сеть, fail-closed.">
 <meta property="og:image" content="https://getroutekeeper.app/og-ru.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -125,7 +125,7 @@
     <a href="../../docs/changelog/">Что нового</a>
     </nav></details>
 <p class="lead-in">Термины собраны по темам. Другие страницы документации ссылаются сюда, когда термин встречается впервые.</p>
-<p><a href="#proxy">Прокси</a> · <a href="#socks5">SOCKS5</a> · <a href="#http-connect">HTTP CONNECT</a> · <a href="#https-proxy">HTTPS-прокси</a> · <a href="#fail-closed">Fail-closed</a> · <a href="#vps">VPS</a> · <a href="#ssh">SSH</a> · <a href="#domain">Домен</a> · <a href="#a-record">A&#8209;запись</a> · <a href="#ip">IP-адрес</a> · <a href="#port">Порт</a> · <a href="#tcp">TCP</a> · <a href="#udp">UDP</a> · <a href="#quic">QUIC</a> · <a href="#dns">DNS</a> · <a href="#doh">DoH</a> · <a href="#tls">TLS</a> · <a href="#network-extension">Сетевое расширение</a> · <a href="#child-process">Дочерний процесс</a> · <a href="#code-signature">Подпись кода</a> · <a href="#loopback">localhost</a> · <a href="#cidr">Подсеть (CIDR)</a> · <a href="#wildcard">Шаблон *.домен</a></p>
+<p><a href="#proxy">Прокси</a> · <a href="#socks5">SOCKS5</a> · <a href="#http-connect">HTTP CONNECT</a> · <a href="#https-proxy">HTTPS-прокси</a> · <a href="#fail-closed">Fail-closed</a> · <a href="#vps">VPS</a> · <a href="#ssh">SSH</a> · <a href="#domain">Домен</a> · <a href="#a-record">A&#8209;запись</a> · <a href="#ip">IP-адрес</a> · <a href="#port">Порт</a> · <a href="#tcp">TCP</a> · <a href="#udp">UDP</a> · <a href="#quic">QUIC</a> · <a href="#dns">DNS</a> · <a href="#doh">DoH</a> · <a href="#tls">TLS</a> · <a href="#network-extension">Сетевое расширение</a> · <a href="#child-process">Дочерний процесс</a> · <a href="#code-signature">Подпись кода</a> · <a href="#loopback">localhost</a> · <a href="#local-network">Локальная сеть</a> · <a href="#cidr">Подсеть (CIDR)</a> · <a href="#wildcard">Шаблон *.домен</a></p>
 
 <h2 id="g-proxy">Прокси</h2>
 
@@ -218,6 +218,10 @@
 <h3 id="loopback">localhost (loopback)</h3>
 <p>Адреса, по которым Mac обращается сам к себе: <code>127.0.0.1</code>, <code>::1</code> и имя <code>localhost</code>. Такие соединения не выходят в сеть. Например, по ним приложения подключаются к клиенту прокси, запущенному на этом же Mac.</p>
 <p><b>В Routekeeper:</b> соединения с самим Mac идут напрямую — так задают встроенные правила и настройка <span class="ui">Настройки</span> → <span class="ui">Сеть</span> → <span class="ui">Не трогать localhost</span>.</p>
+
+<h3 id="local-network">Локальная сеть</h3>
+<p>Сети, в которых Mac находится сам: домашняя или офисная сеть по Wi-Fi или кабелю, а также сети, которые открывает VPN, например корпоративный VPN или Tailscale. Адреса в них обычно частные: <code>192.168.…</code>, <code>10.…</code>, <code>172.16.…</code>–<code>172.31.…</code>, у Tailscale — <code>100.…</code>. Из интернета такие адреса недоступны, поэтому удалённый прокси до них не дотянется.</p>
+<p><b>В Routekeeper:</b> начиная с версии 0.4.0 приложение, которое целиком идёт через прокси, достаёт локальные сети напрямую — настройка <span class="ui">Настройки → Сеть → Локальные сети — напрямую</span>, включена по умолчанию. Точные условия — в разделе <a href="../../docs/rules/#priority">«Какое правило важнее»</a>.</p>
 
 <h2 id="g-rules">Адреса в правилах</h2>
 

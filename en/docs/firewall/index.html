@@ -156,6 +156,7 @@
         <li>If Routekeeper is turned off with the <span class="ui">Routekeeper On</span> switch, the connection goes direct, and nothing else is checked.</li>
         <li>A connection to one of your proxy servers (the same address and port as in the <span class="ui">Proxy</span> section) goes direct.</li>
         <li>The most specific matching rule, including app routes and services. The order of rows in the list doesn’t matter.</li>
+        <li>If the winner is a <span class="ui">Through Proxy</span> rule with any address and the address is on this Mac’s <a class="term" href="../../../en/docs/glossary/#local-network">local network</a>, the connection goes direct if <span class="ui">Settings → Network → Local networks go direct</span> is on (it’s on by default).</li>
         <li>A connection to this same Mac (<a class="term" href="../../../en/docs/glossary/#loopback">loopback</a>), if <span class="ui">Settings → Network → Leave localhost alone</span> is on (it’s on by default).</li>
         <li>The mode.</li>
       </ol>

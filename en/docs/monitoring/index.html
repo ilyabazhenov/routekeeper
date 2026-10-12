@@ -279,7 +279,7 @@
     <ul>
       <li><b>Dot:</b> green means the proxy answers, orange means it answers slowly, red means it doesn’t answer, and gray means it hasn’t been checked yet.</li>
       <li><b>Name, country and external IP</b> from the last check.</li>
-      <li><b>Latency.</b> From 1500 ms, “slow” is added to it. For a distant server that works fine, 500–800 ms is normal.</li>
+      <li><b>Latency.</b> From 1500 ms, “slow” is added to it. For a distant server that works fine, 500–800 ms is normal. Next to it is a latency chart for the last hour: a steady line means the proxy works evenly, red marks mean it didn’t open connections. The detailed chart is in the <span class="ui">Proxy</span> section; see <a href="../../../en/docs/proxies/#latency">Latency history</a>.</li>
       <li><b>What uses the route:</b> icons and names of apps and services. Click to expand the full list. Clicking an item opens its rule in the <span class="ui">Apps</span> or <span class="ui">Rules</span> section.</li>
       <li><b>Speed</b> right now and, if you have several proxies, each one’s share.</li>
       <li><b>The “…” menu:</b> <span class="ui">Check Again</span>, <span class="ui">Move Routes To</span> (moves only this proxy’s routes), <span class="ui">All Proxies…</span>.</li>
@@ -332,7 +332,7 @@
       <li>The Mac’s location is worked out from its time zone.</li>
       <li>The <span class="ui">All Apps</span> menu leaves one app on the map. <span class="ui">By traffic</span> and <span class="ui">By connections</span> change the size of the markers. The amount of traffic is known only for connections through the proxy.</li>
       <li>Zoom: <kbd>⌘+</kbd> to zoom in, <kbd>⌘−</kbd> to zoom out, <kbd>⌘0</kbd> for the whole world.</li>
-      <li>Next to the map is a list of countries. <span class="ui">Global networks</span> and <span class="ui">Local network and other</span> have rows of their own. Content delivery networks answer from the point nearest to you, and the country in the database is only where they’re registered, so they aren’t on the map.</li>
+      <li>Next to the map is a list of countries. <span class="ui">Global networks</span> and <span class="ui">Local network and other</span> have rows of their own. Content delivery networks answer from the point nearest to you, and the country in the database is only where they’re registered, so they aren’t on the map. Connections that went direct because of the <span class="ui">Local networks go direct</span> setting don’t appear on the map.</li>
       <li>The country database is built into the app. Addresses for the map aren’t sent anywhere.</li>
     </ul>
     <details class="deep">
@@ -469,6 +469,7 @@
         <tr><td>A program from another developer that the app starts, when <span class="ui">Include Child Processes</span> is off</td><td>No</td><td>It follows its own route or the mode.</td></tr>
         <tr><td>Connections in the first seconds after the extension restarts or updates</td><td>No</td><td>The extension doesn’t see them. See <a href="../../../en/docs/limits/#restart-gap">Pause when the extension restarts</a>.</td></tr>
         <tr><td>The <span class="ui">Routekeeper On</span> switch is off</td><td>No</td><td>Everything goes direct, and the monitor doesn’t record anything.</td></tr>
+        <tr><td>An app routed through a proxy connected to an address on a <a class="term" href="../../../en/docs/glossary/#local-network">local network</a>: your home network, a corporate VPN, Tailscale</td><td>Not counted</td><td>It goes direct because of the <span class="ui">Local networks go direct</span> setting. The <span class="ui">Decision</span> field says “local network, past the proxy of the rule for …”.</td></tr>
         <tr><td>Connections to the proxy server itself and inside the Mac</td><td>Not counted</td><td>That’s as it should be.</td></tr>
       </tbody>
     </table></div>

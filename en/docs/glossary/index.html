@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Glossary — Routekeeper</title>
-<meta name="description" content="Routekeeper glossary: proxy, SOCKS5, HTTPS proxy, VPS, SSH, domain, A record, IP, port, DNS, DoH, TCP, UDP, QUIC, TLS, network extension, child process, code signature, subnet, domain wildcard, localhost, fail-closed.">
+<meta name="description" content="Routekeeper glossary: proxy, SOCKS5, HTTPS proxy, VPS, SSH, domain, A record, IP, port, DNS, DoH, TCP, UDP, QUIC, TLS, network extension, child process, code signature, subnet, domain wildcard, localhost, local network, fail-closed.">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Routekeeper">
 <meta property="og:url" content="https://getroutekeeper.app/en/docs/glossary/">
 <meta property="og:title" content="Glossary — Routekeeper">
-<meta property="og:description" content="Routekeeper glossary: proxy, SOCKS5, HTTPS proxy, VPS, SSH, domain, A record, IP, port, DNS, DoH, TCP, UDP, QUIC, TLS, network extension, child process, code signature, subnet, domain wildcard, localhost, fail-closed.">
+<meta property="og:description" content="Routekeeper glossary: proxy, SOCKS5, HTTPS proxy, VPS, SSH, domain, A record, IP, port, DNS, DoH, TCP, UDP, QUIC, TLS, network extension, child process, code signature, subnet, domain wildcard, localhost, local network, fail-closed.">
 <meta property="og:image" content="https://getroutekeeper.app/og-en.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -125,7 +125,7 @@
     <a href="../../../en/docs/changelog/">What's new</a>
     </nav></details>
 <p class="lead-in">The terms are grouped by topic. Other docs pages link here the first time a term appears.</p>
-<p><a href="#proxy">Proxy</a> · <a href="#socks5">SOCKS5</a> · <a href="#http-connect">HTTP CONNECT</a> · <a href="#https-proxy">HTTPS proxy</a> · <a href="#fail-closed">Fail-closed</a> · <a href="#vps">VPS</a> · <a href="#ssh">SSH</a> · <a href="#domain">Domain</a> · <a href="#a-record">A&nbsp;record</a> · <a href="#ip">IP address</a> · <a href="#port">Port</a> · <a href="#tcp">TCP</a> · <a href="#udp">UDP</a> · <a href="#quic">QUIC</a> · <a href="#dns">DNS</a> · <a href="#doh">DoH</a> · <a href="#tls">TLS</a> · <a href="#network-extension">Network extension</a> · <a href="#child-process">Child process</a> · <a href="#code-signature">Code signature</a> · <a href="#loopback">localhost</a> · <a href="#cidr">Subnet (CIDR)</a> · <a href="#wildcard">Wildcard *.domain</a></p>
+<p><a href="#proxy">Proxy</a> · <a href="#socks5">SOCKS5</a> · <a href="#http-connect">HTTP CONNECT</a> · <a href="#https-proxy">HTTPS proxy</a> · <a href="#fail-closed">Fail-closed</a> · <a href="#vps">VPS</a> · <a href="#ssh">SSH</a> · <a href="#domain">Domain</a> · <a href="#a-record">A&nbsp;record</a> · <a href="#ip">IP address</a> · <a href="#port">Port</a> · <a href="#tcp">TCP</a> · <a href="#udp">UDP</a> · <a href="#quic">QUIC</a> · <a href="#dns">DNS</a> · <a href="#doh">DoH</a> · <a href="#tls">TLS</a> · <a href="#network-extension">Network extension</a> · <a href="#child-process">Child process</a> · <a href="#code-signature">Code signature</a> · <a href="#loopback">localhost</a> · <a href="#local-network">Local network</a> · <a href="#cidr">Subnet (CIDR)</a> · <a href="#wildcard">Wildcard *.domain</a></p>
 
 <h2 id="g-proxy">Proxies</h2>
 
@@ -218,6 +218,10 @@
 <h3 id="loopback">localhost (loopback)</h3>
 <p>The addresses that a Mac uses to reach itself: <code>127.0.0.1</code>, <code>::1</code> and the name <code>localhost</code>. Such connections don’t go out to the network. For example, apps use them to connect to a proxy client running on the same Mac.</p>
 <p><b>In Routekeeper:</b> connections to the Mac itself go direct; the built-in rules and the <span class="ui">Settings</span> → <span class="ui">Network</span> → <span class="ui">Leave localhost alone</span> setting make it so.</p>
+
+<h3 id="local-network">Local network</h3>
+<p>The networks the Mac itself is on: a home or office network over Wi-Fi or a cable, and also networks that a VPN opens, such as a corporate VPN or Tailscale. Their addresses are usually private: <code>192.168.…</code>, <code>10.…</code>, <code>172.16.…</code>–<code>172.31.…</code>, and <code>100.…</code> for Tailscale. They can’t be reached from the internet, so a remote proxy can’t reach them either.</p>
+<p><b>In Routekeeper:</b> starting with version 0.4.0, an app that goes through a proxy as a whole reaches local networks directly. This is the <span class="ui">Settings → Network → Local networks go direct</span> setting, on by default. The exact conditions are in <a href="../../../en/docs/rules/#priority">Which rule wins</a>.</p>
 
 <h2 id="g-rules">Addresses in rules</h2>
 
