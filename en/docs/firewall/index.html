@@ -199,13 +199,13 @@
       <div class="mock-group" style="display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 12px; padding: 12px">
         <span class="muted">Path</span><span>/Library/Application Support/Exa…/MacOS/Updater Helper</span>
         <span class="muted">Signature</span><span class="mock-ok">✓ Developer A1B2C3D4E5<b class="mk">3</b></span>
-        <span class="muted">Launched by</span><span>Example › Updater Helper</span>
+        <span class="muted">Launched by</span><span>Example</span>
         <span class="muted">IP</span><span>198.51.100.10</span>
       </div>
       <div style="display: grid; gap: 10px; justify-items: start">
-        <div style="display: grid; gap: 4px; justify-items: start"><span class="muted">Duration<b class="mk">4</b></span><span class="mock-seg"><span>Once</span><span>While Updater Helper is running</span><span class="on">Forever</span></span></div>
+        <div style="display: grid; gap: 4px; justify-items: start"><span class="muted">Duration<b class="mk">4</b></span><span class="mock-seg"><span>Once</span><span>While the process runs</span><span class="on">Forever</span></span></div>
         <div style="display: grid; gap: 4px; justify-items: start"><span class="muted">Where<b class="mk">5</b></span><span class="mock-seg"><span>updates.example.com</span><span class="on">*.example.com</span><span>Any host :443</span><span>Anywhere</span></span></div>
-        <div style="display: flex; align-items: center; gap: 8px"><span class="mock-btn primary" style="width: 16px; height: 16px; padding: 0; justify-content: center">✓</span>Including child processes of Updater Helper<b class="mk">6</b></div>
+        <div style="display: flex; align-items: center; gap: 8px"><span class="mock-btn primary" style="width: 16px; height: 16px; padding: 0; justify-content: center">✓</span>Including child processes<b class="mk">6</b></div>
         <div class="muted">☰ Rule: Updater Helper and its child processes to *.example.com, forever</div>
       </div>
       <div class="mock-sep" style="margin: 0"></div>
@@ -222,7 +222,7 @@
       <li>Which program is connecting and where: the address, port and protocol.</li>
       <li>How many seconds are left before the default answer. The timer turns orange 10 seconds before the end. “+2 waiting” means two more connections from this program are waiting along with this one.</li>
       <li>About the program: the path to the file, the signature, what launched it and the server’s IP. For third-party programs, the signature shows the developer’s Team ID, not the company name.</li>
-      <li>How long to keep the answer. <span class="ui">Once</span> makes no rule, <span class="ui">While … is running</span> lasts until the program quits, <span class="ui">Forever</span> is a permanent rule and is selected by default.</li>
+      <li>How long to keep the answer. <span class="ui">Once</span> makes no rule, <span class="ui">While the process runs</span> lasts until the program quits, <span class="ui">Forever</span> is a permanent rule and is selected by default.</li>
       <li>Which addresses the rule covers: the exact address, the whole domain (selected by default), any address on this port, or <span class="ui">Anywhere</span>. If the server name is longer than 26 characters, a menu replaces the buttons.</li>
       <li>Whether to cover the programs this program launches. The line below spells out the rule you’ll get.</li>
       <li>The answer: <span class="ui">Block</span> <kbd>⌘B</kbd>, <span class="ui">Through Proxy</span> <kbd>⌘P</kbd> (the arrow picks another proxy when you have several), <span class="ui">Allow</span> <kbd>↩</kbd> goes direct.</li>
@@ -236,15 +236,15 @@
     <ul>
       <li><b>Title:</b> the program’s name and “wants to connect”. Below it are the address, <a class="term" href="../../../en/docs/glossary/#port">port</a> and protocol (<a class="term" href="../../../en/docs/glossary/#tcp">TCP</a> or <a class="term" href="../../../en/docs/glossary/#udp">UDP</a>).</li>
       <li><b>Timer</b> on the right: how many seconds are left before the default answer. It turns orange 10 seconds before the end. If more connections from this program are waiting, you’ll see “+N waiting” next to it.</li>
-      <li><b>Program details:</b> <span class="ui">Path</span> to the file; <span class="ui">Signature</span> (Apple, App Store, the developer with their Team ID, <span class="ui">Ad-hoc signature</span> or <span class="ui">Unsigned</span>); <span class="ui">Launched by</span>, the chain of programs that started it, for example Terminal › zsh › curl. For more about signatures, see <a class="term" href="../../../en/docs/glossary/#code-signature">code signature</a> in the glossary.</li>
+      <li><b>Program details:</b> <span class="ui">Path</span> to the file; <span class="ui">Signature</span> (Apple, App Store, the developer with their Team ID, <span class="ui">Ad-hoc signature</span> or <span class="ui">Unsigned</span>); <span class="ui">Launched by</span>, the chain of programs that started it, for example Terminal › zsh. For more about signatures, see <a class="term" href="../../../en/docs/glossary/#code-signature">code signature</a> in the glossary.</li>
     </ul>
     <p>Below that, you choose what to save and where it applies:</p>
     <div class="table"><table>
       <thead><tr><th>Setting</th><th>Options</th></tr></thead>
       <tbody>
-        <tr><td><span class="ui">Duration</span></td><td><span class="ui">Once</span>: a decision for this connection only. No rule is saved.<br><span class="ui">While … is running</span> (with the program’s name): the rule works until the program quits, and then it’s deleted.<br><span class="ui">Forever</span>: a permanent rule. Selected by default.</td></tr>
+        <tr><td><span class="ui">Duration</span></td><td><span class="ui">Once</span>: a decision for this connection only. No rule is saved.<br><span class="ui">While the process runs</span>: the rule works until the program quits, and then it’s deleted.<br><span class="ui">Forever</span>: a permanent rule. Selected by default.</td></tr>
         <tr><td><span class="ui">Where</span></td><td>The exact address, for example <code>api.example.com</code>.<br>The whole domain, for example <code>*.example.com</code>: the domain itself and all its subdomains. Selected by default when it’s offered. What the asterisk means is explained in the glossary: <a class="term" href="../../../en/docs/glossary/#wildcard">wildcard</a>.<br><span class="ui">Any host :443</span>: any address, but only this port.<br><span class="ui">Anywhere</span>: any address and any port.</td></tr>
-        <tr><td>Child processes</td><td>The <span class="ui">Including child processes of …</span> switch (on): the rule also covers the programs that this program starts.</td></tr>
+        <tr><td>Child processes</td><td>The <span class="ui">Including child processes</span> switch (on): the rule also covers the programs that this program starts.</td></tr>
       </tbody>
     </table></div>
     <p>Below the settings, one line says what rule you’ll get, for example “Rule: curl and its child processes to *.example.com, forever”. With the <span class="ui">Once</span> duration, it says that no rule will be saved, and <span class="ui">Where</span> and child processes aren’t available.</p>
@@ -258,7 +258,7 @@
       </tbody>
     </table></div>
     <div class="callout tip">
-      <p>To make a program go through the proxy, choose the <span class="ui">While … is running</span> or <span class="ui">Forever</span> duration. Routekeeper sends connections through a proxy according to a saved rule.</p>
+      <p>To make a program go through the proxy, choose the <span class="ui">While the process runs</span> or <span class="ui">Forever</span> duration. Routekeeper sends connections through a proxy according to a saved rule.</p>
     </div>
     <p><b>Gave the wrong answer?</b> Open <span class="ui">Rules</span> and choose <span class="ui">From Prompt</span> in the <span class="ui">Source</span> filter. All the rules made from prompts are there: you can change, turn off or delete them. To undo the last change, press <kbd>⌘Z</kbd>.</p>
 

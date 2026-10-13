@@ -199,13 +199,13 @@
       <div class="mock-group" style="display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 12px; padding: 12px">
         <span class="muted">Путь</span><span>/Library/Application Support/Exa…/MacOS/Updater Helper</span>
         <span class="muted">Подпись</span><span class="mock-ok">✓ Разработчик A1B2C3D4E5<b class="mk">3</b></span>
-        <span class="muted">Запущен из</span><span>Example › Updater Helper</span>
+        <span class="muted">Запущен из</span><span>Example</span>
         <span class="muted">IP</span><span>198.51.100.10</span>
       </div>
       <div style="display: grid; gap: 10px; justify-items: start">
-        <div style="display: grid; gap: 4px; justify-items: start"><span class="muted">Срок<b class="mk">4</b></span><span class="mock-seg"><span>Один раз</span><span>Пока работает Updater Helper</span><span class="on">Навсегда</span></span></div>
+        <div style="display: grid; gap: 4px; justify-items: start"><span class="muted">Срок<b class="mk">4</b></span><span class="mock-seg"><span>Один раз</span><span>Пока процесс работает</span><span class="on">Навсегда</span></span></div>
         <div style="display: grid; gap: 4px; justify-items: start"><span class="muted">Куда<b class="mk">5</b></span><span class="mock-seg"><span>updates.example.com</span><span class="on">*.example.com</span><span>Любой хост :443</span><span>Куда угодно</span></span></div>
-        <div style="display: flex; align-items: center; gap: 8px"><span class="mock-btn primary" style="width: 16px; height: 16px; padding: 0; justify-content: center">✓</span>Включая дочерние процессы Updater Helper<b class="mk">6</b></div>
+        <div style="display: flex; align-items: center; gap: 8px"><span class="mock-btn primary" style="width: 16px; height: 16px; padding: 0; justify-content: center">✓</span>Включая дочерние процессы<b class="mk">6</b></div>
         <div class="muted">☰ Правило: Updater Helper и его дочерние процессы к *.example.com, навсегда</div>
       </div>
       <div class="mock-sep" style="margin: 0"></div>
@@ -222,7 +222,7 @@
       <li>Какая программа и куда подключается: адрес, порт и протокол.</li>
       <li>Сколько секунд осталось до ответа по умолчанию. За 10 секунд до конца таймер становится оранжевым. «+2 ждут» — ещё два соединения этой программы ждут вместе с этим.</li>
       <li>Сведения о программе: путь к файлу, подпись, кто её запустил и IP сервера. У программ сторонних разработчиков в подписи виден Team ID разработчика, а не название компании.</li>
-      <li>На сколько сохранить ответ. <span class="ui">Один раз</span> — без правила, <span class="ui">Пока работает …</span> — до завершения программы, <span class="ui">Навсегда</span> — постоянное правило, выбрано по умолчанию.</li>
+      <li>На сколько сохранить ответ. <span class="ui">Один раз</span> — без правила, <span class="ui">Пока процесс работает</span> — до завершения программы, <span class="ui">Навсегда</span> — постоянное правило, выбрано по умолчанию.</li>
       <li>Для каких адресов правило: точный адрес, весь домен (выбран по умолчанию), любой адрес на этом порту или <span class="ui">Куда угодно</span>. Если имя сервера длиннее 26 символов, вместо кнопок будет меню.</li>
       <li>Покрывать ли программы, которые эта программа запускает. Строкой ниже — какое правило получится.</li>
       <li>Ответ: <span class="ui">Заблокировать</span> <kbd>⌘B</kbd>, <span class="ui">Через прокси</span> <kbd>⌘P</kbd> (стрелка выбирает другой прокси, если их несколько), <span class="ui">Разрешить</span> <kbd>↩</kbd> — напрямую.</li>
@@ -236,15 +236,15 @@
     <ul>
       <li><b>Заголовок:</b> имя программы, «хочет подключиться», ниже адрес, <a class="term" href="../../docs/glossary/#port">порт</a> и протокол (<a class="term" href="../../docs/glossary/#tcp">TCP</a> или <a class="term" href="../../docs/glossary/#udp">UDP</a>).</li>
       <li><b>Таймер</b> справа: сколько секунд осталось до ответа по умолчанию. За 10 секунд до конца он становится оранжевым. Если у этой программы ждут ещё соединения, рядом видно «+N ждут».</li>
-      <li><b>Сведения о программе:</b> <span class="ui">Путь</span> к файлу, <span class="ui">Подпись</span> (Apple, App Store, разработчик с его Team ID, <span class="ui">Подпись без сертификата</span> или <span class="ui">Без подписи</span>), <span class="ui">Запущен из</span> — цепочка программ, которые её запустили, например Terminal › zsh › curl. Про подпись — в словаре: <a class="term" href="../../docs/glossary/#code-signature">подпись кода</a>.</li>
+      <li><b>Сведения о программе:</b> <span class="ui">Путь</span> к файлу, <span class="ui">Подпись</span> (Apple, App Store, разработчик с его Team ID, <span class="ui">Подпись без сертификата</span> или <span class="ui">Без подписи</span>), <span class="ui">Запущен из</span> — цепочка программ, которые её запустили, например Terminal › zsh. Про подпись — в словаре: <a class="term" href="../../docs/glossary/#code-signature">подпись кода</a>.</li>
     </ul>
     <p>Ниже — что сохранить и куда:</p>
     <div class="table"><table>
       <thead><tr><th>Настройка</th><th>Варианты</th></tr></thead>
       <tbody>
-        <tr><td><span class="ui">Срок</span></td><td><span class="ui">Один раз</span> — решение только для этого соединения, правило не сохраняется.<br><span class="ui">Пока работает …</span> (с именем программы) — правило действует, пока программа не завершится, потом удаляется.<br><span class="ui">Навсегда</span> — постоянное правило. Выбрано по умолчанию.</td></tr>
+        <tr><td><span class="ui">Срок</span></td><td><span class="ui">Один раз</span> — решение только для этого соединения, правило не сохраняется.<br><span class="ui">Пока процесс работает</span> — правило действует, пока программа не завершится, потом удаляется.<br><span class="ui">Навсегда</span> — постоянное правило. Выбрано по умолчанию.</td></tr>
         <tr><td><span class="ui">Куда</span></td><td>Точный адрес, например <code>api.example.com</code>.<br>Весь домен, например <code>*.example.com</code>: сам домен и все его поддомены. Выбран по умолчанию, когда он есть. Что значит звёздочка — в словаре: <a class="term" href="../../docs/glossary/#wildcard">шаблон адреса</a>.<br><span class="ui">Любой хост :443</span> — любой адрес, но только этот порт.<br><span class="ui">Куда угодно</span> — любой адрес и порт.</td></tr>
-        <tr><td>Дочерние процессы</td><td>Переключатель <span class="ui">Включая дочерние процессы …</span> (включён): правило покроет и программы, которые эта программа запускает.</td></tr>
+        <tr><td>Дочерние процессы</td><td>Переключатель <span class="ui">Включая дочерние процессы</span> (включён): правило покроет и программы, которые эта программа запускает.</td></tr>
       </tbody>
     </table></div>
     <p>Под настройками одной строкой написано, какое правило получится, например «Правило: curl и его дочерние процессы к *.example.com, навсегда». При сроке <span class="ui">Один раз</span> там написано, что правило не сохранится, а <span class="ui">Куда</span> и дочерние процессы недоступны.</p>
@@ -258,7 +258,7 @@
       </tbody>
     </table></div>
     <div class="callout tip">
-      <p>Чтобы программа пошла через прокси, выбирайте срок <span class="ui">Пока работает …</span> или <span class="ui">Навсегда</span>. Через прокси Routekeeper отправляет соединения по сохранённому правилу.</p>
+      <p>Чтобы программа пошла через прокси, выбирайте срок <span class="ui">Пока процесс работает</span> или <span class="ui">Навсегда</span>. Через прокси Routekeeper отправляет соединения по сохранённому правилу.</p>
     </div>
     <p><b>Ответили не то?</b> Откройте <span class="ui">Правила</span>, в фильтре <span class="ui">Источник</span> выберите <span class="ui">Из алерта</span>. Там все правила из окна вопроса: их можно изменить, выключить или удалить. Последнее изменение отменяется <kbd>⌘Z</kbd>.</p>
 
