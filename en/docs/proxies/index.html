@@ -234,6 +234,7 @@
     <tr><td><span class="ui">Name</span></td><td>Any name you’ll see in the route menu: “Amsterdam”, “Office”. If you leave the field empty, the server address becomes the name.</td></tr>
     <tr><td><span class="ui">Type</span></td><td>SOCKS5, HTTP or HTTPS. How to choose: see <a href="#types">above</a>.</td></tr>
     <tr><td><span class="ui">Server</span></td><td>A <a class="term" href="../../../en/docs/glossary/#domain">domain name</a> like <code>proxy.example.net</code> or an <a class="term" href="../../../en/docs/glossary/#ip">IP address</a> like <code>203.0.113.10</code>; IPv6 works too. No <code>https://</code> and no port. For HTTPS, only a domain name: the certificate is checked against it.</td></tr>
+    <tr><td><span class="ui">Server IP address</span></td><td>Optional; usually leave it empty. Routekeeper finds the server’s address itself, even when your network’s DNS won’t give it out. Enter an IP only if that doesn’t work either: for example, the proxy fails with “Couldn’t find the address of server”. The server wizard fills the field in by itself. For details, see <a href="#server-address">How Routekeeper finds the server’s address</a>.</td></tr>
     <tr><td><span class="ui">Port</span></td><td>The proxy’s <a class="term" href="../../../en/docs/glossary/#port">port</a>, a number from 1 to 65535. If you leave the field empty, Routekeeper uses the default port for the type: 1080, 8080 or 443. The hint in the field shows which one.</td></tr>
     <tr><td><span class="ui">Login</span></td><td>If the proxy lets you in without a password, leave it empty.</td></tr>
     <tr><td><span class="ui">Password</span></td><td>Saved only together with a login.</td></tr>
@@ -310,6 +311,17 @@
   <p>A connection reaches Routekeeper when the app already knows the server’s address. If macOS itself looked up the name, its query went to your network’s DNS before Routekeeper saw the connection. The toggle decides which address the proxy opens the site at, but it doesn’t cancel that query. How DNS works in Routekeeper, and how a browser can look up names over a secure channel, is explained in <a href="../../../en/docs/concepts/#dns">How it works</a> and <a href="../../../en/docs/recipes/#browser-dns">DNS over HTTPS in the browser</a>.</p>
 </details>
 
+<h3 id="dns-lookups">Site addresses through the proxy</h3>
+<p><span class="ui">DNS through proxy</span> helps when an app connects to a site through the proxy by name. But many apps first ask your network’s DNS for the site’s address themselves. If the network doesn’t know the name or says it doesn’t exist, the app never connects, even though it goes through the proxy. This happens with a corporate VPN that knows only its own sites, or with an ISP that filters DNS.</p>
+<p>For such networks, there’s a switch: <span class="ui">Settings → Network → Look up site addresses through the proxy</span>, off by default. With it, DNS queries of apps that go through a proxy are sent through that proxy to a public DNS (Cloudflare, or Google if it fails) instead of the network’s DNS. Other apps, and names the rules send direct, ask the network’s DNS as before.</p>
+<ul>
+  <li><b>Local names stay with the network’s DNS:</b> names without a dot, <code>.local</code>, <code>.lan</code>, <code>.home</code>, <code>.internal</code>, <code>.corp</code> and the like, the VPN’s and the local network’s domains, and domains from the files in <code>/etc/resolver</code>. So the company’s internal sites resolve to internal addresses.</li>
+  <li><b>If the public DNS says the name doesn’t exist</b>, Routekeeper asks the network’s DNS too: the name may be internal.</li>
+  <li><b>If the proxy is unreachable</b>, the app gets a DNS error. With <a href="#down"><span class="ui">If the proxy is down, go direct</span></a>, the query goes to the network’s DNS.</li>
+  <li>The switch works for proxies that have <span class="ui">DNS through proxy</span> on.</li>
+</ul>
+<p><b>When it won’t help.</b> If macOS looks addresses up over encrypted DNS, for example a DNS over HTTPS profile is installed or the network offers encrypted DNS itself, there are no plain DNS queries, and the switch changes nothing. macOS also keeps a shared cache of answers: if another app that goes direct recently got “no such name” from the network, that answer can reach an app that goes through the proxy too. How DNS works is described in <a href="../../../en/docs/concepts/#dns">How it works</a>.</p>
+
 <h3>Block UDP and QUIC</h3>
 <p>SOCKS5, HTTP and HTTPS proxies carry only <a class="term" href="../../../en/docs/glossary/#tcp">TCP</a>. <a class="term" href="../../../en/docs/glossary/#udp">UDP</a> is a different kind of traffic: it’s used by <a class="term" href="../../../en/docs/glossary/#quic">QUIC</a> in browsers, by voice and video calls, and by games. UDP can’t go through the proxy.</p>
 <ul>
@@ -323,11 +335,12 @@
 </details>
 
 <h2 id="check">Checking</h2>
-<p>The <span class="ui">Check</span> button opens a connection through the proxy to the ipinfo.io service and asks which IP address it sees. After a couple of seconds, the result appears next to the button, for example:</p>
+<p>The <span class="ui">Check</span> button opens a connection through the proxy to the ipinfo.io service and asks which IP address it sees. If ipinfo.io doesn’t answer or refuses, as it does for addresses of some hosting providers, Routekeeper asks Cloudflare, then ipify. After a couple of seconds, the result appears next to the button, for example:</p>
 <pre><code>Working · 640 ms · IP 203.0.113.10 (NL)</code></pre>
 <ul>
   <li><b>IP</b> is the address that sites see. If it matches your server’s address, the proxy works.</li>
-  <li><b>The country code in parentheses</b> is where this address is registered, according to ipinfo.io.</li>
+  <li><b>The country code in parentheses</b> is where this address is registered, according to the service that answered.</li>
+  <li><b>IP ?</b> means the services answered through the proxy but didn’t name the address. The proxy works.</li>
   <li><b>Milliseconds</b> is the time it takes to open a new connection through the proxy. That takes several exchanges with the server, so a healthy server far away shows 500–800 ms. In <a href="../../../en/docs/monitoring/#overview"><span class="ui">Overview</span></a>, a time of 1500 ms or more is marked “slow”.</li>
 </ul>
 <p>In the list of proxies on the left, each proxy has a colored dot and a short line: green means it works (<code>SOCKS5 · 640 ms · NL</code>), red means <span class="ui">unreachable</span>, blue means <span class="ui">checking…</span>, gray means <span class="ui">not checked</span>.</p>
@@ -353,7 +366,9 @@
     <tr><td>Couldn’t connect to the proxy: TLS: the proxy’s certificate failed validation</td><td>HTTPS: the server’s certificate doesn’t fit.</td><td>The <span class="ui">Server</span> field must contain the domain name the certificate was issued for, not the IP. The certificate must not be expired or self-signed.</td></tr>
     <tr><td>Couldn’t connect to the proxy: TLS: TLS error (number)</td><td>An encrypted connection couldn’t be set up.</td><td>Most often, the HTTPS type is selected, but the server doesn’t use TLS on this port. Try HTTP or SOCKS5.</td></tr>
     <tr><td>The proxy closed the connection</td><td>The server dropped the connection in the middle of the handshake.</td><td>Often it’s the wrong proxy type, for example HTTP instead of SOCKS5, or the wrong port.</td></tr>
-    <tr><td>Proxy protocol error: …</td><td>The server didn’t answer the way a proxy of the selected type does.</td><td>Check <span class="ui">Type</span> and <span class="ui">Port</span>. If the text after the colon is “couldn’t read the IP check service’s reply”, the proxy works, but ipinfo.io gave an answer Routekeeper couldn’t read. Check again later.</td></tr>
+    <tr><td>Proxy protocol error: …</td><td>The server didn’t answer the way a proxy of the selected type does.</td><td>Check <span class="ui">Type</span> and <span class="ui">Port</span>. If the text after the colon is “couldn’t read the IP check service’s reply”, none of the check services gave an answer Routekeeper could read. Check again later.</td></tr>
+    <tr><td>Server … not found: DNS has no such name</td><td>The name in the <span class="ui">Server</span> field doesn’t exist: both the network’s DNS and DNS over HTTPS said so.</td><td>Check <span class="ui">Server</span> for a typo or an expired domain. For a DuckDNS domain, check that it wasn’t deleted.</td></tr>
+    <tr><td>Couldn’t find the address of server …: this network’s DNS doesn’t resolve it, and DNS over HTTPS is unreachable</td><td>Your network’s DNS won’t give out the server’s address, DNS over HTTPS is unreachable from this network, and there’s no remembered address.</td><td>Enter the <span class="ui">Server IP address</span> in the proxy card, see <a href="#server-address">below</a>.</td></tr>
     <tr><td>SOCKS5: the proxy requires a login and password</td><td>No login is set.</td><td>Enter the login and password.</td></tr>
     <tr><td>SOCKS5: wrong login or password</td><td>The proxy didn’t accept the login or password.</td><td>Copy them again, without spaces at the start or end.</td></tr>
     <tr><td>SOCKS5: the proxy accepted no authentication method</td><td>The proxy accepted neither sign-in without a password nor sign-in with a login and password.</td><td>If no login is set, set one. If one is set, the proxy requires a sign-in method that Routekeeper doesn’t support.</td></tr>
@@ -364,6 +379,10 @@
   </tbody>
 </table></div>
 <p>Other Routekeeper messages and what to do about them are in <a href="../../../en/docs/troubleshooting/#errors">Troubleshooting</a>.</p>
+
+<h3 id="server-address">How Routekeeper finds the server’s address</h3>
+<p>If the <span class="ui">Server</span> field holds a name, Routekeeper has to find the server’s address. Some networks won’t give it out: a corporate VPN doesn’t know outside names, an ISP filters DNS. So Routekeeper asks for the address over DNS over HTTPS at Cloudflare, Google, AdGuard and Control D, reaching them by IP, so the network’s DNS isn’t needed for this. The address it finds is remembered: the next connection starts at once, and a fresh address is looked up in the background. If DNS over HTTPS is unreachable too, Routekeeper asks the network’s DNS, as before.</p>
+<p>If none of this works on your network, enter the <span class="ui">Server IP address</span>. An HTTPS proxy’s certificate is still checked against the name in the <span class="ui">Server</span> field, so leave the name as it is.</p>
 
 <h2 id="server">A proxy on your own server</h2>
 <p>A proxy that Routekeeper set up with the <a href="../../../en/docs/server/#wizard">Your Own Server…</a> wizard gets a <span class="ui">Server</span> block at the bottom of its card. Routekeeper logs in to the server with its own key from the keychain, does one thing and logs out.</p>

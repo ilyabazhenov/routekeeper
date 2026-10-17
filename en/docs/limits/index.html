@@ -163,6 +163,7 @@
         <li>Routekeeper doesn’t use UDP relaying through SOCKS5 (UDP ASSOCIATE).</li>
         <li><a class="term" href="../../../en/docs/glossary/#dns">DNS</a> queries over UDP (ports 53 and 853) from an app on the proxy aren’t blocked. They go direct and are flagged as <span class="ui">DNS around the proxy</span>. You can block them with a rule. How this works is explained in <a href="../../../en/docs/concepts/#dns">DNS: how apps find a site’s address</a>.</li>
         <li>For TCP connections through the proxy, the proxy itself finds the site’s address by its name if <span class="ui">DNS through proxy</span> is on (it’s on by default).</li>
+        <li>With <span class="ui">Settings → Network → Look up site addresses through the proxy</span>, UDP DNS queries to port 53 of an app on the proxy go through the proxy, except local names. For details, see <a href="../../../en/docs/proxies/#dns-lookups">Site addresses through the proxy</a>.</li>
       </ul>
     </details>
 
@@ -191,11 +192,11 @@
     </details>
 
     <h2 id="restart-gap">Pause when the extension restarts</h2>
-    <p><b>What you’ll notice.</b> After you click <span class="ui">Update…</span> in the extension update banner or <span class="ui">Reinstall</span>, or if macOS restarted the extension, connections through the proxy break off, and apps connect again. For a couple of seconds, new connections may go direct, around the proxy. They don’t appear in the monitor.</p>
-    <p><b>Why.</b> Routekeeper makes its decisions inside the <a class="term" href="../../../en/docs/glossary/#network-extension">network extension</a>. While the extension restarts, nobody checks connections, and macOS lets them through as usual. Before an update, Routekeeper warns about this in the confirmation dialog.</p>
+    <p><b>What you’ll notice.</b> After the extension updates (starting with version 0.5.0, it updates by itself right after the app does), after you click <span class="ui">Reinstall</span>, or if macOS restarted the extension, connections through the proxy break off, and apps connect again. For a couple of seconds, new connections may go direct, around the proxy. They don’t appear in the monitor.</p>
+    <p><b>Why.</b> Routekeeper makes its decisions inside the <a class="term" href="../../../en/docs/glossary/#network-extension">network extension</a>. While the extension restarts, nobody checks connections, and macOS lets them through as usual. When you update the extension from the banner, Routekeeper warns about this in the confirmation dialog.</p>
     <p><b>What you can do.</b></p>
     <ul>
-      <li>Update the extension while apps that must go only through the proxy are closed. It doesn’t update by itself: in the banner, click <span class="ui">Update…</span>, then <span class="ui">Update Now</span> or <span class="ui">Later</span>. How to update Routekeeper is described on the <a href="../../../en/docs/maintenance/#update">Updates and removal</a> page.</li>
+      <li>Update Routekeeper while apps that must go only through the proxy are closed: starting with version 0.5.0, the extension updates together with the app. In version 0.4.1 and earlier, the extension updates only from the banner: <span class="ui">Update…</span>, then <span class="ui">Update Now</span> or <span class="ui">Later</span>. How to update Routekeeper is described on the <a href="../../../en/docs/maintenance/#update">Updates and removal</a> page.</li>
       <li>After an update or reinstall, restart such apps: quit them and open them again. Connections that are already open don’t change their route. A connection that opened directly during the pause stays direct until it closes.</li>
       <li>Check in the <a href="../../../en/docs/monitoring/#monitor">monitor</a> that the app’s new connections go through the proxy.</li>
     </ul>

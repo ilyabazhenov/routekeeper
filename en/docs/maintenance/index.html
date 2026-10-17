@@ -147,15 +147,9 @@
 </ul>
 
 <h3>The network extension</h3>
-<p>The extension is updated separately, when you say so. Until you update it, the previous one keeps working, and the rules apply as before.</p>
-<ol class="steps">
-  <li>After the app updates, the banner “A network extension update is available (current: …).” appears at the top of the window. The menu of the menu bar icon has the <span class="ui">Extension Update Available</span> item.</li>
-  <li>Quit the apps that must not go online around the proxy.</li>
-  <li>Click <span class="ui">Update…</span> on the banner, then <span class="ui">Update Now</span>. <span class="ui">Later</span> puts the update off.</li>
-  <li>After a few seconds, the extension restarts in the new version. Usually you don’t need to restart the Mac.</li>
-</ol>
-<div class="callout warn"><p><b>While the extension restarts,</b> connections through the proxy break, and for a couple of seconds new connections may go direct, around the proxy. That’s why the extension doesn’t update by itself. For details, see <a href="../../../en/docs/limits/#restart-gap">Limitations</a>.</p></div>
-<p>You can also update the extension in <span class="ui">Settings</span> → <span class="ui">Extension</span>: the <span class="ui">Update Extension (current: …)</span> button in the <span class="ui">Status</span> section. It updates right away, without asking again.</p>
+<p>Starting with version 0.5.0, the extension updates by itself: right after the app updates, Routekeeper installs the extension that comes with it. You don’t need a password or a new approval in System Settings: macOS carries the approval over to the new version. Once the new version is running, you get the notification “Network extension updated to …”.</p>
+<div class="callout warn"><p><b>While the extension restarts,</b> connections through the proxy break, and for a couple of seconds new connections may go direct, around the proxy. This happens once after the app updates. The update window warns about this before you install. Quit the apps that must not go online around the proxy before you update Routekeeper. For details, see <a href="../../../en/docs/limits/#restart-gap">Limitations</a>.</p></div>
+<p>If the extension couldn’t update by itself, the banner “A network extension update is available (current: …).” stays at the top of the window, and the menu of the menu bar icon has the <span class="ui">Extension Update Available</span> item. Click <span class="ui">Update…</span> on the banner, then <span class="ui">Update Now</span>. Or, in <span class="ui">Settings</span> → <span class="ui">Extension</span>, click <span class="ui">Update Extension (current: …)</span> in the <span class="ui">Status</span> section: this button updates right away, without asking again. In version 0.4.1 and earlier, this was the only way to update the extension.</p>
 <p>If the “The network extension isn’t responding” banner appears after the update, click <span class="ui">Reinstall Extension</span>. If that doesn’t help, restart your Mac. For details, see <a href="../../../en/docs/troubleshooting/#extension">Reinstalling and stopping the extension</a>.</p>
 <div class="callout"><p><b>From version 0.2.x to 0.3.0,</b> a normal update won’t work: the old version only tells you about the new one and gives a link to the website. How to move to it is described in the next section.</p></div>
 
