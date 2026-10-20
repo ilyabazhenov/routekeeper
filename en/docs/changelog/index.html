@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>What’s new — Routekeeper</title>
-<meta name="description" content="Routekeeper version history: what changed in 0.5.0 (the network extension updates by itself, site addresses through the proxy, the proxy server’s address over DNS over HTTPS, the proxy check without ipinfo.io), in 0.4.1 (the prompt is no longer cut off when a process has a long name), in 0.4.0 (local networks go direct, quick retry of a stalled connection to the proxy, a link to share a proxy, proxy latency history, connections through an HTTPS proxy no longer pile up, turning off drops connections through a proxy) and in 0.3.0, 0.2.1, 0.2.0 and 0.1.0: licenses, your own proxy server from the app, a new app identifier, severity levels in the Leaks section, a lock when the settings can’t be read, new services.">
+<meta name="description" content="Routekeeper version history: what changed in 0.5.1 (the proxy starts again after a restart, the window opens in front), in 0.5.0 (the network extension updates by itself, site addresses through the proxy, the proxy server’s address over DNS over HTTPS, the proxy check without ipinfo.io), in 0.4.1 (the prompt is no longer cut off when a process has a long name), in 0.4.0 (local networks go direct, quick retry of a stalled connection to the proxy, a link to share a proxy, proxy latency history, connections through an HTTPS proxy no longer pile up, turning off drops connections through a proxy) and in 0.3.0, 0.2.1, 0.2.0 and 0.1.0: licenses, your own proxy server from the app, a new app identifier, severity levels in the Leaks section, a lock when the settings can’t be read, new services.">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Routekeeper">
 <meta property="og:url" content="https://getroutekeeper.app/en/docs/changelog/">
 <meta property="og:title" content="What’s new — Routekeeper">
-<meta property="og:description" content="Routekeeper version history: what changed in 0.5.0 (the network extension updates by itself, site addresses through the proxy, the proxy server’s address over DNS over HTTPS, the proxy check without ipinfo.io), in 0.4.1 (the prompt is no longer cut off when a process has a long name), in 0.4.0 (local networks go direct, quick retry of a stalled connection to the proxy, a link to share a proxy, proxy latency history, connections through an HTTPS proxy no longer pile up, turning off drops connections through a proxy) and in 0.3.0, 0.2.1, 0.2.0 and 0.1.0: licenses, your own proxy server from the app, a new app identifier, severity levels in the Leaks section, a lock when the settings can’t be read, new services.">
+<meta property="og:description" content="Routekeeper version history: what changed in 0.5.1 (the proxy starts again after a restart, the window opens in front), in 0.5.0 (the network extension updates by itself, site addresses through the proxy, the proxy server’s address over DNS over HTTPS, the proxy check without ipinfo.io), in 0.4.1 (the prompt is no longer cut off when a process has a long name), in 0.4.0 (local networks go direct, quick retry of a stalled connection to the proxy, a link to share a proxy, proxy latency history, connections through an HTTPS proxy no longer pile up, turning off drops connections through a proxy) and in 0.3.0, 0.2.1, 0.2.0 and 0.1.0: licenses, your own proxy server from the app, a new app identifier, severity levels in the Leaks section, a lock when the settings can’t be read, new services.">
 <meta property="og:image" content="https://getroutekeeper.app/og-en.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -125,6 +125,17 @@
     <a href="../../../en/docs/changelog/" aria-current="page">What's new</a>
     </nav></details>
 <p class="lead-in">Routekeeper offers to update by itself when a new version comes out: see <a href="../../../en/docs/maintenance/#update">Updates</a>. All builds are on <a href="https://github.com/ilyabazhenov/routekeeper/releases">GitHub Releases</a>.</p>
+
+<h2 id="v0-5-1">0.5.1 — October 20, 2026</h2>
+<p>Build 15.</p>
+<ul>
+  <li><b>The proxy works again after a restart.</b> When Routekeeper started before the Mac joined a network, macOS refused to start the proxy (“No network available”) and it stayed off: apps assigned to the proxy couldn’t open connections until Routekeeper was restarted. Now Routekeeper starts the proxy as soon as the network is up and starts it again if it stops with an error.</li>
+  <li>The main window opens in front of other apps instead of staying behind them until you click the Dock icon.</li>
+  <li>In Overview, route rows line up: latency, chart and apps sit in columns, and a lone app in a row is no longer cut down to a couple of letters. With several proxies, the line under the title lists the routes themselves.</li>
+  <li>In Apps, two copies of one app, like Telegram from the App Store and from its website, show where each one is. An app that was deleted or moved is marked “not on disk”.</li>
+  <li>The latency history axis has at most five labels, in milliseconds or seconds, even when the period had delays of tens of seconds. “Spread” is labeled in ms.</li>
+  <li>Helper programs without an icon go by a short name: <code>ssh</code> instead of <code>com.apple.ssh</code>.</li>
+</ul>
 
 <h2 id="v0-5-0">0.5.0 — October 17, 2026</h2>
 <p>Build 14.</p>
