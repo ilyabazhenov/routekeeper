@@ -3,36 +3,44 @@
     <channel>
         <title>Routekeeper</title>
         <item>
-            <title>0.5.1</title>
-            <pubDate>Tue, 20 Oct 2026 22:15:00 +0400</pubDate>
+            <title>0.6.0</title>
+            <pubDate>Mon, 09 Nov 2026 17:17:31 +0400</pubDate>
             <link>https://getroutekeeper.app/</link>
             <sparkle:informationalUpdate>
                 <sparkle:belowVersion>11</sparkle:belowVersion>
             </sparkle:informationalUpdate>
-            <sparkle:version>15</sparkle:version>
-            <sparkle:shortVersionString>0.5.1</sparkle:shortVersionString>
+            <sparkle:version>16</sparkle:version>
+            <sparkle:shortVersionString>0.6.0</sparkle:shortVersionString>
             <description xml:lang="ru"><![CDATA[<p><b>При установке сетевое расширение обновится и перезапустится.</b> Соединения через прокси прервутся, а новые в течение пары секунд могут пойти напрямую, мимо прокси. Приложения, которым важно не выйти в сеть мимо прокси, лучше закрыть до установки.</p>
-<p>Сборка 15.</p>
+<p>Сборка 16.</p>
 <ul>
-  <li><b>Прокси снова работает после перезагрузки.</b> Если Routekeeper запускался раньше, чем Mac подключался к сети, macOS отказывала в запуске прокси («No network available»), и он так и оставался выключен: приложения, назначенные на прокси, не открывали соединения, пока Routekeeper не перезапустят. Теперь Routekeeper запускает прокси, как только появляется сеть, и повторяет запуск, если прокси остановился с ошибкой.</li>
-  <li>Главное окно открывается поверх других приложений, а не остаётся за ними до щелчка по значку в Dock.</li>
-  <li>В «Обзоре» строки маршрутов выровнены: задержка, график и приложения стоят друг под другом, а одно приложение в строке больше не сокращается до пары букв. Под заголовком при нескольких прокси перечислены сами маршруты.</li>
-  <li>В «Приложениях» две копии одного приложения, например Telegram из App Store и с сайта, показывают, где каждая лежит. Удалённое или перемещённое приложение помечено «нет на диске».</li>
-  <li>В истории задержки на оси не больше пяти подписей, в миллисекундах или секундах, даже если за период бывали задержки в десятки секунд. «Разброс» подписан в мс.</li>
-  <li>Служебные программы без значка называются коротко: <code>ssh</code> вместо <code>com.apple.ssh</code>.</li>
+  <li><b>Запасной путь до прокси.</b> Если сервер работает, но с вашего Mac до него не достучаться, соединения идут через другой ваш сервер, а сайты по-прежнему видят адрес первого. Чтобы вообще не подключаться к первому напрямую, включите <span class="ui">Всегда через этот сервер</span>. Настраивается в карточке прокси, см. <a href="https://getroutekeeper.app/docs/server/#chain">«Запасной путь»</a>.</li>
+  <li><b>Свой сервер закрывает служебные адреса.</b> После обновления скрипта на сервере прокси не ходит на <code>169.254.0.0/16</code> (метаданные облака), <code>100.64.0.0/10</code> (в том числе Tailscale), <code>0.0.0.0/8</code> и <code>fc00::/7</code>. Карточка сервера предложит обновление. Caddy перезапустится один раз, логин и пароль не изменятся.</li>
+  <li><b>Адреса сайтов через прокси включены по умолчанию</b> на новых установках. Если вы уже пользуетесь версией 0.5, настройка останется как была: <span class="ui">Настройки → Сеть → Узнавать адреса сайтов через прокси</span>.</li>
+  <li><b>Новое оформление.</b> Цвет теперь значит одно и то же на всех экранах: синий — прокси, зелёный — работает. На широком окне <span class="ui">Обзор</span> занимает две колонки.</li>
+  <li>В <span class="ui">Правилах</span> есть переключатель <span class="ui">Мои</span>, <span class="ui">Системные</span> и <span class="ui">Все</span>, а поиск подсказывает совпадения в другом списке.</li>
+  <li>В <span class="ui">Приложениях</span> появились группы <span class="ui">Выключены</span> и <span class="ui">Не найдены на диске</span>, вторую можно очистить разом.</li>
+  <li>Прокси добавляются из одного меню: по адресу, из буфера обмена или свой сервер. <span class="ui">Сохранить</span> появляется только после правки.</li>
+  <li>Карта открывается вокруг ваших отметок, а подписи не заезжают друг на друга и за край. Названия прокси в Мониторе сокращаются посередине, поэтому различаются даже с одинаковым началом.</li>
+  <li>Экран приветствия предлагает открывать Routekeeper при входе в систему.</li>
+  <li>Routekeeper меньше нагружает процессор, пока его окна скрыты.</li>
 </ul>]]></description>
             <description xml:lang="en"><![CDATA[<p><b>Installing the update also updates and restarts the network extension.</b> Connections through the proxy break, and for a couple of seconds new ones may go direct, around the proxy. Quit the apps that must not go online around the proxy before you install it.</p>
-<p>Build 15.</p>
+<p>Build 16.</p>
 <ul>
-  <li><b>The proxy works again after a restart.</b> When Routekeeper started before the Mac joined a network, macOS refused to start the proxy (“No network available”) and it stayed off: apps assigned to the proxy couldn’t open connections until Routekeeper was restarted. Now Routekeeper starts the proxy as soon as the network is up and starts it again if it stops with an error.</li>
-  <li>The main window opens in front of other apps instead of staying behind them until you click the Dock icon.</li>
-  <li>In Overview, route rows line up: latency, chart and apps sit in columns, and a lone app in a row is no longer cut down to a couple of letters. With several proxies, the line under the title lists the routes themselves.</li>
-  <li>In Apps, two copies of one app, like Telegram from the App Store and from its website, show where each one is. An app that was deleted or moved is marked “not on disk”.</li>
-  <li>The latency history axis has at most five labels, in milliseconds or seconds, even when the period had delays of tens of seconds. “Spread” is labeled in ms.</li>
-  <li>Helper programs without an icon go by a short name: <code>ssh</code> instead of <code>com.apple.ssh</code>.</li>
+  <li><b>A backup route to the proxy.</b> When a server is fine but your Mac can’t reach it, connections go through another server of yours, and sites keep seeing the first server’s address. To never connect to the first one directly, turn on <span class="ui">Always Through This Server</span>. It’s set up in the proxy’s card, see <a href="https://getroutekeeper.app/en/docs/server/#chain">Backup route</a>.</li>
+  <li><b>Your own server closes service addresses.</b> After the script on the server is updated, the proxy doesn’t reach <code>169.254.0.0/16</code> (cloud metadata), <code>100.64.0.0/10</code> (Tailscale among others), <code>0.0.0.0/8</code> or <code>fc00::/7</code>. The server card offers the update. Caddy restarts once; the login and password stay the same.</li>
+  <li><b>Site addresses through the proxy are on by default</b> on new installs. If you already use version 0.5, the setting stays as it was: <span class="ui">Settings → Network → Look up site addresses through the proxy</span>.</li>
+  <li><b>A new look.</b> A color now means the same on every screen: blue is a proxy, green is working. On a wide window, <span class="ui">Overview</span> has two columns.</li>
+  <li><span class="ui">Rules</span> has a <span class="ui">Mine</span>, <span class="ui">System</span> and <span class="ui">All</span> switch, and search points to matches in the other list.</li>
+  <li><span class="ui">Apps</span> has <span class="ui">Turned Off</span> and <span class="ui">Not Found on Disk</span> groups; the second can be cleared at once.</li>
+  <li>Proxies are added from one menu: by address, from the clipboard, or your own server. <span class="ui">Save</span> appears only after an edit.</li>
+  <li>The map opens around your marks, and labels stay off each other and inside the edges. Proxy names in Monitor are cut in the middle, so names with the same beginning stay different.</li>
+  <li>The welcome screen offers to open Routekeeper at login.</li>
+  <li>Routekeeper uses less CPU while its windows are hidden.</li>
 </ul>]]></description>
             <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-            <enclosure url="https://github.com/ilyabazhenov/routekeeper/releases/download/v0.5.1/Routekeeper.dmg" length="24192530" type="application/octet-stream" sparkle:edSignature="WV5t28Pm1nlPqAC0WFpBKfYb8FVVw44pqrkujdwxGtk7gLY2bxEGbUnefi85tKsaczJ87v2gpLBTmqqI886vCw=="/>
+            <enclosure url="https://github.com/ilyabazhenov/routekeeper/releases/download/v0.6.0/Routekeeper.dmg" length="24707426" type="application/octet-stream" sparkle:edSignature="uMXB5I/Y0RWxtnEO9A1ATEZT5PqmrYK2H6NW9LvE23rmAN5jp66L+x0GZzKWSfzG0G3d0Z6UzVIDLLxkUIkgBg=="/>
         </item>
     </channel>
 </rss>
