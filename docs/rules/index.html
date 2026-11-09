@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../../assets/nav.css?v=c53c1160">
-<link rel="stylesheet" href="../../docs/assets/docs.css?v=f665767d">
+<link rel="stylesheet" href="../../docs/assets/docs.css?v=a9c26763">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/ru/rules.html. Edit the fragment, not this file. -->
@@ -165,26 +165,26 @@
 <figure class="mock-fig">
   <div class="mock-scroll"><div class="mock mock-win" aria-hidden="true" style="min-width: 0; width: 520px">
     <div class="mock-main" style="gap: 14px; padding: 20px">
-      <div class="mock-h">Новое правило</div>
+      <div class="mock-h" style="display: flex; align-items: center">Новое правило<span class="mock-help"></span><b class="mk">1</b></div>
       <div class="mock-group">
-        <div class="mock-row"><span style="flex: none; width: 116px">Приложение<b class="mk">1</b></span><span class="mock-ico g">C</span><span class="grow">Chrome</span><span class="mock-btn mock-select">Изменить</span></div>
+        <div class="mock-row"><span style="flex: none; width: 116px">Приложение<b class="mk">2</b></span><span class="mock-ico g">C</span><span class="grow">Chrome</span><span class="mock-btn mock-select">Изменить</span></div>
         <div class="mock-row"><span class="grow">Вместе с дочерними процессами</span><span class="mock-toggle on"></span></div>
-        <div class="mock-row"><span style="flex: none; width: 116px">Назначение<b class="mk">2</b></span><span class="mock-input grow">*.corp.example</span><span class="mock-btn mock-select">Сервис</span></div>
-        <div class="mock-row"><span style="flex: none; width: 116px">Порт<b class="mk">3</b></span><span class="mock-input dim" style="width: 90px">Любой</span><span style="margin-left: 14px">Протокол</span><span class="mock-btn mock-select">TCP и UDP</span></div>
-        <div class="mock-row"><span class="grow">Действие<b class="mk">4</b></span><span class="mock-select">Напрямую</span></div>
+        <div class="mock-row"><span style="flex: none; width: 116px">Назначение<b class="mk">3</b></span><span class="mock-input grow">*.corp.example</span><span class="mock-btn mock-select">Сервис</span></div>
+        <div class="mock-row"><span style="flex: none; width: 116px">Порт<b class="mk">4</b></span><span class="mock-input dim grow">Любой</span></div>
+        <div class="mock-row"><span class="grow">Протокол</span><span class="mock-select">TCP и UDP</span></div>
+        <div class="mock-row"><span class="grow">Действие<b class="mk">5</b></span><span class="mock-select">Напрямую</span></div>
         <div class="mock-row"><span style="flex: none; width: 116px">Заметка</span><span class="mock-input grow">Сайты компании — напрямую</span></div>
       </div>
-      <div class="mock-note" style="display: flex; gap: 6px"><span>ⓘ</span><span>Конкретный домен важнее шаблона, шаблон важнее «любого адреса». При равенстве правило приложения важнее глобального. Сервис сравнивается по своему домену, но свой домен в правиле важнее сервиса.<b class="mk">5</b></span></div>
       <div class="mock-btns end"><span class="mock-btn">Отмена</span><span class="mock-btn primary">Сохранить</span></div>
     </div>
   </div></div>
   <figcaption>
     <ol class="mk-legend">
+      <li>«?» рядом с заголовком открывает короткую памятку о том, какое правило важнее. Подробно — <a href="#priority">«Какое правило важнее»</a>.</li>
       <li><span class="ui">Любое приложение</span> или конкретное, выбор — в меню <span class="ui">Изменить</span>. Для конкретного приложения ниже появляется <span class="ui">Вместе с дочерними процессами</span>.</li>
-      <li>Куда идёт соединение: имя (<code>files.example.com</code>), шаблон (<code>*.corp.example</code> — сам домен и все его поддомены), IP, подсеть или <code>@сервис</code>. Пустое поле — любой адрес, в нём видна подсказка «Любой адрес · *.example.com · 10.0.0.0/8 · @github». Меню <span class="ui">Сервис</span> вписывает сервис. Как записать адрес — <a href="#destination">в таблице ниже</a>.</li>
+      <li>Куда идёт соединение: имя (<code>files.example.com</code>), шаблон (<code>*.corp.example</code> — сам домен и все его поддомены), IP, подсеть или <code>@сервис</code>. Пустое поле — любой адрес, в нём видна подсказка «Любой адрес · *.example.com · 10.0.0.0/8 · @youtube». Меню <span class="ui">Сервис</span> вписывает сервис. Как записать адрес — <a href="#destination">в таблице ниже</a>.</li>
       <li><span class="ui">Порт</span> — одно число, пусто — любой порт. <span class="ui">Протокол</span> — меню: <span class="ui">TCP и UDP</span>, <span class="ui">TCP</span> или <span class="ui">UDP</span>.</li>
       <li>Что делать с соединением: прокси, <span class="ui">Напрямую</span>, <span class="ui">Блокировать</span> или <span class="ui">Спрашивать</span>.</li>
-      <li>Короткая памятка о том, какое правило важнее. Подробно — <a href="#priority">«Какое правило важнее»</a>.</li>
     </ol>
     Схема окна нового правила: Chrome идёт через прокси, а сайты компании — напрямую. Данные выдуманные.
   </figcaption>
@@ -342,12 +342,19 @@
 <p>Соединения без имени <span class="ui">Монитор</span> показывает только с IP-адресом, см. <a href="../../docs/monitoring/#monitor">Монитор</a>.</p>
 
 <h2 id="sources">Список правил</h2>
+<p>Переключатель на панели инструментов выбирает, какие правила видны:</p>
+<ul>
+  <li><span class="ui">Мои</span> (так открывается раздел) — правила, которые создали вы: вручную, ответом в окне вопроса, а также правила <span class="ui">На проверку</span>.</li>
+  <li><span class="ui">Системные</span> — правила, которые Routekeeper создал сам: для программ Apple, для приложений, установленных до него, и встроенные правила для localhost.</li>
+  <li><span class="ui">Все</span> — и те и другие.</li>
+</ul>
+<p>Под заголовком окна — сколько правил каждого вида, например «Мои: 9 · системные: 372». Если поиск ничего не нашёл среди своих правил, а среди системных нашёл, появится кнопка <span class="ui">Искать во всех</span>.</p>
 <h3>Столбцы</h3>
 <ul>
   <li><span class="ui">Приложение</span> — приложение или <span class="ui">Все приложения</span>.</li>
-  <li><span class="ui">Назначение</span> — адрес, «Любой адрес» или «Сервис: GitHub»; после двоеточия — порт, после точки — протокол. Ниже — заметка.</li>
-  <li><span class="ui">Действие</span> — «Прокси: Амстердам», «Напрямую», «Блокировать» или «Спрашивать».</li>
-  <li><span class="ui">Срок</span> — <span class="ui">Навсегда</span> или <span class="ui">До выхода</span>: временное правило из окна вопроса, оно удаляется, когда приложение завершит работу.</li>
+  <li><span class="ui">Назначение</span> — адрес, «Любой адрес» или сервис с пометкой «сервис», например «сервис GitHub»; после двоеточия — порт, после точки — протокол. Ниже — заметка.</li>
+  <li><span class="ui">Действие</span> — маршрут: имя прокси (например, «Амстердам»), «Напрямую», «Блокировать» или «Спрашивать». У временного правила из окна вопроса рядом написано, до какого момента оно действует: «до выхода» (удалится, когда приложение завершит работу) или «до 14:30».</li>
+  <li><span class="ui">Срок</span> — <span class="ui">Навсегда</span>, <span class="ui">До выхода</span> или дата. Столбец скрыт; показать его можно, щёлкнув правой кнопкой по заголовку таблицы.</li>
   <li><span class="ui">Источник</span> — откуда правило, см. ниже.</li>
   <li><span class="ui">Вкл.</span> — переключатель. Выключенное правило не действует: соединения идут по остальным правилам и по режиму.</li>
 </ul>
@@ -358,14 +365,14 @@
   <thead><tr><th>Источник</th><th>Откуда правило</th></tr></thead>
   <tbody>
     <tr><td><span class="ui">Вручную</span></td><td>Вы создали его сами: в окне правила, в <span class="ui">Приложениях</span>, добавив сервис, или из <span class="ui">Монитора</span>.</td></tr>
-    <tr><td><span class="ui">Из алерта</span></td><td>Ваш ответ в окне вопроса со сроком «Пока процесс работает» или <span class="ui">Навсегда</span>. Ответ со сроком <span class="ui">Один раз</span> правила не создаёт. См. <a href="../../docs/firewall/#ask">Спрашивать</a>.</td></tr>
+    <tr><td><span class="ui">Из окна-вопроса</span></td><td>Ваш ответ в окне вопроса со сроком «Пока процесс работает» или <span class="ui">Навсегда</span>. Ответ со сроком <span class="ui">Один раз</span> правила не создаёт. См. <a href="../../docs/firewall/#ask">Спрашивать</a>.</td></tr>
     <tr><td><span class="ui">Apple</span></td><td>Режим <span class="ui">Спрашивать</span> сам разрешил программу Apple.</td></tr>
     <tr><td><span class="ui">Установлено ранее</span></td><td>Режим <span class="ui">Спрашивать</span> сам разрешил приложение, установленное до Routekeeper.</td></tr>
     <tr><td><span class="ui">На проверку</span></td><td>Routekeeper пропустил соединение без вопроса и оставил правило, чтобы вы его проверили. Так бывает в режиме <span class="ui">Спрашивать</span>, когда ответить было некому (приложение Routekeeper не было запущено), и в режиме <a href="../../docs/firewall/#silent"><span class="ui">Тихий</span></a> с настройкой <span class="ui">Создавать правила «на проверку»</span>.</td></tr>
     <tr><td><span class="ui">По умолчанию</span></td><td>Встроенные правила, см. <a href="#built-in">ниже</a>.</td></tr>
   </tbody>
 </table></div>
-<p>Меню <span class="ui">Источник</span> на панели инструментов показывает правила одного источника, в скобках — их число. Чтобы разобрать правила <span class="ui">На проверку</span>, выберите этот источник, откройте правило двойным щелчком, выберите действие и нажмите <span class="ui">Сохранить</span>. Или выделите несколько и задайте действие через контекстное меню. После этого источник станет <span class="ui">Вручную</span>.</p>
+<p>Правила <span class="ui">Apple</span>, <span class="ui">Установлено ранее</span> и <span class="ui">По умолчанию</span> — системные: они видны в <span class="ui">Системные</span> и <span class="ui">Все</span>. Остальные — в <span class="ui">Мои</span>. Чтобы разобрать правила <span class="ui">На проверку</span>, щёлкните заголовок столбца <span class="ui">Источник</span>, чтобы они встали рядом, откройте правило двойным щелчком, выберите действие и нажмите <span class="ui">Сохранить</span>. Или выделите несколько и задайте действие через контекстное меню. После этого источник станет <span class="ui">Вручную</span>.</p>
 
 <h3>Действия со списком</h3>
 <ul>
@@ -377,7 +384,7 @@
 </ul>
 
 <h3 id="built-in">Встроенные правила</h3>
-<p>Три правила с источником <span class="ui">По умолчанию</span> есть с первого запуска:</p>
+<p>Три правила с источником <span class="ui">По умолчанию</span> есть с первого запуска. Они системные, поэтому в <span class="ui">Мои</span> их не видно:</p>
 <ul>
   <li><b>Все приложения · <code>127.0.0.0/8</code> → Напрямую</b> и <b>Все приложения · <code>::1/128</code> → Напрямую</b>, заметка «Loopback». Соединения с этим же Mac (<a class="term" href="../../docs/glossary/#loopback">loopback</a>) никогда не уходят в прокси: локальные серверы разработки, локальный клиент прокси.</li>
   <li><b>Routekeeper → Напрямую</b>, заметка «Само приложение (проверка прокси)». Собственные соединения Routekeeper, например проверка обновлений и загрузка списков сервисов, идут напрямую. В версии 0.2.1 это правило называется AppProxy.</li>

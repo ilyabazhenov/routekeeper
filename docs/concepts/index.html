@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../../assets/nav.css?v=c53c1160">
-<link rel="stylesheet" href="../../docs/assets/docs.css?v=f665767d">
+<link rel="stylesheet" href="../../docs/assets/docs.css?v=a9c26763">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/ru/concepts.html. Edit the fragment, not this file. -->
@@ -288,7 +288,7 @@
 <div class="table"><table>
   <thead><tr><th>Действие</th><th>Что происходит с соединением</th><th>Заметки</th></tr></thead>
   <tbody>
-    <tr><td><span class="ui">Через прокси</span></td><td>Идёт через выбранный прокси-сервер. Сайт видит IP прокси, а не ваш.</td><td>В списках показывается именем прокси, например <span class="ui">Прокси: Амстердам</span>. Через прокси идёт только TCP.</td></tr>
+    <tr><td><span class="ui">Через прокси</span></td><td>Идёт через выбранный прокси-сервер. Сайт видит IP прокси, а не ваш.</td><td>В списках показывается именем прокси, например <span class="ui">Амстердам</span>. Через прокси идёт только TCP.</td></tr>
     <tr><td><span class="ui">Напрямую</span></td><td>Идёт через ваше обычное подключение, как без Routekeeper.</td><td>Так по умолчанию идут все приложения, которые вы не добавили.</td></tr>
     <tr><td><span class="ui">Блокировать</span></td><td>Соединение сразу обрывается. Приложение видит ошибку сети.</td><td>При равной точности блокирующее правило важнее остальных.</td></tr>
     <tr><td><span class="ui">Спрашивать</span></td><td>Соединение ждёт, пока вы ответите в окне вопроса: <span class="ui">Заблокировать</span>, <span class="ui">Через прокси</span> или <span class="ui">Разрешить</span>.</td><td>Без ответа через 60 секунд соединение разрешается (оба значения меняются в <span class="ui">Настройки</span> → <span class="ui">Файрвол</span>). Если приложение Routekeeper не запущено, спросить некому: соединение разрешается, а для приложения создаётся разрешающее правило с пометкой <span class="ui">На проверку</span>. Для сервисов этого действия нет.</td></tr>

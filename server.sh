@@ -17,6 +17,11 @@
 #   --events           report progress as JSON lines on stderr instead of text (for apps)
 #   --check            only check whether this server fits, change nothing (JSON on stdout)
 #   --status           describe the installed proxy (JSON on stdout)
+#   --add-chain        add a login that leaves through another HTTPS proxy (JSON on stdout). The line
+#                      https://user:pass@host:port comes after the script on stdin, or from the terminal,
+#                      so the other proxy's password never appears in a process list
+#   --chains           list those logins, without passwords (JSON on stdout)
+#   --remove-chain LOGIN  remove one of them
 #   --lang ru|en       language of the messages (default: from LANG)
 #   --uninstall        remove the proxy; BBR, fail2ban and updates stay
 #
@@ -27,11 +32,13 @@
 set -Eeuo pipefail
 
 # Bumped whenever the script changes what it sets up; written on the server, reported by --status.
-SCRIPT_VERSION=2
+SCRIPT_VERSION=4
 CADDY_VERSION="v2.11.2-naive"
 CADDY_SHA256="19eccb7321dd877a5fb4a3dba6ef1b745185188b616c96cc6201f1a1fc0380a8"
 CREDS=/etc/caddy/proxy-credentials
 MARKER=/etc/caddy/routekeeper-script
+# One login per line that leaves through another proxy: login<TAB>password<TAB>upstream URL<TAB>created.
+CHAINS=/etc/caddy/proxy-chains
 
 DOMAIN=""
 NEW_PASSWORD=0
@@ -43,6 +50,9 @@ EVENTS=0
 CHECK=0
 STATUS=0
 UNINSTALL=0
+ADD_CHAIN=0
+LIST_CHAINS=0
+REMOVE_CHAIN=""
 RU=0
 case "${LC_ALL:-${LC_MESSAGES:-${LANG:-}}}" in ru*) RU=1 ;; esac
 # ssh passes the Mac's LANG, which the server often lacks, and perl tools (apt, update-rc.d) complain.
@@ -130,10 +140,12 @@ on_error() {
                  "Unexpected error (exit code $rc, line $line). Run the script again; if it happens again, report the problem."
 }
 trap 'on_error $? $LINENO' ERR
-trap '[ -z "$ERRLOG" ] || rm -f "$ERRLOG"' EXIT
+# Temporary copies of the chain file: they hold other proxies' passwords, so no exit leaves them behind.
+SECRET_FILES=()
+trap '[ -z "$ERRLOG" ] || rm -f "$ERRLOG"; rm -f ${SECRET_FILES[@]+"${SECRET_FILES[@]}"}' EXIT
 
 usage() {
-  local u="Usage: server.sh --domain NAME [--new-password] [--no-bbr] [--no-fail2ban] [--no-auto-updates] [--json] [--events] [--lang ru|en] | --check [--domain NAME] | --status | --uninstall"
+  local u="Usage: server.sh --domain NAME [--new-password] [--no-bbr] [--no-fail2ban] [--no-auto-updates] [--json] [--events] [--lang ru|en] | --check [--domain NAME] | --status | --uninstall | --add-chain | --chains | --remove-chain LOGIN"
   if [ "$EVENTS" = 1 ]; then event_line error code usage "$u"; else echo "$u" >&3; fi
   exit 2
 }
@@ -212,6 +224,16 @@ preflight() {
     || die apt_failed "Не удалось установить: ${missing[*]}" "Couldn't install: ${missing[*]}"
 }
 
+# A newer script set this server up: running an older one would take away what that one added.
+check_script_version() {
+  [ -r "$MARKER" ] || return 0
+  local installed
+  installed=$(tr -dc '0-9' < "$MARKER")
+  [ "${installed:-0}" -le "$SCRIPT_VERSION" ] \
+    || die newer_script "Сервер настроен более новой версией скрипта ($installed, а эта — $SCRIPT_VERSION). Обновите Routekeeper или возьмите свежий скрипт с сайта." \
+                        "This server was set up by a newer script ($installed, this one is $SCRIPT_VERSION). Update Routekeeper or get the latest script from the site."
+}
+
 check_dns() {
   step dns "Проверка домена $DOMAIN" "Checking the domain $DOMAIN"
   SERVER_IP=$(public_ipv4)
@@ -249,6 +271,63 @@ open_firewall() {
   command -v ufw >/dev/null && ufw status 2>/dev/null | grep "Status: active" >/dev/null || return 0
   ufw allow 80/tcp >/dev/null && ufw allow 443/tcp >/dev/null && ufw allow 443/udp >/dev/null
   say "ufw: открыты порты 80 и 443" "ufw: opened ports 80 and 443"
+}
+
+# The forward_proxy block of every login in the chain file $1. No acl here: the plugin doesn't allow it
+# next to upstream, and it would be pointless, since these logins reach only the other proxy.
+chain_blocks() {
+  [ -f "$1" ] || return 0
+  local login pass upstream created
+  while IFS=$'\t' read -r login pass upstream created; do
+    [ -n "$login" ] || continue
+    printf '\tforward_proxy {\n\t\tbasic_auth %s %s\n\t\thide_ip\n\t\thide_via\n\t\tprobe_resistance\n\t\tupstream %s\n\t}\n' \
+      "$login" "$pass" "$upstream"
+  done < "$1"
+}
+
+# Rebuilds the Caddyfile from the credentials and the chain file $1; leaves it alone if Caddy rejects
+# the result. Sets CADDY_CHANGED when the file changed. A login that doesn't match a block falls through
+# to the next one thanks to probe_resistance, and past the last one to the placeholder site.
+write_caddyfile() {
+  # acl: forward_proxy leaves these open by default, 169.254.169.254 being the hoster's metadata service.
+  # No "allow all" at the end: it would come before the built-in denies (127/8, private networks).
+  local tmp_conf verdict
+  tmp_conf=$(mktemp)
+  {
+    cat <<EOF
+{
+	order forward_proxy before file_server
+}
+
+:443, $DOMAIN {
+	tls {
+		protocols tls1.2 tls1.3
+	}
+	forward_proxy {
+		basic_auth $PROXY_USER $PROXY_PASS
+		hide_ip
+		hide_via
+		probe_resistance
+		acl {
+			deny 169.254.0.0/16 100.64.0.0/10 0.0.0.0/8 fc00::/7 ::/128
+		}
+	}
+EOF
+    chain_blocks "$1"
+    cat <<EOF
+	file_server {
+		root /var/www/site
+	}
+}
+EOF
+  } > "$tmp_conf"
+  if ! verdict=$(/usr/local/bin/caddy validate --adapter caddyfile --config "$tmp_conf" 2>&1); then
+    rm -f "$tmp_conf"
+    DETAIL=$(printf '%s\n' "$verdict" | grep -v '^{' | tail -3; printf '%s\n' "$verdict" | grep -o '"error":"[^"]*"' | tail -1 || true)
+    die caddy_rejected "Caddy не принял конфигурацию." "Caddy rejected the configuration."
+  fi
+  put "$tmp_conf" /etc/caddy/Caddyfile 0640 caddy && CADDY_CHANGED=1
+  return 0
 }
 
 install_caddy() {
@@ -297,35 +376,7 @@ HTML
   fi
   chmod 0644 /var/www/site/index.html
 
-  local tmp_conf
-  tmp_conf=$(mktemp)
-  cat > "$tmp_conf" <<EOF
-{
-	order forward_proxy before file_server
-}
-
-:443, $DOMAIN {
-	tls {
-		protocols tls1.2 tls1.3
-	}
-	forward_proxy {
-		basic_auth $PROXY_USER $PROXY_PASS
-		hide_ip
-		hide_via
-		probe_resistance
-	}
-	file_server {
-		root /var/www/site
-	}
-}
-EOF
-  local verdict
-  if ! verdict=$(/usr/local/bin/caddy validate --adapter caddyfile --config "$tmp_conf" 2>&1); then
-    rm -f "$tmp_conf"
-    DETAIL=$(printf '%s\n' "$verdict" | grep -v '^{' | tail -3; printf '%s\n' "$verdict" | grep -o '"error":"[^"]*"' | tail -1 || true)
-    die caddy_rejected "Caddy не принял конфигурацию." "Caddy rejected the configuration."
-  fi
-  put "$tmp_conf" /etc/caddy/Caddyfile 0640 caddy && CADDY_CHANGED=1
+  write_caddyfile "$CHAINS"
 
   local tmp_unit
   tmp_unit=$(mktemp)
@@ -527,7 +578,7 @@ report() {
   if [ "$RU" = 1 ]; then
     cat <<EOF
 
-Готово. Скопируйте строку и вставьте её в Routekeeper: «Прокси» → ⌘V (или кнопка «Вставить») → «Добавить».
+Готово. Скопируйте строку и вставьте её в Routekeeper: «Прокси» → ⌘V (или кнопка «Вставить ссылку») → «Добавить».
 
   $url
 
@@ -537,7 +588,7 @@ EOF
   else
     cat <<EOF
 
-Done. Copy the line and paste it into Routekeeper: Proxy → ⌘V (or the Paste button) → Add.
+Done. Copy the line and paste it into Routekeeper: Proxy → ⌘V (or the Paste Link button) → Add.
 
   $url
 
@@ -561,6 +612,148 @@ uninstall() {
   say "Прокси удалён. BBR, fail2ban и автообновления остались: они полезны и без прокси." \
       "The proxy is removed. BBR, fail2ban and automatic updates stay: they're useful without the proxy too."
   [ "$JSON" = 0 ] || printf '{"removed":true}\n'
+}
+
+# --- Logins that leave through another proxy ---------------------------------------------------------
+# For when the other proxy can't be reached directly: the client talks to this server as usual and the
+# destination sees the other proxy's address. This server keeps the other proxy's password.
+
+chains_installed() {
+  [ "$(id -u)" = 0 ] || die not_root "Запустите от root." "Run as root."
+  DOMAIN=$(installed_domain)
+  { [ -n "$DOMAIN" ] && ! foreign_caddy && [ -f "$CREDS" ]; } \
+    || die not_installed "На этом сервере нет прокси Routekeeper." "There is no Routekeeper proxy on this server."
+}
+
+# Changing the chains rewrites the Caddyfile, so the server has to be on this script's version.
+chains_writable() {
+  chains_installed
+  check_script_version
+  local installed
+  installed=$(tr -dc '0-9' < "$MARKER" 2>/dev/null || true)
+  [ "${installed:-0}" -ge "$SCRIPT_VERSION" ] \
+    || die needs_update "Сначала обновите установку на сервере." "Update the setup on this server first."
+  # shellcheck source=/dev/null
+  . "$CREDS"
+}
+
+# What the destination sees through a chain login; empty when the other proxy doesn't let it through.
+chain_exit_ip() {
+  local login=$1 pass=$2 ip url
+  for _ in 1 2 3; do
+    for url in https://api.ipify.org https://ifconfig.me; do
+      ip=$(curl -fsS --max-time 15 --resolve "$DOMAIN:443:127.0.0.1" -x "https://$DOMAIN:443" -K - "$url" <<<"proxy-user = \"$login:$pass\"" 2>/dev/null || true)
+      if [[ $ip =~ ^[0-9a-fA-F:.]+$ ]]; then printf '%s' "$ip"; return 0; fi
+    done
+    sleep 2
+  done
+}
+
+reload_caddy() {
+  if ! systemctl "$1" caddy 2>/dev/null; then
+    DETAIL=$(journalctl -u caddy -n 20 -o cat --no-pager 2>/dev/null | grep -v '^{' | tail -5 || true)
+    die caddy_failed "Caddy не применил настройки, подробности: journalctl -u caddy -n 50" "Caddy didn't apply the settings, details: journalctl -u caddy -n 50"
+  fi
+}
+
+# The chain file as it was in $1, or none if $1 is empty, and the Caddyfile to match.
+restore_chains() {
+  if [ -n "$1" ]; then install -m 0600 -o root -g root "$1" "$CHAINS"; else rm -f "$CHAINS"; fi
+  write_caddyfile "$CHAINS"
+}
+
+# Adding the same other proxy again replaces its URL and keeps the login, so a changed password on
+# the other proxy doesn't change anything for the client.
+add_chain() {
+  chains_writable
+  local upstream=""
+  IFS= read -r upstream || true
+  upstream=${upstream%$'\r'}
+  # The characters are a whitelist: the value goes into the Caddyfile as one word.
+  [[ $upstream =~ ^https://[A-Za-z0-9._~%-]+:[A-Za-z0-9._~%-]+@([A-Za-z0-9.-]+|\[[0-9A-Fa-f:]+\]):[0-9]{1,5}$ ]] \
+    || die bad_upstream "Нужна строка вида https://логин:пароль@сервер:порт." "Expected a line like https://login:password@server:port."
+  local where=${upstream##*@} other=${BASH_REMATCH[1],,}
+  [ "$other" != "$DOMAIN" ] || die bad_upstream "Нельзя выйти через этот же сервер." "A server can't chain through itself."
+
+  local tmp login="" pass="" created="" replaced=false l p u c
+  tmp=$(mktemp)
+  SECRET_FILES+=("$tmp")
+  if [ -f "$CHAINS" ]; then
+    while IFS=$'\t' read -r l p u c; do
+      [ -n "$l" ] || continue
+      if [ "${u##*@}" = "$where" ]; then login=$l; pass=$p; created=$c; replaced=true; continue; fi
+      printf '%s\t%s\t%s\t%s\n' "$l" "$p" "$u" "$c" >> "$tmp"
+    done < "$CHAINS"
+  fi
+  if [ -z "$login" ]; then
+    login="c$(openssl rand -hex 6)"
+    pass="$(openssl rand -base64 48 | tr -d '/+=\n' | cut -c1-40)"
+    created=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+  fi
+  printf '%s\t%s\t%s\t%s\n' "$login" "$pass" "$upstream" "$created" >> "$tmp"
+
+  local backup=""
+  if [ -f "$CHAINS" ]; then backup=$(mktemp); SECRET_FILES+=("$backup"); cp -p "$CHAINS" "$backup"; fi
+  write_caddyfile "$tmp"
+  install -m 0600 -o root -g root "$tmp" "$CHAINS"
+  rm -f "$tmp"
+  # reload: the connections of everyone else stay up.
+  if ! systemctl reload caddy 2>/dev/null; then
+    restore_chains "$backup"
+    reload_caddy reload
+    die caddy_failed "Caddy не применил настройки, подробности: journalctl -u caddy -n 50" "Caddy didn't apply the settings, details: journalctl -u caddy -n 50"
+  fi
+
+  local exit_ip
+  exit_ip=$(chain_exit_ip "$login" "$pass")
+  if [ -z "$exit_ip" ]; then
+    # Back to what worked: the new entry would only drop connections.
+    restore_chains "$backup"
+    reload_caddy reload
+    [ -z "$backup" ] || rm -f "$backup"
+    die chain_check_failed "Через второй прокси выйти не удалось: он недоступен с этого сервера или не принял логин и пароль." \
+                           "Couldn't get out through the other proxy: it's unreachable from this server or refused the login and password."
+  fi
+  [ -z "$backup" ] || rm -f "$backup"
+  printf '{"login":%s,"password":%s,"host":%s,"port":443,"upstream":%s,"exitIP":%s,"replaced":%s,"script":%s}\n' \
+    "$(json_str "$login")" "$(json_str "$pass")" "$(json_str "$DOMAIN")" "$(json_str "$where")" "$(json_str "$exit_ip")" "$replaced" "$SCRIPT_VERSION"
+}
+
+list_chains() {
+  chains_installed
+  local out="" sep="" l p u c
+  if [ -f "$CHAINS" ]; then
+    while IFS=$'\t' read -r l p u c; do
+      [ -n "$l" ] || continue
+      out+="$sep{\"login\":$(json_str "$l"),\"upstream\":$(json_str "${u##*@}"),\"created\":$(json_str "$c")}"
+      sep=","
+    done < "$CHAINS"
+  fi
+  printf '{"chains":[%s]}\n' "$out"
+}
+
+# restart, not reload: after a reload the tunnels already open keep working on the old config.
+remove_chain() {
+  chains_writable
+  local tmp found=0 l p u c
+  tmp=$(mktemp)
+  SECRET_FILES+=("$tmp")
+  if [ -f "$CHAINS" ]; then
+    while IFS=$'\t' read -r l p u c; do
+      [ -n "$l" ] || continue
+      if [ "$l" = "$REMOVE_CHAIN" ]; then found=1; continue; fi
+      printf '%s\t%s\t%s\t%s\n' "$l" "$p" "$u" "$c" >> "$tmp"
+    done < "$CHAINS"
+  fi
+  if [ "$found" = 0 ]; then
+    rm -f "$tmp"
+    die chain_not_found "Такого входа на сервере нет." "There is no such login on this server."
+  fi
+  write_caddyfile "$tmp"
+  install -m 0600 -o root -g root "$tmp" "$CHAINS"
+  rm -f "$tmp"
+  reload_caddy restart
+  printf '{"removed":true}\n'
 }
 
 # --- Read-only modes for the app ------------------------------------------------------------------
@@ -609,7 +802,7 @@ check_only() {
 
 # --status: what the installed proxy looks like now.
 status_only() {
-  local domain caddy="absent" version="null" cert="null" f2b="absent" banned="null" bbr=false updates=false script="null"
+  local domain caddy="absent" version="null" cert="null" f2b="absent" banned="null" bbr=false updates=false script="null" chains=0
   domain=$(installed_domain)
   if [ -n "$domain" ] && ! foreign_caddy; then
     caddy=$(systemctl is-active caddy 2>/dev/null || true)
@@ -623,6 +816,7 @@ status_only() {
     [ -z "$end" ] || cert=$(json_str "$(date -u -d "$end" +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo "$end")")
     [ ! -r "$MARKER" ] || script=$(tr -dc '0-9' < "$MARKER")
     [ -n "$script" ] || script="null"
+    [ ! -f "$CHAINS" ] || chains=$(grep -c . "$CHAINS" || true)
   fi
   if command -v fail2ban-client >/dev/null; then
     f2b=$(systemctl is-active fail2ban 2>/dev/null || true)
@@ -633,9 +827,9 @@ status_only() {
   fi
   [ "$(sysctl -n net.ipv4.tcp_congestion_control 2>/dev/null || true)" = bbr ] && bbr=true
   grep -q 'Unattended-Upgrade "1"' /etc/apt/apt.conf.d/20auto-upgrades 2>/dev/null && updates=true
-  printf '{"installed":%s,"domain":%s,"caddy":%s,"version":%s,"certNotAfter":%s,"script":%s,"latestScript":%s,"fail2ban":%s,"banned":%s,"bbr":%s,"updates":%s}\n' \
+  printf '{"installed":%s,"domain":%s,"caddy":%s,"version":%s,"certNotAfter":%s,"script":%s,"latestScript":%s,"fail2ban":%s,"banned":%s,"bbr":%s,"updates":%s,"chains":%s}\n' \
     "$([ -n "$domain" ] && ! foreign_caddy && echo true || echo false)" "$([ -n "$domain" ] && json_str "$domain" || echo null)" \
-    "$(json_str "$caddy")" "$version" "$cert" "$script" "$SCRIPT_VERSION" "$(json_str "$f2b")" "$banned" "$bbr" "$updates"
+    "$(json_str "$caddy")" "$version" "$cert" "$script" "$SCRIPT_VERSION" "$(json_str "$f2b")" "$banned" "$bbr" "$updates" "$chains"
 }
 
 main() {
@@ -652,6 +846,9 @@ main() {
       --status) STATUS=1; shift ;;
       --lang) case "${2:-}" in ru) RU=1 ;; en) RU=0 ;; *) usage ;; esac; shift 2 ;;
       --uninstall) UNINSTALL=1; shift ;;
+      --add-chain) ADD_CHAIN=1; shift ;;
+      --chains) LIST_CHAINS=1; shift ;;
+      --remove-chain) REMOVE_CHAIN="${2:-}"; [ -n "$REMOVE_CHAIN" ] || usage; shift 2 ;;
       -h|--help) usage ;;
       *) usage ;;
     esac
@@ -664,10 +861,14 @@ main() {
   if [ "$STATUS" = 1 ]; then status_only; return; fi
   if [ "$CHECK" = 1 ]; then check_only; return; fi
   if [ "$UNINSTALL" = 1 ]; then uninstall; return; fi
+  if [ "$ADD_CHAIN" = 1 ]; then add_chain; return; fi
+  if [ "$LIST_CHAINS" = 1 ]; then list_chains; return; fi
+  if [ -n "$REMOVE_CHAIN" ]; then remove_chain; return; fi
   [[ $DOMAIN =~ ^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$ ]] \
     || die bad_domain "Укажите домен: --domain my-name.duckdns.org" "Pass the domain: --domain my-name.duckdns.org"
 
   preflight
+  check_script_version
   check_dns
   check_ports
   open_firewall
@@ -679,5 +880,6 @@ main() {
   report
 }
 
-# Everything runs from here, so a partially downloaded script does nothing.
-main "$@"
+# Everything runs from here, so a partially downloaded script does nothing. The exit is on the same
+# line because what follows on stdin is data for --add-chain, never commands.
+main "$@"; exit

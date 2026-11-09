@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>What’s new — Routekeeper</title>
-<meta name="description" content="Routekeeper version history: what changed in 0.5.1 (the proxy starts again after a restart, the window opens in front), in 0.5.0 (the network extension updates by itself, site addresses through the proxy, the proxy server’s address over DNS over HTTPS, the proxy check without ipinfo.io), in 0.4.1 (the prompt is no longer cut off when a process has a long name), in 0.4.0 (local networks go direct, quick retry of a stalled connection to the proxy, a link to share a proxy, proxy latency history, connections through an HTTPS proxy no longer pile up, turning off drops connections through a proxy) and in 0.3.0, 0.2.1, 0.2.0 and 0.1.0: licenses, your own proxy server from the app, a new app identifier, severity levels in the Leaks section, a lock when the settings can’t be read, new services.">
+<meta name="description" content="Routekeeper version history: what changed in 0.6.0 (a backup route to the proxy through another server of yours, a new look), in 0.5.1 (the proxy starts again after a restart, the window opens in front), in 0.5.0 (the network extension updates by itself, site addresses through the proxy, the proxy server’s address over DNS over HTTPS, the proxy check without ipinfo.io), in 0.4.1 (the prompt is no longer cut off when a process has a long name), in 0.4.0 (local networks go direct, quick retry of a stalled connection to the proxy, a link to share a proxy, proxy latency history, connections through an HTTPS proxy no longer pile up, turning off drops connections through a proxy) and in 0.3.0, 0.2.1, 0.2.0 and 0.1.0: licenses, your own proxy server from the app, a new app identifier, severity levels in the Leaks section, a lock when the settings can’t be read, new services.">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Routekeeper">
 <meta property="og:url" content="https://getroutekeeper.app/en/docs/changelog/">
 <meta property="og:title" content="What’s new — Routekeeper">
-<meta property="og:description" content="Routekeeper version history: what changed in 0.5.1 (the proxy starts again after a restart, the window opens in front), in 0.5.0 (the network extension updates by itself, site addresses through the proxy, the proxy server’s address over DNS over HTTPS, the proxy check without ipinfo.io), in 0.4.1 (the prompt is no longer cut off when a process has a long name), in 0.4.0 (local networks go direct, quick retry of a stalled connection to the proxy, a link to share a proxy, proxy latency history, connections through an HTTPS proxy no longer pile up, turning off drops connections through a proxy) and in 0.3.0, 0.2.1, 0.2.0 and 0.1.0: licenses, your own proxy server from the app, a new app identifier, severity levels in the Leaks section, a lock when the settings can’t be read, new services.">
+<meta property="og:description" content="Routekeeper version history: what changed in 0.6.0 (a backup route to the proxy through another server of yours, a new look), in 0.5.1 (the proxy starts again after a restart, the window opens in front), in 0.5.0 (the network extension updates by itself, site addresses through the proxy, the proxy server’s address over DNS over HTTPS, the proxy check without ipinfo.io), in 0.4.1 (the prompt is no longer cut off when a process has a long name), in 0.4.0 (local networks go direct, quick retry of a stalled connection to the proxy, a link to share a proxy, proxy latency history, connections through an HTTPS proxy no longer pile up, turning off drops connections through a proxy) and in 0.3.0, 0.2.1, 0.2.0 and 0.1.0: licenses, your own proxy server from the app, a new app identifier, severity levels in the Leaks section, a lock when the settings can’t be read, new services.">
 <meta property="og:image" content="https://getroutekeeper.app/og-en.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../../../assets/nav.css?v=c53c1160">
-<link rel="stylesheet" href="../../../docs/assets/docs.css?v=f665767d">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=a9c26763">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/en/changelog.html. Edit the fragment, not this file. -->
@@ -125,6 +125,21 @@
     <a href="../../../en/docs/changelog/" aria-current="page">What's new</a>
     </nav></details>
 <p class="lead-in">Routekeeper offers to update by itself when a new version comes out: see <a href="../../../en/docs/maintenance/#update">Updates</a>. All builds are on <a href="https://github.com/ilyabazhenov/routekeeper/releases">GitHub Releases</a>.</p>
+
+<h2 id="v0-6-0">0.6.0 — November 9, 2026</h2>
+<p>Build 16.</p>
+<ul>
+  <li><b>A backup route to the proxy.</b> When a server is fine but your Mac can’t reach it, connections go through another server of yours, and sites keep seeing the first server’s address. To never connect to the first one directly, turn on <span class="ui">Always Through This Server</span>. It’s set up in the proxy’s card, see <a href="../../../en/docs/server/#chain">Backup route</a>.</li>
+  <li><b>Your own server closes service addresses.</b> After the script on the server is updated, the proxy doesn’t reach <code>169.254.0.0/16</code> (cloud metadata), <code>100.64.0.0/10</code> (Tailscale among others), <code>0.0.0.0/8</code> or <code>fc00::/7</code>. The server card offers the update. Caddy restarts once; the login and password stay the same.</li>
+  <li><b>Site addresses through the proxy are on by default</b> on new installs. If you already use version 0.5, the setting stays as it was: <span class="ui">Settings → Network → Look up site addresses through the proxy</span>.</li>
+  <li><b>A new look.</b> A color now means the same on every screen: blue is a proxy, green is working. On a wide window, <span class="ui">Overview</span> has two columns.</li>
+  <li><span class="ui">Rules</span> has a <span class="ui">Mine</span>, <span class="ui">System</span> and <span class="ui">All</span> switch, and search points to matches in the other list.</li>
+  <li><span class="ui">Apps</span> has <span class="ui">Turned Off</span> and <span class="ui">Not Found on Disk</span> groups; the second can be cleared at once.</li>
+  <li>Proxies are added from one menu: by address, from the clipboard, or your own server. <span class="ui">Save</span> appears only after an edit.</li>
+  <li>The map opens around your marks, and labels stay off each other and inside the edges. Proxy names in Monitor are cut in the middle, so names with the same beginning stay different.</li>
+  <li>The welcome screen offers to open Routekeeper at login.</li>
+  <li>Routekeeper uses less CPU while its windows are hidden.</li>
+</ul>
 
 <h2 id="v0-5-1">0.5.1 — October 20, 2026</h2>
 <p>Build 15.</p>

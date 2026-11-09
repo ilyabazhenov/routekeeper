@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../../../assets/nav.css?v=c53c1160">
-<link rel="stylesheet" href="../../../docs/assets/docs.css?v=f665767d">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=a9c26763">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/en/server.html. Edit the fragment, not this file. -->
@@ -161,7 +161,7 @@
 <h2 id="wizard">Setting it up from Routekeeper</h2>
 <p>Routekeeper logs in to the server over <a class="term" href="../../../en/docs/glossary/#ssh">SSH</a> itself, runs the same <a href="#install">installation script</a> as the Terminal command, and adds the finished proxy to the list. Open the wizard in one of these ways:</p>
 <ul>
-  <li>the <span class="ui">Proxy</span> section → the <span class="ui">Your Own Server…</span> button in the toolbar (the server icon);</li>
+  <li>the <span class="ui">Proxy</span> section → the <span class="ui">Add Proxy</span> button’s menu in the toolbar → <span class="ui">Your Own Server…</span>;</li>
   <li>an empty proxy list → <span class="ui">Your Own Server…</span> under <span class="ui">Add a proxy</span>;</li>
   <li>the welcome screen → the <span class="ui">Add a proxy server</span> step → <span class="ui">Your Own Server…</span>.</li>
 </ul>
@@ -298,6 +298,17 @@
   </ul>
 </details>
 
+<h3 id="chain">Backup route</h3>
+<p>Sometimes a server is fine but your Mac can’t reach it: the provider blocked the address or a route broke. If you have a second server with a <span class="ui">Server</span> block, connections can reach the first one through it. Sites keep seeing the first proxy’s address.</p>
+<ol class="steps">
+  <li>Open the card of the proxy that needs a backup route.</li>
+  <li>In <span class="ui">Route to the Proxy</span>, pick the second server in <span class="ui">Backup route</span> and confirm.</li>
+</ol>
+<p>Routekeeper tries the main route first. If there’s no answer within five seconds, the connection goes through the second server, and every 30 seconds Routekeeper checks whether the direct route is back. The card shows the route in use.</p>
+<p>To send connections through the second server all the time, turn on <span class="ui">Always Through This Server</span>. The first proxy is then never used directly, and if the second server is unreachable, connections won’t open.</p>
+<div class="callout warn"><p>A backup route only works for an HTTPS proxy with a login and password. The first proxy’s login and password are kept on the second server, and while connections go through it, that server sees the domains you visit. If the first server itself is off, the backup route won’t help: there’s nothing left to exit from at its address.</p></div>
+<p>If Routekeeper reports a setup error, check that both proxies work on their own. <code>not_installed</code> and <code>needs_update</code> mean the second server has no proxy or runs an old version: update it in its card. <code>chain_check_failed</code> means the second server couldn’t get out through the first, for example because the first is unreachable from there too or its password changed. <code>bad_upstream</code> and <code>chain_not_found</code> are internal errors: a wrong address of the first proxy, or an entry that’s no longer on the server. Turn the backup route off and on again.</p>
+
 <h2 id="manual">Setting it up by hand</h2>
 <p>If you’d rather do everything yourself, or set up the proxy from another computer, follow the four steps below: the domain, logging in to the server, the install command and adding the proxy to Routekeeper.</p>
 
@@ -372,7 +383,7 @@ on, the server never reboots by itself
   ✓ proxy works with the password, exit IP 203.0.113.10
   ✓ without the password the proxy is closed to strangers
 
-Done. Copy the line and paste it into Routekeeper: Proxy → ⌘V (or the Paste button) → Add.
+Done. Copy the line and paste it into Routekeeper: Proxy → ⌘V (or the Paste Link button) → Add.
 
   https://u3f9a1c0b7e42:•••@my-name.duckdns.org:443
 
@@ -423,14 +434,14 @@ The line is the key to your proxy: keep it private. To see it again: cat /etc/ca
 <details class="deep"><summary>Details: what changes on the server</summary>
   <ul>
     <li><code>/usr/local/bin/caddy</code>: Caddy v2.11.2 with the forwardproxy@naive build from the klzgrad/forwardproxy releases. The SHA-256 of the archive is written in the script.</li>
-    <li><code>/etc/caddy/Caddyfile</code>: a site on :443 for your domain with TLS 1.2 and 1.3, <code>forward_proxy</code> with <code>basic_auth</code>, <code>hide_ip</code>, <code>hide_via</code> and <code>probe_resistance</code>, and <code>file_server</code> with the page from <code>/var/www/site</code>. Before the file is installed, the script checks it with <code>caddy validate</code>.</li>
+    <li><code>/etc/caddy/Caddyfile</code>: a site on :443 for your domain with TLS 1.2 and 1.3, <code>forward_proxy</code> with <code>basic_auth</code>, <code>hide_ip</code>, <code>hide_via</code>, <code>probe_resistance</code> and <code>acl</code>, and <code>file_server</code> with the page from <code>/var/www/site</code>. Before the file is installed, the script checks it with <code>caddy validate</code>.</li>
     <li><code>/etc/caddy/proxy-credentials</code>: the login and password, with permissions 600.</li>
     <li>The systemd service <code>caddy</code>, running as the system user <code>caddy</code>. Caddy keeps its certificates in <code>/var/lib/caddy</code>.</li>
     <li>BBR and the <code>fq</code> queue: <code>/etc/sysctl.d/99-zz-bbr.conf</code> and <code>/etc/modules-load.d/bbr.conf</code>. The <code>99-zz</code> prefix keeps the provider’s settings from overriding them.</li>
     <li>fail2ban: <code>/etc/fail2ban/jail.d/zz-routekeeper.local</code> and <code>/etc/fail2ban/fail2ban.d/zz-routekeeper.local</code>. Bans use nftables. 5 failed logins in an hour mean a ban for a day; for repeat offenders the ban doubles each time, up to 4 weeks. The server itself and the address the script was run from are never banned (if you run the script through sudo, that address may be missing from this list).</li>
     <li>Updates: the unattended-upgrades package and <code>/etc/apt/apt.conf.d/20auto-upgrades</code>.</li>
   </ul>
-  <p><code>probe_resistance</code>: when a request comes to the proxy without the password, Caddy answers like a web server, not with code 407 “Proxy Authentication Required”. <code>hide_ip</code> and <code>hide_via</code>: Caddy doesn’t add the Forwarded and Via headers to requests. The script runs the final checks on the server itself through 127.0.0.1, so they don’t depend on how the provider routes the server’s connections to itself.</p>
+  <p><code>probe_resistance</code>: when a request comes to the proxy without the password, Caddy answers like a web server, not with code 407 “Proxy Authentication Required”. <code>hide_ip</code> and <code>hide_via</code>: Caddy doesn’t add the Forwarded and Via headers to requests. <code>acl</code>: the proxy refuses service addresses, such as the provider’s metadata service (<code>169.254.169.254</code>). This doesn’t make the link safe to hand out: whoever has it gets your login and the whole proxy. A server set up earlier gets <code>acl</code> when you update it. The script runs the final checks on the server itself through 127.0.0.1, so they don’t depend on how the provider routes the server’s connections to itself.</p>
 </details>
 
 <h2 id="app"><span class="step">4</span>Adding it to Routekeeper</h2>
@@ -440,7 +451,7 @@ The line is the key to your proxy: keep it private. To see it again: cat /etc/ca
   <li>Paste it into Routekeeper.
     <ul>
       <li><b>First launch, the welcome screen is open.</b> At the <span class="ui">Add a proxy server</span> step, click <span class="ui">Paste from Clipboard</span>. This step becomes available after the three <a href="../../../en/docs/start/#permissions">macOS permissions</a>.</li>
-      <li><b>You’re past the welcome screen.</b> Open the <span class="ui">Proxy</span> section and press <kbd>⌘V</kbd> or click the <span class="ui">Paste</span> button below the list.</li>
+      <li><b>You’re past the welcome screen.</b> Open the <span class="ui">Proxy</span> section and press <kbd>⌘V</kbd> or click the <span class="ui">Paste Link</span> button below the list.</li>
     </ul>
     A new proxy opens with the fields filled in: type HTTPS, your domain as the server, port 443, login and password.</li>
   <li>Click <span class="ui">Check</span>. After a couple of seconds, “Working · … ms · IP …” appears next to it, with your server’s IP. The number in milliseconds is the time it takes to set up a new connection. It’s usually about three times the ping to the server.</li>

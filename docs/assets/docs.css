@@ -268,11 +268,18 @@ kbd { display: inline-block; min-width: 1.6em; padding: 1px 6px; border-radius: 
 .mock-ico.o { background: linear-gradient(135deg, #ffb35c, #e2751f); }
 .mock-ico.s { background: linear-gradient(135deg, #9aa3bd, #5c6480); }
 .mock-pill { display: inline-flex; align-items: center; gap: 5px; padding: 2px 8px; border-radius: 6px; background: rgba(255, 255, 255, .08); font-size: 12px; white-space: nowrap; }
-/* Route colours as in the app (Action.color): proxy green, direct grey, block red, ask blue. */
-.mock-pill.proxy { background: rgba(50, 194, 90, .18); color: #8fe3a8; }
+/* Route colours as in the app (Palette in App/DesignSystem/Tokens.swift): proxy blue, direct grey, block red,
+   ask indigo. Health colours are separate (.mock-ok, .mock-warn, .mock-bad): green means "works", not "proxy". */
+.mock-pill.proxy, .mock-pill.info { background: rgba(59, 130, 246, .22); color: #a9c7ff; }
 .mock-pill.direct { background: rgba(255, 255, 255, .08); color: var(--m-text); }
 .mock-pill.block { background: rgba(255, 90, 79, .18); color: #ffaba5; }
-.mock-pill.ask { background: rgba(59, 130, 246, .22); color: #a9c7ff; }
+.mock-pill.ask { background: rgba(124, 108, 255, .22); color: #c4bbff; }
+.mock-pill.warn { background: rgba(255, 159, 10, .16); color: #ffc66b; }
+/* A route picker's label (RoutePicker): the route's name in its colour, a proxy by its name alone. */
+.mock-proxy { color: #7fb0ff; }
+/* The "?" next to a label (HelpButton): the explanation opens in a popover instead of a paragraph. */
+.mock-help { flex: none; display: inline-grid; place-items: center; width: 14px; height: 14px; margin-left: 4px; border-radius: 50%; border: 1.3px solid var(--m-muted); color: var(--m-muted); font-size: 9.5px; font-weight: 700; line-height: 1; vertical-align: -2px; }
+.mock-help::before { content: "?"; }
 .mock-dot { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--m-green); }
 .mock-dot.orange { background: var(--m-orange); }
 .mock-dot.red { background: var(--m-red); }

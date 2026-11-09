@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../../assets/nav.css?v=c53c1160">
-<link rel="stylesheet" href="../../docs/assets/docs.css?v=f665767d">
+<link rel="stylesheet" href="../../docs/assets/docs.css?v=a9c26763">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/ru/server.html. Edit the fragment, not this file. -->
@@ -161,7 +161,7 @@
 <h2 id="wizard">Установка из Routekeeper</h2>
 <p>Routekeeper сам входит на сервер по <a class="term" href="../../docs/glossary/#ssh">SSH</a>, запускает на нём тот же <a href="#install">скрипт установки</a>, что и команда в Терминале, и добавляет готовый прокси в список. Откройте мастер одним из способов:</p>
 <ul>
-  <li>раздел <span class="ui">Прокси</span> → кнопка <span class="ui">Свой сервер…</span> на панели инструментов (значок сервера);</li>
+  <li>раздел <span class="ui">Прокси</span> → меню кнопки <span class="ui">Добавить прокси</span> на панели инструментов → <span class="ui">Свой сервер…</span>;</li>
   <li>пустой список прокси → <span class="ui">Свой сервер…</span> под надписью <span class="ui">Добавьте прокси</span>;</li>
   <li>приветственный экран → шаг <span class="ui">Добавить прокси-сервер</span> → <span class="ui">Свой сервер…</span>.</li>
 </ul>
@@ -298,6 +298,17 @@
   </ul>
 </details>
 
+<h3 id="chain">Запасной путь</h3>
+<p>Бывает, что сервер работает, но с вашего Mac до него не достучаться: провайдер закрыл адрес или сломался маршрут. Если у вас есть второй сервер с блоком <span class="ui">Сервер</span>, соединения могут пойти к первому через него. Сайты при этом продолжат видеть адрес первого прокси.</p>
+<ol class="steps">
+  <li>Откройте карточку прокси, для которого нужен запасной путь.</li>
+  <li>В секции <span class="ui">Путь до прокси</span> выберите второй сервер в списке <span class="ui">Запасной путь</span> и подтвердите.</li>
+</ol>
+<p>Routekeeper пробует основной путь первым. Если за пять секунд ответа нет, соединение идёт через второй сервер, а раз в 30 секунд Routekeeper проверяет, не заработал ли прямой путь. Сейчас используемый путь виден в карточке.</p>
+<p>Чтобы соединения всегда шли через второй сервер, включите <span class="ui">Всегда через этот сервер</span>. Первый прокси напрямую тогда не используется, а если второй сервер недоступен, соединения не откроются.</p>
+<div class="callout warn"><p>Запасной путь работает только для HTTPS-прокси с логином и паролем. Логин и пароль первого прокси хранятся на втором сервере, и пока соединения идут через него, он видит домены, на которые вы заходите. Если сам первый сервер выключен, запасной путь не поможет: выйти в интернет с его адреса будет неоткуда.</p></div>
+<p>Если Routekeeper сообщает об ошибке настройки, проверьте, что оба прокси работают по отдельности. Коды <code>not_installed</code> и <code>needs_update</code> означают, что на втором сервере нет прокси или установлена старая версия: обновите сервер в его карточке. <code>chain_check_failed</code> значит, что второй сервер не смог выйти через первый — например, первый недоступен и с него тоже или пароль изменился. <code>bad_upstream</code> и <code>chain_not_found</code> — внутренние ошибки: неверный адрес первого прокси или запись, которой уже нет на сервере. Отключите запасной путь и включите заново.</p>
+
 <h2 id="manual">Установка вручную</h2>
 <p>Если удобнее сделать всё самому или ставить прокси не с этого Mac, пройдите четыре шага ниже: домен, вход на сервер, команда установки и подключение в Routekeeper.</p>
 
@@ -372,7 +383,7 @@ TCP: bbr
   ✓ прокси с паролем работает, внешний IP 203.0.113.10
   ✓ без пароля прокси закрыт для посторонних
 
-Готово. Скопируйте строку и вставьте её в Routekeeper: «Прокси» → ⌘V (или кнопка «Вставить») → «Добавить».
+Готово. Скопируйте строку и вставьте её в Routekeeper: «Прокси» → ⌘V (или кнопка «Вставить ссылку») → «Добавить».
 
   https://u3f9a1c0b7e42:•••@my-name.duckdns.org:443
 
@@ -423,14 +434,14 @@ TCP: bbr
 <details class="deep"><summary>Подробнее: что меняется на сервере</summary>
   <ul>
     <li><code>/usr/local/bin/caddy</code> — Caddy v2.11.2 со сборкой forwardproxy@naive из релизов klzgrad/forwardproxy. SHA-256 архива записан в скрипте.</li>
-    <li><code>/etc/caddy/Caddyfile</code> — сайт на :443 для вашего домена: TLS 1.2 и 1.3, <code>forward_proxy</code> с <code>basic_auth</code>, <code>hide_ip</code>, <code>hide_via</code> и <code>probe_resistance</code>, <code>file_server</code> со страницей из <code>/var/www/site</code>. Перед установкой файл проверяется командой <code>caddy validate</code>.</li>
+    <li><code>/etc/caddy/Caddyfile</code> — сайт на :443 для вашего домена: TLS 1.2 и 1.3, <code>forward_proxy</code> с <code>basic_auth</code>, <code>hide_ip</code>, <code>hide_via</code>, <code>probe_resistance</code> и <code>acl</code>, <code>file_server</code> со страницей из <code>/var/www/site</code>. Перед установкой файл проверяется командой <code>caddy validate</code>.</li>
     <li><code>/etc/caddy/proxy-credentials</code> — логин и пароль, права 600.</li>
     <li>systemd-сервис <code>caddy</code> от системного пользователя <code>caddy</code>. Сертификаты Caddy хранит в <code>/var/lib/caddy</code>.</li>
     <li>BBR и очередь <code>fq</code>: <code>/etc/sysctl.d/99-zz-bbr.conf</code> и <code>/etc/modules-load.d/bbr.conf</code>. Префикс <code>99-zz</code> нужен, чтобы настройки хостера их не перебили.</li>
     <li>fail2ban: <code>/etc/fail2ban/jail.d/zz-routekeeper.local</code> и <code>/etc/fail2ban/fail2ban.d/zz-routekeeper.local</code>. Бан через nftables: 5 неудачных входов за час — сутки, при повторах срок удваивается до 4 недель. В исключениях — сам сервер и адрес, с которого запущен скрипт (при запуске через sudo этот адрес может туда не попасть).</li>
     <li>Обновления: пакет unattended-upgrades и <code>/etc/apt/apt.conf.d/20auto-upgrades</code>.</li>
   </ul>
-  <p><code>probe_resistance</code>: на запрос к прокси без пароля Caddy отвечает как веб-сервер, а не кодом 407 «нужна авторизация». <code>hide_ip</code> и <code>hide_via</code>: Caddy не добавляет к запросам заголовки Forwarded и Via. Проверки в конце скрипт делает на самом сервере через 127.0.0.1, поэтому они не зависят от того, как хостер маршрутизирует обращения сервера к самому себе.</p>
+  <p><code>probe_resistance</code>: на запрос к прокси без пароля Caddy отвечает как веб-сервер, а не кодом 407 «нужна авторизация». <code>hide_ip</code> и <code>hide_via</code>: Caddy не добавляет к запросам заголовки Forwarded и Via. <code>acl</code>: прокси не подключается к служебным адресам, например к сервису метаданных хостера (<code>169.254.169.254</code>). Безопасной для раздачи ссылку это не делает: с ней человек получает ваш логин и весь прокси. На сервере, поставленном раньше, <code>acl</code> появится после обновления. Проверки в конце скрипт делает на самом сервере через 127.0.0.1, поэтому они не зависят от того, как хостер маршрутизирует обращения сервера к самому себе.</p>
 </details>
 
 <h2 id="app"><span class="step">4</span>Подключение в Routekeeper</h2>
@@ -440,7 +451,7 @@ TCP: bbr
   <li>Вставьте её в Routekeeper.
     <ul>
       <li><b>Первый запуск, открыт приветственный экран.</b> На шаге <span class="ui">Добавить прокси-сервер</span> нажмите <span class="ui">Вставить из буфера</span>. Этот шаг становится доступен после трёх <a href="../../docs/start/#permissions">разрешений macOS</a>.</li>
-      <li><b>Приветствие уже пройдено.</b> Откройте раздел <span class="ui">Прокси</span> и нажмите <kbd>⌘V</kbd> или кнопку <span class="ui">Вставить</span> под списком.</li>
+      <li><b>Приветствие уже пройдено.</b> Откройте раздел <span class="ui">Прокси</span> и нажмите <kbd>⌘V</kbd> или кнопку <span class="ui">Вставить ссылку</span> под списком.</li>
     </ul>
     Откроется новый прокси с заполненными полями: тип HTTPS, сервер — ваш домен, порт 443, логин и пароль.</li>
   <li>Нажмите <span class="ui">Проверить</span>. Через пару секунд рядом появится «Работает · … мс · IP …» с IP вашего сервера. Число в миллисекундах — время установки нового соединения, оно обычно втрое больше пинга до сервера.</li>

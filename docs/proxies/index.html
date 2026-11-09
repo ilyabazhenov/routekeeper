@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../../assets/nav.css?v=c53c1160">
-<link rel="stylesheet" href="../../docs/assets/docs.css?v=f665767d">
+<link rel="stylesheet" href="../../docs/assets/docs.css?v=a9c26763">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/ru/proxies.html. Edit the fragment, not this file. -->
@@ -160,13 +160,13 @@
 <p>Быстрее всего — <a href="#paste">вставить строку прокси</a>. Если строки нет, заполните поля вручную.</p>
 <ol class="steps">
   <li>В окне Routekeeper откройте раздел <span class="ui">Прокси</span> (<kbd>⌘4</kbd>).</li>
-  <li>Нажмите <span class="ui">+</span> под списком прокси или кнопку <span class="ui">+</span> (<span class="ui">Добавить прокси</span>) на панели инструментов — там только значок. Из любого раздела то же делает <kbd>⌥⌘N</kbd>. Справа откроются пустые поля.</li>
-  <li>Заполните поля по таблице ниже. Если прокси ещё нет, а есть арендованный сервер, вместо этого нажмите <span class="ui">Свой сервер…</span> на панели инструментов (значок сервера): Routekeeper поставит прокси на сервер и добавит его сам, см. <a href="../../docs/server/#wizard">Свой прокси-сервер</a>.</li>
+  <li>Нажмите <span class="ui">+</span> под списком прокси или кнопку <span class="ui">+</span> (<span class="ui">Добавить прокси</span>) на панели инструментов — там только значок. Из любого раздела то же делает <kbd>⌥⌘N</kbd>. Справа откроются пустые поля. У кнопки на панели есть меню (стрелка рядом со значком): <span class="ui">Прокси по адресу…</span>, <span class="ui">Вставить из буфера обмена</span> и <span class="ui">Свой сервер…</span>.</li>
+  <li>Заполните поля по таблице ниже. Если прокси ещё нет, а есть арендованный сервер, вместо этого выберите <span class="ui">Свой сервер…</span> в меню кнопки <span class="ui">Добавить прокси</span>: Routekeeper поставит прокси на сервер и добавит его сам, см. <a href="../../docs/server/#wizard">Свой прокси-сервер</a>.</li>
   <li>Нажмите <span class="ui">Проверить</span>. Проверять можно до сохранения: Routekeeper возьмёт то, что вписано в поля. Что означает результат, написано в разделе <a href="#check">Проверка</a>.</li>
   <li>Нажмите <span class="ui">Добавить</span>. Прокси появится в списке слева, и Routekeeper сразу проверит его ещё раз.</li>
 </ol>
 <figure class="mock-fig">
-  <div class="mock-scroll"><div class="mock mock-win" aria-hidden="true" style="min-width: 660px">
+  <div class="mock-scroll"><div class="mock mock-win" aria-hidden="true" style="min-width: 720px">
     <div class="mock-titlebar"><i></i><i></i><i></i><span>Routekeeper</span></div>
     <div class="mock-split" style="grid-template-columns: 140px minmax(0, 1fr)">
       <div class="mock-side">
@@ -182,35 +182,34 @@
       <div class="mock-main">
         <div class="mock-btns">
           <div class="grow"><span class="mock-h">Прокси</span> <span class="mock-sub">2 прокси</span></div>
-          <span class="mock-btn">ϟ</span><span class="mock-btn">+</span>
+          <span class="mock-btn">ϟ Проверить все</span><span class="mock-btn">+ <span class="muted">⌄</span></span>
         </div>
-        <div style="display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 12px; align-items: stretch">
+        <div style="display: grid; grid-template-columns: 196px minmax(0, 1fr); gap: 12px; align-items: stretch">
           <div class="mock-group" style="display: flex; flex-direction: column">
             <div class="mock-row sel"><span class="mock-dot"></span><div class="grow"><div>Амстердам</div><div class="muted">HTTPS · 48 мс · NL</div></div></div>
             <div class="mock-row"><span class="mock-dot"></span><div class="grow"><div>Франкфурт</div><div class="muted">HTTPS · 61 мс · DE</div></div></div>
             <div class="grow"></div>
-            <div class="mock-row" style="gap: 12px"><span>+</span><span class="muted">−</span><span class="right">Вставить</span><b class="mk">1</b></div>
+            <div class="mock-row" style="gap: 12px"><span>+</span><span class="muted">−</span><span class="right">Вставить ссылку</span><b class="mk">1</b></div>
           </div>
           <div style="display: grid; align-content: start; gap: 10px; min-width: 0">
             <div class="mock-group">
-              <div class="mock-row"><div class="mock-field grow" style="grid-template-columns: 72px minmax(0, 1fr)"><span>Название</span><span class="mock-input">Амстердам</span></div></div>
-              <div class="mock-row"><div class="mock-field grow" style="grid-template-columns: 72px minmax(0, 1fr)"><span>Тип</span><span><span class="mock-seg"><span>SOCKS5</span><span>HTTP</span><span class="on">HTTPS</span></span></span></div></div>
-              <div class="mock-row"><div class="mock-field grow" style="grid-template-columns: 72px minmax(0, 1fr)"><span>Сервер</span><span style="display: flex; align-items: center; gap: 8px; min-width: 0"><span class="mock-input grow">nl.example.net</span><span class="muted">Порт</span><span class="mock-input" style="width: 52px">443</span></span></div></div>
-              <div class="mock-row"><div class="mock-field grow" style="grid-template-columns: 72px minmax(0, 1fr)"><span>Логин</span><span class="mock-input">user</span></div></div>
-              <div class="mock-row"><div class="mock-field grow" style="grid-template-columns: 72px minmax(0, 1fr)"><span>Пароль</span><span class="mock-input">••••••••</span></div></div>
-              <div class="mock-row"><b class="mk">2</b><div class="mock-note grow">Соединение с прокси шифруется TLS: логин, пароль и адреса сайтов не видны по пути. Укажите доменное имя сервера, по нему проверяется сертификат.</div></div>
+              <div class="mock-row"><div class="mock-field grow" style="grid-template-columns: 104px minmax(0, 1fr)"><span>Название</span><span class="mock-input">Амстердам</span></div></div>
+              <div class="mock-row"><div class="mock-field grow" style="grid-template-columns: 104px minmax(0, 1fr)"><span>Тип</span><span><span class="mock-seg"><span>SOCKS5</span><span>HTTP</span><span class="on">HTTPS</span></span></span></div></div>
+              <div class="mock-row"><div class="mock-field grow" style="grid-template-columns: 104px minmax(0, 1fr)"><span>Сервер</span><span style="display: flex; align-items: center; gap: 8px; min-width: 0"><span class="mock-input grow">nl.example.net</span><span class="muted">Порт</span><span class="mock-input" style="width: 52px">443</span></span></div></div>
+              <div class="mock-row"><div class="mock-field grow" style="grid-template-columns: 104px minmax(0, 1fr)"><span>IP-адрес сервера<span class="mock-help"></span></span><span class="mock-input dim">необязательно</span></div></div>
+              <div class="mock-row"><div class="mock-field grow" style="grid-template-columns: 104px minmax(0, 1fr)"><span>Логин</span><span class="mock-input">user</span></div></div>
+              <div class="mock-row"><div class="mock-field grow" style="grid-template-columns: 104px minmax(0, 1fr)"><span>Пароль</span><span class="mock-input">••••••••</span></div></div>
             </div>
+            <div class="mock-note" style="display: flex; gap: 4px; margin-top: -4px">Шифруется TLS. Укажите доменное имя сервера: по нему проверяется сертификат.<b class="mk">2</b></div>
             <div class="mock-group">
-              <div class="mock-row"><span class="grow">DNS через прокси</span><b class="mk">3</b><span class="mock-toggle on"></span></div>
-              <div class="mock-row"><div class="mock-note">Имя сайта передаётся прокси, и он сам узнаёт его адрес. Так провайдер не видит, какие сайты открывают приложения.</div></div>
-              <div class="mock-row"><span class="grow">Блокировать UDP и QUIC</span><b class="mk">4</b><span class="mock-toggle on"></span></div>
-              <div class="mock-row"><div class="mock-note">SOCKS5, HTTP и HTTPS-прокси передают только TCP. Без блокировки UDP-трафик (например, QUIC в браузерах) пойдёт мимо прокси.</div></div>
+              <div class="mock-row"><span class="grow" style="display: flex; align-items: center">DNS через прокси<span class="mock-help"></span><b class="mk">3</b></span><span class="mock-toggle on"></span></div>
+              <div class="mock-row"><span class="grow" style="display: flex; align-items: center">Блокировать UDP и QUIC<span class="mock-help"></span><b class="mk">4</b></span><span class="mock-toggle on"></span></div>
             </div>
             <div class="mock-group">
               <div class="mock-row" style="flex-wrap: wrap"><span class="mock-btn">ϟ Проверить</span><b class="mk">5</b><span class="mock-ok">✓ Работает · 48 мс · IP 203.0.113.7 (NL)</span></div>
               <div class="mock-row"><span class="mock-note">Используется в правилах: 3</span></div>
             </div>
-            <div class="mock-btns end"><span class="mock-btn">Отменить изменения</span><span class="mock-btn primary">Сохранить</span></div>
+            <div class="mock-btns"><span class="mock-btn">Скопировать ссылку</span><span class="grow"></span><b class="mk">6</b><span class="mock-btn primary dim">Сохранить</span></div>
           </div>
         </div>
       </div>
@@ -218,13 +217,14 @@
   </div></div>
   <figcaption>
     <ol class="mk-legend">
-      <li><span class="ui">Вставить</span> открывает новый прокси из строки в буфере обмена, например <code>https://user:pass@nl.example.net:443</code>. В списке то же делает <kbd>⌘V</kbd>. Кнопка <span class="ui">+</span> открывает пустые поля, <span class="ui">−</span> удаляет выбранный прокси.</li>
-      <li>У HTTPS-прокси в поле <span class="ui">Сервер</span> нужно доменное имя, а не IP-адрес: по нему проверяется сертификат. Подсказка под паролем появляется только у типа HTTPS.</li>
-      <li><span class="ui">DNS через прокси</span>: имя сайта получает прокси и сам узнаёт его адрес. Включено по умолчанию.</li>
-      <li><span class="ui">Блокировать UDP и QUIC</span>: UDP приложений этого прокси блокируется, а не уходит мимо прокси. Включено по умолчанию.</li>
+      <li><span class="ui">Вставить ссылку</span> открывает новый прокси из строки в буфере обмена, например <code>https://user:pass@nl.example.net:443</code>. В списке то же делает <kbd>⌘V</kbd>. Кнопка <span class="ui">+</span> открывает пустые поля, <span class="ui">−</span> удаляет выбранный прокси.</li>
+      <li>У HTTPS-прокси в поле <span class="ui">Сервер</span> нужно доменное имя, а не IP-адрес: по нему проверяется сертификат. Подсказка под полями появляется только у типа HTTPS. Поле <span class="ui">IP-адрес сервера</span> необязательное: «?» рядом объясняет, что Routekeeper находит адрес сам.</li>
+      <li><span class="ui">DNS через прокси</span>: имя сайта получает прокси и сам узнаёт его адрес. Включено по умолчанию. Пояснение — под «?».</li>
+      <li><span class="ui">Блокировать UDP и QUIC</span>: UDP приложений этого прокси блокируется, а не уходит мимо прокси. Включено по умолчанию. Пояснение — под «?».</li>
       <li><span class="ui">Проверить</span> открывает соединение через прокси и показывает время, IP-адрес, который видят сайты, и код страны. Проверять можно до сохранения.</li>
+      <li><span class="ui">Скопировать ссылку</span> копирует строку прокси с логином и паролем, чтобы отправить её другому человеку. <span class="ui">Сохранить</span> становится доступной, когда поля изменены, и тогда рядом появляется <span class="ui">Отменить изменения</span>.</li>
     </ol>
-    Схема раздела <span class="ui">Прокси</span> в окне Routekeeper: выбран прокси «Амстердам». Данные выдуманные.
+    Схема раздела <span class="ui">Прокси</span> в окне Routekeeper: выбран прокси «Амстердам». Над полями ещё есть график задержки, на схеме он не показан. Данные выдуманные.
   </figcaption>
 </figure>
 <p>При первом запуске то же самое есть на <a href="../../docs/start/#first-proxy">приветственном экране</a>: шаг <span class="ui">Добавить прокси-сервер</span>, кнопки <span class="ui">Вставить из буфера</span> и <span class="ui">Ввести вручную…</span>.</p>
@@ -242,7 +242,7 @@
     <tr><td><span class="ui">Блокировать UDP и QUIC</span></td><td>Включено по умолчанию, обычно не трогайте.</td></tr>
   </tbody>
 </table></div>
-<p>Чтобы изменить прокси, выберите его в списке, поправьте поля и нажмите <span class="ui">Сохранить</span>. <span class="ui">Отменить изменения</span> возвращает сохранённые значения. Строка <span class="ui">Используется в правилах: N</span> под кнопкой <span class="ui">Проверить</span> показывает, сколько маршрутов и правил идут через этот прокси.</p>
+<p>Чтобы изменить прокси, выберите его в списке, поправьте поля и нажмите <span class="ui">Сохранить</span>. Пока ничего не изменено, кнопка <span class="ui">Сохранить</span> неактивна. После правки рядом появляется <span class="ui">Отменить изменения</span>: она возвращает сохранённые значения. Строка <span class="ui">Используется в правилах: N</span> под кнопкой <span class="ui">Проверить</span> показывает, сколько маршрутов и правил идут через этот прокси.</p>
 <details class="deep"><summary>Подробнее: где хранится пароль</summary>
   <p>Пароль хранит <a class="term" href="../../docs/glossary/#network-extension">сетевое расширение</a> Routekeeper в своём файле настроек. Этот файл может прочитать только система (root). Окно Routekeeper сохранённый пароль не получает: в поле <span class="ui">Пароль</span> вместо него точки, а проверку прокси выполняет само расширение. Единственное исключение — кнопка <a href="#share"><span class="ui">Скопировать ссылку</span></a>: по ней расширение отдаёт пароль, чтобы положить ссылку в буфер обмена. Если поле не трогать, при сохранении пароль остаётся прежним. Если очистить <span class="ui">Логин</span>, пароль удалится.</p>
 </details>
@@ -253,7 +253,7 @@
   <li>Скопируйте строку прокси (<kbd>⌘C</kbd>).</li>
   <li>Вставьте её в Routekeeper:
     <ul>
-      <li><b>Раздел <span class="ui">Прокси</span>:</b> щёлкните по списку прокси слева и нажмите <kbd>⌘V</kbd> или нажмите <span class="ui">Вставить</span> под списком.</li>
+      <li><b>Раздел <span class="ui">Прокси</span>:</b> щёлкните по списку прокси слева и нажмите <kbd>⌘V</kbd>, нажмите <span class="ui">Вставить ссылку</span> под списком или выберите <span class="ui">Вставить из буфера обмена</span> в меню кнопки <span class="ui">Добавить прокси</span>.</li>
       <li><b>Приветственный экран:</b> на шаге <span class="ui">Добавить прокси-сервер</span> нажмите <span class="ui">Вставить из буфера</span>.</li>
     </ul>
   </li>
@@ -313,7 +313,7 @@
 
 <h3 id="dns-lookups">Адреса сайтов через прокси</h3>
 <p><span class="ui">DNS через прокси</span> помогает, когда приложение подключается к сайту через прокси по имени. Но многие приложения сначала сами спрашивают адрес сайта у DNS вашей сети. Если сеть этого имени не знает или отвечает «такого имени нет», приложение так и не подключится, хотя идёт через прокси. Так бывает с корпоративным VPN, который знает только свои сайты, или с провайдером, который фильтрует DNS.</p>
-<p>Для таких сетей есть переключатель <span class="ui">Настройки → Сеть → Узнавать адреса сайтов через прокси</span>, по умолчанию выключен. С ним DNS-запросы приложений, которые идут через прокси, отправляются через этот прокси публичному DNS (Cloudflare, при отказе Google), а не DNS сети. Остальные приложения и имена, которые по правилам идут напрямую, спрашивают DNS сети как раньше.</p>
+<p>Для этого есть переключатель <span class="ui">Настройки → Сеть → Узнавать адреса сайтов через прокси</span>, по умолчанию включён. С ним DNS-запросы приложений, которые идут через прокси, отправляются через этот прокси публичному DNS (Cloudflare, при отказе Google), а не DNS сети. Остальные приложения и имена, которые по правилам идут напрямую, спрашивают DNS сети как раньше.</p>
 <ul>
   <li><b>Локальные имена остаются у DNS сети:</b> имена без точки, <code>.local</code>, <code>.lan</code>, <code>.home</code>, <code>.internal</code>, <code>.corp</code> и другие такие, домены VPN и локальной сети, а также домены из файлов <code>/etc/resolver</code>. Поэтому внутренние сайты компании находятся по внутренним адресам.</li>
   <li><b>Если публичный DNS ответил «такого имени нет»</b>, Routekeeper переспрашивает DNS сети: имя может быть внутренним.</li>
@@ -353,7 +353,7 @@
   <li><b>Красные полосы</b> — время, когда прокси не открывал соединения: не ответил, оборвал соединение или не принял пароль. Чем больше таких соединений, тем ярче полоса. Если прокси открыл соединение, а сайт за ним не ответил, это не сбой прокси и сюда не попадает.</li>
   <li><b>Пунктир «медленно»</b> — 1500 мс, тот же порог, что и в <a href="../../docs/monitoring/#overview"><span class="ui">Обзоре</span></a>.</li>
 </ul>
-<p>Наведите указатель на график, чтобы увидеть время, задержку и сколько соединений было в этот момент. Под графиком — итог за период: <span class="ui">Обычно</span>, <span class="ui">Разброс</span>, доля соединений, которые <span class="ui">Открылись</span>, и число <span class="ui">Соединений</span>.</p>
+<p>Наведите указатель на график, чтобы увидеть время, задержку и сколько соединений было в этот момент. Под графиком — итог за период: <span class="ui">Обычно</span>, <span class="ui">Разброс</span>, доля соединений <span class="ui">Без ошибок</span> и число <span class="ui">Соединений</span>.</p>
 <p>История хранится 30 дней. Если поменять у прокси сервер, порт или тип, история начнётся заново: это уже другой сервер. Смена логина или пароля историю не сбрасывает.</p>
 
 <h3 id="errors">Сообщения об ошибках</h3>
@@ -392,7 +392,7 @@
       <div class="mock-group">
         <div class="mock-row" style="flex-wrap: wrap"><span class="mock-btn">ϟ Проверить</span><span class="mock-ok">✓ Работает · 182 мс · IP 203.0.113.7</span></div>
       </div>
-      <div class="mock-btns end"><span class="mock-btn">Отменить изменения</span><span class="mock-btn primary">Сохранить</span></div>
+      <div class="mock-btns"><span class="mock-btn">Скопировать ссылку</span><span class="grow"></span><span class="mock-btn primary dim">Сохранить</span></div>
       <div class="mock-cap">Сервер</div>
       <div class="mock-group">
         <div class="mock-row"><span class="grow">Вход SSH</span><span class="muted">root@203.0.113.7</span></div>

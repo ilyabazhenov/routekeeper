@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../../../assets/nav.css?v=c53c1160">
-<link rel="stylesheet" href="../../../docs/assets/docs.css?v=f665767d">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=a9c26763">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/en/firewall.html. Edit the fragment, not this file. -->
@@ -177,7 +177,7 @@
         <tr><td><span class="ui">Create rules “for review”</span></td><td>Off</td><td>For each new program without a rule, Routekeeper records a rule for the whole app: allow or block, depending on the first switch. These rules have the source <span class="ui">For Review</span>.</td></tr>
       </tbody>
     </table></div>
-    <p>An example: turn on both switches and work as usual for a few days. A list of everything that went online will build up in <span class="ui">Rules → Source → For Review</span>. Look through it and block what you don’t need. Then you can move to <span class="ui">Ask</span> or <span class="ui">Block All</span>. For more about rule sources, see <a href="../../../en/docs/rules/#sources">The list of rules</a>.</p>
+    <p>An example: turn on both switches and work as usual for a few days. A list of everything that went online will build up in <span class="ui">Rules</span>, with the <span class="ui">For Review</span> source. Click the <span class="ui">Source</span> column header to bring them together. Look through it and block what you don’t need. Then you can move to <span class="ui">Ask</span> or <span class="ui">Block All</span>. For more about rule sources, see <a href="../../../en/docs/rules/#sources">The list of rules</a>.</p>
     <details class="deep">
       <summary>Details: a “for review” rule applies before the mode</summary>
       <p>The rule is created at the program’s first connection and then works like any other rule: for any address, including <a class="term" href="../../../en/docs/glossary/#child-process">child processes</a>. If you later change <span class="ui">Allow connections without a rule</span>, the rules already recorded stay as they were. Change them in the <span class="ui">Rules</span> section, or delete them so that the program falls under the mode again.</p>
@@ -194,7 +194,7 @@
           <div class="mock-h">Updater Helper wants to connect<b class="mk">1</b></div>
           <div class="muted">updates.example.com:443 · TCP</div>
         </div>
-        <div style="display: grid; justify-items: end; gap: 6px"><span><b class="mk">2</b><span class="mock-pill">47 s</span></span><span class="mock-pill proxy">+2 waiting</span></div>
+        <div style="display: grid; justify-items: end; gap: 6px"><span><b class="mk">2</b><span class="mock-pill">47 s</span></span><span class="mock-pill info">+2 waiting</span></div>
       </div>
       <div class="mock-group" style="display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 12px; padding: 12px">
         <span class="muted">Path</span><span>/Library/Application Support/Exa…/MacOS/Updater Helper</span>
@@ -260,7 +260,7 @@
     <div class="callout tip">
       <p>To make a program go through the proxy, choose the <span class="ui">While the process runs</span> or <span class="ui">Forever</span> duration. Routekeeper sends connections through a proxy according to a saved rule.</p>
     </div>
-    <p><b>Gave the wrong answer?</b> Open <span class="ui">Rules</span> and choose <span class="ui">From Prompt</span> in the <span class="ui">Source</span> filter. All the rules made from prompts are there: you can change, turn off or delete them. To undo the last change, press <kbd>⌘Z</kbd>.</p>
+    <p><b>Gave the wrong answer?</b> Open <span class="ui">Rules</span> and click the <span class="ui">Source</span> column header: the rules with the <span class="ui">From Prompt</span> source come together. You can change, turn off or delete them. To undo the last change, press <kbd>⌘Z</kbd>.</p>
 
     <h4>If there are many connections</h4>
     <ul>
@@ -298,8 +298,8 @@
     <p>Decisions are made by the <a class="term" href="../../../en/docs/glossary/#network-extension">network extension</a>, but the prompt is shown by the Routekeeper app. If the app isn’t running, there’s no one to ask. This happens if you clicked <span class="ui">Quit Routekeeper</span>, after a restart before you log in, or while the app hasn’t been opened yet.</p>
     <p>In that case, the connection of a program without a rule is allowed, and a <span class="ui">For Review</span> rule is recorded for it: allow the whole app. From then on, this program goes online without prompts until you change the rule. If you quit Routekeeper while prompts are open, the waiting connections are allowed too.</p>
     <ul>
-      <li>Turn on <span class="ui">Settings → General → Open at login</span>. It’s off by default, and after a restart there will be no prompts until you open Routekeeper.</li>
-      <li>From time to time, look through <span class="ui">Rules → Source → For Review</span>.</li>
+      <li>Keep <span class="ui">Settings → General → Open at login</span> on. Without it, after a restart there will be no prompts until you open Routekeeper.</li>
+      <li>From time to time, look through the rules with the <span class="ui">For Review</span> source in <span class="ui">Rules</span>.</li>
     </ul>
 
     <h3>Where you can see what’s waiting for an answer</h3>

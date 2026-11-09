@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../../assets/nav.css?v=c53c1160">
-<link rel="stylesheet" href="../../docs/assets/docs.css?v=f665767d">
+<link rel="stylesheet" href="../../docs/assets/docs.css?v=a9c26763">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/ru/start.html. Edit the fragment, not this file. -->
@@ -220,7 +220,7 @@
           <div class="mock-sub">Приложение целиком или сервис — сайт или мессенджер во всех приложениях сразу. Остальное будет работать как обычно. Список можно поменять в любой момент.</div>
         </div>
       </div>
-      <div class="mock-btns end"><b class="mk">4</b><span style="padding: 2px 8px; border: 1px dashed var(--m-line2); border-radius: 6px; color: var(--m-accent); opacity: .7">Настрою позже</span></div>
+      <div class="mock-btns"><span class="mock-box on"></span>Запускать при входе в систему<b class="mk">4</b><span class="grow"></span><b class="mk">5</b><span class="mock-ghost mock-link">Настрою позже</span></div>
     </div>
   </div></div>
   <figcaption>
@@ -228,6 +228,7 @@
       <li>Пройденный шаг: зелёная галочка вместо номера, кнопок больше нет.</li>
       <li>Текущий шаг: синий номер и кнопка. Здесь это <span class="ui">Включить фильтр</span>, после нажатия macOS покажет окно с вопросом.</li>
       <li>Следующие шаги бледные и без кнопок. Они открываются по очереди, когда пройден предыдущий.</li>
+      <li><span class="ui">Запускать при входе в систему</span> отмечено заранее. Routekeeper добавится в объекты входа, когда вы закроете приветственный экран. Правила работают и без открытого приложения, но без него нет уведомлений, вопросов файрвола и обновлений. Позже это меняется в настройках.</li>
       <li><span class="ui">Настрою позже</span> появляется здесь, когда все три разрешения получены (на схеме обведена пунктиром). Кнопка пропускает шаги с прокси и приложениями.</li>
     </ol>
     Схема приветственного экрана: расширение установлено, следующий шаг — фильтр. Данные выдуманные.
@@ -437,9 +438,9 @@
 </ul>
 <p>Если в буфере обмена нет строки прокси, Routekeeper так и скажет и покажет пример. Какие форматы строк он понимает, описано на странице <a href="../../docs/proxies/#paste">«Прокси»</a>.</p>
 <div class="callout tip">
-  <p><b>Приветственный экран уже закрыт?</b> Откройте раздел <span class="ui">Прокси</span> и нажмите <kbd>⌘V</kbd> или кнопку <span class="ui">Вставить</span>.</p>
+  <p><b>Приветственный экран уже закрыт?</b> Откройте раздел <span class="ui">Прокси</span> и нажмите <kbd>⌘V</kbd> или кнопку <span class="ui">Вставить ссылку</span> под списком.</p>
 </div>
-<p>Кнопка <span class="ui">Настрою позже</span> внизу приветственного экрана пропускает шаги с прокси и приложениями. Вернуться к ним можно в разделах <span class="ui">Прокси</span> и <span class="ui">Приложения</span>.</p>
+<p>Кнопка <span class="ui">Настрою позже</span> внизу приветственного экрана пропускает шаги с прокси и приложениями. Вернуться к ним можно в разделах <span class="ui">Прокси</span> и <span class="ui">Приложения</span>. Галочка рядом, <span class="ui">Запускать при входе в систему</span>, уже стоит: снимите её, если не хотите, чтобы Routekeeper открывался после входа в систему.</p>
 
 <h2 id="first-app">Первое приложение</h2>
 <p>Последний шаг приветственного экрана, <span class="ui">Что пустить через прокси</span>, предлагает два способа. Их можно сочетать.</p>
@@ -461,7 +462,7 @@
 <p>Куда идёт весь трафик приложения, задаётся в разделе <span class="ui">Приложения</span>, а не в разделе <span class="ui">Правила</span>. <span class="ui">Правила</span> нужны для исключений: отдельный домен, адрес или порт.</p>
 <ul>
   <li>Меню <span class="ui">Добавить</span>: <span class="ui">Из списка установленных…</span>, <span class="ui">Выбрать файл…</span>, <span class="ui">Указать путь…</span> (для консольных программ, например <code>/opt/homebrew/bin/git</code>), <span class="ui">Сервис</span> и <span class="ui">Все сервисы…</span>. Приложение можно и просто перетащить в список из Finder или Dock.</li>
-  <li>Чтобы поменять маршрут, нажмите на него справа в строке приложения, например на <span class="ui">Прокси: Амстердам</span>. Выберите другой прокси, <span class="ui">Напрямую</span>, <span class="ui">Блокировать</span> или <span class="ui">Спрашивать</span>.</li>
+  <li>Чтобы поменять маршрут, нажмите на него справа в строке приложения, например на <span class="ui">Амстердам</span>. Выберите другой прокси, <span class="ui">Напрямую</span>, <span class="ui">Блокировать</span> или <span class="ui">Спрашивать</span>.</li>
   <li>Переключатель в конце строки выключает маршрут, не удаляя его.</li>
 </ul>
 <p>Подробно — на странице <a href="../../docs/apps/">«Приложения и сервисы»</a>.</p>

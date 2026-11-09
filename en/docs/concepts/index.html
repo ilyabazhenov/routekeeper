@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../../../assets/nav.css?v=c53c1160">
-<link rel="stylesheet" href="../../../docs/assets/docs.css?v=f665767d">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=a9c26763">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/en/concepts.html. Edit the fragment, not this file. -->
@@ -288,7 +288,7 @@
 <div class="table"><table>
   <thead><tr><th>Action</th><th>What happens to the connection</th><th>Notes</th></tr></thead>
   <tbody>
-    <tr><td><span class="ui">Through Proxy</span></td><td>It goes through the chosen proxy server. The site sees the proxy’s IP, not yours.</td><td>In lists, it’s shown by the proxy’s name, for example <span class="ui">Proxy: Amsterdam</span>. Only TCP goes through the proxy.</td></tr>
+    <tr><td><span class="ui">Through Proxy</span></td><td>It goes through the chosen proxy server. The site sees the proxy’s IP, not yours.</td><td>In lists, it’s shown by the proxy’s name, for example <span class="ui">Amsterdam</span>. Only TCP goes through the proxy.</td></tr>
     <tr><td><span class="ui">Direct</span></td><td>It goes through your usual connection, as it would without Routekeeper.</td><td>All the apps you haven’t added go this way by default.</td></tr>
     <tr><td><span class="ui">Block</span></td><td>The connection is cut right away. The app sees a network error.</td><td>At equal specificity, a blocking rule beats the others.</td></tr>
     <tr><td><span class="ui">Ask</span></td><td>The connection waits until you answer in the prompt: <span class="ui">Block</span>, <span class="ui">Through Proxy</span> or <span class="ui">Allow</span>.</td><td>With no answer, the connection is allowed after 60 seconds (you can change both values in <span class="ui">Settings</span> → <span class="ui">Firewall</span>). If the Routekeeper app isn’t running, there’s no one to ask, so the connection is allowed and an allow rule marked <span class="ui">For Review</span> is created for that app. Services don’t have this action.</td></tr>

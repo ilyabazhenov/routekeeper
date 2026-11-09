@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../../assets/nav.css?v=c53c1160">
-<link rel="stylesheet" href="../../docs/assets/docs.css?v=f665767d">
+<link rel="stylesheet" href="../../docs/assets/docs.css?v=a9c26763">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/ru/apps.html. Edit the fragment, not this file. -->
@@ -158,11 +158,11 @@
     <li>Приложения с подписью Developer ID — по идентификатору подписи вместе с Team ID разработчика.</li>
     <li>Программы с подписью ad-hoc и без подписи — по полному пути к исполняемому файлу.</li>
   </ul>
-  <p>Под названием приложения в строке написан этот идентификатор или путь, а также «+ дочерние процессы», если <a href="#child-processes">они включены</a>.</p>
+  <p>Под названием приложения в строке написан этот идентификатор или путь, а если <a href="#child-processes">дочерние процессы</a> выключены — ещё «без дочерних процессов». Если приложения с таким названием есть в двух местах, вместо идентификатора показана папка.</p>
 </details>
 
 <h2 id="route">Маршрут приложения</h2>
-<p>Справа в строке — меню маршрута. На нём написан текущий маршрут, например «Прокси: Амстердам» или «Напрямую». Щёлкните, чтобы выбрать другой:</p>
+<p>Справа в строке — меню маршрута. На нём написан текущий маршрут, например «Амстердам» (имя прокси) или «Напрямую». Щёлкните, чтобы выбрать другой:</p>
 <div class="table"><table>
   <thead><tr><th>Маршрут</th><th>Что происходит</th></tr></thead>
   <tbody>
@@ -173,7 +173,8 @@
   </tbody>
 </table></div>
 <p>Подробнее о действиях — в разделе <a href="../../docs/concepts/#actions">Как это работает</a>.</p>
-<p>Строки собраны в группы по маршруту: <span class="ui">Через прокси</span>, <span class="ui">Блокируются</span>, <span class="ui">Спрашивать</span>, <span class="ui">Напрямую</span>. Над ними раздел <span class="ui">Сервисы</span>. Если приложение сейчас передаёт данные через прокси, в его строке видна скорость «↕ …».</p>
+<p>Строки собраны в группы по маршруту: <span class="ui">Через прокси</span>, <span class="ui">Блокируются</span>, <span class="ui">Спрашивать</span>, <span class="ui">Напрямую</span>. Выключенные строки собраны в группу <span class="ui">Выключены</span>. Над ними раздел <span class="ui">Сервисы</span>. Если приложение сейчас передаёт данные через прокси, в его строке видна скорость «↕ …».</p>
+<p>Если приложение удалили или перенесли, его строка попадает в группу <span class="ui">Не найдены на диске</span>: такой маршрут ничего не направляет. Кнопка <span class="ui">Убрать все…</span> в заголовке группы удаляет все эти строки после подтверждения. Приложение на отключённом диске тоже считается ненайденным; удаление отменяет <kbd>⌘Z</kbd>.</p>
 <p>Внизу свёрнута группа <span class="ui">Разрешены автоматически</span> с числом строк. В ней программы Apple и приложения, установленные до Routekeeper, которым режим <span class="ui">Спрашивать</span> разрешил выход в сеть без вопроса. Если выбрать такому приложению маршрут, оно перейдёт в обычную группу.</p>
 <figure class="mock-fig">
   <div class="mock-scroll"><div class="mock mock-win" aria-hidden="true" style="min-width: 660px">
@@ -195,26 +196,25 @@
           <span class="mock-input dim" style="width: 170px">⌕ Поиск приложений</span>
           <span class="mock-btn">+ <span class="muted">⌄</span></span><b class="mk">1</b>
         </div>
-        <div class="mock-cap">Сервисы<b class="mk">2</b></div>
+        <div class="mock-cap" style="display: flex; align-items: center">Сервисы<span class="mock-help"></span><b class="mk">2</b></div>
         <div class="mock-group" style="min-width: 0">
           <div class="mock-row">
             <span class="mock-ico">&lt;/&gt;</span>
-            <div class="grow"><div>GitHub</div><div class="muted" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">github.com, githubusercontent.com и ещё 57 · во всех приложениях</div></div>
+            <div class="grow"><div>GitHub</div><div class="muted trunc">github.com, githubusercontent.com и ещё 57 · во всех приложениях</div></div>
             <span class="muted">ⓘ</span>
-            <span class="mock-pill mock-select mock-ok">Прокси: Амстердам</span>
+            <span class="mock-select mock-proxy">Амстердам</span>
             <span class="mock-toggle on"></span>
           </div>
-          <div class="mock-row"><div class="mock-btns" style="gap: 6px"><span class="mock-btn">✦ ChatGPT</span><span class="mock-btn">✦ Claude</span><span class="mock-btn">‹/› GitHub</span><span class="mock-btn"># Slack</span><span class="mock-btn">Все сервисы…</span></div></div>
+          <div class="mock-row"><div class="mock-btns" style="gap: 6px"><span class="mock-btn">▶ YouTube</span><span class="mock-btn">✈ Telegram</span><span class="mock-btn">✦ ChatGPT</span><span class="mock-btn">✦ Claude</span><span class="mock-btn">Все сервисы…</span></div></div>
         </div>
-        <div class="mock-note">Сервис идёт этим путём во всех приложениях. Правило для конкретного домена в разделе «Правила» важнее сервиса.</div>
         <div class="mock-cap">Через прокси<b class="mk">3</b></div>
         <div class="mock-group" style="min-width: 0">
           <div class="mock-row">
             <span class="mock-ico o">S</span>
-            <div class="grow"><div>Slack</div><div class="muted" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">com.tinyspeck.slackmacgap · + дочерние процессы</div></div>
+            <div class="grow"><div>Slack</div><div class="muted trunc">com.tinyspeck.slackmacgap</div></div>
             <span class="muted">↕ 340 КБ/с</span>
             <div class="mock-popup">
-              <span class="mock-pill mock-select mock-ok">Прокси: Амстердам</span>
+              <span class="mock-select mock-proxy">Амстердам</span>
               <div class="mock-menu" style="top: calc(100% + 4px); right: 0">
                 <div class="lbl">Через прокси</div>
                 <div class="mi"><span class="tick">✓</span>Амстердам</div>
@@ -230,21 +230,39 @@
           </div>
           <div class="mock-row">
             <span class="mock-ico g">C</span>
-            <div class="grow"><div>Chrome</div><div class="muted" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">com.google.Chrome · + дочерние процессы</div></div>
-            <span class="mock-pill mock-select mock-ok">Прокси: Амстердам</span>
+            <div class="grow"><div>Chrome</div><div class="muted trunc">com.google.Chrome</div></div>
+            <span class="mock-select mock-proxy">Амстердам</span>
             <span class="mock-toggle on"></span>
           </div>
         </div>
         <div class="mock-cap">Напрямую</div>
         <div class="mock-group" style="min-width: 0">
           <div class="mock-row">
-            <span class="mock-ico">Z</span>
-            <div class="grow"><div>Zoom</div><div class="muted" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">us.zoom.xos · + дочерние процессы</div></div>
-            <span class="mock-pill mock-select">Напрямую</span>
+            <span class="mock-ico s">T</span>
+            <div class="grow"><div>Терминал</div><div class="muted trunc">com.apple.Terminal · без дочерних процессов</div></div>
+            <span class="mock-select">Напрямую</span>
             <span class="mock-toggle on"></span>
           </div>
         </div>
+        <div class="mock-cap">Выключены<b class="mk">5</b></div>
+        <div class="mock-group" style="min-width: 0">
+          <div class="mock-row">
+            <span class="mock-ico dim">Z</span>
+            <div class="grow"><div class="dim">Zoom</div><div class="muted trunc">Выключено. Сейчас: напрямую. · us.zoom.xos</div></div>
+            <span class="mock-select muted dim">Амстердам</span>
+            <span class="mock-toggle"></span>
+          </div>
+        </div>
         <div class="mock-note">Здесь задаётся, куда идёт весь трафик приложения. Исключения по доменам — в разделе «Правила».</div>
+        <div class="mock-cap" style="display: flex; align-items: baseline; gap: 6px">Не найдены на диске <span class="muted">1</span><b class="mk">6</b><span class="right mock-link" style="text-transform: none; letter-spacing: 0">Убрать все…</span></div>
+        <div class="mock-group" style="min-width: 0">
+          <div class="mock-row">
+            <span class="mock-ico s">F</span>
+            <div class="grow"><div>Firefox</div><div class="muted trunc">/Applications/Firefox.app</div></div>
+            <span class="mock-select mock-proxy">Амстердам</span>
+            <span class="mock-toggle on"></span>
+          </div>
+        </div>
         <div class="mock-cap">› Разрешены автоматически <span class="muted">143</span></div>
       </div>
     </div>
@@ -252,9 +270,11 @@
   <figcaption>
     <ol class="mk-legend">
       <li>Кнопка <span class="ui">Добавить</span> со значком «+». Щелчок открывает список установленных приложений, стрелка рядом — меню с другими способами добавить приложение и с сервисами.</li>
-      <li><span class="ui">Сервисы</span>: маршрут для адресов сервиса во всех приложениях. <span class="ui">ⓘ</span> открывает карточку сервиса. Кнопки ниже добавляют популярные сервисы одним щелчком.</li>
-      <li>Приложения собраны в группы по маршруту: <span class="ui">Через прокси</span>, <span class="ui">Блокируются</span>, <span class="ui">Спрашивать</span>, <span class="ui">Напрямую</span>. Группа без строк не показывается.</li>
-      <li>Меню маршрута: прокси по названиям, затем <span class="ui">Напрямую</span>, <span class="ui">Блокировать</span> и <span class="ui">Спрашивать</span>. Галочка отмечает текущий маршрут. У сервиса в этом меню нет <span class="ui">Спрашивать</span>.</li>
+      <li><span class="ui">Сервисы</span>: маршрут для адресов сервиса во всех приложениях. «?» рядом с заголовком напоминает, что правило для конкретного домена в разделе <span class="ui">Правила</span> важнее сервиса. <span class="ui">ⓘ</span> в строке открывает карточку сервиса. Кнопки ниже добавляют популярные сервисы одним щелчком.</li>
+      <li>Приложения собраны в группы по маршруту: <span class="ui">Через прокси</span>, <span class="ui">Блокируются</span>, <span class="ui">Спрашивать</span>, <span class="ui">Напрямую</span>. Группа без строк не показывается. Под названием — идентификатор приложения; «без дочерних процессов» дописано, только если дочерние процессы выключены.</li>
+      <li>Меню маршрута: прокси по названиям, затем <span class="ui">Напрямую</span>, <span class="ui">Блокировать</span> и <span class="ui">Спрашивать</span>. Галочка отмечает текущий маршрут, прокси в строке назван просто по имени, синим. У сервиса в этом меню нет <span class="ui">Спрашивать</span>.</li>
+      <li><span class="ui">Выключены</span>: приложения с выключенным переключателем. Их маршрут серый и не действует, а под названием написано, куда трафик идёт сейчас.</li>
+      <li><span class="ui">Не найдены на диске</span>: приложения, которые удалили или переместили (или они на отключённом диске). Вместо идентификатора — путь. <span class="ui">Убрать все…</span> после подтверждения удаляет их маршруты.</li>
     </ol>
     Схема раздела <span class="ui">Приложения</span> с открытым меню маршрута у Slack. Данные выдуманные.
   </figcaption>
@@ -262,7 +282,7 @@
 
 <h3 id="manage">Включить, выключить, удалить</h3>
 <ul>
-  <li><b>Переключатель</b> справа выключает строку, не удаляя её. Выключенная строка не действует: приложение идёт по остальным правилам и по <a href="../../docs/firewall/#modes">режиму</a>. В режиме <span class="ui">Только прокси</span> это значит напрямую.</li>
+  <li><b>Переключатель</b> справа выключает строку, не удаляя её. Строка переходит в группу <span class="ui">Выключены</span>, и в ней написано, как приложение идёт сейчас. Выключенная строка не действует: приложение идёт по остальным правилам и по <a href="../../docs/firewall/#modes">режиму</a>. В режиме <span class="ui">Только прокси</span> это значит напрямую.</li>
   <li><b>Контекстное меню</b> (щелчок правой кнопкой): <span class="ui">Маршрут</span>, <span class="ui">Включить</span> или <span class="ui">Выключить</span>, <span class="ui">Вместе с дочерними процессами</span>, <span class="ui">Показать в Finder</span>, <span class="ui">Удалить</span>. Маршрут, включение и удаление работают и для нескольких выделенных строк сразу.</li>
   <li><b>Удалить</b> можно и клавишей Delete. Последнее изменение отменяет <kbd>⌘Z</kbd>.</li>
   <li><b>Поиск</b> на панели инструментов ищет по названию и идентификатору приложения, а сервисы — ещё и по домену: <code>githubusercontent.com</code> найдёт GitHub.</li>
@@ -270,7 +290,7 @@
 <p>Приложение, которого нет в списке, идёт по режиму. В режиме <span class="ui">Только прокси</span> — напрямую.</p>
 <div class="callout tip"><p>Строка приложения задаёт, куда идёт <b>весь</b> его трафик. Каждая такая строка — это правило, его видно и в разделе <span class="ui">Правила</span> с назначением «Любой адрес». Чтобы часть адресов приложения шла иначе, добавьте правило: <a href="../../docs/rules/#when">Когда нужно правило</a>.</p></div>
 <details class="deep"><summary>Подробнее: какие правила показаны в «Приложениях»</summary>
-  <p>Здесь показаны постоянные правила с конкретным приложением, любым адресом, без порта и протокола. Ответ в окне вопроса со сроком <span class="ui">Навсегда</span> и назначением <span class="ui">Куда угодно</span> тоже становится такой строкой. Временные правила со сроком «Пока процесс работает», правила для отдельных адресов и встроенные правила видны только в разделе <a href="../../docs/rules/#sources">Правила</a>.</p>
+  <p>Здесь показаны постоянные правила с конкретным приложением, любым адресом, без порта и протокола. Ответ в окне вопроса со сроком <span class="ui">Навсегда</span> и назначением <span class="ui">Куда угодно</span> тоже становится такой строкой. Временные правила со сроком «Пока процесс работает», правила для отдельных адресов и встроенные правила видны только в разделе <a href="../../docs/rules/#sources">Правила</a>; встроенные — в <span class="ui">Системные</span>.</p>
 </details>
 
 <h2 id="child-processes">Дочерние процессы</h2>
@@ -386,7 +406,7 @@
     <div class="mock-main">
       <div class="mock-cap">Что делает правило</div>
       <div class="mock-group" style="min-width: 0">
-        <div class="mock-row"><span class="grow">Маршрут</span><span class="mock-pill mock-select mock-ok">Прокси: Амстердам</span></div>
+        <div class="mock-row"><span class="grow">Маршрут</span><span class="mock-select mock-proxy">Амстердам</span></div>
         <div class="mock-row"><div class="grow">Любое приложение, которое обращается к адресам GitHub из списка ниже, идёт через прокси «Амстердам». Маршрут самого приложения здесь не действует.</div><b class="mk">1</b></div>
         <div class="mock-row">
           <div class="grow"><div>Важнее этого правила:</div><div class="muted" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Все приложения · objects.githubusercontent.com → Прокси: Франкфурт</div></div>

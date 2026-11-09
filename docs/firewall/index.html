@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../../assets/nav.css?v=c53c1160">
-<link rel="stylesheet" href="../../docs/assets/docs.css?v=f665767d">
+<link rel="stylesheet" href="../../docs/assets/docs.css?v=a9c26763">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/ru/firewall.html. Edit the fragment, not this file. -->
@@ -177,7 +177,7 @@
         <tr><td><span class="ui">Создавать правила «на проверку»</span></td><td>Выключен</td><td>Для каждой новой программы без правила Routekeeper записывает правило на всё приложение: разрешить или блокировать, смотря по первому переключателю. У таких правил источник <span class="ui">На проверку</span>.</td></tr>
       </tbody>
     </table></div>
-    <p>Пример: включите оба переключателя и поработайте несколько дней. В <span class="ui">Правила → Источник → На проверку</span> соберётся список всего, что выходило в сеть. Просмотрите его, лишнее заблокируйте, и тогда можно переходить на <span class="ui">Спрашивать</span> или <span class="ui">Блокировать всё</span>. Про источники правил — в разделе <a href="../../docs/rules/#sources">«Список правил»</a>.</p>
+    <p>Пример: включите оба переключателя и поработайте несколько дней. В <span class="ui">Правилах</span> соберётся список всего, что выходило в сеть, с источником <span class="ui">На проверку</span>. Щёлкните заголовок столбца <span class="ui">Источник</span>, чтобы они встали рядом. Просмотрите его, лишнее заблокируйте, и тогда можно переходить на <span class="ui">Спрашивать</span> или <span class="ui">Блокировать всё</span>. Про источники правил — в разделе <a href="../../docs/rules/#sources">«Список правил»</a>.</p>
     <details class="deep">
       <summary>Подробнее: правило «на проверку» срабатывает раньше режима</summary>
       <p>Правило создаётся при первом соединении программы и дальше действует как обычное: на любой адрес, вместе с <a class="term" href="../../docs/glossary/#child-process">дочерними процессами</a>. Если позже переключить <span class="ui">Разрешать соединения без правила</span>, уже записанные правила останутся прежними. Поменяйте их в разделе <span class="ui">Правила</span> или удалите, чтобы программа снова попала под режим.</p>
@@ -194,7 +194,7 @@
           <div class="mock-h">Updater Helper хочет подключиться<b class="mk">1</b></div>
           <div class="muted">updates.example.com:443 · TCP</div>
         </div>
-        <div style="display: grid; justify-items: end; gap: 6px"><span><b class="mk">2</b><span class="mock-pill">47 с</span></span><span class="mock-pill proxy">+2 ждут</span></div>
+        <div style="display: grid; justify-items: end; gap: 6px"><span><b class="mk">2</b><span class="mock-pill">47 с</span></span><span class="mock-pill info">+2 ждут</span></div>
       </div>
       <div class="mock-group" style="display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 12px; padding: 12px">
         <span class="muted">Путь</span><span>/Library/Application Support/Exa…/MacOS/Updater Helper</span>
@@ -260,7 +260,7 @@
     <div class="callout tip">
       <p>Чтобы программа пошла через прокси, выбирайте срок <span class="ui">Пока процесс работает</span> или <span class="ui">Навсегда</span>. Через прокси Routekeeper отправляет соединения по сохранённому правилу.</p>
     </div>
-    <p><b>Ответили не то?</b> Откройте <span class="ui">Правила</span>, в фильтре <span class="ui">Источник</span> выберите <span class="ui">Из алерта</span>. Там все правила из окна вопроса: их можно изменить, выключить или удалить. Последнее изменение отменяется <kbd>⌘Z</kbd>.</p>
+    <p><b>Ответили не то?</b> Откройте <span class="ui">Правила</span> и щёлкните заголовок столбца <span class="ui">Источник</span>: правила с источником <span class="ui">Из окна-вопроса</span> встанут рядом. Их можно изменить, выключить или удалить. Последнее изменение отменяется <kbd>⌘Z</kbd>.</p>
 
     <h4>Если соединений много</h4>
     <ul>
@@ -298,8 +298,8 @@
     <p>Решения принимает <a class="term" href="../../docs/glossary/#network-extension">сетевое расширение</a>, а окно вопроса показывает приложение Routekeeper. Если приложение не запущено, спросить некого. Так бывает, если вы нажали <span class="ui">Завершить Routekeeper</span>, после перезагрузки до входа в систему или пока приложение ещё не открыто.</p>
     <p>Тогда соединение программы без правила разрешается, и для неё записывается правило <span class="ui">На проверку</span>: разрешить всё приложение. Дальше эта программа ходит в сеть без вопросов, пока вы не измените правило. Если завершить Routekeeper, когда окна вопросов открыты, ждущие соединения тоже разрешаются.</p>
     <ul>
-      <li>Включите <span class="ui">Настройки → Основные → Запускать при входе в систему</span>. По умолчанию он выключен, и после перезагрузки вопросов не будет, пока вы не откроете Routekeeper.</li>
-      <li>Время от времени просматривайте <span class="ui">Правила → Источник → На проверку</span>.</li>
+      <li>Не выключайте <span class="ui">Настройки → Основные → Запускать при входе в систему</span>. Без него после перезагрузки вопросов не будет, пока вы не откроете Routekeeper.</li>
+      <li>Время от времени просматривайте в <span class="ui">Правилах</span> правила с источником <span class="ui">На проверку</span>.</li>
     </ul>
 
     <h3>Где видно, что ждёт ответа</h3>

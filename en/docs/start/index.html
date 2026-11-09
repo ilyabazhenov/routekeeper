@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../../../assets/nav.css?v=c53c1160">
-<link rel="stylesheet" href="../../../docs/assets/docs.css?v=f665767d">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=a9c26763">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/en/start.html. Edit the fragment, not this file. -->
@@ -220,7 +220,7 @@
           <div class="mock-sub">A whole app, or a service: a site or a messenger in every app at once. Everything else works as usual. You can change the list at any time.</div>
         </div>
       </div>
-      <div class="mock-btns end"><b class="mk">4</b><span style="padding: 2px 8px; border: 1px dashed var(--m-line2); border-radius: 6px; color: var(--m-accent); opacity: .7">I’ll Do It Later</span></div>
+      <div class="mock-btns"><span class="mock-box on"></span>Open at login<b class="mk">4</b><span class="grow"></span><b class="mk">5</b><span class="mock-ghost mock-link">I’ll Do It Later</span></div>
     </div>
   </div></div>
   <figcaption>
@@ -228,6 +228,7 @@
       <li>A finished step: a green check mark instead of the number, and no more buttons.</li>
       <li>The current step: a blue number and a button. Here it’s <span class="ui">Turn On Filter</span>; when you click it, macOS shows a window with a question.</li>
       <li>The next steps are dimmed and have no buttons. They open one by one, once the previous step is done.</li>
+      <li><span class="ui">Open at login</span> is ticked in advance. Routekeeper is added to login items when you close the welcome screen. Rules work without the app open, but without it there are no notifications, firewall prompts or updates. You can change this later in Settings.</li>
       <li><span class="ui">I’ll Do It Later</span> appears here once all three permissions are given (it has a dashed outline in this sketch). It skips the proxy and app steps.</li>
     </ol>
     A sketch of the welcome screen: the extension is installed, and the filter is next. The data is made up.
@@ -437,9 +438,9 @@
 </ul>
 <p>If the clipboard has no proxy string, Routekeeper tells you so and shows an example. Which string formats it understands is described in <a href="../../../en/docs/proxies/#paste">Proxies</a>.</p>
 <div class="callout tip">
-  <p><b>Already past the welcome screen?</b> Open the <span class="ui">Proxy</span> section and press <kbd>⌘V</kbd> or click the <span class="ui">Paste</span> button.</p>
+  <p><b>Already past the welcome screen?</b> Open the <span class="ui">Proxy</span> section and press <kbd>⌘V</kbd> or click the <span class="ui">Paste Link</span> button below the list.</p>
 </div>
-<p>The <span class="ui">I’ll Do It Later</span> button at the bottom of the welcome screen skips the proxy and app steps. You can come back to them in the <span class="ui">Proxy</span> and <span class="ui">Apps</span> sections.</p>
+<p>The <span class="ui">I’ll Do It Later</span> button at the bottom of the welcome screen skips the proxy and app steps. You can come back to them in the <span class="ui">Proxy</span> and <span class="ui">Apps</span> sections. The <span class="ui">Open at login</span> checkbox next to it is already ticked: clear it if you don’t want Routekeeper to open when you log in.</p>
 
 <h2 id="first-app">Your first app</h2>
 <p>The last step of the welcome screen, <span class="ui">What to send through the proxy</span>, offers two ways. You can combine them.</p>
@@ -461,7 +462,7 @@
 <p>Where all of an app’s traffic goes is set in the <span class="ui">Apps</span> section, not in the <span class="ui">Rules</span> section. <span class="ui">Rules</span> are for exceptions: a single domain, address or port.</p>
 <ul>
   <li>The <span class="ui">Add</span> menu has <span class="ui">From Installed Apps…</span>, <span class="ui">Choose File…</span>, <span class="ui">Enter Path…</span> (for command-line tools, for example <code>/opt/homebrew/bin/git</code>), <span class="ui">Service</span> and <span class="ui">All Services…</span>. You can also simply drag an app into the list from Finder or the Dock.</li>
-  <li>To change a route, click it on the right side of the app’s row, for example <span class="ui">Proxy: Amsterdam</span>. Choose another proxy, <span class="ui">Direct</span>, <span class="ui">Block</span> or <span class="ui">Ask</span>.</li>
+  <li>To change a route, click it on the right side of the app’s row, for example <span class="ui">Amsterdam</span>. Choose another proxy, <span class="ui">Direct</span>, <span class="ui">Block</span> or <span class="ui">Ask</span>.</li>
   <li>The switch at the end of the row turns the route off without deleting it.</li>
 </ul>
 <p>For details, see <a href="../../../en/docs/apps/">Apps and services</a>.</p>

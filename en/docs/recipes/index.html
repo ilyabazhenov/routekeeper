@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../../../assets/nav.css?v=c53c1160">
-<link rel="stylesheet" href="../../../docs/assets/docs.css?v=f665767d">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=a9c26763">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/en/recipes.html. Edit the fragment, not this file. -->
@@ -143,7 +143,7 @@
 <ol class="steps">
   <li>Open the Routekeeper window (menu bar icon → <span class="ui">Open Routekeeper</span>) and go to <span class="ui">Proxy</span>. Make sure the proxy has a green dot. If the dot is gray or red, select the proxy and click <span class="ui">Check</span>. Next to the button, you’ll see “Working”, the response time and the external IP, or an error message.</li>
   <li>Go to <span class="ui">Apps</span>, click <span class="ui">Add</span> → <span class="ui">From Installed Apps…</span>, select the messenger and click <span class="ui">Add</span>. You can also simply drag the app from Finder into the list.</li>
-  <li>Look at the messenger’s row. Its route is on the right, for example <span class="ui">Proxy: Amsterdam</span>. A new app gets the main proxy right away: the one that most rules go through. If there are no proxies yet, the route is <span class="ui">Direct</span>. To choose another proxy, click the route and pick one in the menu.</li>
+  <li>Look at the messenger’s row. Its route is on the right, for example <span class="ui">Amsterdam</span>, the proxy’s name. A new app gets the main proxy right away: the one that most rules go through. If there are no proxies yet, the route is <span class="ui">Direct</span>. To choose another proxy, click the route and pick one in the menu.</li>
   <li>Right-click the row and check that <span class="ui">Include Child Processes</span> is selected. It is by default. Then the messenger’s helper processes follow the route too, and they usually carry almost all of its traffic.</li>
   <li>Quit the messenger completely (<kbd>⌘Q</kbd>) and open it again. Connections that are already open don’t move to the new route, and messengers keep a connection open for hours.</li>
 </ol>
@@ -270,7 +270,7 @@
 <ol class="steps">
   <li>In the client’s settings, find the local SOCKS5 inbound (sometimes it’s called mixed): the address <code>127.0.0.1</code> and a port, for example <code>1080</code> or <code>7890</code>.</li>
   <li>In the client, turn off System Proxy and TUN mode (also called Enhanced Mode). Only one program should manage the routes. Otherwise, Routekeeper’s rules won’t apply.</li>
-  <li>In Routekeeper, open <span class="ui">Proxy</span> and add a proxy. The easiest way is to copy a line like <code>socks5://127.0.0.1:<span class="ph">7890</span></code> and click <span class="ui">Paste</span> under the list of proxies: the fields fill in by themselves. Or click <span class="ui">Add Proxy</span> and fill them in yourself: <span class="ui">Type</span> is SOCKS5, <span class="ui">Server</span> is <code>127.0.0.1</code>, <span class="ui">Port</span> is the client’s port. Leave the <span class="ui">DNS through proxy</span> and <span class="ui">Block UDP and QUIC</span> switches on. Click <span class="ui">Add</span>.</li>
+  <li>In Routekeeper, open <span class="ui">Proxy</span> and add a proxy. The easiest way is to copy a line like <code>socks5://127.0.0.1:<span class="ph">7890</span></code> and click <span class="ui">Paste Link</span> under the list of proxies: the fields fill in by themselves. Or click <span class="ui">Add Proxy</span> and fill them in yourself: <span class="ui">Type</span> is SOCKS5, <span class="ui">Server</span> is <code>127.0.0.1</code>, <span class="ui">Port</span> is the client’s port. Leave the <span class="ui">DNS through proxy</span> and <span class="ui">Block UDP and QUIC</span> switches on. Click <span class="ui">Add</span>.</li>
   <li>Routekeeper checks the new proxy right away. The external IP appears next to the <span class="ui">Check</span> button: the address of the server the client is connected to.</li>
   <li>In <span class="ui">Apps</span>, send the apps you need to this proxy, as in the <a href="#messenger">messenger recipe</a>.</li>
   <li>If you work in <span class="ui">Ask</span> or <span class="ui">Block All</span> mode, allow the client itself to go online: add it to <span class="ui">Apps</span> with the <span class="ui">Direct</span> route. In <span class="ui">Proxy Only</span> mode, you don’t need this step.</li>

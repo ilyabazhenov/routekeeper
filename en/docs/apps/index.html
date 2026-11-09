@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../../../assets/nav.css?v=c53c1160">
-<link rel="stylesheet" href="../../../docs/assets/docs.css?v=f665767d">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=a9c26763">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/en/apps.html. Edit the fragment, not this file. -->
@@ -158,11 +158,11 @@
     <li>Apps signed with a Developer ID: by the signing identifier together with the developer’s Team ID.</li>
     <li>Programs with an ad-hoc signature or no signature: by the full path to the executable file.</li>
   </ul>
-  <p>Under the app’s name, the row shows this identifier or path, and also “+ child processes” if <a href="#child-processes">they’re on</a>.</p>
+  <p>Under the app’s name, the row shows this identifier or path, and “without child processes” if <a href="#child-processes">child processes</a> are off. If apps with the same name are in two places, the row shows the folder instead of the identifier.</p>
 </details>
 
 <h2 id="route">An app’s route</h2>
-<p>On the right of the row is the route menu. It shows the current route, for example “Proxy: Amsterdam” or “Direct”. Click it to choose another one:</p>
+<p>On the right of the row is the route menu. It shows the current route, for example “Amsterdam” (the proxy’s name) or “Direct”. Click it to choose another one:</p>
 <div class="table"><table>
   <thead><tr><th>Route</th><th>What happens</th></tr></thead>
   <tbody>
@@ -173,7 +173,8 @@
   </tbody>
 </table></div>
 <p>For more about actions, see <a href="../../../en/docs/concepts/#actions">How it works</a>.</p>
-<p>Rows are grouped by route: <span class="ui">Through Proxy</span>, <span class="ui">Blocked</span>, <span class="ui">Ask</span>, <span class="ui">Direct</span>. Above them is the <span class="ui">Services</span> section. If an app is sending data through the proxy right now, its row shows the speed “↕ …”.</p>
+<p>Rows are grouped by route: <span class="ui">Through Proxy</span>, <span class="ui">Blocked</span>, <span class="ui">Ask</span>, <span class="ui">Direct</span>. Turned-off rows are in the <span class="ui">Turned Off</span> group. Above them is the <span class="ui">Services</span> section. If an app is sending data through the proxy right now, its row shows the speed “↕ …”.</p>
+<p>If an app was deleted or moved, its row goes to the <span class="ui">Not Found on Disk</span> group: such a route sends nothing anywhere. The <span class="ui">Remove All…</span> button in the group’s header deletes all these rows after you confirm. An app on a disconnected disk counts as not found too; <kbd>⌘Z</kbd> undoes the deletion.</p>
 <p>At the bottom is the collapsed <span class="ui">Allowed Automatically</span> group, with the number of rows in it. It holds Apple programs and apps installed before Routekeeper that <span class="ui">Ask</span> mode allowed to go online without asking. If you choose a route for such an app, it moves to a regular group.</p>
 <figure class="mock-fig">
   <div class="mock-scroll"><div class="mock mock-win" aria-hidden="true" style="min-width: 660px">
@@ -195,26 +196,25 @@
           <span class="mock-input dim" style="width: 170px">⌕ Search Apps</span>
           <span class="mock-btn">+ <span class="muted">⌄</span></span><b class="mk">1</b>
         </div>
-        <div class="mock-cap">Services<b class="mk">2</b></div>
+        <div class="mock-cap" style="display: flex; align-items: center">Services<span class="mock-help"></span><b class="mk">2</b></div>
         <div class="mock-group" style="min-width: 0">
           <div class="mock-row">
             <span class="mock-ico">&lt;/&gt;</span>
-            <div class="grow"><div>GitHub</div><div class="muted" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">github.com, githubusercontent.com and 57 more · in every app</div></div>
+            <div class="grow"><div>GitHub</div><div class="muted trunc">github.com, githubusercontent.com and 57 more · in every app</div></div>
             <span class="muted">ⓘ</span>
-            <span class="mock-pill mock-select mock-ok">Proxy: Amsterdam</span>
+            <span class="mock-select mock-proxy">Amsterdam</span>
             <span class="mock-toggle on"></span>
           </div>
-          <div class="mock-row"><div class="mock-btns" style="gap: 6px"><span class="mock-btn">✦ ChatGPT</span><span class="mock-btn">✦ Claude</span><span class="mock-btn">‹/› GitHub</span><span class="mock-btn"># Slack</span><span class="mock-btn">All Services…</span></div></div>
+          <div class="mock-row"><div class="mock-btns" style="gap: 6px"><span class="mock-btn">▶ YouTube</span><span class="mock-btn">✈ Telegram</span><span class="mock-btn">✦ ChatGPT</span><span class="mock-btn">✦ Claude</span><span class="mock-btn">All Services…</span></div></div>
         </div>
-        <div class="mock-note">A service takes this route in every app. A rule for a specific domain in Rules beats the service.</div>
         <div class="mock-cap">Through Proxy<b class="mk">3</b></div>
         <div class="mock-group" style="min-width: 0">
           <div class="mock-row">
             <span class="mock-ico o">S</span>
-            <div class="grow"><div>Slack</div><div class="muted" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">com.tinyspeck.slackmacgap · + child processes</div></div>
+            <div class="grow"><div>Slack</div><div class="muted trunc">com.tinyspeck.slackmacgap</div></div>
             <span class="muted">↕ 340 KB/s</span>
             <div class="mock-popup">
-              <span class="mock-pill mock-select mock-ok">Proxy: Amsterdam</span>
+              <span class="mock-select mock-proxy">Amsterdam</span>
               <div class="mock-menu" style="top: calc(100% + 4px); right: 0">
                 <div class="lbl">Through Proxy</div>
                 <div class="mi"><span class="tick">✓</span>Amsterdam</div>
@@ -230,21 +230,39 @@
           </div>
           <div class="mock-row">
             <span class="mock-ico g">C</span>
-            <div class="grow"><div>Chrome</div><div class="muted" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">com.google.Chrome · + child processes</div></div>
-            <span class="mock-pill mock-select mock-ok">Proxy: Amsterdam</span>
+            <div class="grow"><div>Chrome</div><div class="muted trunc">com.google.Chrome</div></div>
+            <span class="mock-select mock-proxy">Amsterdam</span>
             <span class="mock-toggle on"></span>
           </div>
         </div>
         <div class="mock-cap">Direct</div>
         <div class="mock-group" style="min-width: 0">
           <div class="mock-row">
-            <span class="mock-ico">Z</span>
-            <div class="grow"><div>Zoom</div><div class="muted" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">us.zoom.xos · + child processes</div></div>
-            <span class="mock-pill mock-select">Direct</span>
+            <span class="mock-ico s">T</span>
+            <div class="grow"><div>Terminal</div><div class="muted trunc">com.apple.Terminal · without child processes</div></div>
+            <span class="mock-select">Direct</span>
             <span class="mock-toggle on"></span>
           </div>
         </div>
+        <div class="mock-cap">Turned Off<b class="mk">5</b></div>
+        <div class="mock-group" style="min-width: 0">
+          <div class="mock-row">
+            <span class="mock-ico dim">Z</span>
+            <div class="grow"><div class="dim">Zoom</div><div class="muted trunc">Off. Now: direct. · us.zoom.xos</div></div>
+            <span class="mock-select muted dim">Amsterdam</span>
+            <span class="mock-toggle"></span>
+          </div>
+        </div>
         <div class="mock-note">This sets where all of an app’s traffic goes. Per-domain exceptions live in Rules.</div>
+        <div class="mock-cap" style="display: flex; align-items: baseline; gap: 6px">Not Found on Disk <span class="muted">1</span><b class="mk">6</b><span class="right mock-link" style="text-transform: none; letter-spacing: 0">Remove All…</span></div>
+        <div class="mock-group" style="min-width: 0">
+          <div class="mock-row">
+            <span class="mock-ico s">F</span>
+            <div class="grow"><div>Firefox</div><div class="muted trunc">/Applications/Firefox.app</div></div>
+            <span class="mock-select mock-proxy">Amsterdam</span>
+            <span class="mock-toggle on"></span>
+          </div>
+        </div>
         <div class="mock-cap">› Allowed Automatically <span class="muted">143</span></div>
       </div>
     </div>
@@ -252,9 +270,11 @@
   <figcaption>
     <ol class="mk-legend">
       <li>The <span class="ui">Add</span> button, with a “+” icon. A click opens the list of installed apps; the arrow next to it opens a menu with other ways to add an app, and with services.</li>
-      <li><span class="ui">Services</span>: a route for a service’s addresses in every app. <span class="ui">ⓘ</span> opens the service card. The buttons below add popular services in one click.</li>
-      <li>Apps are grouped by route: <span class="ui">Through Proxy</span>, <span class="ui">Blocked</span>, <span class="ui">Ask</span>, <span class="ui">Direct</span>. A group with no rows isn’t shown.</li>
-      <li>The route menu: proxies by name, then <span class="ui">Direct</span>, <span class="ui">Block</span> and <span class="ui">Ask</span>. A checkmark marks the current route. A service’s menu has no <span class="ui">Ask</span>.</li>
+      <li><span class="ui">Services</span>: a route for a service’s addresses in every app. The “?” next to the heading is a reminder that a rule for a specific domain in <span class="ui">Rules</span> beats the service. <span class="ui">ⓘ</span> in a row opens the service card. The buttons below add popular services in one click.</li>
+      <li>Apps are grouped by route: <span class="ui">Through Proxy</span>, <span class="ui">Blocked</span>, <span class="ui">Ask</span>, <span class="ui">Direct</span>. A group with no rows isn’t shown. Under the name is the app’s identifier; “without child processes” is added only when child processes are off.</li>
+      <li>The route menu: proxies by name, then <span class="ui">Direct</span>, <span class="ui">Block</span> and <span class="ui">Ask</span>. A checkmark marks the current route; in the row, a proxy is shown just by its name, in blue. A service’s menu has no <span class="ui">Ask</span>.</li>
+      <li><span class="ui">Turned Off</span>: apps whose switch is off. Their route is gray and doesn’t apply; under the name it says where the traffic goes now.</li>
+      <li><span class="ui">Not Found on Disk</span>: apps that were deleted or moved (or are on a disconnected disk). The path is shown instead of the identifier. <span class="ui">Remove All…</span> deletes their routes after you confirm.</li>
     </ol>
     A sketch of the <span class="ui">Apps</span> section with Slack’s route menu open. The data is made up.
   </figcaption>
@@ -262,7 +282,7 @@
 
 <h3 id="manage">Enable, disable, delete</h3>
 <ul>
-  <li><b>The toggle</b> on the right turns a row off without deleting it. A turned-off row has no effect: the app follows the other rules and the <a href="../../../en/docs/firewall/#modes">mode</a>. In <span class="ui">Proxy Only</span> mode, that means it goes direct.</li>
+  <li><b>The toggle</b> on the right turns a row off without deleting it. The row moves to the <span class="ui">Turned Off</span> group and says how the app goes now. A turned-off row has no effect: the app follows the other rules and the <a href="../../../en/docs/firewall/#modes">mode</a>. In <span class="ui">Proxy Only</span> mode, that means it goes direct.</li>
   <li><b>The context menu</b> (right-click): <span class="ui">Route</span>, <span class="ui">Enable</span> or <span class="ui">Disable</span>, <span class="ui">Include Child Processes</span>, <span class="ui">Show in Finder</span>, <span class="ui">Delete</span>. Route, enabling and deleting also work for several selected rows at once.</li>
   <li>You can also <b>delete</b> with the Delete key. <kbd>⌘Z</kbd> undoes the last change.</li>
   <li><b>Search</b> in the toolbar looks through app names and identifiers, and for services also through domains: <code>githubusercontent.com</code> finds GitHub.</li>
@@ -270,7 +290,7 @@
 <p>An app that isn’t in the list follows the mode. In <span class="ui">Proxy Only</span> mode, it goes direct.</p>
 <div class="callout tip"><p>An app row sets where <b>all</b> of the app’s traffic goes. Each such row is a rule, and you can also see it in the <span class="ui">Rules</span> section with the destination “Any address”. To send some of the app’s addresses another way, add a rule: <a href="../../../en/docs/rules/#when">When you need a rule</a>.</p></div>
 <details class="deep"><summary>Details: which rules are shown in Apps</summary>
-  <p>This section shows permanent rules with a specific app, any address, and no port or protocol. An answer in the prompt with the <span class="ui">Forever</span> duration and the <span class="ui">Anywhere</span> destination also becomes such a row. Temporary rules with the “While the process runs” duration, rules for individual addresses and built-in rules are shown only in the <a href="../../../en/docs/rules/#sources">Rules</a> section.</p>
+  <p>This section shows permanent rules with a specific app, any address, and no port or protocol. An answer in the prompt with the <span class="ui">Forever</span> duration and the <span class="ui">Anywhere</span> destination also becomes such a row. Temporary rules with the “While the process runs” duration, rules for individual addresses and built-in rules are shown only in the <a href="../../../en/docs/rules/#sources">Rules</a> section; built-in ones under <span class="ui">System</span>.</p>
 </details>
 
 <h2 id="child-processes">Child processes</h2>
@@ -386,7 +406,7 @@
     <div class="mock-main">
       <div class="mock-cap">What the rule does</div>
       <div class="mock-group" style="min-width: 0">
-        <div class="mock-row"><span class="grow">Route</span><span class="mock-pill mock-select mock-ok">Proxy: Amsterdam</span></div>
+        <div class="mock-row"><span class="grow">Route</span><span class="mock-select mock-proxy">Amsterdam</span></div>
         <div class="mock-row"><div class="grow">Any app that connects to the GitHub addresses listed below goes through the proxy “Amsterdam”. The app’s own route doesn’t apply here.</div><b class="mk">1</b></div>
         <div class="mock-row">
           <div class="grow"><div>These rules come first:</div><div class="muted" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">All Apps · objects.githubusercontent.com → Proxy: Frankfurt</div></div>

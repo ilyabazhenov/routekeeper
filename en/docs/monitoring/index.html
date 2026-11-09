@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../../../assets/nav.css?v=c53c1160">
-<link rel="stylesheet" href="../../../docs/assets/docs.css?v=f665767d">
+<link rel="stylesheet" href="../../../docs/assets/docs.css?v=a9c26763">
 </head>
 <body>
 <!-- Built by Scripts/build-docs.py from site-src/docs/en/monitoring.html. Edit the fragment, not this file. -->
@@ -153,11 +153,11 @@
     </details>
 
     <h2 id="overview">Overview</h2>
-    <p>The main screen of the Routekeeper window, <kbd>⌘1</kbd>. At the top is one line about the most important thing. Below it are what’s waiting for your answer, the routes, the counters and what’s going through the proxy right now.</p>
+    <p>The main screen of the Routekeeper window, <kbd>⌘1</kbd>. At the top is one line about the most important thing. Below it are what’s waiting for your answer, the routes, the counters and what’s going through the proxy right now. In a wide window, the routes and <span class="ui">Through Proxies Now</span> are on the left, and the <span class="ui">Leaks</span> and traffic cards are in a narrow column on the right.</p>
     <figure class="mock-fig">
-  <div class="mock-scroll"><div class="mock mock-win" aria-hidden="true" style="min-width: 720px">
-    <div class="mock-titlebar"><i></i><i></i><i></i><span>Overview</span><div class="mock-btn">Check All</div><div class="mock-btn">+ ⌄</div></div>
-    <div class="mock-split" style="grid-template-columns: 184px minmax(0, 1fr)">
+  <div class="mock-scroll"><div class="mock mock-win" aria-hidden="true" style="min-width: 840px; max-width: none">
+    <div class="mock-titlebar"><i></i><i></i><i></i><span>Overview <small class="muted">3 apps · 2 proxies</small></span><div class="mock-btn">ϟ Check All</div><div class="mock-btn">+ ⌄</div></div>
+    <div class="mock-split" style="grid-template-columns: 150px minmax(0, 1fr)">
       <div class="mock-side" style="display: flex; flex-direction: column; align-items: stretch">
         <div class="on">Overview</div>
         <div class="mock-cap" style="margin-top: 6px">Routing</div>
@@ -168,83 +168,89 @@
         <div>Monitor</div>
         <div>Leaks</div>
         <div class="mock-group" style="display: grid; gap: 6px; margin-top: auto; padding: 8px">
-          <div style="gap: 6px; padding: 0"><span class="mock-dot"></span><b class="grow">Running</b><span class="mock-toggle on"></span></div>
+          <div style="display: flex; align-items: center; gap: 6px; padding: 0"><span class="mock-dot"></span><b class="grow">Running</b><span class="mock-toggle on"></span></div>
           <div class="muted" style="padding: 0 0 0 14px">3 apps through proxy</div>
           <div style="display: grid; gap: 2px; padding: 0"><span class="muted">Mode</span><span class="mock-select">Proxy Only</span></div>
           <div class="mock-sep" style="margin: 2px 0; padding: 0"></div>
           <div style="display: grid; gap: 2px; padding: 0">
-            <div style="padding: 0"><span class="muted grow">Proxy</span><span class="muted">48 ms · NL</span></div>
-            <div style="gap: 6px; padding: 0"><span class="mock-dot"></span>Amsterdam<span class="muted">+1 ⇕</span></div>
+            <div style="display: flex; gap: 4px; padding: 0"><span class="muted grow">Proxy</span><span class="muted">48 ms · NL</span></div>
+            <div style="display: flex; align-items: center; gap: 6px; padding: 0"><span class="mock-dot"></span>Amsterdam<span class="muted">+1 ⇕</span></div>
           </div>
           <div class="mock-sep" style="margin: 2px 0; padding: 0"></div>
-          <div style="gap: 4px; padding: 0"><span class="muted grow">Traffic</span><span>1.3 MB/s</span><span class="muted">›</span></div>
+          <div style="display: flex; align-items: baseline; gap: 4px; padding: 0"><span class="muted grow">Traffic</span><span>1.3 MB/s</span><span class="muted">›</span></div>
         </div>
       </div>
       <div class="mock-main" style="gap: 14px">
-        <div class="mock-group" style="display: flex; align-items: center; gap: 14px; padding: 14px 16px">
-          <span class="mock-check" style="width: 30px; height: 30px"></span>
-          <div class="grow" style="display: grid; gap: 3px">
+        <div class="mock-group ok" style="display: flex; align-items: center; gap: 14px; padding: 12px 16px">
+          <span class="mock-check" style="width: 28px; height: 28px"></span>
+          <div class="grow" style="display: grid; gap: 2px">
             <div class="mock-h">Everything works<b class="mk">1</b></div>
-            <div class="mock-sub">Through 2 proxies: Telegram, Claude, YouTube. No leaks since 9:14 AM.</div>
+            <div class="mock-sub">Through 2 proxies: Slack, Chrome, Terminal.</div>
           </div>
         </div>
-        <div style="display: flex; align-items: baseline; gap: 8px"><b>Routes</b><span class="right mock-link">All Proxies</span></div>
-        <div class="mock-group">
-          <div class="mock-row" style="gap: 10px; padding: 9px 12px">
-            <span class="mock-dot"></span>
-            <div style="display: grid; flex: none; width: 150px"><b>Amsterdam<b class="mk">2</b></b><span class="muted">Netherlands · 203.0.113.7</span></div>
-            <span style="flex: none; width: 44px">48 ms</span>
-            <div class="grow" style="display: flex; align-items: center; gap: 4px"><span class="mock-ico">S</span><span class="mock-ico g">C</span><span class="muted" style="margin-left: 4px">Slack, Chrome ⌄</span></div>
-            <div style="display: grid; justify-items: end; gap: 4px; flex: none; width: 62px"><span>1.2 MB/s</span><svg viewBox="0 0 56 4" style="display: block; width: 56px; height: 4px"><rect width="56" height="4" rx="2" fill="currentColor" opacity=".18"/><rect width="52" height="4" rx="2" fill="var(--m-accent)"/></svg></div>
-            <div class="mock-popup" style="display: flex; align-items: center"><span class="mock-btn" style="width: 22px; height: 22px; padding: 0; justify-content: center; border-radius: 50%">⋯</span><b class="mk">3</b>
-              <div class="mock-menu" style="top: 28px; right: 0">
-                <div class="mi">Check Again</div>
-                <div class="mi">Move Routes To<span class="sc">›</span></div>
-                <div class="mock-sep"></div>
-                <div class="mi">All Proxies…</div>
+        <div style="display: grid; grid-template-columns: minmax(0, 1fr) 220px; gap: 14px; align-items: start">
+          <div style="display: grid; gap: 10px; min-width: 0">
+            <div style="display: flex; align-items: baseline; gap: 8px"><b>Routes</b><span class="right mock-link">All Proxies</span></div>
+            <div class="mock-group">
+              <div class="mock-row" style="gap: 6px; padding: 9px 12px">
+                <span class="mock-dot"></span>
+                <div style="display: grid; flex: none; width: 140px"><b>Amsterdam<b class="mk">2</b></b><span class="muted trunc">Netherlands · 203.0.113.7</span></div>
+                <span style="flex: none; width: 40px">48 ms</span>
+                <span class="mock-ok" style="flex: none"><svg viewBox="0 0 40 14" style="display: block; width: 40px; height: 14px"><polyline points="0,9 5,8 10,9 15,7 20,8 25,8 30,6 35,8 40,7" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></span>
+                <div class="grow" style="display: flex; align-items: center; gap: 2px"><span class="mock-ico">S</span><span class="mock-ico g">C</span><span class="muted" style="margin-left: 4px">⌄</span></div>
+                <div style="display: grid; justify-items: end; gap: 4px; flex: none; width: 56px"><span>1.2 MB/s</span><svg viewBox="0 0 52 4" style="display: block; width: 52px; height: 4px"><rect width="52" height="4" rx="2" fill="currentColor" opacity=".18"/><rect width="48" height="4" rx="2" fill="var(--m-accent)"/></svg></div>
+                <div class="mock-popup" style="display: flex; align-items: center"><span class="mock-btn" style="width: 22px; height: 22px; padding: 0; justify-content: center; border-radius: 50%">⋯</span><b class="mk">3</b>
+                  <div class="mock-menu" style="top: 28px; right: 0">
+                    <div class="mi">Check Again</div>
+                    <div class="mi">Move Routes To<span class="sc">›</span></div>
+                    <div class="mock-sep"></div>
+                    <div class="mi">All Proxies…</div>
+                  </div>
+                </div>
               </div>
+              <div class="mock-row" style="gap: 6px; padding: 9px 12px">
+                <span class="mock-dot"></span>
+                <div style="display: grid; flex: none; width: 140px"><b>Frankfurt</b><span class="muted trunc">Germany · 203.0.113.20</span></div>
+                <span style="flex: none; width: 40px">61 ms</span>
+                <span class="mock-ok" style="flex: none"><svg viewBox="0 0 40 14" style="display: block; width: 40px; height: 14px"><polyline points="0,8 5,8 10,7 15,8 20,7 25,9 30,8 35,7 40,8" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></span>
+                <div class="grow" style="display: flex; align-items: center; gap: 2px"><span class="mock-ico s">T</span><span class="muted" style="margin-left: 4px">⌄</span></div>
+                <div style="display: grid; justify-items: end; gap: 4px; flex: none; width: 56px"><span>86 KB/s</span><svg viewBox="0 0 52 4" style="display: block; width: 52px; height: 4px"><rect width="52" height="4" rx="2" fill="currentColor" opacity=".18"/><rect width="4" height="4" rx="2" fill="var(--m-accent)"/></svg></div>
+                <span class="mock-btn" style="width: 22px; height: 22px; padding: 0; justify-content: center; border-radius: 50%; margin-right: 24px">⋯</span>
+              </div>
+              <div class="mock-row" style="gap: 10px; padding: 9px 12px"><span class="muted">→</span><div style="display: grid; min-width: 0"><b class="muted">Direct</b><span class="muted">Everything else uses your regular connection</span></div></div>
+            </div>
+            <div style="display: flex; align-items: baseline; gap: 8px; margin-top: 6px"><b>Through Proxies Now<b class="mk">5</b></b><span class="right mock-link">All Connections</span></div>
+            <div class="mock-group">
+              <div class="mock-row"><span class="mock-ico g">C</span><div class="grow" style="display: grid"><b>Chrome</b><span class="muted">Amsterdam · connections: 14</span></div><span>870 KB/s</span></div>
+              <div class="mock-row"><span class="mock-ico">S</span><div class="grow" style="display: grid"><b>Slack</b><span class="muted">Amsterdam · connections: 6</span></div><span>330 KB/s</span></div>
+              <div class="mock-row"><span class="mock-ico s">T</span><div class="grow" style="display: grid"><b>Terminal</b><span class="muted">Frankfurt · connections: 2</span></div><span>86 KB/s</span></div>
             </div>
           </div>
-          <div class="mock-row" style="gap: 10px; padding: 9px 12px">
-            <span class="mock-dot"></span>
-            <div style="display: grid; flex: none; width: 150px"><b>Frankfurt</b><span class="muted">Germany · 203.0.113.20</span></div>
-            <span style="flex: none; width: 44px">61 ms</span>
-            <div class="grow" style="display: flex; align-items: center; gap: 4px"><span class="mock-ico s">T</span><span class="muted" style="margin-left: 4px">Terminal ⌄</span></div>
-            <div style="display: grid; justify-items: end; gap: 4px; flex: none; width: 62px"><span>86 KB/s</span><svg viewBox="0 0 56 4" style="display: block; width: 56px; height: 4px"><rect width="56" height="4" rx="2" fill="currentColor" opacity=".18"/><rect width="4" height="4" rx="2" fill="var(--m-accent)"/></svg></div>
-            <span class="mock-btn" style="width: 22px; height: 22px; padding: 0; justify-content: center; border-radius: 50%; margin-right: 24px">⋯</span>
+          <div style="display: grid; gap: 14px">
+            <div class="mock-group" style="display: grid; align-content: start; gap: 6px; padding: 12px">
+              <div style="display: flex; gap: 8px"><span class="muted grow">Leaks<b class="mk">4</b></span><span class="mock-link">Details</span></div>
+              <div><b class="mock-h">None</b> <span class="muted">since 9:14 AM</span></div>
+              <div class="muted">Apps being watched: 3</div>
+            </div>
+            <div class="mock-group" style="display: grid; align-content: start; gap: 6px; padding: 12px">
+              <div style="display: flex; gap: 8px"><span class="muted grow">Proxy traffic · 3 min</span><span class="mock-link">Monitor</span></div>
+              <div><b class="mock-h">1.3 MB/s</b> <span class="muted">2.4 GB since 9:14 AM</span></div>
+              <div class="mock-proxy"><svg viewBox="0 0 120 30" preserveAspectRatio="none" style="display: block; width: 100%; height: 34px"><polygon points="0,22 6,20 12,21 18,18 24,19 30,15 36,17 42,12 48,14 54,10 60,13 66,11 72,8 78,12 84,9 90,14 96,10 102,7 108,11 114,9 120,8 120,30 0,30" fill="currentColor" opacity=".15"/><polyline points="0,22 6,20 12,21 18,18 24,19 30,15 36,17 42,12 48,14 54,10 60,13 66,11 72,8 78,12 84,9 90,14 96,10 102,7 108,11 114,9 120,8" fill="none" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg></div>
+            </div>
           </div>
-          <div class="mock-row" style="gap: 10px; padding: 9px 12px"><span class="muted">→</span><div style="display: grid"><b class="muted">Direct</b><span class="muted">Everything else uses your regular connection</span></div></div>
-        </div>
-        <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px">
-          <div class="mock-group" style="display: grid; align-content: start; gap: 6px; padding: 12px">
-            <div style="display: flex; gap: 8px"><span class="muted grow">Leaks<b class="mk">4</b></span><span class="mock-link">Details</span></div>
-            <div><b class="mock-h">None</b> <span class="muted">since 9:14 AM</span></div>
-            <div class="muted">No connections went around the proxy.</div>
-          </div>
-          <div class="mock-group" style="display: grid; align-content: start; gap: 6px; padding: 12px">
-            <div style="display: flex; gap: 8px"><span class="muted grow">Proxy traffic · 3 min</span><span class="mock-link">Monitor</span></div>
-            <div><b class="mock-h">1.3 MB/s</b> <span class="muted">2.4 GB since 9:14 AM</span></div>
-            <div class="mock-ok"><svg viewBox="0 0 120 30" preserveAspectRatio="none" style="display: block; width: 100%; height: 30px"><polygon points="0,22 6,20 12,21 18,18 24,19 30,15 36,17 42,12 48,14 54,10 60,13 66,11 72,8 78,12 84,9 90,14 96,10 102,7 108,11 114,9 120,8 120,30 0,30" fill="currentColor" opacity=".15"/><polyline points="0,22 6,20 12,21 18,18 24,19 30,15 36,17 42,12 48,14 54,10 60,13 66,11 72,8 78,12 84,9 90,14 96,10 102,7 108,11 114,9 120,8" fill="none" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg></div>
-          </div>
-        </div>
-        <div style="display: flex; align-items: baseline; gap: 8px"><b>Through Proxies Now<b class="mk">5</b></b><span class="right mock-link">All Connections</span></div>
-        <div class="mock-group">
-          <div class="mock-row"><span class="mock-ico g">C</span><div class="grow" style="display: grid"><b>Chrome</b><span class="muted">Amsterdam · connections: 14</span></div><span>870 KB/s</span></div>
-          <div class="mock-row"><span class="mock-ico">S</span><div class="grow" style="display: grid"><b>Slack</b><span class="muted">Amsterdam · connections: 6</span></div><span>330 KB/s</span></div>
-          <div class="mock-row"><span class="mock-ico s">T</span><div class="grow" style="display: grid"><b>Terminal</b><span class="muted">Frankfurt · connections: 2</span></div><span>86 KB/s</span></div>
         </div>
       </div>
     </div>
   </div></div>
   <figcaption>
     <ol class="mk-legend">
-      <li>The headline: the most important thing in one line. “Everything works” means the routes work; below it, how many routes go through how many proxies and since when there have been no leaks. If something is wrong, the problem shows here (see the table below).</li>
-      <li>A row for each proxy that routes go through: the dot (green means it answers), the country and external IP, the latency, what goes through the route (a click lists it all), the speed and the share of traffic. The last row, <span class="ui">Direct</span>, is everything else.</li>
+      <li>The headline: the most important thing in one line. “Everything works” means the routes work; below it, how many proxies they go through and what uses them. If something is wrong, the problem shows here (see the table below).</li>
+      <li>A row for each proxy that routes go through: the dot (green means it answers), the country and external IP, the latency and its chart for the last hour, the icons of what goes through the route (a click lists it all; in a wider window the names show too), the speed and the share of traffic. The last row, <span class="ui">Direct</span>, is everything else.</li>
       <li>The “⋯” menu of each proxy: <span class="ui">Check Again</span>, <span class="ui">Move Routes To</span> (only this proxy’s routes) and <span class="ui">All Proxies…</span>.</li>
-      <li>Counters: how many connections went around the proxy and how much traffic went through the proxies, with a 3-minute chart.</li>
+      <li>The cards on the right: how many connections went around the proxy (if none, how many apps are being watched) and how much traffic went through the proxies, with a 3-minute chart. In a narrow window they sit side by side under the routes.</li>
       <li>Apps that sent data through a proxy in the last minute: which proxy, how many connections, the speed.</li>
     </ol>
-    A sketch of the <span class="ui">Overview</span> section with two proxies, both answering. The data is made up.
+    A sketch of the <span class="ui">Overview</span> section in a wide window with two proxies, both answering. The data is made up.
   </figcaption>
 </figure>
 
@@ -261,7 +267,7 @@
         <tr><td><span class="ui">Leaks detected</span></td><td>In the last hour, an app that should go through the proxy sent <a class="term" href="../../../en/docs/glossary/#udp">UDP</a> direct, or one of its processes went outside the rule.</td><td>Click <span class="ui">Details</span> in the line below the headline and apply the fix. For details, see <a href="#leaks">Leaks</a>.</td></tr>
         <tr><td><span class="ui">Partly working</span></td><td>You have several proxies, and some of them aren’t answering. What goes through them waits; the other routes work.</td><td>In that proxy’s row, click <span class="ui">Move to “…”</span> or <span class="ui">Check Again</span>.</td></tr>
         <tr><td><span class="ui">DNS queries go direct</span></td><td>The main traffic goes through the proxy, but in the last hour an app sent <a class="term" href="../../../en/docs/glossary/#dns">DNS</a> queries direct. The DNS provider may see your IP and the names of sites.</td><td>In <a href="#leaks">Leaks</a>: for an app, <span class="ui">Block DNS</span>; for a browser, DNS over HTTPS.</td></tr>
-        <tr><td><span class="ui">Everything works</span></td><td>The routes work. Below the headline is a summary: with one proxy, which apps go through it; with several, how many routes and proxies there are; and since when there have been no leaks.</td><td>Nothing.</td></tr>
+        <tr><td><span class="ui">Everything works</span></td><td>The routes work. Below the headline is a summary: which apps go through which proxy, for example “Through “Amsterdam”: Slack, Chrome and others”. Whether there were leaks is shown by the <span class="ui">Leaks</span> card.</td><td>Nothing.</td></tr>
       </tbody>
     </table></div>
     <p>One exception: if <span class="ui">Settings → Network → If the proxy is down, go direct</span> is on, connections go direct when the proxy is unreachable, but the headline won’t say so.</p>
@@ -289,7 +295,7 @@
 
     <h3>Counters and “Through Proxies Now”</h3>
     <ul>
-      <li><b>The <span class="ui">Leaks</span> card:</b> how many leaks there were, since when they’ve been counted, and which one was the last. The <span class="ui">Details</span> link goes to the section.</li>
+      <li><b>The <span class="ui">Leaks</span> card:</b> how many leaks there were, since when they’ve been counted, and which one was the last. If there were none, the card shows <span class="ui">None</span> and how many apps are being watched. The <span class="ui">Details</span> link goes to the section.</li>
       <li><b>The traffic card:</b> the speed through the proxy right now, how much has been transferred since counting started, and a graph for the last 3 minutes. A <span class="ui">Monitor</span> link.</li>
       <li><b><span class="ui">Through Proxies Now</span>:</b> apps that sent data through the proxy in the last minute, the most active at the top. For each app: which service’s rule sent it to the proxy, which proxy it uses (if you have several), how many connections it has and its speed. Apps that go through the proxy only by a service rule also show up here. The first five are shown, and the rest are in the monitor.</li>
     </ul>
@@ -350,7 +356,7 @@
     <p>Rows are grouped by process and kind, so two helpers of one app show up as two rows with the same name. Each row shows the app, the kind, how many times it happened (× N), up to four addresses, a tip and a fix button. The most serious are at the top.</p>
     <figure class="mock-fig">
   <div class="mock-scroll"><div class="mock mock-win" aria-hidden="true" style="min-width: 720px">
-    <div class="mock-titlebar"><i></i><i></i><i></i><span>Leaks</span></div>
+    <div class="mock-titlebar"><i></i><i></i><i></i><span>Leaks <small class="muted">Since 9:14 AM: 44</small></span></div>
     <div class="mock-split" style="grid-template-columns: 184px minmax(0, 1fr)">
       <div class="mock-side" style="display: flex; flex-direction: column; align-items: stretch">
         <div>Overview</div>
@@ -362,16 +368,16 @@
         <div>Monitor</div>
         <div class="on">Leaks<b class="mk">1</b><span class="badge">44</span></div>
         <div class="mock-group" style="display: grid; gap: 6px; margin-top: auto; padding: 8px">
-          <div style="gap: 6px; padding: 0"><span class="mock-dot"></span><b class="grow">Running</b><span class="mock-toggle on"></span></div>
+          <div style="display: flex; align-items: center; gap: 6px; padding: 0"><span class="mock-dot"></span><b class="grow">Running</b><span class="mock-toggle on"></span></div>
           <div class="muted" style="padding: 0 0 0 14px">3 apps through proxy</div>
           <div style="display: grid; gap: 2px; padding: 0"><span class="muted">Mode</span><span class="mock-select">Proxy Only</span></div>
           <div class="mock-sep" style="margin: 2px 0; padding: 0"></div>
           <div style="display: grid; gap: 2px; padding: 0">
-            <div style="padding: 0"><span class="muted grow">Proxy</span><span class="muted">48 ms · NL</span></div>
-            <div style="gap: 6px; padding: 0"><span class="mock-dot"></span>Amsterdam<span class="muted">+1 ⇕</span></div>
+            <div style="display: flex; gap: 4px; padding: 0"><span class="muted grow">Proxy</span><span class="muted">48 ms · NL</span></div>
+            <div style="display: flex; align-items: center; gap: 6px; padding: 0"><span class="mock-dot"></span>Amsterdam<span class="muted">+1 ⇕</span></div>
           </div>
           <div class="mock-sep" style="margin: 2px 0; padding: 0"></div>
-          <div style="gap: 4px; padding: 0"><span class="muted grow">Traffic</span><span>1.3 MB/s</span><span class="muted">›</span></div>
+          <div style="display: flex; align-items: baseline; gap: 4px; padding: 0"><span class="muted grow">Traffic</span><span>1.3 MB/s</span><span class="muted">›</span></div>
         </div>
       </div>
       <div class="mock-main" style="gap: 12px">
@@ -381,7 +387,7 @@
             <span class="mock-ico" style="width: 26px; height: 26px">S</span>
             <div class="grow" style="display: grid; gap: 3px">
               <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px"><b>Slack</b><span class="mock-pill block">Process outside the rule</span><span class="muted">× 3</span><b class="mk">2</b></div>
-              <div class="muted">files.example.com:443, api.example.com:443<b class="mk">3</b></div>
+              <div style="display: flex; align-items: center; min-width: 0"><span class="muted mono trunc">files.example.com:443, api.example.com:443</span><b class="mk">3</b></div>
               <div>Add this process to the app’s rule or turn on “Include Child Processes”.</div>
             </div>
             <span class="mock-btn">Through “Amsterdam”</span><b class="mk">4</b>
@@ -389,8 +395,8 @@
           <div class="mock-row" style="align-items: flex-start; gap: 10px; padding: 10px 12px">
             <span class="mock-ico g" style="width: 26px; height: 26px">C</span>
             <div class="grow" style="display: grid; gap: 3px">
-              <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px"><b>Chrome</b><span class="mock-pill ask">UDP around the proxy</span><span class="muted">× 14</span></div>
-              <div class="muted">video.example.com:443, www.example.com:443</div>
+              <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px"><b>Chrome</b><span class="mock-pill warn">UDP around the proxy</span><span class="muted">× 14</span></div>
+              <div class="muted mono trunc">video.example.com:443, www.example.com:443</div>
               <div>Turn on “Block UDP and QUIC” in the proxy’s settings so the app falls back to TCP.</div>
             </div>
             <span class="mock-btn" style="margin-right: 24px">Block UDP</span>
@@ -399,7 +405,7 @@
             <span class="mock-ico g" style="width: 26px; height: 26px">C</span>
             <div class="grow" style="display: grid; gap: 3px">
               <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px"><b>Chrome</b><span class="mock-pill low">DNS around the proxy</span><span class="muted">× 27</span><b class="mk">5</b></div>
-              <div class="muted">192.168.1.1:53</div>
+              <div class="muted mono trunc">192.168.1.1:53</div>
               <div>Turn on DNS over HTTPS in the browser so name lookups go through the proxy. Don't block port 53: without DoH the browser stops opening sites.</div>
             </div>
           </div>
