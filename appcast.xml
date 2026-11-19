@@ -3,44 +3,28 @@
     <channel>
         <title>Routekeeper</title>
         <item>
-            <title>0.6.0</title>
-            <pubDate>Mon, 09 Nov 2026 17:17:31 +0400</pubDate>
+            <title>0.6.1</title>
+            <pubDate>Thu, 19 Nov 2026 21:29:44 +0400</pubDate>
             <link>https://getroutekeeper.app/</link>
             <sparkle:informationalUpdate>
                 <sparkle:belowVersion>11</sparkle:belowVersion>
             </sparkle:informationalUpdate>
-            <sparkle:version>16</sparkle:version>
-            <sparkle:shortVersionString>0.6.0</sparkle:shortVersionString>
+            <sparkle:version>17</sparkle:version>
+            <sparkle:shortVersionString>0.6.1</sparkle:shortVersionString>
             <description xml:lang="ru"><![CDATA[<p><b>При установке сетевое расширение обновится и перезапустится.</b> Соединения через прокси прервутся, а новые в течение пары секунд могут пойти напрямую, мимо прокси. Приложения, которым важно не выйти в сеть мимо прокси, лучше закрыть до установки.</p>
-<p>Сборка 16.</p>
+<p>Сборка 17.</p>
 <ul>
-  <li><b>Запасной путь до прокси.</b> Если сервер работает, но с вашего Mac до него не достучаться, соединения идут через другой ваш сервер, а сайты по-прежнему видят адрес первого. Чтобы вообще не подключаться к первому напрямую, включите <span class="ui">Всегда через этот сервер</span>. Настраивается в карточке прокси, см. <a href="https://getroutekeeper.app/docs/server/#chain">«Запасной путь»</a>.</li>
-  <li><b>Свой сервер закрывает служебные адреса.</b> После обновления скрипта на сервере прокси не ходит на <code>169.254.0.0/16</code> (метаданные облака), <code>100.64.0.0/10</code> (в том числе Tailscale), <code>0.0.0.0/8</code> и <code>fc00::/7</code>. Карточка сервера предложит обновление. Caddy перезапустится один раз, логин и пароль не изменятся.</li>
-  <li><b>Адреса сайтов через прокси включены по умолчанию</b> на новых установках. Если вы уже пользуетесь версией 0.5, настройка останется как была: <span class="ui">Настройки → Сеть → Узнавать адреса сайтов через прокси</span>.</li>
-  <li><b>Новое оформление.</b> Цвет теперь значит одно и то же на всех экранах: синий — прокси, зелёный — работает. На широком окне <span class="ui">Обзор</span> занимает две колонки.</li>
-  <li>В <span class="ui">Правилах</span> есть переключатель <span class="ui">Мои</span>, <span class="ui">Системные</span> и <span class="ui">Все</span>, а поиск подсказывает совпадения в другом списке.</li>
-  <li>В <span class="ui">Приложениях</span> появились группы <span class="ui">Выключены</span> и <span class="ui">Не найдены на диске</span>, вторую можно очистить разом.</li>
-  <li>Прокси добавляются из одного меню: по адресу, из буфера обмена или свой сервер. <span class="ui">Сохранить</span> появляется только после правки.</li>
-  <li>Карта открывается вокруг ваших отметок, а подписи не заезжают друг на друга и за край. Названия прокси в Мониторе сокращаются посередине, поэтому различаются даже с одинаковым началом.</li>
-  <li>Экран приветствия предлагает открывать Routekeeper при входе в систему.</li>
-  <li>Routekeeper меньше нагружает процессор, пока его окна скрыты.</li>
+  <li><b>Прокси больше не зависает, когда приложение открывает сотни соединений разом.</b> Так делает, например, Claude Code при запуске: скачивает плагины и навыки параллельно. Раньше после такого всплеска сетевое расширение минутами загружало процессор, а все приложения через прокси теряли связь, пока всплески не прекращались. Теперь сотни соединений поднимаются за секунду-две.</li>
+  <li>В окне вопроса выбор срока и адреса больше не выходит за края окна, даже при длинном имени хоста.</li>
 </ul>]]></description>
             <description xml:lang="en"><![CDATA[<p><b>Installing the update also updates and restarts the network extension.</b> Connections through the proxy break, and for a couple of seconds new ones may go direct, around the proxy. Quit the apps that must not go online around the proxy before you install it.</p>
-<p>Build 16.</p>
+<p>Build 17.</p>
 <ul>
-  <li><b>A backup route to the proxy.</b> When a server is fine but your Mac can’t reach it, connections go through another server of yours, and sites keep seeing the first server’s address. To never connect to the first one directly, turn on <span class="ui">Always Through This Server</span>. It’s set up in the proxy’s card, see <a href="https://getroutekeeper.app/en/docs/server/#chain">Backup route</a>.</li>
-  <li><b>Your own server closes service addresses.</b> After the script on the server is updated, the proxy doesn’t reach <code>169.254.0.0/16</code> (cloud metadata), <code>100.64.0.0/10</code> (Tailscale among others), <code>0.0.0.0/8</code> or <code>fc00::/7</code>. The server card offers the update. Caddy restarts once; the login and password stay the same.</li>
-  <li><b>Site addresses through the proxy are on by default</b> on new installs. If you already use version 0.5, the setting stays as it was: <span class="ui">Settings → Network → Look up site addresses through the proxy</span>.</li>
-  <li><b>A new look.</b> A color now means the same on every screen: blue is a proxy, green is working. On a wide window, <span class="ui">Overview</span> has two columns.</li>
-  <li><span class="ui">Rules</span> has a <span class="ui">Mine</span>, <span class="ui">System</span> and <span class="ui">All</span> switch, and search points to matches in the other list.</li>
-  <li><span class="ui">Apps</span> has <span class="ui">Turned Off</span> and <span class="ui">Not Found on Disk</span> groups; the second can be cleared at once.</li>
-  <li>Proxies are added from one menu: by address, from the clipboard, or your own server. <span class="ui">Save</span> appears only after an edit.</li>
-  <li>The map opens around your marks, and labels stay off each other and inside the edges. Proxy names in Monitor are cut in the middle, so names with the same beginning stay different.</li>
-  <li>The welcome screen offers to open Routekeeper at login.</li>
-  <li>Routekeeper uses less CPU while its windows are hidden.</li>
+  <li><b>The proxy no longer stalls when an app opens hundreds of connections at once.</b> Claude Code, for one, does so at launch, downloading plugins and skills in parallel. After such a burst the network extension used to keep the CPU busy for minutes, and every app on the proxy lost its connection until the bursts stopped. Now hundreds of connections come up in a second or two.</li>
+  <li>In the prompt, the duration and destination choices no longer run past the window’s edges, even for a long host name.</li>
 </ul>]]></description>
             <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-            <enclosure url="https://github.com/ilyabazhenov/routekeeper/releases/download/v0.6.0/Routekeeper.dmg" length="24707426" type="application/octet-stream" sparkle:edSignature="uMXB5I/Y0RWxtnEO9A1ATEZT5PqmrYK2H6NW9LvE23rmAN5jp66L+x0GZzKWSfzG0G3d0Z6UzVIDLLxkUIkgBg=="/>
+            <enclosure url="https://github.com/ilyabazhenov/routekeeper/releases/download/v0.6.1/Routekeeper.dmg" length="24716295" type="application/octet-stream" sparkle:edSignature="osZamwRuAY8uyuXGbeXpivAhL9dsZTMB8z/WsC2/YNfi78KYXSyCcO63b64iy4Lqh+vW0eTt22YPKvR25RN9Bw=="/>
         </item>
     </channel>
 </rss>
